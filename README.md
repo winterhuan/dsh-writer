@@ -4,7 +4,7 @@ English | [中文](README.zh.md)
 
 Thin DSH writing mode that mounts oh-story skills and a Dashboard-aligned workspace sidebar.
 
-[Plugin documentation](packages/winterhuan/writer/README.md) · [Release package](https://github.com/winterhuan/dsh-writer/releases/download/v0.1.1/winterhuan-dsh-writer-0.1.1.tgz)
+[Plugin documentation](packages/winterhuan/writer/README.md) · [Release package](https://github.com/winterhuan/dsh-writer/releases/download/v0.1.8/winterhuan-dsh-writer-0.1.8.tgz)
 
 For DSH `0.2.2-rc.1`, enable Custom plugin market and add `https://winterhuan.github.io/dsh-creative/index.json` in Discover. Alternatively, install the prebuilt Git version with pnpm 11.7.0:
 
