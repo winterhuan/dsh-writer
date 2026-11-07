@@ -25,6 +25,14 @@ This bundle adds 写作模式 to a DSH profile. A new session can use the oh-sto
 <a id="use-this-package"></a>
 ## Use this package
 
+Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
+
+```sh
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#0f75c41a27af5bfc5bea26c447f0a33c5f95e0be&path:/packages/winterhuan/writer'
+```
+
+Replace `market` with the name of your existing DSH profile.
+
 ### Install into a profile
 
 Build this repository, then add the local bundle to a DSH `0.2.2-rc.1` profile. Replace `web` with the profile name.

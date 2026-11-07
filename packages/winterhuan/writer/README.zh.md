@@ -25,6 +25,14 @@ kind: "package-bundle"
 <a id="use-this-package"></a>
 ## 使用本包
 
+通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
+
+```sh
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#0f75c41a27af5bfc5bea26c447f0a33c5f95e0be&path:/packages/winterhuan/writer'
+```
+
+将 `market` 替换为你已有的 DSH profile 名称。
+
 ### 安装到 profile
 
 先构建本仓库，再把本地 bundle 装进 DSH `0.2.2-rc.1` 的 profile。把 `web` 换成你的 profile 名。
