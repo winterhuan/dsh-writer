@@ -25,7 +25,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 | 审查稿件 | 审查、审稿、帮我审一下、一致性检查、看看有没有问题 | `/story-review` |
 | 封面 | 封面、封面图、封面提示词 | `/story-cover` |
 | 环境部署 | 准备写书、搭环境、初始化 | `/story-setup` |
-| 浏览器操控 | 浏览器、抓取、登录态 | `/browser-cdp`（Ego Lite） |
+| 浏览器操控 | 浏览器、抓取、登录态 | `/browser-cdp`（默认 Box，可选 Ego） |
 | 导入小说 | 导入、反向解析、导入小说、把我的书导进来 | `/story-import` |
 | 工作台 | dashboard、工作台、看拆文库、浏览项目文件、打开项目面板 | 见下方「Dashboard 工作台」 |
 | 检查/更新版本 | 检查更新、有新版本吗、升级、更新工具箱 | 见下方「版本更新检查」 |

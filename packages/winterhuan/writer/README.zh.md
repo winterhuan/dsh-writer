@@ -69,12 +69,12 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 | 技能 | 触发 | 说明 |
 |:-----|:-----|:-----|
-| `story-long-scan` | `/story-long-scan` | 长篇扫榜。实时榜单通过 Ego Lite 浏览器（`browser-cdp`）采集。 |
+| `story-long-scan` | `/story-long-scan` | 长篇扫榜。实时榜单默认用 Box；可传 `--browser ego` 选择 Ego（`browser-cdp`）。 |
 | `story-short-scan` | `/story-short-scan` | 短篇扫榜。浏览器依赖同上。 |
 | `story-long-analyze` | `/story-long-analyze` | 长篇拆文。脚本需要 Python 3。 |
 | `story-short-analyze` | `/story-short-analyze` | 短篇拆文。需要 Python 3。 |
 | `story-cover` | `/story-cover` | 仅提示词不需要 Key。在 DSH 上要出图时用上面的 GPT Image 凭据。Codex 宿主仍可用 `$imagegen`。 |
-| `browser-cdp` | `/browser-cdp` | 浏览器入口：Ego Lite 后端、登录/验证码交接、采集脚本共享传输。 |
+| `browser-cdp` | `/browser-cdp` | 浏览器入口：默认 Box、可选 Ego、登录/验证码交接与采集恢复。 |
 
 ### 使用侧栏
 

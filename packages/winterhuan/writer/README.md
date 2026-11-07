@@ -69,12 +69,12 @@ These packaged skills are author-triggered. They do not block chapter writing.
 
 | Skill | Triggers | Notes |
 |:------|:---------|:------|
-| `story-long-scan` | `/story-long-scan` | Long-form ranking scan. Live boards run through the Ego Lite browser (`browser-cdp`). |
+| `story-long-scan` | `/story-long-scan` | Long-form ranking scan. Live boards use Box by default; select Ego with `--browser ego` (`browser-cdp`). |
 | `story-short-scan` | `/story-short-scan` | Short-form ranking scan. Same browser note. |
 | `story-long-analyze` | `/story-long-analyze` | Long-form teardown. Needs Python 3 for scripts. |
 | `story-short-analyze` | `/story-short-analyze` | Short-form teardown. Needs Python 3. |
 | `story-cover` | `/story-cover` | Prompt-only needs no key. Generating an image on DSH uses the GPT Image credential above. Codex hosts may still use `$imagegen`. |
-| `browser-cdp` | `/browser-cdp` | Browser entry: Ego Lite backend, login/CAPTCHA handoff, shared collector transport. |
+| `browser-cdp` | `/browser-cdp` | Browser entry: Box by default, optional Ego, login/CAPTCHA handoff and collector recovery. |
 
 ### Use the sidebar
 

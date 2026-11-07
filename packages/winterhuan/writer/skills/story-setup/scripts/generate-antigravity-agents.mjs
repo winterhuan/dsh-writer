@@ -127,7 +127,7 @@ function adaptBody(body, name, tools) {
   }
 
   const researchNote = name === "story-researcher"
-    ? "- This custom subagent has no web search or web-reader tool. Use ego-browser through `run_command`; if it is unavailable, return a structured research gap to the parent agent.\n"
+    ? "- This custom subagent has no web search or web-reader tool. Load browser-cdp and use its shared session through `run_command` (Box by default, Ego when requested); if the selected backend is unavailable, return a structured research gap to the parent agent.\n"
     : ""
 
   return `${adapted.trimEnd()}\n\n---\n\nAntigravity adaptation notes:\n` +

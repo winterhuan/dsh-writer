@@ -2,7 +2,7 @@
 /**
  * 番茄小说排行榜采集脚本
  *
- * 配合 browser-cdp skill 使用。先安装 Ego Lite（ego-browser 可用），再运行本脚本。
+ * 配合 browser-cdp skill 使用。默认使用 Box；可传 --browser ego 使用 Ego Lite（见 browser-cdp skill）。
  * 采集策略：从榜单页 __INITIAL_STATE__ 取结构化列表，再逐本请求详情页解码真实
  * 书名/作者/简介/题材/标签（番茄列表页有字体反爬，详情页 HTML 里是明文）。
  * 输出的榜单 Markdown 格式见 aggregate-rank.js 文件头，聚合按它解析。
@@ -17,13 +17,13 @@
  *   node fanqie-rank-scraper.js --source library --channel mix --pages 5  # 不分男女，取 5 页
  *
  * 前置：
- *   Ego Lite 已安装（见 {SKILL_DIR}/browser-cdp/SKILL.md）
+ *   Box 已登录，或显式选择已安装的 Ego（见 {SKILL_DIR}/browser-cdp/SKILL.md）
  */
 
 const fs = require("fs");
 const path = require("path");
 const { createHash } = require("node:crypto");
-const { createSession, openRunStore, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/ego-session.cjs");
+const { createSession, openRunStore, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/browser-session.cjs");
 
 // 一次详情请求的并发批大小。番茄详情页用同步 XHR 拉取，批太大会撞上
 // 传输层单次调用的超时；超时会显式失败，这里分批是为了避免整个题材被中断。
@@ -370,7 +370,7 @@ function scrapeChannel(ch, type) {
   // 连通性自检：把"静默写出一堆 bookId"变成可操作的报错
   const probe = probePage(SESSION);
   if (!probe) {
-    throw new Error(`浏览器无响应。请确认已安装 Ego Lite 且 ego-browser 可用（见 browser-cdp skill）`);
+    throw new Error(`浏览器无响应。请按 browser-cdp skill 检查所选 Box / Ego 后端`);
   }
   if (probe.host && probe.host.indexOf("fanqie") === -1) {
     throw new Error(`当前页面非番茄（host=${probe.host}），可能被重定向到登录/验证页`);
@@ -487,7 +487,7 @@ function scrapeChannel(ch, type) {
   if (resolvedTitles === 0) {
     console.error(
       `  ✗ ${chLabel}${tyLabel}：${totalBooks} 本全部标题解析失败。多为详情页结构变动或登录/验证拦截，` +
-      `请在 Ego Lite 内手动打开任一 https://fanqienovel.com/page/{bookId} 确认页面正常。`
+      `请在所选 Box / Ego 浏览器内手动打开任一 https://fanqienovel.com/page/{bookId} 确认页面正常。`
     );
   } else if (ratio < 0.5) {
     console.error(
@@ -545,7 +545,7 @@ function scrapeLibrary(ch) {
     if (page === 1) {
       const probe = probePage(SESSION);
       if (!probe) {
-        throw new Error(`浏览器无响应。请确认已安装 Ego Lite 且 ego-browser 可用（见 browser-cdp skill）`);
+        throw new Error(`浏览器无响应。请按 browser-cdp skill 检查所选 Box / Ego 后端`);
       }
       if (probe.host && probe.host.indexOf("fanqie") === -1) {
         throw new Error(`当前页面非番茄（host=${probe.host}），可能被重定向到登录/验证页`);
@@ -590,7 +590,7 @@ function scrapeLibrary(ch) {
   });
   const quality = resolved / ids.length < 0.5 ? "[标题解析异常]" : "[OK]";
   if (resolved / ids.length < 0.5) {
-    console.error(`  ⚠ 标题解析率偏低（${resolved}/${ids.length}），请在 Ego Lite 内手动打开任一作品页确认不是验证页。`);
+    console.error(`  ⚠ 标题解析率偏低（${resolved}/${ids.length}），请在所选 Box / Ego 浏览器内手动打开任一作品页确认不是验证页。`);
   }
   // 列表名带「新书」：连载中、30 万字以下按热度排，本质是新书热度，聚合时进「新书榜」列。
   const listName = `${who}书库最热${COUNT === "0" && STAT === "1" ? "新书" : ""}`;

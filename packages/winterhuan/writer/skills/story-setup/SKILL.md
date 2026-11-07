@@ -155,6 +155,6 @@ Phase 2 幂等：复制、写入与各宿主合并重复执行结果一致。受
 |---|---|---|
 | 部署完成，开始写作 | story-long-write / story-short-write | `/story-long-write` 或 `/story-short-write` |
 | 导入已有小说做拆解 | story-import | `/story-import` |
-| 需要浏览器登录态（扫榜/拆文取原文） | browser-cdp | `/browser-cdp`（Ego Lite）；generic 需平台允许本地脚本/浏览器控制 |
+| 需要浏览器登录态（扫榜/拆文取原文） | browser-cdp | `/browser-cdp`（默认 Box，可选 Ego）；generic 需平台允许本地脚本/浏览器控制 |
 
 各端调用语法：Claude `/名`、Codex/ZCode `$名`、Antigravity 通过 `/skills` 浏览或直接点名、OpenClaw `/skill 名`、Reasonix / generic 直接点名 skill。

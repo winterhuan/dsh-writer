@@ -1,14 +1,14 @@
 ---
 name: story-researcher
 description: |
-  小说写作资料研究 agent。接收研究查询，优先使用 ego-browser（Ego Lite） 搜索并提取完整正文，
+  小说写作资料研究 agent。接收研究查询，默认使用 Box、可选择 Ego 搜索并提取完整正文，
   浏览器不可用时返回结构化缺口交回父会话。输出带来源引用的结构化 Markdown 参考文件。
   写章前查外部事实、审稿事实核查和作者直接让查资料时被调用。
 tools: [Read, Glob, Grep, Bash, Write]
 disallowedTools: [Edit]
 model: sonnet
 maxTurns: 20
-# maxTurns: 20 — 覆盖 ego-browser 搜索 + 多源交叉验证场景。
+# maxTurns: 20 — 覆盖 浏览器搜索 + 多源交叉验证场景。
 ---
 
 # Story Researcher -- 资料研究员
@@ -54,13 +54,13 @@ maxTurns: 20
 
 ## 工具优先级
 
-**核心原则：只用 ego-browser 研究；不可用时交回父会话。**
+**先加载 browser-cdp skill；默认 Box，用户指定时用 Ego。所选后端不可用时交回父会话，不自动换后端。**
 
-ego-browser 可打开实际网页拿完整正文，搜索摘要用于定位来源；下方示例只截取前 8000 字符，不能把截取结果当成已读全文。
+浏览器打开实际网页获取正文，搜索摘要只用于定位来源；正文分段读取，不能把截取结果当成全文。
 
 ```
-1. ego-browser（Ego Lite） → Google 搜索 → 提取链接 → 导航到目标页 → 提取正文
-2. ego-browser 换引擎      → Bing 搜索（Google 不可达时，方法相同）
+1. 所选 Box / Ego → Google 搜索 → 提取链接 → 导航到目标页 → 提取正文
+2. 所选后端换引擎      → Bing 搜索（Google 不可达时，方法相同）
 3. 以上都不可用 → 按第四步交回父会话
 ```
 
@@ -88,16 +88,11 @@ ego-browser 可打开实际网页拿完整正文，搜索摘要用于定位来�
 - `context`：为什么需要这个资料（可选，帮助理解搜索深度）
 - `project_dir`：书籍项目目录路径（必须，用于保存输出）
 
-### 第二步：检查 ego-browser 可用性
+### 第二步：检查所选浏览器
 
-```bash
-ego-browser --version
-```
+按 browser-cdp skill 执行对应后端的探测。默认 Box，调用者明确指定 Ego 时传 `--browser ego`。登录或验证码交回父会话协调作者完成；不可用时返回 `status: "failed"`、`gaps: ["browser_unavailable"]`。
 
-- 命令成功 → 使用 ego-browser 主链路
-- 命令不存在或失败 → 不自己安装或启动浏览器（那是作者环境的事）；返回 `status: "failed"`、`gaps: ["browser_unavailable"]`，交回父会话
-
-### 第三步：ego-browser 研究（主链路）
+### 第三步：浏览器研究
 
 #### 3.1 构建搜索词
 
@@ -115,35 +110,13 @@ ego-browser --version
 
 #### 3.2 执行搜索并提取链接
 
-浏览器操作遵循官方 `ego-browser` skill：先运行 `ego-browser skill` 读取当前版本的使用指南，再按其指引操作；整个研究任务复用一个 TaskSpace（`taskSpace` 传同名即续接），研究结束时 finish。一个脚本内完成导航与链接提取：
+使用 browser-cdp skill 的共享会话接口，或宿主已提供的 Box 浏览器工具。只有终端工具时，在本地 Node 中加载 `{SKILL_DIR}/browser-cdp/scripts/browser-session.cjs`，通过 `createSession()`、`open(url)`、`evalJSON(js)` 操作；显式选择 Ego 时沿用 `--browser ego`。整个研究复用同一个会话，记录 `spaceId` 供后续调用续接。
 
-```bash
-ego-browser nodejs <<'EOF'
-const task = await taskSpace("story research {topic}");
-const page = task.page("p1");
-await page.goto("https://www.google.com/search?q=" + encodeURIComponent("{搜索词}"));
-const links = await page.evaluate('JSON.stringify(Array.from(document.querySelectorAll("a[href]")).filter(a=>a.href&&!a.href.includes("google.com")&&!a.href.includes("bing.com")&&!a.href.includes("javascript:")).slice(0,10).map(a=>({text:a.innerText.trim().substring(0,100),href:a.href})))');
-console.log(links);
-EOF
-```
-
-> 查询词用 `encodeURIComponent` 组装；脚本经 stdin 传入，无 shell 转义问题。
-
-从输出的 JSON 链接列表中选择权威来源（学术、百科、官方、专业论坛），记录其 href。页面异常（无搜索结果特征）→ 切换 Bing（把 goto 的 URL 换成 `https://www.bing.com/search?q=...`）重试；仍失败 → 按第四步交回父会话。
+查询词用 `encodeURIComponent` 组装为搜索 URL。从实际页面提取链接，选择学术、百科、官方或专业来源。Google 页面不可达时在同一会话切换 Bing；两个引擎都失败则按第四步交回父会话。
 
 #### 3.3 导航到目标页面并提取正文
 
-在同一个 TaskSpace 里续跑：
-
-```bash
-ego-browser nodejs <<'EOF'
-const task = await taskSpace("story research {topic}");
-const page = task.page("p1");
-await page.goto("{提取到的URL}");
-const text = await page.evaluate('document.body.innerText.substring(0,8000)');
-console.log(JSON.stringify({ url: await page.url(), text }));
-EOF
-```
+在同一会话打开搜索结果中的 URL，分段读取正文，记录页面 URL、标题与已读范围。Box MCP 的 `browser_read` 使用返回的 offset 继续读取；页面脚本分段提取时自行记录偏移。未经读取的部分不能写成已核实事实。
 
 **允许的 URL 导航规则**：
 - 搜索引擎 URL（google.com/search、bing.com/search）：直接构造
@@ -157,23 +130,13 @@ EOF
 - 只有一个来源 → 标记为低置信度，并列出进一步验证动作
 
 
-研究结束后关闭本次研究的 Space（结果已写入参考文件，不需要保留页面）：
-
-```bash
-ego-browser nodejs <<'EOF'
-const task = await taskSpace("story research {topic}");
-await task.finish({ keep: [] });
-console.log("space closed");
-EOF
-```
-
-> 同一研究的多轮调用复用同一个 `story research {topic}` 名字，避免每次新建 Space；不同研究用不同 topic 名，避免共享标签和登录状态。
+研究完成后调用共享会话的 `endAndReport("research")`；使用 Ego 原生 API 时按官方 skill 完成 TaskSpace。只关闭本任务创建的页面，交接或失败时保留现场并报告编号。
 
 ### 第四步：浏览器不可用时交回父会话
 
 本 agent 的工具只有 Read/Glob/Grep/Bash/Write，没有联网兜底工具，也不假定宿主提供：
 
-1. 返回 `status: "failed"`，`gaps` 写明 `browser_unavailable`（ego-browser 缺失或不可用）或具体页面失败原因
+1. 返回 `status: "failed"`，`gaps` 写明 `browser_unavailable`（所选 Box / Ego 缺失或不可用）或具体页面失败原因
 2. 给出建议检索词与候选来源类型，供主会话继续
 3. 不要声称用过联网兜底，也不要编造内容
 

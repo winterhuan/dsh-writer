@@ -424,7 +424,7 @@ it('runs a collector from the packaged skill directory under an ESM package', ()
   expect(result.status).toBe(1)
 })
 
-it('keeps researcher templates and the generated Antigravity agent free of the old backend', async () => {
+it('routes researcher templates and generated agents through Box or Ego without local Chrome', async () => {
   const templatesDir = join(skillsRoot, 'story-setup/references/templates/agents')
   const dest = await tempDir('agents')
   const generated = spawnSync(
@@ -435,10 +435,12 @@ it('keeps researcher templates and the generated Antigravity agent free of the o
   expect(generated.status, generated.stderr).toBe(0)
 
   const agent = await readFile(join(dest, 'story-researcher', 'agent.md'), 'utf8')
-  for (const banned of ['webReader', 'websearch', 'agent-browser', 'cdp_port', 'CDP']) {
+  for (const banned of ['webReader', 'websearch', 'agent-browser', 'cdp_port', 'setup-cdp-chrome']) {
     expect(agent.toLowerCase()).not.toContain(banned.toLowerCase())
   }
-  expect(agent).toContain('task.finish(')
+  expect(agent).toContain('endAndReport(')
+  expect(agent).toContain('默认 Box')
+  expect(agent).toContain('--browser ego')
   expect(agent).toContain('browser_unavailable')
 
   const variants = [
@@ -449,10 +451,12 @@ it('keeps researcher templates and the generated Antigravity agent free of the o
   ]
   for (const file of variants) {
     const text = await readFile(file, 'utf8')
-    for (const banned of ['webReader', 'agent-browser', 'cdp_port', 'CDP']) {
+    for (const banned of ['webReader', 'agent-browser', 'cdp_port', 'setup-cdp-chrome']) {
       expect(text.toLowerCase(), `${file} contains ${banned}`).not.toContain(banned.toLowerCase())
     }
-    expect(text).toContain('task.finish(')
+    expect(text).toContain('endAndReport(')
+    expect(text).toContain('默认 Box')
+    expect(text).toContain('--browser ego')
   }
 })
 

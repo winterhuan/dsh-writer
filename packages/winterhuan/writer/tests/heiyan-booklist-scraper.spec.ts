@@ -3,69 +3,102 @@ import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'n
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
+import { JSDOM } from 'jsdom'
 import { afterEach, describe, expect, it } from 'vitest'
 
 const require = createRequire(import.meta.url)
 const scraperPath = require.resolve('../skills/story-short-scan/scripts/heiyan-booklist-scraper.js')
 const transportPath = require.resolve('../skills/browser-cdp/scripts/ego-session.cjs')
-const { main, fetchBookList, fetchBookDetail } = require(scraperPath)
+const { main, parseLibrary, parseDetail, fetchBookDetail } = require(scraperPath)
 const { openRunStore, localDateStamp } = require(transportPath)
 const roots: string[] = []
+const doms: JSDOM[] = []
 function root() {
   const dir = mkdtempSync(path.join(tmpdir(), 'writer-heiyan-'))
   roots.push(dir)
   return dir
 }
-afterEach(() => { for (const dir of roots.splice(0)) rmSync(dir, { recursive: true, force: true }) })
-
-const book = { id: 1, name: '已采集作品', classifyStr: '男频', words: 12345 }
-const first = () => ({ code: 200, data: { total: 40, rows: [{ ...book }] } })
-function fake(responses: unknown[], opts: { login?: boolean, handoffError?: boolean } = {}) {
-  const session = {
-    spaceId: null as number | null, uncertain: false, handedOff: false,
-    calls: [] as string[], finished: 0,
-    open() { this.spaceId = 42; this.calls.push('open') },
-    takeOver() { this.calls.push('takeOver') },
-    evalJSON(js: string) {
-      if (js.includes('host:location.host')) return { host: 'manage.zhangwenpindu.cn' }
-      if (js.includes('loggedIn:')) return { loggedIn: opts.login !== false }
-      this.calls.push(js.includes('/manage/book/list') ? 'list' : 'detail')
+function document(html: string) {
+  const dom = new JSDOM(html)
+  doms.push(dom)
+  return dom.window.document
+}
+afterEach(() => {
+  for (const dom of doms.splice(0)) dom.window.close()
+  for (const dir of roots.splice(0)) rmSync(dir, { recursive: true, force: true })
+})
+const url = 'https://www.heiyan.com/all.html'
+const next = 'https://www.heiyan.com/all/-1_-1_-1_-1_0_2.html'
+const book = { id: '1', name: '已采集作品', userName: '作者', words: 12345, totalClicks: 0, url: 'https://www.heiyan.com/book/1' }
+const first = () => ({ url, rows: [{ ...book }], next })
+const last = () => ({ url: next, rows: [{ ...book, id: '2', name: '续采作品', url: 'https://www.heiyan.com/book/2' }], next: null })
+function fake(responses: unknown[]) {
+  return {
+    spaceId: 42, uncertain: false, finished: 0, calls: [] as string[],
+    open(url: string) { this.calls.push(url) },
+    evalJSON() {
+      this.calls.push('evaluate')
       const response = responses.shift()
       if (response instanceof Error) throw response
       return response
     },
-    handOff() {
-      this.calls.push('handOff')
-      if (opts.handoffError) throw new Error('Admin-Token=SECRET')
-      this.handedOff = true
-    },
-    endAndReport() {
-      this.calls.push('end')
-      if (!this.uncertain && !this.handedOff) this.finished++
-    },
+    endAndReport() { if (!this.uncertain) this.finished++ },
   }
-  return session
 }
-function setup(responses: unknown[], opts = {}) {
+function setup(responses: unknown[]) {
   const dir = root()
-  const session = fake(responses, opts)
-  const runStore = openRunStore({ root: path.join(dir, 'runs'), runId: 'local-run', params: { channel: 'all', pages: 2, detail: false }, parserRevision: '1' })
+  const session = fake(responses)
+  const runStore = openRunStore({ root: path.join(dir, 'runs'), runId: 'local-run', params: { source: url, pages: 2, detail: false }, parserRevision: '2-heiyan-public' })
   return { dir, session, runStore, options: { session, runStore, pages: 2, outdir: dir, sleep() {} } }
 }
+const fixture = readFileSync(new URL('./fixtures/heiyan-library.html', import.meta.url), 'utf8')
 
-describe('heiyan real main with local sessions', () => {
+describe('Heiyan official public pages', () => {
+  it('extracts public book links, mixed lengths and cumulative clicks from recorded HTML', () => {
+    const result = parseLibrary(document(fixture), url)
+    expect(result.next).toBe(next)
+    expect(result.rows).toHaveLength(2)
+    expect(result.rows[0]).toMatchObject({ id: '161168', name: '阴怜在此，阴戏一唱镇万邪', userName: 'Summer晴空', words: 804173, totalClicks: 1437 })
+    expect(result.rows[1].words).toBeLessThan(40000)
+    expect(result.rows.every((b: { url: string }) => /^https:\/\/www\.heiyan\.com\/book\/\d+$/.test(b.url))).toBe(true)
+    expect(result.rows[0]).not.toHaveProperty('classifyStr')
+  })
+
   it.each([
-    ['null response', null, '第2页接口无响应'],
-    ['API failure', { code: 500, msg: 'Admin-Token=SECRET' }, '第2页接口返回错误'],
-    ['transport exception', new Error('Authorization: Bearer SECRET'), '第2页采集异常'],
-    ['malformed response', { code: 200, data: {} }, '第2页列表结构异常'],
-  ])('preserves first page and reports partial for %s', (_name, response, reason) => {
+    fixture.replace('总点击', '月点击'),
+    fixture.replace('804173', '不可见'),
+    fixture.replace(next, 'https://example.com/'),
+    '<h1>请完成验证</h1>',
+  ])('rejects changed columns, missing metrics, unexpected pagination or challenge pages', html => {
+    expect(() => parseLibrary(document(html), url)).toThrow()
+  })
+
+  it('rejects redirects outside the official library', () => {
+    expect(() => parseLibrary(document(fixture), 'https://example.com/all.html')).toThrow()
+  })
+
+  it('reads public category, completion and description metadata without requiring an account', () => {
+    const doc = document(readFileSync(new URL('./fixtures/heiyan-book.html', import.meta.url), 'utf8'))
+    const result = parseDetail(doc, 'https://www.heiyan.com/book/156269')
+    expect(result).toMatchObject({ typeDesc: '玄奇', status: '已完结', detailOk: true })
+    expect(result.description).toContain('夺命的邪咒')
+    expect(result.description).not.toContain('下载客户端')
+    expect(() => parseDetail(doc, 'https://www.heiyan.com/book/1')).toThrow()
+    let expression = ''
+    fetchBookDetail({ evalJSON(js: string) { expression = js } }, 156269)
+    expect(expression).toContain('https://www.heiyan.com/book/156269')
+    expect(expression).not.toMatch(/document.cookie|Authorization|zhangwenpindu/)
+  })
+})
+
+describe('Heiyan collection and partial report safety', () => {
+  it.each([null, new Error('Authorization: Bearer SECRET'), { url: next, rows: {} }, { ...last(), rows: [book] }])('preserves first page and an existing report after a bad later page', response => {
     const f = setup([first(), response])
     const original = path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.md`)
     writeFileSync(original, 'existing complete report')
     const result = main(f.options)
     expect(result).toMatchObject({ written: 1, failed: 1, partial: true })
-    expect(result.partialReasons.join()).toContain(reason)
+    expect(result.partialReasons.join()).toContain('第2页采集异常')
     expect(JSON.stringify(result)).not.toContain('SECRET')
     expect(f.runStore.get('page-1').rows).toEqual([book])
     expect(f.runStore.get('page-2')).toBeUndefined()
@@ -77,64 +110,78 @@ describe('heiyan real main with local sessions', () => {
     expect(f.session.finished).toBe(0)
   })
 
-  it.each([false, true])('stops after later-page 401, including handoff failure=%s', (handoffError) => {
-    const f = setup([first(), { code: 401, msg: 'SECRET' }, { data: book }], { handoffError })
-    const result = main({ ...f.options, detail: true })
-    expect(result).toMatchObject({ written: 1, failed: 1, partial: true })
-    expect(result.partialReasons.join()).toContain('401')
-    expect(f.session.calls).toEqual(['open', 'list', 'list', 'handOff', 'end'])
-    expect(f.session.finished).toBe(0)
-  })
-
-  it('reports failed without overwriting an existing report on first-page failure', () => {
-    const f = setup([{ code: 500, msg: 'SECRET' }])
-    const original = path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.md`)
-    writeFileSync(original, 'preserved')
+  it('writes no report on first-page failure and retains the scene', () => {
+    const f = setup([null])
     expect(main(f.options)).toMatchObject({ written: 0, failed: 1, partial: false })
-    expect(readFileSync(original, 'utf8')).toBe('preserved')
+    expect(readdirSync(f.dir).filter(n => n.endsWith('.md'))).toEqual([])
     expect(f.session.finished).toBe(0)
   })
 
-  it('hands off a missing login without fetching or finishing', () => {
-    const f = setup([], { login: false })
-    expect(main(f.options)).toMatchObject({ written: 0, failed: 1 })
-    expect(f.session.calls).toEqual(['open', 'handOff', 'end'])
-    expect(f.session.finished).toBe(0)
-  })
-
-  it('treats empty array as a normal end and completes cleanly', () => {
-    const f = setup([first(), { code: 200, data: { rows: [] } }])
-    expect(main(f.options)).toMatchObject({ written: 1, failed: 0, partial: false, partialReasons: [] })
+  it('stops at the observed last page and preserves zero clicks and public links', () => {
+    const f = setup([{ ...first(), next: null }])
+    expect(main(f.options)).toMatchObject({ written: 1, failed: 0, partial: false })
+    expect(f.session.calls).toEqual([url, 'evaluate'])
     expect(f.session.finished).toBe(1)
-    expect(readdirSync(f.dir).filter((name) => name.endsWith('.md'))).toEqual([`黑岩书库列表_all_${localDateStamp()}.md`])
+    const report = readFileSync(path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.md`), 'utf8')
+    expect(report).toContain('**总点击：0**')
+    expect(report).toContain(`[作品页](${book.url})`)
+    expect(report).toContain('包含长短篇')
+    expect(report).not.toContain('男频短篇')
   })
 
-  it('resumes committed pages without requesting them again', () => {
+  it.each(['story-short-scan', 'story-long-scan'])('preserves cumulative clicks and mixed word lengths in %s aggregation', skill => {
+    const page = parseLibrary(document(fixture), url)
+    const f = setup([{ ...page, next: null }])
+    expect(main(f.options).failed).toBe(0)
+    const { parseRankFile, aggregate, renderMarkdown } = require(`../skills/${skill}/scripts/aggregate-rank.js`)
+    const parsed = parseRankFile(path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.md`))
+    expect(parsed.entries[0].metrics).toEqual({ 总点击: 1437 })
+    const result = aggregate([parsed], { top: 3, desc: 30 })
+    expect(result.platforms[0]).toMatchObject({ scale: 'long', metric: '总点击', bookCount: 2 })
+    expect(renderMarkdown(result)).toContain('累计点击中位')
+    expect(renderMarkdown(result)).toContain('官网书库包含长短篇')
+  })
+
+  it('resumes committed pages without navigating or requesting them again', () => {
     const f = setup([first(), null])
     expect(main(f.options).partial).toBe(true)
-    const nextSession = fake([{ code: 200, data: { total: 40, rows: [{ ...book, id: 2, name: '续采作品' }] } }])
-    const resumed = main({ ...f.options, session: nextSession })
-    expect(resumed).toMatchObject({ written: 1, failed: 0, partial: false })
-    expect(nextSession.calls.filter((call) => call === 'list')).toHaveLength(1)
-    expect(readFileSync(path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.md`), 'utf8')).toContain('续采作品')
+    const nextSession = fake([last()])
+    expect(main({ ...f.options, session: nextSession })).toMatchObject({ written: 1, failed: 0, partial: false })
+    expect(nextSession.calls).toEqual([next, 'evaluate'])
   })
 
-  it('preserves list data and stops remaining details after detail 401', () => {
-    const f = setup([{ code: 200, data: { rows: [{ ...book }, { ...book, id: 2 }], total: 2 } }, { code: 401 }])
-    const result = main({ ...f.options, pages: 1, detail: true })
+  it('preserves list data and commits only successful details for resume', () => {
+    const f = setup([{ url, rows: [book, last().rows[0]], next: null }, { detailOk: true, typeDesc: '玄奇' }, new Error('SECRET')])
+    expect(main({ ...f.options, detail: true })).toMatchObject({ written: 1, failed: 1, partial: true })
+    expect(f.runStore.get('detail-1')).toMatchObject({ detailOk: true })
+    expect(f.runStore.get('detail-2')).toBeUndefined()
+    const resumed = fake([{ detailOk: true, typeDesc: '现代' }])
+    expect(main({ ...f.options, detail: true, session: resumed })).toMatchObject({ written: 1, partial: false })
+    expect(resumed.calls).toEqual([url, 'evaluate'])
+  })
+
+  it('writes a partial report when the detail origin cannot be opened after cached lists', () => {
+    const f = setup([])
+    f.runStore.commit('page-1', { ...first(), next: null })
+    f.session.open = () => { throw new Error('SECRET') }
+    const result = main({ ...f.options, detail: true })
     expect(result).toMatchObject({ written: 1, failed: 1, partial: true })
-    expect(result.partialReasons.join()).toContain('详情认证失败（401）')
-    expect(f.session.calls).toEqual(['open', 'list', 'detail', 'handOff', 'end'])
-    expect(f.session.finished).toBe(0)
+    const { parseRankFile, aggregate } = require('../skills/story-short-scan/scripts/aggregate-rank.js')
+    const parsed = parseRankFile(path.join(f.dir, `黑岩书库列表_all_${localDateStamp()}.partial.md`))
+    expect(aggregate([parsed], { top: 3, desc: 30 }).files[0]).toMatchObject({ quality: '[部分采集]', problems: ['详情页面打开失败，保留已采集书目'] })
+    expect(JSON.stringify(result)).not.toContain('SECRET')
   })
 
-  it('handles HTTP 401 in page context without serializing credentials', () => {
-    for (const fetcher of [fetchBookList, fetchBookDetail]) {
-      let expression = ''
-      fetcher({ evalJSON(js: string) { expression = js; return null } }, 1)
-      expect(expression).toContain('r.status===401?{code:401}:r.json()')
-      expect(expression).not.toContain('JSON.stringify(m)')
-    }
+  it('invalidates management portal checkpoints before any browser operation', () => {
+    const dir = root()
+    openRunStore({ root: dir, runId: 'old', params: { source: url, pages: 2, detail: false }, parserRevision: '1' })
+    expect(() => openRunStore({ root: dir, resume: 'old', params: { source: url, pages: 2, detail: false }, parserRevision: '2-heiyan-public' })).toThrow()
+  })
+
+  it.each([{ channel: 'male' }, { channel: 'female' }, { pages: 0 }, { pages: 1.5 }])('rejects unsupported selection before browsing', options => {
+    const f = setup([])
+    expect(() => main({ ...f.options, ...options })).toThrow()
+    expect(f.session.calls).toEqual([])
   })
 
   it.each([['partial', 2], ['failed', 1], ['success', 0]])('runCli uses exit %s', (kind, exit) => {
@@ -142,22 +189,15 @@ describe('heiyan real main with local sessions', () => {
     const program = `
       const { cliMain } = require(${JSON.stringify(scraperPath)});
       const { runCli, openRunStore } = require(${JSON.stringify(transportPath)});
-      const responses = ${JSON.stringify(kind === 'success' ? [first(), { code: 200, data: { rows: [] } }] : kind === 'partial' ? [first(), { code: 500, msg: 'SECRET' }] : [{ code: 500, msg: 'SECRET' }])};
-      const session = { spaceId: null, open(){}, evalJSON(js){
-        if(js.includes('host:location.host')) return {host:'local'};
-        if(js.includes('loggedIn:')) return {loggedIn:true};
-        return responses.shift();
-      }, endAndReport(){ if(this.uncertain) console.log('RETAINED'); } };
-      const runStore = openRunStore({root:${JSON.stringify(path.join(dir, 'runs'))}, runId:'local', params:{}, parserRevision:'1'});
+      const responses = ${JSON.stringify(kind === 'success' ? [first(), last()] : kind === 'partial' ? [first(), null] : [null])};
+      const session = { open(){}, evalJSON(){return responses.shift()}, endAndReport(){ if(this.uncertain) console.log('RETAINED'); } };
+      const runStore = openRunStore({root:${JSON.stringify(path.join(dir, 'runs'))}, runId:'local', params:{}, parserRevision:'2-heiyan-public'});
       runCli(() => cliMain({session, runStore, pages:2, outdir:${JSON.stringify(dir)}, sleep(){}}), 'heiyan');
     `
     const child = spawnSync(process.execPath, ['-e', program], { encoding: 'utf8', timeout: 20_000 })
     expect(child.error).toBeUndefined()
     expect(child.signal).toBeNull()
     expect(child.status).toBe(exit)
-    expect(child.stdout + child.stderr).not.toContain('SECRET')
     if (kind !== 'success') expect(child.stdout).toContain('RETAINED')
-    if (kind === 'partial') expect(child.stderr).toContain('第2页接口返回错误')
-    if (kind === 'failed') expect(child.stderr).toContain('第1页接口返回错误')
   })
 })

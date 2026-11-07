@@ -1,73 +1,84 @@
 ---
 name: browser-cdp
-description: "Use this skill when a writing task needs a real browser with the author's login state: ranking scans (Qidian PC pages, Fanqie, Qimao, JJWXC, Ciweimao, Dianzhong), the Heiyan author backend, or research that must read a live logged-in page. The backend is Ego Lite (ego-browser): the user logs in inside Ego Lite, collectors run through the shared ego-session transport, and login/CAPTCHA pauses hand the browser to the user. Trigger phrases: browser automation, 浏览器操作, 操作浏览器, 复用登录态, 扫榜需要浏览器, ego-browser."
-metadata: {"openclaw":{"requires":{"bins":["ego-browser"]},"source":"https://github.com/zenstory-ai/oh-story-claudecode"}}
+description: "Use when writing research or ranking scans need a real browser, including logged-in author pages. Supports Box (default) and Ego Lite (explicit choice) only. Handles backend selection, collector setup, login/CAPTCHA handoff and recovery. Trigger phrases: browser automation, 浏览器操作, 复用登录态, 扫榜需要浏览器, box, ego-browser."
+metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudecode"}}
 ---
-# Browser（Ego Lite）操作入口
+# 写作浏览器：Box / Ego
 
-写作任务需要真实浏览器时，统一使用 **Ego Lite**（`ego-browser`）：用户在 Ego Lite 里登录目标网站，采集脚本通过共享传输模块复用登录态；普通 Chrome 不会被启动、复制或关闭。
+只支持 **Box** 和 **Ego Lite**。用户未指定时使用 Box；用户说「用 Ego」时使用 Ego。Box 不可用时报告原因，不能静默换后端。不要启动本机普通 Chrome、复制 Profile 或导出登录凭据。
 
-> 通用浏览操作（打开网页、点击、填表、截图）请直接加载官方 `ego-browser` skill（Ego Lite 安装时写入 `~/.agents/skills/ego-browser`）。本 skill 只负责写作采集场景的入口、前置检查与交接约定，不重复厂商文档。
+## 选择与检查
 
-## 前置条件
+采集脚本统一接受 `--browser box|ego`；优先级是命令参数、`WRITER_BROWSER` 环境变量、默认 `box`。Box 名称由 `--box`、`WRITER_BOX`、默认 `main` 依次决定。一个采集任务保持同一后端、同一 Box 和同一页面。
 
-- 已安装 Ego Lite 并完成引导（macOS / Windows；Linux 尚不支持）。未安装时告知用户按官方 `ego-browser` skill 的安装指引操作，不要尝试启动 Chrome 或安装其他浏览器后端。
-- 目标网站需要登录的（黑岩后台等）：请用户先在 Ego Lite 里登录一次。登录态保存在 Ego Lite 自己的 Profile 中，由用户控制。
-- 验证命令（无副作用）：`ego-browser --version`。
+### Box（默认）
 
-## 采集脚本如何使用浏览器
-
-七个扫榜采集器（起点 PC/书库、番茄、七猫榜单、晋江、刺猬猫、点众、黑岩）都通过共享传输模块
-`{SKILL_DIR}/browser-cdp/scripts/ego-session.cjs` 调用 Ego Lite：
-
-- 每次运行创建一个 TaskSpace（一个采集目标一个 Space），页面用固定标签 `p1`；
-- 每个操作是一次独立的 `ego-browser nodejs` 调用，Space 与页面跨调用保持；
-- 结果用带标记的 JSON 信封返回，外层校验后才使用；
-- 运行结束调用 `finish` 关闭 Space；失败或交接时保留 Space 供恢复。
-
-调用采集脚本不需要任何浏览器参数（没有 `--port`）：
+- 在执行采集脚本的机器上准备 Node.js 24 和 npm。脚本通过官方 `@simular-ai/box` CLI 的 `rsh` 操作云端浏览器；输出文件与 `.writer/browser-runs/` 检查点留在本地项目。大结果暂存在 Box，分段读回并校验后删除；单次结果上限 64 MiB，超限需缩小采集批次。
+- CLI 登录与 Codex / DSH 的 MCP 登录独立。首次运行 `npx -y @simular-ai/box@0.2.0 login`，由用户在浏览器授权；已有 CLI 登录或启动环境中的 `BOX_TOKEN` 可直接使用。不要让用户把密钥粘贴到对话中。
+- 默认使用名为 `main` 的 Box；其他名称通过 Box 控制台或 `box_list` 确认后传入 `--box`。Box 内需有 Node.js 24 和厂商的 `cocoonbox-chrome` 启动器。
+- 下方探测会唤醒 Box、在其 Chrome 中打开示例页、读取正文，再关闭探测页。现有 Chrome 与登录态保留。
 
 ```bash
+node {SKILL_DIR}/browser-cdp/scripts/browser-session.cjs probe
+```
+
+采集只通过 Box 内的回环 CDP 端口连接厂商 Chrome。启动器不可用、页面被关闭或 Chrome 重启时停止并报告，不寻找其他浏览器代替。当前 Box 采集 CLI 在 macOS 主机连接 Linux Box 上验证。
+
+### Ego（用户选择）
+
+加载官方 `ego-browser` skill，运行 `ego-browser skill` 阅读当前安装版本的指南。用户在 Ego Lite 自己的 Profile 中登录；每次采集拥有一个 TaskSpace。
+
+```bash
+node {SKILL_DIR}/browser-cdp/scripts/browser-session.cjs probe --browser ego
+```
+
+## 运行采集
+
+先按长篇或短篇扫榜 skill 选择平台与参数。默认 Box，不需要安装 `agent-browser`；显式选择 Ego 时才需要 `ego-browser`。
+
+```bash
+# 默认 Box main
 node {SKILL_DIR}/story-long-scan/scripts/ciweimao-rank-scraper.js --type all --outdir <目录>
+# 显式选择 Ego
+node {SKILL_DIR}/story-long-scan/scripts/ciweimao-rank-scraper.js --browser ego --type all --outdir <目录>
 ```
 
-脚本报「浏览器无响应 / 请确认已安装 Ego Lite」时，先跑 `ego-browser --version` 与 `ego-browser skill` 诊断，再重跑；不要退回 Chrome CDP 流程。
+七个平台共用 `scripts/browser-session.cjs`。现有起点 `--mode cdp` 表示电脑版页面采集，浏览器仍由 `--browser` 决定。无需浏览器的网页请求路径保持不变。检查点绑定后端、Box、采集参数与解析器版本；不匹配时不能续跑。
 
-## 登录与验证码：交接 / 续接
+## 普通浏览与资料研究
 
-需要人工操作时，脚本会把浏览器交接给用户（`handOff`），Space 和页面保留：
+- Box 已接入宿主 MCP 时，按实际工具定义使用 `browser_navigate`、`browser_snapshot`、`browser_read`、`browser_click` 等。需要读取长正文时继续读取后续片段，不能把截取结果当成全文。
+- 宿主只有终端工具时，可在本地 Node 脚本中加载 `scripts/browser-session.cjs`，使用 `createSession()`、`open(url)`、`evalJSON(js)`、`scroll(times, intervalMs)`。跨调用保留 `spaceId`，用 `createSession({ spaceId })` 接回同一页面，结束时 `endAndReport(tag)`。
+- Ego 的通用操作遵循官方 `ego-browser` skill。
+- 给 DSH 添加 Box MCP 时遵循 [Box 官方 DSH 插件说明](https://github.com/simular-ai/box-plugin/tree/main/dsh)。MCP 用于通用工具；采集脚本通过 CLI 登录，不会读取 DSH 凭据库。
 
-1. 脚本输出 `Space <id>` 与续接命令后退出（黑岩未登录、起点验证码自动重试失败）。
-2. 用户在 Ego Lite 对应 Space 里完成登录或验证。
-3. 用户确认后，按脚本打印的命令带 `--space <id>` 重跑（其余参数不变）：
+## 登录、验证码与续接
+
+采集器需要人工操作时会交接并保留页面。Box 在 [控制台](https://box.simular.ai/box)中操作；Ego 在对应 TaskSpace 中操作。用户完成登录或验证码并确认后，保持原命令参数，添加打印出的 `--browser`、`--box`（Box）和 `--space` 续接。交接后不要并发操作同一页面。
 
 ```bash
-# 黑岩：登录后续接
-node {SKILL_DIR}/story-short-scan/scripts/heiyan-booklist-scraper.js --pages 5 --space <spaceId>
-# 起点：人工验证后续接
-node {SKILL_DIR}/story-long-scan/scripts/qidian-rank-scraper.js --type library --space <spaceId>
+node {SKILL_DIR}/story-long-scan/scripts/qidian-rank-scraper.js --browser box --box main --mode cdp --space <id>
+node {SKILL_DIR}/story-long-scan/scripts/qidian-rank-scraper.js --browser ego --mode cdp --space <id>
 ```
 
-约定：
+有检查点的任务同时保留 `--resume <runId>`，跳过已提交批次。`--space` 选择浏览器现场，`--resume` 选择本地采集数据，二者不能互相替代。
 
-- 交接后的 Space 归用户所有；脚本续接时会先 `takeOverTaskSpace` 收回并核对页面，不会静默新建 Space。
-- 采集中断（超时、结果不明）时脚本**不**关闭 Space，并打印保留原因；用同一个 `--space <id>` 检查后续接，不要直接重跑覆盖。
-- 数据批次检查点在 `.writer/browser-runs/<runId>/`：脚本启动时打印运行 ID，中断后加 `--resume <runId>` 跳过已提交批次；参数或解析器版本不一致会被拒绝。
-- 不要在脚本等待人工验证时另开浏览器窗口重试；同一 Space 里完成验证再续接。
-- 凭据红线：登录态只在页面内使用。采集脚本与助手都不得把 Token/Cookie 打印到输出、写入文件或带入模型上下文（黑岩的 Admin-Token 由页面内脚本读取并请求，本机进程只见业务数据）。
+Token / Cookie 只在目标页面内使用，不得打印、写入采集结果或带入模型上下文。黑岩使用 `https://www.heiyan.com/all.html` 公开书库，无需管理后台账号。Box 与 Ego 的登录态独立，需要分别登录。
 
-## 停止 / 清理
+## 中断与清理
 
-- 正常结束：脚本自动 `finish` 关闭自己的 Space；用户标签页不受影响。
-- 需要手动清理：在 Ego Lite 的 Space 面板中关闭对应 Space；不要按进程名结束 Ego Lite。
-- 采集卡在页面：先让用户在 Space 面板查看/接管，确认状态后重跑或 `--resume`；不要反复重启浏览器。
+正常完成只关闭任务创建的页面；交接、超时或结果不明时保留现场，不自动重试或关闭浏览器。
 
-## 常见问题
+Box 中断后先检查页面和远程会话状态：
 
-| 问题 | 解决方案 |
-|------|----------|
-| `failed to launch ego-browser` / 命令不存在 | 安装 Ego Lite 并重启会话；确认 `ego-browser --version` 可用 |
-| `EGO_TASK_SPACE_NAME_IN_USE` | 同名 Space 归用户所有：让用户关闭它，或脚本换新名字重跑（每次运行自带唯一后缀，正常不会出现） |
-| 页面跳到登录页 | 按上方「交接 / 续接」流程：用户在 Space 里登录，然后 `--space <id>` 重跑 |
-| 采集结果为空 / 结构变动 | 让用户在 Ego Lite 里人工打开对应榜单页确认；页面正常则多为解析器需更新，报告数据质量标记 |
-| 需要通用浏览操作 | 加载官方 `ego-browser` skill，按其指引操作；本 skill 不覆盖厂商 API 细节 |
+```bash
+node {SKILL_DIR}/browser-cdp/scripts/browser-session.cjs inspect --box main --space <id>
+```
+
+只有确认可以丢弃当前页面中未完成的操作时才运行 `recover`：它会刷新该任务页面，丢弃旧 JavaScript 上下文，再允许原采集命令续跑。恢复不会重新登录，也不会重建已关闭的页面。
+
+```bash
+node {SKILL_DIR}/browser-cdp/scripts/browser-session.cjs recover --box main --space <id>
+```
+
+Ego 超时按官方指南检查执行是否停止、页面是否响应，再续接同一 Space。Box 报 `SESSION_BUSY` 时先确认远程进程是否仍在执行；不要删锁或重复启动采集来绕过。无法恢复时报告保留的编号与原因，由用户在对应浏览器检查。

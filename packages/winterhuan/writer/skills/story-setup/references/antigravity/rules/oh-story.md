@@ -20,7 +20,7 @@ Read the selected skill's `SKILL.md` first, then load references as it directs.
 - Publishing preparation (book title, synopsis, platform tags): `story-publish`
 - Ambiguous story intent: `story`
 - Project deployment/update: `story-setup`
-- Reuse an authenticated Ego Lite browser session: `browser-cdp`
+- Use Box by default, or explicitly select an authenticated Ego Lite session: `browser-cdp`
 
 ## Writing guardrails
 

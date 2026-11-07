@@ -2,7 +2,7 @@
 /**
  * 刺猬猫阅读排行榜采集脚本
  *
- * 配合 browser-cdp skill 使用。先安装 Ego Lite（ego-browser 可用），再运行本脚本。
+ * 配合 browser-cdp skill 使用。默认使用 Box；可传 --browser ego 使用 Ego Lite（见 browser-cdp skill）。
  * 采集策略：刺猬猫 rank-index 页面单页展示所有榜单，文本解析提取结构化数据。
  * 输出的榜单 Markdown 格式见 aggregate-rank.js 文件头，聚合按它解析。
  *
@@ -12,12 +12,12 @@
  *   node ciweimao-rank-scraper.js --type all           # 全部榜单
  *
  * 前置：
- *   Ego Lite 已安装（见 {SKILL_DIR}/browser-cdp/SKILL.md）
+ *   Box 已登录，或显式选择已安装的 Ego（见 {SKILL_DIR}/browser-cdp/SKILL.md）
  */
 
 const fs = require("fs");
 const path = require("path");
-const { createSession, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/ego-session.cjs");
+const { createSession, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/browser-session.cjs");
 
 const RANK_URL = "https://www.ciweimao.com/rank-index";
 
@@ -177,7 +177,7 @@ function main() {
     const probe = probePage(session);
     if (!probe) {
       console.error(
-        `  ✗ 浏览器无响应。请确认已安装 Ego Lite 且 ego-browser 可用（见 browser-cdp skill）。`
+        `  ✗ 浏览器无响应。请按 browser-cdp skill 检查所选 Box / Ego 后端。`
       );
       return 0;
     }

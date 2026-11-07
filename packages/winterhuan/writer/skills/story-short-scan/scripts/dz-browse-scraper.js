@@ -2,7 +2,7 @@
 /**
  * 点众阅读短篇采集脚本
  *
- * 配合 browser-cdp skill 使用。先安装 Ego Lite（ego-browser 可用），再运行本脚本。
+ * 配合 browser-cdp skill 使用。默认使用 Box；可传 --browser ego 使用 Ego Lite（见 browser-cdp skill）。
  * 采集策略：以 /book/{id} 链接为骨架，按 bookId 聚合每本书的多个 anchor
  * （封面/书名+评分/简介各一个），从中解出书名、评分、简介、作品页，再从卡片
  * 容器文本里解出 作者·标签·状态·字数 与最新章节。避免纯 innerText 行序解析把
@@ -15,12 +15,12 @@
  *   node dz-browse-scraper.js --channel all                # 全部
  *
  * 前置：
- *   Ego Lite 已安装（见 {SKILL_DIR}/browser-cdp/SKILL.md）
+ *   Box 已登录，或显式选择已安装的 Ego（见 {SKILL_DIR}/browser-cdp/SKILL.md）
  */
 
 const fs = require("fs");
 const path = require("path");
-const { createSession, sleep, safeStr, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/ego-session.cjs");
+const { createSession, sleep, safeStr, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/browser-session.cjs");
 
 const CHANNELS = [
   { id: "male", label: "男频", tab: "男频", url: "https://www.ishugui.com/browse" },
@@ -127,7 +127,7 @@ function scrapeChannel(session, channelId) {
     const probe = probePage(session);
     if (!probe) {
       console.error(
-        `  ✗ 浏览器无响应。请确认已安装 Ego Lite 且 ego-browser 可用（见 browser-cdp skill）。`
+        `  ✗ 浏览器无响应。请按 browser-cdp skill 检查所选 Box / Ego 后端。`
       );
       return null;
     }

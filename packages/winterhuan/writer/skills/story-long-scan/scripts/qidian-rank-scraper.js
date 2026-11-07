@@ -2,10 +2,10 @@
 /**
  * 起点中文网 排行榜采集脚本
  *
- * 配合 browser-cdp skill 使用。先安装 Ego Lite（ego-browser 可用），再运行本脚本。
+ * 配合 browser-cdp skill 使用。默认使用 Box；可传 --browser ego 使用 Ego Lite（见 browser-cdp skill）。
  * 采集策略：
  *   1. 默认优先读取 m.qidian.com 的 SSR pageContext JSON（不依赖浏览器，规避 PC 站风控页）。
- *   2. 移动端不可用时再回退到 Ego Lite 浏览器采集 PC 页面。
+ *   2. 移动端不可用时再使用所选浏览器采集 PC 页面。
  * 输出的榜单 Markdown 格式见 aggregate-rank.js 文件头，聚合按它解析。
  *
  * 用法：
@@ -30,13 +30,13 @@
  *
  * 前置：
  *   默认 mobile/auto 模式不需要浏览器（--type library 除外）。
- *   cdp 模式与 --type library 需要：Ego Lite 已安装（见 {SKILL_DIR}/browser-cdp/SKILL.md）
+ *   cdp 模式与 --type library 需要：Box 已登录，或显式选择已安装的 Ego（见 {SKILL_DIR}/browser-cdp/SKILL.md）
  */
 
 const fs = require("fs");
 const https = require("https");
 const path = require("path");
-const { createSession, openRunStore, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/ego-session.cjs");
+const { createSession, openRunStore, sleep, getArg, localDateStamp, runCli } = require("../../browser-cdp/scripts/browser-session.cjs");
 
 const PC_BASE_URL = "https://www.qidian.com/rank";
 const MOBILE_BASE_URL = "https://m.qidian.com";
@@ -255,14 +255,14 @@ function openWithCaptchaHandling(session, url) {
   }
 
   // 自动重试全部失败 → 交接给用户人工验证，本进程不阻塞等待
-  console.log(`  ⚠ 自动重试未通过验证码，把 Ego Lite 窗口交接给你手动完成验证`);
+  console.log(`  ⚠ 自动重试未通过验证码，把当前浏览器页面交接给你手动完成验证`);
   try {
     session.handOff();
-    console.log(`  → 请在 Ego Lite（Space ${session.spaceId}）中完成验证，看到正常榜单页后，`);
-    console.log(`    重跑本命令并追加 --space ${session.spaceId} 续接采集。`);
+    console.log(`  → 请在 ${session.backend === "box" ? "Box 控制台" : "Ego Lite"}（Space ${session.spaceId}）中完成验证，看到正常榜单页后，`);
+    console.log(`    重跑本命令并追加 --browser ${session.backend} --space ${session.spaceId} 续接采集。`);
   } catch (handoffErr) {
     console.error(`  ✗ 交接失败: ${handoffErr.message}`);
-    console.log(`  → 请手动打开 Ego Lite 完成验证后重跑。`);
+    console.log(`  → 请在所选浏览器检查现场，确认后用同一会话续跑。`);
   }
   CAPTCHA_HANDOFF = true;
   return false;
@@ -572,7 +572,7 @@ function validateLibraryArgs(rankType, mode, pagesRaw, pagesGiven) {
     return null;
   }
   if (mode === "mobile") {
-    throw new Error("--type library 不支持 --mode mobile：书库筛选页只能用 Chrome（CDP）打开");
+    throw new Error("--type library 不支持 --mode mobile：书库筛选页只能用所选浏览器打开");
   }
   return parseLibraryPages(pagesRaw, pagesGiven);
 }
@@ -1105,7 +1105,7 @@ function getSession() {
     : createSession({ spaceName: "writer qidian scan" });
   if (SESSION.spaceId != null) {
     // 续接模式：收回用户验证后的 Space，重新确认所有权和页面
-    const resumed = SESSION.takeOver();
+    const resumed = SESSION.inspect();
     console.log(`  ✓ 已续接 Space ${SESSION.spaceId}（页面 ${resumed.pages.map((p) => p.label).join(", ")}）`);
   }
   return SESSION;

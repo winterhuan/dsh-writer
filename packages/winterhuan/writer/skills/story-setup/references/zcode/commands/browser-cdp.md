@@ -1,8 +1,8 @@
 ---
-description: 浏览器操控。通过 Ego Lite 复用登录态执行浏览器自动化。
+description: 浏览器操控。默认通过 Box、可选择 Ego 复用登录态执行浏览器自动化。
 skills: browser-cdp
 ---
 
-调用 `$browser-cdp`，根据用户参数执行 Ego Lite 浏览器操作。
+调用 `$browser-cdp`，根据用户参数执行浏览器操作，默认 Box，可选择 Ego。
 
 用户参数：$ARGUMENTS

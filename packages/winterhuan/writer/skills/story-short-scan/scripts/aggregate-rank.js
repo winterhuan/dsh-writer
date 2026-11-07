@@ -27,8 +27,8 @@ const fs = require("fs");
 const path = require("path");
 
 const OWN_OUTPUT_PREFIXES = ["扫榜聚合", "选题决策", "短篇扫榜结论"];
-const SHORT_PLATFORMS = new Set(["点众", "黑岩", "知乎盐言", "盐言", "番茄短篇", "七猫短篇"]);
-const METRIC_PRIORITY = ["在读", "热度", "收藏", "赞同", "点赞", "阅读", "月票", "总推荐", "榜单值", "营养液", "积分", "评分"];
+const SHORT_PLATFORMS = new Set(["点众", "知乎盐言", "盐言", "番茄短篇", "七猫短篇"]);
+const METRIC_PRIORITY = ["在读", "热度", "收藏", "赞同", "点赞", "阅读", "总点击", "月票", "总推荐", "榜单值", "营养液", "积分", "评分"];
 // 每榜条目少的小平台，样本门槛默认按这里的本数；其余平台默认 DEFAULT_SPARSE。
 const SMALL_PLATFORM_SPARSE = { "刺猬猫": 10 };
 const DEFAULT_SPARSE = 15;
@@ -250,7 +250,7 @@ function parseEntry(entry, file) {
       inDesc = false;
     } else if ((m = t.match(/^\*\*字数[：:]\s*(.*?)\*\*$/))) {
       words = parseNumber(m[1]);
-    } else if ((m = t.match(/^\*\*(总推荐|榜单值|月票|收藏|在读|热度)[：:]\s*(.*?)\*\*$/))) {
+    } else if ((m = t.match(/^\*\*(总推荐|总点击|榜单值|月票|收藏|在读|热度)[：:]\s*(.*?)\*\*$/))) {
       const value = parseNumber(m[2]);
       if (value !== null) metrics[m[1]] = value;
     } else if (t === "**简介**") {
@@ -284,7 +284,7 @@ function parseEntry(entry, file) {
     metaGenre = rest[1] || "";
     for (const extra of rest.slice(2)) tags.push(...splitTags(extra));
   }
-  // 黑岩「男频/现言」：斜杠后才是题材。
+  // 「男频/现言」等复合字段：斜杠后才是题材。
   if (metaGenre.includes("/")) {
     const parts = metaGenre.split("/").filter(Boolean);
     metaGenre = parts[parts.length - 1] || metaGenre;
@@ -601,6 +601,7 @@ function fmtHeatMedian(g) {
 // 文件头「数据质量」是给脚本和维护者看的标记；「扫榜聚合.md」落在作者文件夹，翻成白话。
 const QUALITY_WORDS = {
   "[OK]": "正常",
+  "[部分采集]": "采集未完成，保留部分数据",
   "[标题解析异常]": "书名大多没解出来",
   "[书名解析异常]": "书名大多没解出来",
   "[无数据]": "没有数据",
@@ -634,9 +635,11 @@ function renderMarkdown(result) {
 
   for (const p of result.platforms) {
     const metricLabel = p.metric || "无热度字段，按榜单名次";
-    out.push(`## ${p.platform}（${p.bookCount} 本，热度口径：${metricLabel}）`, "");
+    const indicator = p.metric === "总点击" ? "累计点击" : "热度";
+    out.push(`## ${p.platform}（${p.bookCount} 本，${indicator}口径：${metricLabel}）`, "");
+    if (p.platform === "黑岩") out.push("官网书库包含长短篇；总点击是累计值，不能据此判断近期短篇热度。短篇研究需核对字数和完结状态。", "");
     const newCol = p.compareNew;
-    const head = ["题材", "本数", "占比", "热度中位", "字数中位", "高频标签", "样本"];
+    const head = ["题材", "本数", "占比", `${indicator}中位`, "字数中位", "高频标签", "样本"];
     if (newCol) head.splice(3, 0, "新书榜");
     out.push(`| ${head.join(" | ")} |`);
     out.push(`|${head.map(() => "---").join("|")}|`);
@@ -656,7 +659,7 @@ function renderMarkdown(result) {
     out.push("");
 
     if (p.heat) {
-      out.push(`- 热度分布（${p.metric}，${p.heat.known} 本有值）：P25 ${fmtNum(p.heat.p25)} / 中位 ${fmtNum(p.heat.p50)} / P75 ${fmtNum(p.heat.p75)} / 最高 ${fmtNum(p.heat.max)}`);
+      out.push(`- ${indicator}分布（${p.metric}，${p.heat.known} 本有值）：P25 ${fmtNum(p.heat.p25)} / 中位 ${fmtNum(p.heat.p50)} / P75 ${fmtNum(p.heat.p75)} / 最高 ${fmtNum(p.heat.max)}`);
     }
     if (p.perGenreCap) {
       out.push(`- 每题材按上限取前 ${p.perGenreCap.top} 本（${p.perGenreCap.lists.join("、")}）：本数和占比是采样结果，不代表题材大小，样本列标「采样」不算够；同方向够不够数细分梗或标签的本数，题材冷热看热度中位`);
