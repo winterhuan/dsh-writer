@@ -9,7 +9,7 @@ Thin DSH writing mode that mounts oh-story skills and a Dashboard-aligned worksp
 For DSH `0.2.2-rc.1`, enable Custom plugin market and add `https://winterhuan.github.io/dsh-creative/index.json` in Discover. Alternatively, install the prebuilt Git version with pnpm 11.7.0:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#0f75c41a27af5bfc5bea26c447f0a33c5f95e0be&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.

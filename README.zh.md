@@ -9,7 +9,7 @@
 在 DSH `0.2.2-rc.1` 中启用「自定义插件市场」，在「发现」添加 `https://winterhuan.github.io/dsh-creative/index.json`。也可用 pnpm 11.7.0 安装已构建的 Git 版本：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#0f75c41a27af5bfc5bea26c447f0a33c5f95e0be&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。

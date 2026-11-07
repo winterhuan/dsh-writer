@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#0f75c41a27af5bfc5bea26c447f0a33c5f95e0be&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
