@@ -122,8 +122,8 @@ The persona prefix is sent on every turn of a writing session. Loading a skill a
 
 The persona is stable for the life of the preset revision. With the default `bundled` mount the skill catalog comes from the package and stays stable across sessions. In `workspace` mode, copying skills into `.agents/skills` can change the skill catalog on a later turn after the first entry into 写作模式. A forced `/writer-sync-skills` (or `/writer-unsync-skills`) can change what project discovery sees the same way. Switching `skillMount` applies only after restart, so it does not rewrite an in-flight prompt.
 
-<a id="known-limitations-and-deferred-work"></a>
 ## Known Limitations and Deferred Work
+<a id="known-limitations-and-deferred-work"></a>
 
 - The sidebar mirrors Dashboard library/project discovery, editable extensions, filename search, preview, editor-shell basics, P3d masthead/health polish, and P3e breadcrumbs/line numbers/byte meta/conflict dialog/draft counts/local-workspace copy, without starting a local dashboard-server or adopting the zs theme. Delete and view-state localStorage persistence are still deferred. It does not create a book, run chapter guards, or list files through a private read API. `workspace` mode will not replace an existing skill directory until `/writer-sync-skills`. `/writer-unsync-skills` removes only packaged Writer skill names. A project copy still outranks a bundled skill if both are present after an earlier copy and discovery includes project roots. Zhuque runs only when `story-zhuque` is invoked and the named environment variable is set. Cover image generation needs `GPT_IMAGE_API_KEY` (or the configured name) only when the author asks for an image; prompt-only delivery does not. This environment did not install the bundle into a live DSH profile.
 

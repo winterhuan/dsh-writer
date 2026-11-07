@@ -122,8 +122,8 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 persona 在该预设修订的生命周期内保持稳定。默认 `bundled` 时技能目录来自包内，跨会话保持稳定。`workspace` 模式下第一次进入写作模式时把技能拷进 `.agents/skills`，可能让后面某一轮的技能目录发生变化。`/writer-sync-skills` 或 `/writer-unsync-skills` 同样会改变项目侧发现到的技能。切换 `skillMount` 只在重启后生效，不会改写正在进行的提示。
 
-<a id="known-limitations-and-deferred-work"></a>
 ## 已知限制与待办
+<a id="known-limitations-and-deferred-work"></a>
 
 - 侧栏对标 Dashboard 的拆文库/写作项目发现、可编扩展、文件名搜索、预览、编辑器壳、P3d 顶栏/健康态与 P3e 面包屑/行号/底栏字节/冲突 dialog/文稿计数/仅本机文案，但不启本机 dashboard-server，也不换 zs 主题。删文件与视图态 localStorage 持久化尚未做。它不创建书、不做章节守卫，也不自建读取接口。`workspace` 在执行 `/writer-sync-skills` 之前不会替换已有技能目录。`/writer-unsync-skills` 只删除包内同名 Writer 技能目录。若以前拷过一份且发现仍包含项目根，项目里的副本仍然优先于 bundled 技能。朱雀只在调用 `story-zhuque` 且对应环境变量已设置时运行。封面生图只在作者要求出图且已配置 `GPT_IMAGE_API_KEY`（或配置的名字）时走 API；仅提示词不需要密钥。本环境没有把 bundle 装进正在运行的 DSH profile。
 

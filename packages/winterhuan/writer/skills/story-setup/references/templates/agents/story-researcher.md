@@ -218,8 +218,8 @@ EOF
 {详细内容}
 
 ## 来源
-1. [来源标题](https://github.com/winterhuan/dsh-writer/blob/main/packages/winterhuan/writer/skills/story-setup/references/templates/agents/{URL}) — {来源级别：A/B/C}
-2. [来源标题](https://github.com/winterhuan/dsh-writer/blob/main/packages/winterhuan/writer/skills/story-setup/references/templates/agents/{URL}) — {来源级别：A/B/C}
+1. [来源标题]({URL}) — {来源级别：A/B/C}
+2. [来源标题]({URL}) — {来源级别：A/B/C}
 
 ## 置信度说明
 {哪些信息高置信、哪些存在争议、哪些需要进一步验证}
