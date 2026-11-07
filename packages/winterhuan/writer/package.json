@@ -1,6 +1,6 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Thin DSH writing mode that mounts oh-story skills and a Dashboard-aligned workspace sidebar",
   "type": "module",
   "license": "MIT",
@@ -116,6 +116,8 @@
     "test": "vitest run --root ../../.. --config vitest.config.ts packages/winterhuan/writer/tests"
   },
   "engines": {
-    "node": "^22.19.0 || >=24.0.0"
-  }
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": "0.2.2-rc.1"
+  },
+  "homepage": "https://github.com/winterhuan/dsh-writer#readme"
 }

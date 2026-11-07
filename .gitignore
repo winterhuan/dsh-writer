@@ -8,3 +8,5 @@ packages/**/__pycache__/
 .venv/
 .DS_Store
 .dsh-build/
+!packages/winterhuan/writer/lib/
+packages/**/lib/**/*.map
