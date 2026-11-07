@@ -30,7 +30,7 @@ import {
 } from './library.ts'
 import type { zh } from './locales.ts'
 import { markdownToSafeHtml } from './markdown.ts'
-import { listWorkspace, readWorkspaceText, remoteMessage } from './read.ts'
+import { readWorkspaceText, remoteMessage } from './read.ts'
 import { saveWriterFile, type WriterSave } from './save.ts'
 import {
   MAX_SEARCH_QUERY_LENGTH,
@@ -89,7 +89,7 @@ async function readDir(
   signal: AbortSignal,
 ): Promise<{ entries: readonly DirEntry[], truncated: boolean }> {
   const path = joinCwd(cwd, relative)
-  const result = await listWorkspace(remote, sessionId, path, signal)
+  const result = await remote.workspaceFiles.list(sessionId, path, signal)
   if (!result.ok) throw new Error(remoteMessage(result.error, 'load'))
   return {
     entries: result.value.entries,

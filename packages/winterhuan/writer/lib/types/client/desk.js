@@ -7,7 +7,7 @@ import { applyEol, detectEol, eolLabel, normalizeEol } from "./eol.js";
 import { WriterLineNumbers } from "./LineNumbers.js";
 import { buildLoadedChildren, defaultWriterTreeExpanded, DIRECTORY_PAGE_SIZE, rootToDirectoryNode, scanWriterWorkspace, visibleDirectoryEntries, } from "./library.js";
 import { markdownToSafeHtml } from "./markdown.js";
-import { listWorkspace, readWorkspaceText, remoteMessage } from "./read.js";
+import { readWorkspaceText, remoteMessage } from "./read.js";
 import { saveWriterFile } from "./save.js";
 import { MAX_SEARCH_QUERY_LENGTH, SEARCH_DEBOUNCE_MS, searchWriterFilenames, writerSearchTruncationMessage, } from "./search.js";
 import { WRITER_RAIL_MAX_WIDTH, WRITER_RAIL_MIN_WIDTH, clampRailWidth, fitRailWidth, readRailChrome, setRailCollapsed, setRailWidth, writeRailChrome, } from "./rail-chrome.js";
@@ -20,7 +20,7 @@ function joinCwd(cwd, relative) {
 }
 async function readDir(remote, sessionId, cwd, relative, signal) {
     const path = joinCwd(cwd, relative);
-    const result = await listWorkspace(remote, sessionId, path, signal);
+    const result = await remote.workspaceFiles.list(sessionId, path, signal);
     if (!result.ok)
         throw new Error(remoteMessage(result.error, 'load'));
     return {

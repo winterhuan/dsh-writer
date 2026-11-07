@@ -1,7 +1,7 @@
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
 import type { RemoteResult } from '@deepseek-ai/dsh-typert-protocol'
 import type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
-import type { WorkspaceDirectoryListing, WorkspaceFileBytes } from '@deepseek-ai/dsh-api-workspace-files/types'
+import type { WorkspaceFileBytes } from '@deepseek-ai/dsh-api-workspace-files/types'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
 
 /** Text the sidebar loaded, plus the version a later save must send back. */
@@ -19,23 +19,6 @@ export interface WriterText {
 export function remoteMessage(error: unknown, fallback: string): string {
   if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') return error.message
   return fallback
-}
-
-/**
- * List one workspace directory.
- * @param remote - client remote that carries `workspaceFiles`.
- * @param sessionId - session whose workspace is listed.
- * @param path - absolute or workspace-relative directory.
- * @param signal - cancellation.
- * @returns the listing, or a failed remote result.
- */
-export function listWorkspace(
-  remote: ClientRemote,
-  sessionId: SessionId,
-  path: string,
-  signal: AbortSignal,
-): Promise<RemoteResult<WorkspaceDirectoryListing>> {
-  return remote.workspaceFiles.list(sessionId, path, signal)
 }
 
 /**

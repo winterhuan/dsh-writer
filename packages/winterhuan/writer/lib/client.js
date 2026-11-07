@@ -774,17 +774,6 @@ window.__ModuleLoader__.load({
 			return fallback;
 		}
 		/**
-		* List one workspace directory.
-		* @param remote - client remote that carries `workspaceFiles`.
-		* @param sessionId - session whose workspace is listed.
-		* @param path - absolute or workspace-relative directory.
-		* @param signal - cancellation.
-		* @returns the listing, or a failed remote result.
-		*/
-		function listWorkspace(remote, sessionId, path, signal) {
-			return remote.workspaceFiles.list(sessionId, path, signal);
-		}
-		/**
 		* Read a whole text file through `workspaceFiles.readBytes`.
 		* @param remote - client remote that carries `workspaceFiles`.
 		* @param sessionId - session whose workspace owns the file.
@@ -1129,7 +1118,8 @@ window.__ModuleLoader__.load({
 			return `${root}/${relative}`;
 		}
 		async function readDir(remote, sessionId, cwd, relative, signal) {
-			const result = await listWorkspace(remote, sessionId, joinCwd(cwd, relative), signal);
+			const path = joinCwd(cwd, relative);
+			const result = await remote.workspaceFiles.list(sessionId, path, signal);
 			if (!result.ok) throw new Error(remoteMessage(result.error, "load"));
 			return {
 				entries: result.value.entries,

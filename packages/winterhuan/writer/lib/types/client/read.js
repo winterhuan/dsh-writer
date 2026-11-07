@@ -10,17 +10,6 @@ export function remoteMessage(error, fallback) {
     return fallback;
 }
 /**
- * List one workspace directory.
- * @param remote - client remote that carries `workspaceFiles`.
- * @param sessionId - session whose workspace is listed.
- * @param path - absolute or workspace-relative directory.
- * @param signal - cancellation.
- * @returns the listing, or a failed remote result.
- */
-export function listWorkspace(remote, sessionId, path, signal) {
-    return remote.workspaceFiles.list(sessionId, path, signal);
-}
-/**
  * Read a whole text file through `workspaceFiles.readBytes`.
  * @param remote - client remote that carries `workspaceFiles`.
  * @param sessionId - session whose workspace owns the file.
