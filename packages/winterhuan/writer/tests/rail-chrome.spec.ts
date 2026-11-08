@@ -35,7 +35,7 @@ it('clamps rail width into the usable range', () => {
   expect(defaultRailChrome()).toEqual({ width: WRITER_RAIL_DEFAULT_WIDTH, collapsed: false })
 })
 
-it('fits rail width into the desk so both tabs can shrink (may go below rail min)', () => {
+it('fits rail width into the desk so all tabs can shrink (may go below rail min)', () => {
   expect(fitRailWidth(220, 0)).toBe(220)
   expect(fitRailWidth(400, 500)).toBe(500 - WRITER_RAIL_HANDLE_WIDTH - WRITER_STAGE_MIN_WIDTH)
   expect(fitRailWidth(220, 500)).toBe(220)
@@ -92,8 +92,8 @@ it('plugin.css keeps the collapsed rail out of flow and search input shrinkable'
   expect(css).not.toMatch(/minmax\(0,\s*min\(42%/)
   // Do not pin rail min-width to the CSS var — that blocks host narrowing.
   expect(css).not.toMatch(/\.writer-desk\s*>\s*\.writer-rail\s*\{[\s\S]*?min-width:\s*var\(--writer-rail-width\)/)
-  // Equal Tab columns + ellipsis so 拆文库 / 写作项目 shrink together.
-  expect(css).toMatch(/\.writer-tabs\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/)
+  // Equal tab columns and ellipsis let all three views shrink together.
+  expect(css).toMatch(/\.writer-tabs\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/)
   expect(css).toContain('.writer-tab > span')
   expect(css).toMatch(/\.writer-tab\s*>\s*span\s*\{[\s\S]*?text-overflow:\s*ellipsis/)
   expect(css).toMatch(/\.writer-tree-label\s*\{[\s\S]*?flex:\s*1 1 0%/)

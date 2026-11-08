@@ -15,12 +15,14 @@ export declare const zh: {
     workspaceTabs: string;
     libraries: string;
     projects: string;
+    scans: string;
     save: string;
     reload: string;
     saved: string;
     empty: string;
     emptyLibraries: string;
     emptyProjects: string;
+    emptyScans: string;
     emptyHelp: string;
     emptyDir: string;
     loading: string;
@@ -64,6 +66,7 @@ export declare const zh: {
     countsSummary: string;
     countLibraries: string;
     countProjects: string;
+    countScans: string;
     countFiles: string;
     localOnly: string;
     filesOnDemand: string;

@@ -201,25 +201,61 @@ export async function findProjectRoots(readDir, libraryPaths, currentPath = '', 
     for (const entry of entries) {
         if (entry.type !== 'directory' || shouldIgnoreDirectory(entry.name))
             continue;
+        if (currentPath === '' && entry.name === '扫榜')
+            continue;
         await findProjectRoots(readDir, libraryPaths, joinRel(currentPath, entry.name), depth + 1, projects, scanErrors);
     }
     return projects;
 }
 /**
- * Scan workspace roots the way Dashboard `scanWorkspace` does.
+ * Discover libraries, writing projects, and dated market scans.
  * @param readDir - list one workspace-relative directory.
- * @returns libraries, projects, and soft scan errors.
+ * @returns roots by view and soft scan errors.
  */
 export async function scanWriterWorkspace(readDir) {
     const { roots: libraries, scanErrors } = await listLibraryRoots(readDir);
+    const scans = [];
+    try {
+        const entries = await readDir('');
+        if (entries.some(entry => entry.type === 'directory' && entry.name === '扫榜')) {
+            try {
+                for (const entry of await readDir('扫榜')) {
+                    if (entry.type !== 'directory' || !/^\d{8}(?:-[1-9]\d*)?$/u.test(entry.name))
+                        continue;
+                    scans.push({ path: `扫榜/${entry.name}`, name: entry.name, view: 'scans' });
+                }
+            }
+            catch (error) {
+                scanErrors.push(error instanceof Error ? error.message : 'unreadable:扫榜');
+            }
+        }
+    }
+    catch {
+        // Root read failures are reported by library and project discovery.
+    }
+    scans.sort((left, right) => compareWriterNames(right.name, left.name));
     const libraryPaths = libraries.map(root => root.path);
     const projects = await findProjectRoots(readDir, libraryPaths, '', 0, [], scanErrors);
     projects.sort((left, right) => compareWriterNames(left.path, right.path));
-    return { libraries, projects, scanErrors };
+    return { libraries, projects, scans, scanErrors };
+}
+/**
+ * Prefer a scan conclusion, then its aggregate or first readable Markdown file.
+ * @param entries - files in one scan record.
+ * @returns the preferred report basename, if available.
+ */
+export function preferredScanReport(entries) {
+    const files = visibleDirectoryEntries(entries).filter(entry => entry.type === 'file' && entry.name.endsWith('.md')
+        && (entry.size === undefined || entry.size <= MAX_EDITABLE_FILE_BYTES));
+    for (const name of ['选题决策.md', '短篇扫榜结论.md', '扫榜聚合.md']) {
+        if (files.some(entry => entry.name === name))
+            return name;
+    }
+    return files[0]?.name;
 }
 /**
  * Unloaded directory shell for a discovered root.
- * @param root - library or project root.
+ * @param root - discovered workspace root.
  * @returns directory node ready for lazy expand.
  */
 export function rootToDirectoryNode(root) {

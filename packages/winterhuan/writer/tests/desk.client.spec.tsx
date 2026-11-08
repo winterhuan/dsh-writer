@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-/** Dual-tab workspace tree: rail shell, root expand, dirty confirm, save. */
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+/** Workspace views: rail shell, root expand, dirty confirm, save. */
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
 import type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
 import { SessionId } from '@deepseek-ai/dsh-session'
@@ -48,12 +48,33 @@ const tree: Record<string, { name: string, type: 'file' | 'directory', size?: nu
   '/ws/novel/正文/第一卷': [{ name: '第002章.md', type: 'file' }],
 }
 
-function remote(): ClientRemote {
+const scanTree = {
+  ...tree,
+  '/ws': [...(tree['/ws'] ?? []), { name: '扫榜', type: 'directory' as const }],
+  '/ws/扫榜': ['20261107', '20261108', '20261108-2', '20261108-3'].map(name => ({ name, type: 'directory' as const })),
+  '/ws/扫榜/20261107': [
+    { name: '选题决策.md', type: 'file' as const },
+    { name: '扫榜聚合.md', type: 'file' as const },
+    { name: '起点月票榜.md', type: 'file' as const },
+  ],
+  '/ws/扫榜/20261108': [
+    { name: '短篇扫榜结论.md', type: 'file' as const },
+    { name: '扫榜聚合.md', type: 'file' as const },
+  ],
+  '/ws/扫榜/20261108-2': [{ name: '扫榜聚合.md', type: 'file' as const }],
+  '/ws/扫榜/20261108-3': [
+    { name: '选题决策.md', type: 'directory' as const },
+    { name: '短篇扫榜结论.md', type: 'file' as const, size: 3 * 1024 * 1024 },
+    { name: '起点月票榜.md', type: 'file' as const },
+  ],
+}
+
+function remote(entriesByPath = tree): ClientRemote {
   return {
     workspaceFiles: {
       list: async (_session: string, path: string) => ({
         ok: true as const,
-        value: { path, entries: tree[path] ?? [], truncated: false },
+        value: { path, entries: entriesByPath[path] ?? [], truncated: false },
       }),
       readBytes: async (_session: string, absolutePath: string) => ({
         ok: true as const,
@@ -64,7 +85,7 @@ function remote(): ClientRemote {
           data: new TextEncoder().encode(
             absolutePath.endsWith('世界观.md') ? '设定稿'
               : absolutePath.endsWith('meta.json') ? '{"k":1}'
-                : '旧稿',
+                : absolutePath.includes('/扫榜/') ? `# ${absolutePath.split('/').pop() ?? ''}` : '旧稿',
           ),
           eof: true,
         },
@@ -130,7 +151,7 @@ it('uses left-rail shell, collapsed roots, lazy-loads, and saves', async () => {
   const filesLabel = zh.filesLoaded.replace('{n}', '2')
   const counts = container.querySelector('.writer-counts')
   expect(counts?.getAttribute('aria-label')).toBe(
-    zh.countsSummary.replace('{libraries}', '1').replace('{projects}', '1').replace('{files}', filesLabel),
+    zh.countsSummary.replace('{libraries}', '1').replace('{projects}', '1').replace('{scans}', '0').replace('{files}', filesLabel),
   )
   expect(counts?.textContent).toContain(`1 ${zh.countLibraries}`)
   expect(counts?.textContent).toContain(`1 ${zh.countProjects}`)
@@ -193,6 +214,81 @@ it('asks before switching files when the draft is dirty', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'meta.json' }))
   expect(await screen.findByRole('textbox', { name: 'novel/meta.json' })).toBeTruthy()
   confirm.mockRestore()
+})
+
+it.each([
+  ['20261107', '选题决策.md'],
+  ['20261108', '短篇扫榜结论.md'],
+  ['20261108-2', '扫榜聚合.md'],
+  ['20261108-3', '起点月票榜.md'],
+])('opens scan %s in preview using %s', async (record, report) => {
+  const { container } = render(<WriterDesk sessionId={SessionId('scan-preview')} cwd={cwd} remote={remote(scanTree)} t={key => zh[key]} visible />)
+  fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.scans) }))
+  const records = await screen.findAllByRole('button', { name: /^202611/u })
+  expect(records.map(row => row.textContent)).toEqual(['20261108-3', '20261108-2', '20261108', '20261107'])
+  fireEvent.click(screen.getByRole('button', { name: record }))
+  expect(await screen.findByRole('heading', { level: 1, name: report })).toBeTruthy()
+  expect(container.querySelector('.writer-preview')).toBeTruthy()
+  expect(screen.getByRole('button', { name: zh.modePreview }).getAttribute('aria-pressed')).toBe('true')
+  expect(screen.getByRole('navigation', { name: zh.breadcrumbs }).textContent).toBe(`扫榜 / ${record} / ${report}`)
+})
+
+it('keeps aggregate and ranking files accessible and confirms dirty record switches', async () => {
+  render(<WriterDesk sessionId={SessionId('scan-edit')} cwd={cwd} remote={remote(scanTree)} t={key => zh[key]} visible />)
+  fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.scans) }))
+  fireEvent.click(await screen.findByRole('button', { name: '20261107' }))
+  await screen.findByRole('heading', { level: 1, name: '选题决策.md' })
+  fireEvent.click(screen.getByRole('button', { name: '扫榜聚合.md' }))
+  expect(await screen.findByRole('heading', { level: 1, name: '扫榜聚合.md' })).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: '起点月票榜.md' }))
+  expect(await screen.findByRole('heading', { level: 1, name: '起点月票榜.md' })).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: zh.modeEdit }))
+  fireEvent.change(await screen.findByRole('textbox', { name: '扫榜/20261107/起点月票榜.md' }), { target: { value: '待保存榜单' } })
+  const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+  fireEvent.click(screen.getByRole('button', { name: '20261108' }))
+  await waitFor(() => { expect(confirm).toHaveBeenCalledWith(zh.confirmDiscard) })
+  expect(screen.getByRole('textbox', { name: '扫榜/20261107/起点月票榜.md' })).toBeTruthy()
+  expect(screen.getByRole('button', { name: zh.modeEdit }).getAttribute('aria-pressed')).toBe('true')
+  confirm.mockReturnValue(true)
+  fireEvent.click(screen.getByRole('button', { name: '短篇扫榜结论.md' }))
+  expect(await screen.findByRole('textbox', { name: '扫榜/20261108/短篇扫榜结论.md' })).toBeTruthy()
+})
+
+it('searches only the active scan view', async () => {
+  render(<WriterDesk sessionId={SessionId('scan-search')} cwd={cwd} remote={remote(scanTree)} t={key => zh[key]} visible />)
+  fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.scans) }))
+  fireEvent.change(screen.getByLabelText(zh.searchLabel), { target: { value: '选题决策' } })
+  fireEvent.click(await screen.findByRole('button', { name: '选题决策.md' }))
+  expect(await screen.findByRole('textbox', { name: '扫榜/20261107/选题决策.md' })).toBeTruthy()
+  fireEvent.click(screen.getByRole('tab', { name: new RegExp(zh.projects) }))
+  expect(await screen.findByText(zh.searchEmpty.replace('{query}', '选题决策'))).toBeTruthy()
+  expect(screen.queryByRole('button', { name: '选题决策.md' })).toBeNull()
+})
+
+it('does not open a late scan report after switching tabs', async () => {
+  const scanRemote = remote(scanTree)
+  const list = scanRemote.workspaceFiles.list.bind(scanRemote.workspaceFiles)
+  let release = (): void => {}
+  const gate = new Promise<void>((resolve) => { release = resolve })
+  const started = vi.fn()
+  vi.spyOn(scanRemote.workspaceFiles, 'list').mockImplementation(async (session, path, ...rest) => {
+    if (path === '/ws/扫榜/20261107') {
+      started()
+      await gate
+    }
+    return list(session, path, ...rest)
+  })
+  render(<WriterDesk sessionId={SessionId('scan-late')} cwd={cwd} remote={scanRemote} t={key => zh[key]} visible />)
+  try {
+    fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.scans) }))
+    fireEvent.click(await screen.findByRole('button', { name: '20261107' }))
+    await waitFor(() => { expect(started).toHaveBeenCalled() })
+    fireEvent.click(screen.getByRole('tab', { name: new RegExp(zh.projects) }))
+    await act(async () => { release(); await gate })
+    expect(screen.queryByRole('navigation', { name: zh.breadcrumbs })).toBeNull()
+  } finally {
+    await act(async () => { release(); await gate })
+  }
 })
 
 it('searches filenames, previews markdown, and saves with ⌘S', async () => {
@@ -308,6 +404,8 @@ it('lets empty tabs switch view and empty copy when both sides are 0', async () 
   expect(librariesTab.getAttribute('aria-selected')).toBe('false')
   expect(await screen.findByText(zh.emptyProjects)).toBeTruthy()
   expect(screen.queryByText(zh.emptyLibraries)).toBeNull()
+  fireEvent.click(screen.getByRole('tab', { name: new RegExp(zh.scans) }))
+  expect(await screen.findByText(zh.emptyScans)).toBeTruthy()
 })
 
 

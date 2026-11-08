@@ -16,6 +16,7 @@ export declare function writerScanHealth(input: {
     readonly hardFailed: boolean;
     readonly libraryCount: number;
     readonly projectCount: number;
+    readonly scanCount: number;
     readonly scanErrors: readonly string[];
 }): WriterScanHealth;
 //# sourceMappingURL=workspace-status.d.ts.map

@@ -1,4 +1,4 @@
-/** Dual-tab workspace tree, filename search, and the prose editor shell. */
+/** Workspace views, filename search, and the prose editor shell. */
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
 import type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
@@ -21,6 +21,7 @@ import {
   buildLoadedChildren,
   defaultWriterTreeExpanded,
   DIRECTORY_PAGE_SIZE,
+  preferredScanReport,
   rootToDirectoryNode,
   scanWriterWorkspace,
   visibleDirectoryEntries,
@@ -316,6 +317,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(undefined)
   const [libraries, setLibraries] = useState<readonly WriterTreeNode[]>([])
   const [projects, setProjects] = useState<readonly WriterTreeNode[]>([])
+  const [scans, setScans] = useState<readonly WriterTreeNode[]>([])
   const [listings, setListings] = useState<Record<string, ListingCache>>({})
   const [active, setActive] = useState<string | undefined>(undefined)
   const [draft, setDraft] = useState('')
@@ -341,16 +343,18 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   const editorRef = useRef<HTMLTextAreaElement>(null)
   const saveRef = useRef<() => void>(() => {})
   const searchSeq = useRef(0)
+  const selectionSeq = useRef(0)
+  const selectFileRef = useRef<(path: string, preview?: boolean) => void>(() => {})
   const [railChrome, setRailChrome] = useState<WriterRailChrome>(() => readRailChrome())
   const [deskWidth, setDeskWidth] = useState(0)
   const deskRef = useRef<HTMLDivElement | null>(null)
   const railDrag = useRef<{ pointerId: number, startX: number, startWidth: number } | undefined>(undefined)
 
-  // Prefer libraries when any exist; otherwise projects (both empty → projects).
-  // Honor an explicit tab pick even when that side's count is 0 so empty states stay switchable.
-  const preferredView: WriterWorkspaceView = libraries.length > 0 ? 'libraries' : 'projects'
+  // Keep empty views switchable and prefer scans when they are the only content.
+  const preferredView: WriterWorkspaceView = libraries.length > 0 ? 'libraries'
+    : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans'
   const view: WriterWorkspaceView = viewPick ?? preferredView
-  const roots = view === 'libraries' ? libraries : projects
+  const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans
   const rootPathsKey = roots.map(node => node.path).join('\0')
   const dirty = draft !== saved
   const query = filter.trim()
@@ -359,9 +363,11 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   const patchDirectory = (path: string, update: (node: DirectoryNode) => DirectoryNode): void => {
     setLibraries(nodes => updateDirectoryNode(nodes, path, update))
     setProjects(nodes => updateDirectoryNode(nodes, path, update))
+    setScans(nodes => updateDirectoryNode(nodes, path, update))
   }
 
   useEffect(() => {
+    selectionSeq.current += 1
     if (!visible) return undefined
     const controller = new AbortController()
     const signal = controller.signal
@@ -374,6 +380,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         if (signal.aborted) return
         setLibraries(scan.libraries.map(rootToDirectoryNode))
         setProjects(scan.projects.map(rootToDirectoryNode))
+        setScans(scan.scans.map(rootToDirectoryNode))
         setScanErrors(scan.scanErrors)
         setScanHardFailed(false)
         setListings({})
@@ -382,6 +389,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         if (signal.aborted) return
         setLibraries([])
         setProjects([])
+        setScans([])
         setScanErrors([])
         setScanHardFailed(true)
         setNotice(error instanceof Error && error.message !== 'load' ? error.message : t('loadError'))
@@ -389,10 +397,10 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         if (!signal.aborted) setScanning(false)
       }
     })()
-    return () => { controller.abort() }
+    return () => { controller.abort(); selectionSeq.current += 1 }
   }, [visible, sessionId, cwd, remote, reloadKey, t])
 
-  const loadDirectory = (path: string, force = false): void => {
+  const loadDirectory = (path: string, force = false, onLoaded?: (entries: readonly DirEntry[]) => void): void => {
     const cached = force ? undefined : listings[path]
     if (cached !== undefined) {
       patchDirectory(path, (node) => {
@@ -400,6 +408,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         const { loadError: _drop, ...rest } = node
         return { ...rest, ...built, loaded: true, loading: false }
       })
+      onLoaded?.(cached.entries)
       return
     }
     if (force) {
@@ -420,6 +429,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         const { loadError: _drop, ...rest } = node
         return { ...rest, ...built, loaded: true, loading: false }
       })
+      onLoaded?.(page.entries)
     }).catch((error: unknown) => {
       patchDirectory(path, node => ({
         ...node,
@@ -443,8 +453,20 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   }, [visible, roots, expanded, active, listings, showSearch])
 
   const onToggle = (path: string, open: boolean): void => {
+    const sequence = ++selectionSeq.current
     setExpanded(current => ({ ...current, [path]: open }))
-    if (open) loadDirectory(path)
+    if (!open) return
+    const isScanRoot = view === 'scans' && scans.some(root => root.path === path)
+    loadDirectory(path, false, isScanRoot ? (entries) => {
+      if (sequence !== selectionSeq.current) return
+      const report = preferredScanReport(entries)
+      if (report !== undefined) selectFileRef.current(`${path}/${report}`, true)
+    } : undefined)
+  }
+
+  const pickView = (next: WriterWorkspaceView): void => {
+    selectionSeq.current += 1
+    setViewPick(next)
   }
 
   const onLoadMore = (path: string): void => {
@@ -458,14 +480,21 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
 
   const confirmDiscard = (): boolean => !dirty || window.confirm(t('confirmDiscard'))
 
-  const selectFile = (path: string): void => {
-    if (path === active) return
+  const selectFile = (path: string, preview = false): void => {
+    selectionSeq.current += 1
+    if (path === active) {
+      if (preview) setMode('preview')
+      return
+    }
     if (!confirmDiscard()) return
+    if (preview) setMode('preview')
     setActive(path)
   }
+  selectFileRef.current = selectFile
 
   const rescan = (): void => {
     if (!confirmDiscard()) return
+    selectionSeq.current += 1
     setActive(undefined)
     setDraft('')
     setSaved('')
@@ -612,14 +641,16 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
     hardFailed: scanHardFailed,
     libraryCount: libraries.length,
     projectCount: projects.length,
+    scanCount: scans.length,
     scanErrors,
   })
   const healthText = healthCopy(health, t)
-  const loadedFileCount = countLoadedFiles(libraries) + countLoadedFiles(projects)
+  const loadedFileCount = countLoadedFiles(libraries) + countLoadedFiles(projects) + countLoadedFiles(scans)
   const filesText = loadedFilesLabel(loadedFileCount, t('filesOnDemand'), t('filesLoaded'))
   const countsAria = t('countsSummary')
     .replace('{libraries}', String(libraries.length))
     .replace('{projects}', String(projects.length))
+    .replace('{scans}', String(scans.length))
     .replace('{files}', filesText)
   const connectionTitle = `${t('localWorkspace')} · ${healthText}`
   const connectionLabel = health === 'ok' || health === 'loading' ? t('localOnly') : healthText
@@ -630,6 +661,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   const tabPanelId = 'writer-workspace-panel'
   const librariesTabId = 'writer-tab-libraries'
   const projectsTabId = 'writer-tab-projects'
+  const scansTabId = 'writer-tab-scans'
   const railId = 'writer-rail'
   useEffect(() => {
     const node = deskRef.current
@@ -734,7 +766,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
           className="writer-tab"
           aria-selected={view === 'libraries'}
           aria-controls={tabPanelId}
-          onClick={() => { setViewPick('libraries') }}
+          onClick={() => { pickView('libraries') }}
         >
           <span>{t('libraries')}</span>
           {libraries.length > 0 && <b className="writer-badge">{libraries.length}</b>}
@@ -746,10 +778,22 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
           className="writer-tab"
           aria-selected={view === 'projects'}
           aria-controls={tabPanelId}
-          onClick={() => { setViewPick('projects') }}
+          onClick={() => { pickView('projects') }}
         >
           <span>{t('projects')}</span>
           {projects.length > 0 && <b className="writer-badge">{projects.length}</b>}
+        </button>
+        <button
+          type="button"
+          id={scansTabId}
+          role="tab"
+          className="writer-tab"
+          aria-selected={view === 'scans'}
+          aria-controls={tabPanelId}
+          onClick={() => { pickView('scans') }}
+        >
+          <span>{t('scans')}</span>
+          {scans.length > 0 && <b className="writer-badge">{scans.length}</b>}
         </button>
       </nav>
       <div className="writer-search-slot" role="search">
@@ -774,7 +818,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
         className="writer-tree-panel"
         id={tabPanelId}
         role="tabpanel"
-        aria-labelledby={view === 'libraries' ? librariesTabId : projectsTabId}
+        aria-labelledby={view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId}
         aria-busy={scanning || undefined}
       >
         {health === 'failed' && !showSearch && <div className="writer-scan-banner" role="alert">
@@ -798,7 +842,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
               </>
                 : null
         ) : health === 'failed' ? null
-          : roots.length === 0 ? <p className="writer-empty">{view === 'libraries' ? t('emptyLibraries') : t('emptyProjects')}</p> : <nav aria-label={t('tree')}>
+          : roots.length === 0 ? <p className="writer-empty">{view === 'libraries' ? t('emptyLibraries') : view === 'projects' ? t('emptyProjects') : t('emptyScans')}</p> : <nav aria-label={t('tree')}>
           <ul className="writer-tree">{TreeNodes({
             nodes: roots,
             depth: 0,
@@ -856,6 +900,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
             <div className="writer-counts" title={t('filesCountHint')} aria-label={countsAria}>
               <span className="writer-count"><b>{libraries.length}</b> {t('countLibraries')}</span>
               <span className="writer-count"><b>{projects.length}</b> {t('countProjects')}</span>
+              <span className="writer-count"><b>{scans.length}</b> {t('countScans')}</span>
               <span className="writer-count"><b>{filesText}</b> {t('countFiles')}</span>
             </div>
             <span

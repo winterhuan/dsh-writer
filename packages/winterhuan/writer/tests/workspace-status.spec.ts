@@ -16,6 +16,7 @@ it('derives loading, ok, partial, and failed health', () => {
     hardFailed: false,
     libraryCount: 0,
     projectCount: 0,
+    scanCount: 0,
     scanErrors: [],
   })).toBe('loading')
   expect(writerScanHealth({
@@ -23,6 +24,7 @@ it('derives loading, ok, partial, and failed health', () => {
     hardFailed: false,
     libraryCount: 1,
     projectCount: 2,
+    scanCount: 0,
     scanErrors: [],
   })).toBe('ok')
   expect(writerScanHealth({
@@ -30,6 +32,7 @@ it('derives loading, ok, partial, and failed health', () => {
     hardFailed: false,
     libraryCount: 1,
     projectCount: 0,
+    scanCount: 0,
     scanErrors: ['soft'],
   })).toBe('partial')
   expect(writerScanHealth({
@@ -37,6 +40,7 @@ it('derives loading, ok, partial, and failed health', () => {
     hardFailed: true,
     libraryCount: 0,
     projectCount: 0,
+    scanCount: 0,
     scanErrors: [],
   })).toBe('failed')
   expect(writerScanHealth({
@@ -44,6 +48,18 @@ it('derives loading, ok, partial, and failed health', () => {
     hardFailed: false,
     libraryCount: 0,
     projectCount: 0,
+    scanCount: 0,
     scanErrors: ['workspace_unreadable'],
   })).toBe('failed')
+})
+
+it('keeps scan-only workspaces usable when another directory fails', () => {
+  expect(writerScanHealth({
+    scanning: false,
+    hardFailed: false,
+    libraryCount: 0,
+    projectCount: 0,
+    scanCount: 1,
+    scanErrors: ['unreadable:other'],
+  })).toBe('partial')
 })

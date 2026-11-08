@@ -7,18 +7,19 @@ export interface DirEntry {
     readonly type: 'file' | 'directory' | 'other';
     readonly size?: number;
 }
-/** Workspace discovery view matching Dashboard tabs. */
-export type WriterWorkspaceView = 'libraries' | 'projects';
+/** Workspace discovery view shown in the writing sidebar. */
+export type WriterWorkspaceView = 'libraries' | 'projects' | 'scans';
 /** One discovered root shown under a tab. */
 export interface WriterWorkspaceRoot {
     readonly path: string;
     readonly name: string;
     readonly view: WriterWorkspaceView;
 }
-/** Result of scanning the workspace for Dashboard-aligned roots. */
+/** Result of discovering writing workspace roots. */
 export interface WriterWorkspaceScan {
     readonly libraries: readonly WriterWorkspaceRoot[];
     readonly projects: readonly WriterWorkspaceRoot[];
+    readonly scans: readonly WriterWorkspaceRoot[];
     readonly scanErrors: readonly string[];
 }
 /** Lazy real-tree node under a root. */
@@ -116,14 +117,20 @@ export declare function listLibraryRoots(readDir: (path: string) => Promise<read
  */
 export declare function findProjectRoots(readDir: (path: string) => Promise<readonly DirEntry[]>, libraryPaths: readonly string[], currentPath?: string, depth?: number, projects?: WriterWorkspaceRoot[], scanErrors?: string[]): Promise<WriterWorkspaceRoot[]>;
 /**
- * Scan workspace roots the way Dashboard `scanWorkspace` does.
+ * Discover libraries, writing projects, and dated market scans.
  * @param readDir - list one workspace-relative directory.
- * @returns libraries, projects, and soft scan errors.
+ * @returns roots by view and soft scan errors.
  */
 export declare function scanWriterWorkspace(readDir: (path: string) => Promise<readonly DirEntry[]>): Promise<WriterWorkspaceScan>;
 /**
+ * Prefer a scan conclusion, then its aggregate or first readable Markdown file.
+ * @param entries - files in one scan record.
+ * @returns the preferred report basename, if available.
+ */
+export declare function preferredScanReport(entries: readonly DirEntry[]): string | undefined;
+/**
  * Unloaded directory shell for a discovered root.
- * @param root - library or project root.
+ * @param root - discovered workspace root.
  * @returns directory node ready for lazy expand.
  */
 export declare function rootToDirectoryNode(root: WriterWorkspaceRoot): Extract<WriterTreeNode, {

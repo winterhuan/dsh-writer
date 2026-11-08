@@ -25,6 +25,7 @@ export function writerScanHealth(input: {
   readonly hardFailed: boolean
   readonly libraryCount: number
   readonly projectCount: number
+  readonly scanCount: number
   readonly scanErrors: readonly string[]
 }): WriterScanHealth {
   if (input.scanning) return 'loading'
@@ -33,6 +34,7 @@ export function writerScanHealth(input: {
     input.scanErrors.length > 0
     && input.libraryCount === 0
     && input.projectCount === 0
+    && input.scanCount === 0
   ) return 'failed'
   if (input.scanErrors.length > 0) return 'partial'
   return 'ok'

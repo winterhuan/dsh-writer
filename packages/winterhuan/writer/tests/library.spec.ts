@@ -155,3 +155,38 @@ it('sorts names naturally and builds lazy root shells', () => {
   expect(defaultWriterTreeExpanded('', undefined)).toBe(false)
   expect(defaultWriterTreeExpanded('', 'novel/正文/第001章.md')).toBe(true)
 })
+
+it('discovers dated scans newest first without eagerly reading reports', async () => {
+  const visited: string[] = []
+  const scan = await scanWriterWorkspace(async (path) => {
+    visited.push(path)
+    if (path === '') return [{ name: '扫榜', type: 'directory' }]
+    if (path === '扫榜') return [
+      { name: '20261107', type: 'directory' },
+      { name: '20261108-2', type: 'directory' },
+      { name: '20261108', type: 'directory' },
+      { name: '20261108-10', type: 'directory' },
+      { name: '20261109', type: 'file' },
+      { name: 'notes', type: 'directory' },
+      { name: '.git', type: 'directory' },
+    ]
+    throw new Error(`missing ${path}`)
+  })
+  expect(scan.scans.map(root => root.path)).toEqual([
+    '扫榜/20261108-10', '扫榜/20261108-2', '扫榜/20261108', '扫榜/20261107',
+  ])
+  expect(scan.projects).toEqual([])
+  expect(scan.scanErrors).toEqual([])
+  expect(visited.some(path => path.startsWith('扫榜/'))).toBe(false)
+})
+
+it('treats missing scan folders as empty and reports unreadable existing ones', async () => {
+  const missing = await scanWriterWorkspace(dirTree({ '': [] }))
+  expect(missing.scans).toEqual([])
+  expect(missing.scanErrors).toEqual([])
+  const unreadable = await scanWriterWorkspace(dirTree({
+    '': [{ name: '扫榜', type: 'directory' }],
+  }))
+  expect(unreadable.scans).toEqual([])
+  expect(unreadable.scanErrors).toEqual(['missing 扫榜'])
+})

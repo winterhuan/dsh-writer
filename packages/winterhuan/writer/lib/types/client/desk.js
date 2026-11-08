@@ -5,7 +5,7 @@ import { writerExtension } from "../editable.js";
 import { breadcrumbSegments, countLoadedFiles, editorByteSize, fileExtensionLabel, formatBytes, loadedFilesLabel, } from "./editor-shell.js";
 import { applyEol, detectEol, eolLabel, normalizeEol } from "./eol.js";
 import { WriterLineNumbers } from "./LineNumbers.js";
-import { buildLoadedChildren, defaultWriterTreeExpanded, DIRECTORY_PAGE_SIZE, rootToDirectoryNode, scanWriterWorkspace, visibleDirectoryEntries, } from "./library.js";
+import { buildLoadedChildren, defaultWriterTreeExpanded, DIRECTORY_PAGE_SIZE, preferredScanReport, rootToDirectoryNode, scanWriterWorkspace, visibleDirectoryEntries, } from "./library.js";
 import { markdownToSafeHtml } from "./markdown.js";
 import { readWorkspaceText, remoteMessage } from "./read.js";
 import { saveWriterFile } from "./save.js";
@@ -147,6 +147,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const [viewPick, setViewPick] = useState(undefined);
     const [libraries, setLibraries] = useState([]);
     const [projects, setProjects] = useState([]);
+    const [scans, setScans] = useState([]);
     const [listings, setListings] = useState({});
     const [active, setActive] = useState(undefined);
     const [draft, setDraft] = useState('');
@@ -172,15 +173,17 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const editorRef = useRef(null);
     const saveRef = useRef(() => { });
     const searchSeq = useRef(0);
+    const selectionSeq = useRef(0);
+    const selectFileRef = useRef(() => { });
     const [railChrome, setRailChrome] = useState(() => readRailChrome());
     const [deskWidth, setDeskWidth] = useState(0);
     const deskRef = useRef(null);
     const railDrag = useRef(undefined);
-    // Prefer libraries when any exist; otherwise projects (both empty → projects).
-    // Honor an explicit tab pick even when that side's count is 0 so empty states stay switchable.
-    const preferredView = libraries.length > 0 ? 'libraries' : 'projects';
+    // Keep empty views switchable and prefer scans when they are the only content.
+    const preferredView = libraries.length > 0 ? 'libraries'
+        : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans';
     const view = viewPick ?? preferredView;
-    const roots = view === 'libraries' ? libraries : projects;
+    const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans;
     const rootPathsKey = roots.map(node => node.path).join('\0');
     const dirty = draft !== saved;
     const query = filter.trim();
@@ -188,8 +191,10 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const patchDirectory = (path, update) => {
         setLibraries(nodes => updateDirectoryNode(nodes, path, update));
         setProjects(nodes => updateDirectoryNode(nodes, path, update));
+        setScans(nodes => updateDirectoryNode(nodes, path, update));
     };
     useEffect(() => {
+        selectionSeq.current += 1;
         if (!visible)
             return undefined;
         const controller = new AbortController();
@@ -204,6 +209,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                     return;
                 setLibraries(scan.libraries.map(rootToDirectoryNode));
                 setProjects(scan.projects.map(rootToDirectoryNode));
+                setScans(scan.scans.map(rootToDirectoryNode));
                 setScanErrors(scan.scanErrors);
                 setScanHardFailed(false);
                 setListings({});
@@ -214,6 +220,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                     return;
                 setLibraries([]);
                 setProjects([]);
+                setScans([]);
                 setScanErrors([]);
                 setScanHardFailed(true);
                 setNotice(error instanceof Error && error.message !== 'load' ? error.message : t('loadError'));
@@ -223,9 +230,9 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                     setScanning(false);
             }
         })();
-        return () => { controller.abort(); };
+        return () => { controller.abort(); selectionSeq.current += 1; };
     }, [visible, sessionId, cwd, remote, reloadKey, t]);
-    const loadDirectory = (path, force = false) => {
+    const loadDirectory = (path, force = false, onLoaded) => {
         const cached = force ? undefined : listings[path];
         if (cached !== undefined) {
             patchDirectory(path, (node) => {
@@ -233,6 +240,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                 const { loadError: _drop, ...rest } = node;
                 return { ...rest, ...built, loaded: true, loading: false };
             });
+            onLoaded?.(cached.entries);
             return;
         }
         if (force) {
@@ -253,6 +261,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                 const { loadError: _drop, ...rest } = node;
                 return { ...rest, ...built, loaded: true, loading: false };
             });
+            onLoaded?.(page.entries);
         }).catch((error) => {
             patchDirectory(path, node => ({
                 ...node,
@@ -277,9 +286,22 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional narrow deps for root lazy-open
     }, [visible, roots, expanded, active, listings, showSearch]);
     const onToggle = (path, open) => {
+        const sequence = ++selectionSeq.current;
         setExpanded(current => ({ ...current, [path]: open }));
-        if (open)
-            loadDirectory(path);
+        if (!open)
+            return;
+        const isScanRoot = view === 'scans' && scans.some(root => root.path === path);
+        loadDirectory(path, false, isScanRoot ? (entries) => {
+            if (sequence !== selectionSeq.current)
+                return;
+            const report = preferredScanReport(entries);
+            if (report !== undefined)
+                selectFileRef.current(`${path}/${report}`, true);
+        } : undefined);
+    };
+    const pickView = (next) => {
+        selectionSeq.current += 1;
+        setViewPick(next);
     };
     const onLoadMore = (path) => {
         const cached = listings[path];
@@ -291,16 +313,24 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
         });
     };
     const confirmDiscard = () => !dirty || window.confirm(t('confirmDiscard'));
-    const selectFile = (path) => {
-        if (path === active)
+    const selectFile = (path, preview = false) => {
+        selectionSeq.current += 1;
+        if (path === active) {
+            if (preview)
+                setMode('preview');
             return;
+        }
         if (!confirmDiscard())
             return;
+        if (preview)
+            setMode('preview');
         setActive(path);
     };
+    selectFileRef.current = selectFile;
     const rescan = () => {
         if (!confirmDiscard())
             return;
+        selectionSeq.current += 1;
         setActive(undefined);
         setDraft('');
         setSaved('');
@@ -448,14 +478,16 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
         hardFailed: scanHardFailed,
         libraryCount: libraries.length,
         projectCount: projects.length,
+        scanCount: scans.length,
         scanErrors,
     });
     const healthText = healthCopy(health, t);
-    const loadedFileCount = countLoadedFiles(libraries) + countLoadedFiles(projects);
+    const loadedFileCount = countLoadedFiles(libraries) + countLoadedFiles(projects) + countLoadedFiles(scans);
     const filesText = loadedFilesLabel(loadedFileCount, t('filesOnDemand'), t('filesLoaded'));
     const countsAria = t('countsSummary')
         .replace('{libraries}', String(libraries.length))
         .replace('{projects}', String(projects.length))
+        .replace('{scans}', String(scans.length))
         .replace('{files}', filesText);
     const connectionTitle = `${t('localWorkspace')} · ${healthText}`;
     const connectionLabel = health === 'ok' || health === 'loading' ? t('localOnly') : healthText;
@@ -466,6 +498,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const tabPanelId = 'writer-workspace-panel';
     const librariesTabId = 'writer-tab-libraries';
     const projectsTabId = 'writer-tab-projects';
+    const scansTabId = 'writer-tab-scans';
     const railId = 'writer-rail';
     useEffect(() => {
         const node = deskRef.current;
@@ -556,19 +589,19 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const deskStyle = {
         ['--writer-rail-width']: `${String(fittedRailWidth)}px`,
     };
-    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [_jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { setViewPick('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { setViewPick('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
+    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [_jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { pickView('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { pickView('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] }), _jsxs("button", { type: "button", id: scansTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'scans', "aria-controls": tabPanelId, onClick: () => { pickView('scans'); }, children: [_jsx("span", { children: t('scans') }), scans.length > 0 && _jsx("b", { className: "writer-badge", children: scans.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
                                 if (event.key === 'Escape') {
                                     event.preventDefault();
                                     setFilter('');
                                     setSearchResult(undefined);
                                     setSearching(false);
                                 }
-                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": view === 'libraries' ? librariesTabId : projectsTabId, "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
+                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId, "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
                                 : showSearch ? (searching ? _jsx("p", { className: "writer-empty", children: t('searching').replace('{query}', query) })
                                     : searchResult !== undefined && searchResult.results.length === 0 ? _jsxs(_Fragment, { children: [_jsx("p", { className: "writer-empty", children: (searchResult.truncated ? t('searchIncomplete') : t('searchEmpty')).replace('{query}', query) }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })
                                         : searchResult !== undefined ? _jsxs(_Fragment, { children: [_jsx(SearchHits, { hits: searchResult.results, query: query, selected: active, onSelect: selectFile, t: t }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })
                                             : null) : health === 'failed' ? null
-                                    : roots.length === 0 ? _jsx("p", { className: "writer-empty", children: view === 'libraries' ? t('emptyLibraries') : t('emptyProjects') }) : _jsx("nav", { "aria-label": t('tree'), children: _jsx("ul", { className: "writer-tree", children: TreeNodes({
+                                    : roots.length === 0 ? _jsx("p", { className: "writer-empty", children: view === 'libraries' ? t('emptyLibraries') : view === 'projects' ? t('emptyProjects') : t('emptyScans') }) : _jsx("nav", { "aria-label": t('tree'), children: _jsx("ul", { className: "writer-tree", children: TreeNodes({
                                                 nodes: roots,
                                                 depth: 0,
                                                 expanded,
@@ -582,7 +615,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                                             }) }) })] }), _jsxs("footer", { className: "writer-rail-note", children: [_jsx("span", { className: "writer-rail-dot", "data-health": health, "aria-hidden": "true" }), _jsx("p", { title: `${cwd} · ${t('localWorkspace')}`, children: health === 'ok' || health === 'loading' ? t('localWorkspace') : `${healthText} · ${t('localWorkspace')}` })] })] }), _jsx("div", { className: "writer-rail-resize", role: "separator", tabIndex: railCollapsed ? -1 : 0, "aria-orientation": "vertical", "aria-label": t('resizeRail'), "aria-valuemin": WRITER_RAIL_MIN_WIDTH, "aria-valuemax": WRITER_RAIL_MAX_WIDTH, "aria-valuenow": railWidth, "aria-controls": railId, hidden: railCollapsed || undefined, onPointerDown: onRailResizePointerDown, onPointerMove: onRailResizePointerMove, onPointerUp: endRailResize, onPointerCancel: endRailResize, onDoubleClick: (event) => {
                     event.preventDefault();
                     toggleRail();
-                }, onKeyDown: onRailResizeKeyDown }), _jsxs("section", { className: "writer-stage", children: [_jsxs("header", { className: "writer-stage-heading", children: [_jsx("button", { type: "button", className: "writer-rail-toggle", "aria-expanded": !railCollapsed, "aria-controls": railId, "aria-label": railCollapsed ? t('expandRail') : t('collapseRail'), title: railCollapsed ? t('expandRail') : t('collapseRail'), onClick: toggleRail, children: railCollapsed ? '›' : '‹' }), _jsxs("div", { className: "writer-masthead", "aria-label": t('masthead'), children: [_jsx("span", { className: "writer-workspace", title: cwd, children: shortName }), _jsxs("div", { className: "writer-masthead-actions", children: [_jsxs("div", { className: "writer-counts", title: t('filesCountHint'), "aria-label": countsAria, children: [_jsxs("span", { className: "writer-count", children: [_jsx("b", { children: libraries.length }), " ", t('countLibraries')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: projects.length }), " ", t('countProjects')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: filesText }), " ", t('countFiles')] })] }), _jsxs("span", { className: "writer-connection", "data-health": health, role: "status", title: connectionTitle, children: [_jsx("span", { className: "writer-status-dot", "aria-hidden": "true" }), _jsx("span", { className: "writer-connection-label", children: connectionLabel })] })] })] }), _jsx("button", { type: "button", className: "writer-reload", title: t('reload'), "aria-label": t('reload'), onClick: rescan, children: _jsxs("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [_jsx("path", { d: "M20 6v5h-5" }), _jsx("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })] }) })] }), _jsxs("main", { className: "writer-editor", children: [active === undefined && notice === undefined && _jsx("p", { className: "writer-empty", children: t('emptyHelp') }), notice !== undefined && _jsx("p", { role: "alert", className: "writer-alert", children: notice }), conflictOpen && _jsx(Modal, { open: true, onClose: () => { setConflictOpen(false); }, title: t('conflictTitle'), description: t('conflictBody'), closeLabel: t('conflictClose'), footer: (_jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => { setConflictOpen(false); }, children: t('conflictKeep') }), _jsx("button", { type: "button", className: "writer-conflict-reload", onClick: () => {
+                }, onKeyDown: onRailResizeKeyDown }), _jsxs("section", { className: "writer-stage", children: [_jsxs("header", { className: "writer-stage-heading", children: [_jsx("button", { type: "button", className: "writer-rail-toggle", "aria-expanded": !railCollapsed, "aria-controls": railId, "aria-label": railCollapsed ? t('expandRail') : t('collapseRail'), title: railCollapsed ? t('expandRail') : t('collapseRail'), onClick: toggleRail, children: railCollapsed ? '›' : '‹' }), _jsxs("div", { className: "writer-masthead", "aria-label": t('masthead'), children: [_jsx("span", { className: "writer-workspace", title: cwd, children: shortName }), _jsxs("div", { className: "writer-masthead-actions", children: [_jsxs("div", { className: "writer-counts", title: t('filesCountHint'), "aria-label": countsAria, children: [_jsxs("span", { className: "writer-count", children: [_jsx("b", { children: libraries.length }), " ", t('countLibraries')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: projects.length }), " ", t('countProjects')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: scans.length }), " ", t('countScans')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: filesText }), " ", t('countFiles')] })] }), _jsxs("span", { className: "writer-connection", "data-health": health, role: "status", title: connectionTitle, children: [_jsx("span", { className: "writer-status-dot", "aria-hidden": "true" }), _jsx("span", { className: "writer-connection-label", children: connectionLabel })] })] })] }), _jsx("button", { type: "button", className: "writer-reload", title: t('reload'), "aria-label": t('reload'), onClick: rescan, children: _jsxs("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [_jsx("path", { d: "M20 6v5h-5" }), _jsx("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })] }) })] }), _jsxs("main", { className: "writer-editor", children: [active === undefined && notice === undefined && _jsx("p", { className: "writer-empty", children: t('emptyHelp') }), notice !== undefined && _jsx("p", { role: "alert", className: "writer-alert", children: notice }), conflictOpen && _jsx(Modal, { open: true, onClose: () => { setConflictOpen(false); }, title: t('conflictTitle'), description: t('conflictBody'), closeLabel: t('conflictClose'), footer: (_jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => { setConflictOpen(false); }, children: t('conflictKeep') }), _jsx("button", { type: "button", className: "writer-conflict-reload", onClick: () => {
                                                 setConflictOpen(false);
                                                 setConflict(false);
                                                 setReloadKey(value => value + 1);

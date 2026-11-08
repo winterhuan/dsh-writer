@@ -1,4 +1,4 @@
-/** Dual-tab workspace tree, filename search, and the prose editor shell. */
+/** Workspace views, filename search, and the prose editor shell. */
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client';
 import type { SessionId } from '@deepseek-ai/dsh-session/types';
 import type { zh } from './locales.ts';
