@@ -21,7 +21,7 @@ export async function readWorkspaceText(remote, sessionId, path, signal) {
     const result = await remote.workspaceFiles.readBytes(sessionId, path, {}, signal);
     if (!result.ok)
         return result;
-    const text = new TextDecoder('utf-8', { fatal: false }).decode(result.value.data);
+    const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(result.value.data);
     return { ok: true, value: { text, version: result.value.version } };
 }
 //# sourceMappingURL=read.js.map

@@ -3,6 +3,7 @@
  * Skills are discovered by skill-filesystem. This entry does not register a skill provider.
  */
 import type { Context, Volatile } from '@deepseek-ai/cordis'
+import { join } from 'node:path'
 import z from '@deepseek-ai/schemastery'
 import type { Agent } from '@deepseek-ai/dsh-agent'
 import type {} from '@deepseek-ai/dsh-agent-preset-registry'
@@ -13,13 +14,15 @@ import { writerSkillMount, type SkillMount } from './mount.ts'
 import { assertTrustedWriterAuthority } from './request-trust.ts'
 import { packageSkillsDir } from './skills-dir.ts'
 import { resolveWriterSyncPreset } from './sync-gate.ts'
-import { syncWriterSkills, unsyncWriterSkills, type SyncResult, type UnsyncResult } from './sync-skills.ts'
+import { restoreWriterSkills, syncWriterSkills, unsyncWriterSkills, type SyncResult, type UnsyncResult } from './sync-skills.ts'
+import { formatWriterSkillsStatus, inspectWriterSkills } from './skills-status.ts'
 import { registerWriterRoute } from './write-route.ts'
 
 export { packageSkillsDir } from './skills-dir.ts'
 export { skillFilesystemRowDisabled, writerSkillMount } from './mount.ts'
 export { resolveWriterSyncPreset } from './sync-gate.ts'
-export { syncWriterSkills, unsyncWriterSkills, packagedSkillNames, projectRootFor } from './sync-skills.ts'
+export { restoreWriterSkills, syncWriterSkills, unsyncWriterSkills, packagedSkillNames, projectRootFor } from './sync-skills.ts'
+export { inspectWriterSkills, formatWriterSkillsStatus } from './skills-status.ts'
 export { registerWriterRoute } from './write-route.ts'
 export { classifyWriterPath, isEditableWriterPath } from './editable.ts'
 
@@ -111,16 +114,19 @@ export function apply(context: Context, config: Config = {}): void {
   const gptImageApiKeyEnv = credentialName(config.gptImageApiKeyEnv, 'GPT_IMAGE_API_KEY')
   const gptImageBaseUrl = optionalText(config.gptImageBaseUrl)
   const previousMount = process.env[MOUNT_ENV]
+  const previousStatusScript = process.env.DSH_WRITER_SKILLS_STATUS_SCRIPT
   const previousKeyEnv = process.env.WRITER_ZHUQUE_KEY_ENV
   const previousCoverKeyEnv = process.env.WRITER_COVER_KEY_ENV
   const previousCoverBaseUrl = process.env.GPT_IMAGE_BASE_URL
   process.env[MOUNT_ENV] = skillMount
+  process.env.DSH_WRITER_SKILLS_STATUS_SCRIPT = join(skillsDir, '..', 'lib', 'types', 'skills-status.js')
   process.env.WRITER_ZHUQUE_KEY_ENV = makersApiKeyEnv
   process.env.WRITER_COVER_KEY_ENV = gptImageApiKeyEnv
   // A blank setting leaves the variable alone, so a shell-exported test value keeps working.
   if (gptImageBaseUrl !== '') process.env.GPT_IMAGE_BASE_URL = gptImageBaseUrl
   context.effect(() => () => {
     restoreEnv(MOUNT_ENV, previousMount)
+    restoreEnv('DSH_WRITER_SKILLS_STATUS_SCRIPT', previousStatusScript)
     restoreEnv('WRITER_ZHUQUE_KEY_ENV', previousKeyEnv)
     restoreEnv('WRITER_COVER_KEY_ENV', previousCoverKeyEnv)
     restoreEnv('GPT_IMAGE_BASE_URL', previousCoverBaseUrl)
@@ -165,15 +171,28 @@ export function apply(context: Context, config: Config = {}): void {
     ctx.effect(() => ctx.commands.register({
       definitionId: CommandDefinitionId('@winterhuan/dsh-writer/sync-skills'),
       name: 'writer-sync-skills',
-      description: '把随包写作技能强制写入当前项目 .agents/skills（bundled 默认下也可写入，便于改副本或切 workspace）',
+      description: '备份同名项目副本，再把随包写作技能同步到 .agents/skills',
       handler: invocation => syncCommand(ctx, invocation),
     }), 'writer: sync command')
     ctx.effect(() => ctx.commands.register({
       definitionId: CommandDefinitionId('@winterhuan/dsh-writer/unsync-skills'),
       name: 'writer-unsync-skills',
-      description: '删除此前 sync 写入的 Writer 技能目录，保留项目里其它 .agents/skills',
+      description: '把 .agents/skills 中的 Writer 同名目录移到备份，保留其它技能',
       handler: invocation => unsyncCommand(ctx, invocation),
     }), 'writer: unsync command')
+    ctx.effect(() => ctx.commands.register({
+      definitionId: CommandDefinitionId('@winterhuan/dsh-writer/skills-status'),
+      name: 'writer-skills-status',
+      description: '检查 Writer 版本、当前技能来源和项目副本差异',
+      handler: invocation => statusCommand(ctx, invocation),
+    }), 'writer: status command')
+    ctx.effect(() => ctx.commands.register({
+      definitionId: CommandDefinitionId('@winterhuan/dsh-writer/restore-skills'),
+      name: 'writer-restore-skills',
+      description: '从指定备份批次恢复项目技能，同时备份现有副本',
+      input: { hint: '<备份批次名>' },
+      handler: invocation => restoreCommand(invocation),
+    }), 'writer: restore command')
   })
 }
 
@@ -185,9 +204,9 @@ async function syncCommand(context: Context, invocation: CommandInvocation): Pro
   if (cwd === undefined) return { kind: 'error', text: '这个会话没有工作区目录。' }
   const result = await host.sync(cwd, true)
   const mountNote = host.skillMount === 'bundled'
-    ? ' 当前是 bundled 挂载：会话仍读包内技能；项目副本供改稿或切到 workspace 后使用。'
+    ? ' 当前是 bundled 挂载，项目同名技能仍优先；用 /writer-skills-status 核对实际来源。'
     : ''
-  return { kind: 'success', text: `已强制同步 ${String(result.copied.length)} 个技能到 ${result.destination}。${mountNote}` }
+  return { kind: 'success', text: `已同步 ${String(result.copied.length)} 个技能到 ${result.destination}。${backupNote(result.backupPath)}${mountNote}` }
 }
 
 async function unsyncCommand(context: Context, invocation: CommandInvocation): Promise<CommandResult> {
@@ -202,6 +221,32 @@ async function unsyncCommand(context: Context, invocation: CommandInvocation): P
   }
   return {
     kind: 'success',
-    text: `已删除 ${String(result.removed.length)} 个 Writer 技能目录（${result.removed.join('、')}）。未触碰其它 .agents/skills。`,
+    text: `已移出 ${String(result.removed.length)} 个 Writer 技能目录（${result.removed.join('、')}）。${backupNote(result.backupPath)}`,
   }
+}
+
+function backupNote(path: string | undefined): string {
+  return path === undefined ? '' : ` 原副本已备份：${path}。用 /writer-restore-skills ${path.split(/[\\/]/).at(-1)} 恢复。`
+}
+
+async function statusCommand(context: Context, invocation: CommandInvocation): Promise<CommandResult> {
+  if (invocation.rawInput.trim() !== '') return { kind: 'error', text: '用法：/writer-skills-status' }
+  const host = context.get('writerHost')
+  if (host === undefined) return { kind: 'error', text: '写作插件还没有就绪。' }
+  const cwd = invocation.agent.session.header.cwd
+  if (cwd === undefined) return { kind: 'error', text: '这个会话没有工作区目录。' }
+  const skills = invocation.agent.ctx.get('skills')
+  if (skills === undefined) return { kind: 'error', text: '当前会话没有技能发现服务，请先切换到写作模式。' }
+  const catalog = await skills.list({ cwd, scope: invocation.agent, signal: invocation.signal })
+  const status = await inspectWriterSkills({ sourceDir: host.skillsDir, workspaceDir: cwd, mount: host.skillMount, catalog })
+  return { kind: 'success', text: formatWriterSkillsStatus(status) }
+}
+
+async function restoreCommand(invocation: CommandInvocation): Promise<CommandResult> {
+  const batch = invocation.rawInput.trim()
+  if (batch === '') return { kind: 'error', text: '用法：/writer-restore-skills <备份批次名>' }
+  const cwd = invocation.agent.session.header.cwd
+  if (cwd === undefined) return { kind: 'error', text: '这个会话没有工作区目录。' }
+  const result = await restoreWriterSkills({ workspaceDir: cwd, batch })
+  return { kind: 'success', text: `已恢复 ${String(result.restored.length)} 个技能到 ${result.destination}。${backupNote(result.backupPath)}` }
 }

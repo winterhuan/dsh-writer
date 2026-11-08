@@ -6,6 +6,7 @@ import { apply } from '../src/index.ts'
 
 const INJECTED = [
   'DSH_WRITER_SKILL_MOUNT',
+  'DSH_WRITER_SKILLS_STATUS_SCRIPT',
   'WRITER_ZHUQUE_KEY_ENV',
   'WRITER_COVER_KEY_ENV',
   'GPT_IMAGE_BASE_URL',

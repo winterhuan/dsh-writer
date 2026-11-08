@@ -1,5 +1,7 @@
 # story-review：full/lean 模式派子代理与综合
 
+DSH 派发先读 [DSH 子会话说明](../../story-setup/references/dsh-agents.md)：把下列任务 prompt 交给角色组装脚本，再调用实际 `subagent`；角色模板名不是注册的 preset。
+
 只有实际模式仍是 full/lean 时才读本文件。
 
 使用当前运行时的 Agent 工具并行调用（Codex 原生子代理使用 `agent_type`，Claude Code 使用 `subagent_type`，OpenCode 使用 `subagent` 工具的 `agent` 参数，Antigravity 使用 `invoke_subagent` + 同名 `TypeName`，ZCode 用 `Agent` 派发注册角色；实际字段以当前 CLI 暴露的工具为准）。每个 Agent 不继承父对话上下文，prompt 必须自包含项目路径、审查范围、文件路径、必要摘录和统一 Findings Schema。结构、角色、文字三个视角的 prompt 还要内联审查基准包摘要与 Rubric Source，使子 Agent 能直接开审；prompt 不写本 Skill 的资料路径，各 reviewer 按自己模板里的读取表加载方法资料。consistency-checker 按自己的检查项核对事实，不带内容评分基准包。所有 reviewer 只读：不改任何文件，只输出结果。
@@ -148,7 +150,8 @@
 2. 合并去重：按 `severity` 排序（S1 > S2 > S3 > S4），同级内按影响范围排序。
 3. **可选事实核查**：如果审查内容涉及需要验证的外部事实（历史年代、地理方位、职业细节等），只有在 `Effective Mode` 仍为 `full`/`lean`、当前不是子 Agent、当前运行时的 Agent 工具可用且按 Phase 0 的当前宿主来源确认 `story-researcher` 可用时（ZCode 查插件注册角色），才可额外 spawn；Antigravity 检查 `.agents/agents/story-researcher/agent.md`，用 `invoke_subagent` + `TypeName: "story-researcher"`。`solo`、missing/malformed/spawn failed 降级或子代理递归保护场景下不得 spawn，只能在报告中标记“需人工事实核查”。
 4. **分歧呈现**：如果 reviewer 间有冲突意见，明确呈现分歧让用户裁决；不要自动妥协。
-5. 按 SKILL.md「报告面向作者」输出综合审查报告：开头说明审查方式与范围，证据不足项写成作者能补的材料，执行路径只进技术备注行。
+5. 对本地正文按 [审稿记录](review-record.md) 保存综合后的实际模式和 findings，使用开审前的正文摘要。
+6. 按 SKILL.md「报告面向作者」输出综合审查报告：开头说明审查方式与范围，证据不足项写成作者能补的材料，执行路径只进技术备注行。
 
 ## 报告模板
 

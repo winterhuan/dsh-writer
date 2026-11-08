@@ -9,7 +9,8 @@ import { type SyncResult, type UnsyncResult } from './sync-skills.ts';
 export { packageSkillsDir } from './skills-dir.ts';
 export { skillFilesystemRowDisabled, writerSkillMount } from './mount.ts';
 export { resolveWriterSyncPreset } from './sync-gate.ts';
-export { syncWriterSkills, unsyncWriterSkills, packagedSkillNames, projectRootFor } from './sync-skills.ts';
+export { restoreWriterSkills, syncWriterSkills, unsyncWriterSkills, packagedSkillNames, projectRootFor } from './sync-skills.ts';
+export { inspectWriterSkills, formatWriterSkillsStatus } from './skills-status.ts';
 export { registerWriterRoute } from './write-route.ts';
 export { classifyWriterPath, isEditableWriterPath } from './editable.ts';
 /** Plugin id. The preset id is the same string, registered by the bundle patch. */

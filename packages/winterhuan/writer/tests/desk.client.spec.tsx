@@ -368,7 +368,13 @@ it('shows a conflict dialog with keep and reload actions', async () => {
   await vi.waitFor(() => {
     expect(screen.queryByRole('dialog', { name: zh.conflictTitle })).toBeNull()
   })
-  expect((screen.getByRole('button', { name: zh.save }) as HTMLButtonElement).disabled).toBe(true)
+  expect((editor as HTMLTextAreaElement).value).toBe('冲突稿')
+  fireEvent.click(screen.getByRole('button', { name: zh.conflictReview }))
+  expect(await screen.findByRole('dialog', { name: zh.conflictTitle })).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: zh.conflictReload }))
+  await waitFor(() => {
+    expect((editor as HTMLTextAreaElement).value).toBe('设定稿')
+  })
 })
 
 it('lets empty tabs switch view and empty copy when both sides are 0', async () => {

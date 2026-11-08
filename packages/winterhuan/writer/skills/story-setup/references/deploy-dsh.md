@@ -15,7 +15,7 @@ DSH 没有 Claude Code / Codex 的 hook 运行时。本文件**禁止**写入或
 
 ## 要做的事
 
-1. 确认写作技能已经可见：workspace 挂载时在项目 `.agents/skills/<name>/SKILL.md`，bundled 挂载时在插件包的 `skills/`。不要再把同一批技能复制到项目根 `skills/`，也不要启动 oh-story Dashboard。
+1. 先按 [DSH 诊断](diagnostics-dsh.md) 核对版本、实际来源和项目副本差异。确认写作技能已经可见：workspace 挂载时在项目 `.agents/skills/<name>/SKILL.md`，bundled 挂载时在插件包的 `skills/`。不要再把同一批技能复制到项目根 `skills/`，也不要启动 oh-story Dashboard。
 2. 没有 `.story-deployed` 时创建它；已有则只更新下面字段，保留作者另加的键。
    ```
    deployed_at: <date -u +"%Y-%m-%dT%H:%M:%SZ">
@@ -26,7 +26,8 @@ DSH 没有 Claude Code / Codex 的 hook 运行时。本文件**禁止**写入或
    references_dir: .agents/skills/story-setup/references/agent-references
    ```
    bundled 且工作区没有 `.agents/skills/story-setup` 时，`references_dir` 写插件包内 `skills/story-setup/references/agent-references` 的绝对路径。
-3. 不改 `CLAUDE.md`。不把 Codex / Claude Code 的管理块写进 `AGENTS.md`。
+3. 需要写作或审稿助手时使用 [DSH 子会话说明](dsh-agents.md) 的随包角色正文与原生 `subagent`，不安装其他宿主的 agent 配置。
+4. 不改 `CLAUDE.md`。不把 Codex / Claude Code 的管理块写进 `AGENTS.md`。
 
 ## 验证
 

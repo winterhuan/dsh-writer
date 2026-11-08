@@ -18,6 +18,70 @@
   font: 13px/1.5 var(--dsw-font-family);
 }
 
+.writer-book-panel {
+  border-bottom: 1px solid var(--writer-border);
+  padding: 8px 12px;
+  font: inherit;
+}
+
+.writer-book-panel summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.writer-book-content {
+  max-height: 40vh;
+  overflow: auto;
+  padding: 8px 4px;
+  overflow-wrap: anywhere;
+}
+
+.writer-book-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.writer-book-controls input {
+  width: 64px;
+}
+
+.writer-book-controls select {
+  max-width: 160px;
+}
+
+.writer-book-panel button,
+.writer-book-panel select,
+.writer-book-panel input {
+  color: var(--dsw-alias-label-primary);
+  background: var(--dsw-alias-bg-base);
+  border: 1px solid var(--writer-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font: inherit;
+}
+
+.writer-book-report {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--writer-border);
+}
+
+.writer-book-report strong {
+  font-weight: 500;
+}
+
+.writer-book-report p {
+  margin: 6px 0;
+}
+
+.writer-book-report blockquote {
+  margin: 8px 0;
+  padding-left: 8px;
+  border-left: 2px solid var(--writer-border);
+}
+
 .writer-desk > * {
   min-width: 0;
 }

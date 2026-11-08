@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -201,7 +202,7 @@ def check_blocking_quality(outline: Path, body: Path) -> dict[str, Any]:
             [node, str(punctuation), "--check", str(body)],
             text=True, encoding="utf-8", capture_output=True, check=False,
         )
-        if completed.returncode == 1:
+        if completed.returncode == 1 and completed.stdout.strip() and not completed.stderr.strip():
             blocking.append(
                 {"type": "PUNCTUATION_NOT_NORMALIZED", "message": (completed.stdout or completed.stderr).strip()}
             )
@@ -218,11 +219,14 @@ def check_blocking_quality(outline: Path, body: Path) -> dict[str, Any]:
             [node, str(outline_copy), "--outline", str(outline), str(body)],
             text=True, encoding="utf-8", capture_output=True, check=False,
         )
-        if completed.returncode != 0:
+        if completed.returncode == 1 and completed.stdout.strip() and not completed.stderr.strip():
             advisories.append(
                 {"source": "outline-copy", "type": "OUTLINE_COPY_REVIEW", "review": "semantic",
                  "message": completed.stdout.strip()}
             )
+        elif completed.returncode != 0:
+            tool_errors.append({"type": "TOOL_ERROR", "tool": outline_copy.name,
+                                "message": completed.stderr.strip() or f"exited {completed.returncode}"})
     return {
         "status": "unavailable" if tool_errors else ("fail" if blocking else "pass"),
         "blocking_findings": blocking,
@@ -276,11 +280,18 @@ def _record_over_baseline(project: Path, chapter: int, body_path: Path, actual: 
 def chapter_check(project: Path, chapter: int, author_range: Any = None) -> dict[str, Any]:
     outline, body_path, target, effective_range = _project_files(project, chapter, author_range)
     try:
-        body = body_path.read_text(encoding="utf-8")
+        body_bytes = body_path.read_bytes()
+        body = body_bytes.decode("utf-8")
+        outline_bytes = outline.read_bytes()
+        outline_text = outline_bytes.decode("utf-8")
+        target = target_from_outline(outline_text)
+        effective_range = effective_author_range(outline_text, author_range)
     except (OSError, UnicodeError) as exc:
         raise WordcountError(f"unable to read body: {exc}") from exc
     length = evaluate_wordcount(body, target, chapter=chapter, author_range=effective_range)
     quality = check_blocking_quality(outline, body_path)
+    require(body_path.read_bytes() == body_bytes and outline.read_bytes() == outline_bytes,
+            "chapter or outline changed during checking; rerun chapter check")
     status = _check_status(length, quality)
     if status == "ready":
         actions = ["commit"]
@@ -309,6 +320,11 @@ def chapter_check(project: Path, chapter: int, author_range: Any = None) -> dict
         _record_over_baseline(project, chapter, body_path, actual)
     return {
         "schema": CHAPTER_CHECK_SCHEMA,
+        "body_path": body_path.relative_to(project.resolve()).as_posix(),
+        "body_sha256": hashlib.sha256(body_bytes).hexdigest(),
+        "outline_path": outline.relative_to(project.resolve()).as_posix(),
+        "outline_sha256": hashlib.sha256(outline_bytes).hexdigest(),
+        "checked_at": datetime.now(timezone.utc).isoformat(),
         "status": status,
         "chapter": chapter,
         "length": length,
@@ -411,9 +427,12 @@ def chapter_commit(
     document["wordcount"] = build_project_wordcount_record(
         project, chapter, resolution=resolution, author_range=author_range,
     )
+    require(document["wordcount"]["body_sha256"] == checked["body_sha256"],
+            "chapter changed after checking; rerun chapter commit")
     tracking = _tracking_module()
     state = _tracking_call(tracking.apply_transaction, project, document)
     checked["tracking_committed"] = state["last_committed_chapter"] >= chapter
+    checked["state_revision"] = state["state_revision"]
     checked["next_chapter_started"] = state["last_committed_chapter"] > chapter
     checked["wordcount"] = state["wordcount_records"].get(str(chapter))
     checked["mode"] = document.get("mode")
@@ -424,6 +443,17 @@ def chapter_commit(
         checked["work_dir_removed"] = None
         checked["work_dir_cleanup_error"] = str(exc)
     return checked
+
+
+def save_check_record(project: Path, chapter: int, result: dict[str, Any]) -> str:
+    """Publish the checked file fingerprints without granting permission to commit."""
+    root = project.resolve()
+    path = root / ".story" / "checks" / f"第{chapter:03d}章.json"
+    require(path.resolve().is_relative_to(root), "chapter check record escapes the book directory")
+    relative = path.relative_to(root).as_posix()
+    result["record_path"] = relative
+    _tracking_module().atomic_write_text(path, json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    return relative
 
 
 def _build_parser() -> StructuredArgumentParser:
@@ -547,6 +577,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 accept_current_length=args.chapter_command == "accept-current-length",
                 author_range=author_range, force=getattr(args, "force", False),
             )
+        try:
+            save_check_record(args.project, args.chapter, result)
+        except (OSError, WordcountError) as exc:
+            if args.chapter_command == "check":
+                raise
+            # The tracking transaction is durable even if its display record cannot be refreshed.
+            result["record_error"] = str(exc)
     except (WordcountError, OSError, UnicodeError) as exc:
         code = exc.code if isinstance(exc, ChapterRefused) else "CHECK_FAILED"
         _json_line({"schema": CHAPTER_ERROR_SCHEMA, "status": "error", "error_code": code, "message": str(exc)})

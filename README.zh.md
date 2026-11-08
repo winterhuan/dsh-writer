@@ -4,12 +4,12 @@
 
 为 DSH 提供写作模式、oh-story 技能和写作工作区侧栏。
 
-[插件说明](packages/winterhuan/writer/README.zh.md) · [发布包](https://github.com/winterhuan/dsh-writer/releases/download/v0.1.8/winterhuan-dsh-writer-0.1.8.tgz)
+[插件说明](packages/winterhuan/writer/README.zh.md) · [发布包](https://github.com/winterhuan/dsh-writer/releases/download/v0.1.9/winterhuan-dsh-writer-0.1.9.tgz)
 
 在 DSH `0.2.2-rc.1` 中启用「自定义插件市场」，在「发现」添加 `https://winterhuan.github.io/dsh-creative/index.json`。也可用 pnpm 11.7.0 安装已构建的 Git 版本：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.9&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。

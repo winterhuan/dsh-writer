@@ -1,8 +1,14 @@
 import { createRequire } from "node:module";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import z from "@deepseek-ai/schemastery";
 import { CommandDefinitionId } from "@deepseek-ai/dsh-commands";
-import { dirname, join, resolve, sep } from "node:path";
-import { cp, mkdir, readdir, rm, stat } from "node:fs/promises";
+import { cp, lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+import { parseArgs } from "node:util";
+import { Context } from "@deepseek-ai/cordis";
+import SkillRegistry from "@deepseek-ai/dsh-skill";
+import * as SkillFileSystem from "@deepseek-ai/dsh-skill-filesystem";
 import { FsError } from "@deepseek-ai/dsh-fs";
 import { SessionId } from "@deepseek-ai/dsh-session";
 //#region lib/types/mount.js
@@ -115,9 +121,8 @@ function resolveWriterSyncPreset(input) {
 //#region lib/types/sync-skills.js
 /**
 * Nearest ancestor containing `.git`, or the workspace directory itself.
-* Matches skill-filesystem's project root so the copy lands where discovery looks.
 * @param workspaceDir - session working directory.
-* @returns the project root.
+* @returns the root used by filesystem skill discovery.
 */
 async function projectRootFor(workspaceDir) {
 	let current = resolve(workspaceDir);
@@ -125,116 +130,349 @@ async function projectRootFor(workspaceDir) {
 	for (;;) try {
 		await stat(join(current, ".git"));
 		return current;
-	} catch {
+	} catch (error) {
+		if (!isMissing(error)) throw error;
 		const parent = resolve(current, "..");
 		if (parent === current) return start;
 		current = parent;
 	}
 }
+function isMissing(error) {
+	return error instanceof Error && "code" in error && error.code === "ENOENT";
+}
+async function directory(path) {
+	try {
+		const entry = await lstat(path);
+		if (entry.isSymbolicLink() || !entry.isDirectory()) throw new Error(`Expected an ordinary directory: ${path}`);
+		return true;
+	} catch (error) {
+		if (isMissing(error)) return false;
+		throw error;
+	}
+}
+async function ordinaryTree(path) {
+	const entry = await lstat(path);
+	if (entry.isSymbolicLink()) throw new Error(`Skill operations do not follow symbolic links: ${path}`);
+	if (entry.isDirectory()) for (const child of await readdir(path)) await ordinaryTree(join(path, child));
+	else if (!entry.isFile()) throw new Error(`Unsupported skill entry: ${path}`);
+}
 /**
-* Directory names under the packaged `skills/` tree that contain `SKILL.md`.
-* Used by sync and unsync so only Writer-owned skill folders are touched.
-* @param sourceDir - packaged skills directory.
-* @returns sorted skill directory names.
+* Names of ordinary packaged directories containing `SKILL.md`.
+* @param sourceDir - packaged skills root.
+* @returns sorted skill names; symlink entries are excluded.
 */
 async function packagedSkillNames(sourceDir) {
 	const names = [];
-	const entries = await readdir(sourceDir, { withFileTypes: true });
-	for (const entry of entries) {
+	for (const entry of await readdir(sourceDir, { withFileTypes: true })) {
 		if (!entry.isDirectory()) continue;
 		try {
-			if (!(await stat(join(sourceDir, entry.name, "SKILL.md"))).isFile()) continue;
-		} catch {
-			continue;
+			if ((await lstat(join(sourceDir, entry.name, "SKILL.md"))).isFile()) names.push(entry.name);
+		} catch (error) {
+			if (!isMissing(error)) throw error;
 		}
-		names.push(entry.name);
 	}
-	names.sort();
-	return names;
+	return names.sort();
+}
+const pending = /* @__PURE__ */ new Map();
+async function serialize(root, action) {
+	const result = (pending.get(root) ?? Promise.resolve()).then(action);
+	const settled = result.then(() => {}, () => {});
+	pending.set(root, settled);
+	try {
+		return await result;
+	} finally {
+		if (pending.get(root) === settled) pending.delete(root);
+	}
+}
+function overlaps(a, b) {
+	return a === b || a.startsWith(b + sep) || b.startsWith(a + sep);
+}
+async function destinations(root) {
+	const agents = join(root, ".agents");
+	const destination = join(agents, "skills");
+	const backups = join(agents, "writer-skill-backups");
+	for (const path of [
+		agents,
+		destination,
+		backups
+	]) if (!await directory(path)) await mkdir(path);
+	return {
+		destination,
+		backups
+	};
+}
+async function replaceSkill(source, target, backup) {
+	const stage = await mkdtemp(join(resolve(target, ".."), ".writer-stage-"));
+	const stagedSkill = join(stage, "skill");
+	try {
+		await cp(source, stagedSkill, {
+			recursive: true,
+			errorOnExist: true,
+			force: false,
+			dereference: false
+		});
+		await ordinaryTree(stagedSkill);
+		if (backup !== void 0) await rename(target, backup);
+		try {
+			await rename(stagedSkill, target);
+		} catch (error) {
+			if (backup !== void 0) await rename(backup, target);
+			throw error;
+		}
+	} finally {
+		await rm(stage, {
+			recursive: true,
+			force: true
+		});
+	}
 }
 /**
-* Copy packaged skill directories into `<project>/.agents/skills/<name>`.
-* An existing destination is left in place unless `force` is set.
-* @param options - source tree, workspace directory, and whether to replace existing skills.
-* @returns which skill names were copied or skipped.
+* Copy Writer skills, preserving every replaced directory in a separate backup batch.
+* All source and destination trees are validated before the first replacement.
+* @param options - package source, session directory and explicit replacement choice.
+* @returns copied/skipped names and the backup path when previous copies existed.
 */
 async function syncWriterSkills(options) {
-	const root = await projectRootFor(options.workspaceDir);
-	const destination = join(root, ".agents", "skills");
-	await mkdir(destination, { recursive: true });
-	const copied = [];
-	const skipped = [];
-	const names = await packagedSkillNames(options.sourceDir);
-	for (const name of names) {
-		const source = join(options.sourceDir, name);
-		const target = join(destination, name);
-		if (target !== destination && !target.startsWith(destination + sep)) continue;
-		let exists = false;
+	const root = await realpath(await projectRootFor(options.workspaceDir));
+	return serialize(root, async () => {
+		const source = await realpath(options.sourceDir);
+		if (overlaps(source, join(root, ".agents", "skills"))) throw new Error("Packaged and workspace skill directories must not overlap.");
+		const { destination, backups } = await destinations(root);
+		const names = await packagedSkillNames(source);
+		const copied = [];
+		const skipped = [];
+		const existing = [];
+		for (const name of names) {
+			await ordinaryTree(join(source, name));
+			if (await directory(join(destination, name))) {
+				if (!options.force) {
+					skipped.push(name);
+					continue;
+				}
+				await ordinaryTree(join(destination, name));
+				existing.push(name);
+			}
+			copied.push(name);
+		}
+		const backupPath = existing.length > 0 ? await mkdtemp(join(backups, "sync-")) : void 0;
 		try {
-			exists = (await stat(target)).isDirectory();
-		} catch {
-			exists = false;
+			for (const name of copied) await replaceSkill(join(source, name), join(destination, name), backupPath !== void 0 && existing.includes(name) ? join(backupPath, name) : void 0);
+		} catch (error) {
+			throw new Error(`Skill sync stopped. Previous copies remain in place or in ${backupPath ?? destination}.`, { cause: error });
 		}
-		if (exists && !options.force) {
-			skipped.push(name);
-			continue;
+		return {
+			root,
+			destination,
+			copied,
+			skipped,
+			...backupPath === void 0 ? {} : { backupPath }
+		};
+	});
+}
+/**
+* Move only package-named workspace skills to a recoverable backup batch.
+* @param options - package source for the name allowlist, and session directory.
+* @returns moved/missing names and the backup location.
+*/
+async function unsyncWriterSkills(options) {
+	const root = await realpath(await projectRootFor(options.workspaceDir));
+	return serialize(root, async () => {
+		const source = await realpath(options.sourceDir);
+		if (overlaps(source, join(root, ".agents", "skills"))) throw new Error("Packaged and workspace skill directories must not overlap.");
+		const { destination, backups } = await destinations(root);
+		const removed = [];
+		const missing = [];
+		for (const name of await packagedSkillNames(source)) {
+			if (!await directory(join(destination, name))) {
+				missing.push(name);
+				continue;
+			}
+			await ordinaryTree(join(destination, name));
+			removed.push(name);
 		}
-		if (exists) await rm(target, {
-			recursive: true,
-			force: true
-		});
-		await cp(source, target, { recursive: true });
-		copied.push(name);
+		const backupPath = removed.length > 0 ? await mkdtemp(join(backups, "unsync-")) : void 0;
+		if (backupPath !== void 0) try {
+			for (const name of removed) await rename(join(destination, name), join(backupPath, name));
+		} catch (error) {
+			throw new Error(`Skill removal stopped. Previous copies remain in place or in ${backupPath}.`, { cause: error });
+		}
+		return {
+			root,
+			destination,
+			removed,
+			missing,
+			...backupPath === void 0 ? {} : { backupPath }
+		};
+	});
+}
+/**
+* Restore one backup batch; preserve both the batch and displaced current copies.
+* @param options - session directory and direct batch name inside writer-skill-backups.
+* @returns restored skill names and a backup of any displaced copies.
+*/
+async function restoreWriterSkills(options) {
+	if (options.batch === "" || basename(options.batch) !== options.batch || options.batch === "." || options.batch === "..") throw new Error("Use a direct backup batch name, such as sync-ABC123.");
+	const root = await realpath(await projectRootFor(options.workspaceDir));
+	return serialize(root, async () => {
+		const { destination, backups } = await destinations(root);
+		const batch = join(backups, options.batch);
+		if (relative(backups, batch).startsWith("..") || !await directory(batch)) throw new Error(`Backup batch not found: ${options.batch}`);
+		await ordinaryTree(batch);
+		const restored = [];
+		const existing = [];
+		for (const entry of await readdir(batch, { withFileTypes: true })) {
+			if (!entry.isDirectory()) throw new Error(`Invalid backup entry: ${entry.name}`);
+			restored.push(entry.name);
+			if (await directory(join(destination, entry.name))) {
+				await ordinaryTree(join(destination, entry.name));
+				existing.push(entry.name);
+			}
+		}
+		const backupPath = existing.length > 0 ? await mkdtemp(join(backups, "restore-")) : void 0;
+		try {
+			for (const name of restored) await replaceSkill(join(batch, name), join(destination, name), backupPath !== void 0 && existing.includes(name) ? join(backupPath, name) : void 0);
+		} catch (error) {
+			throw new Error(`Skill restore stopped. The original backup is unchanged at ${batch}; displaced copies remain in ${backupPath ?? destination}.`, { cause: error });
+		}
+		return {
+			destination,
+			restored: restored.sort(),
+			...backupPath === void 0 ? {} : { backupPath }
+		};
+	});
+}
+//#endregion
+//#region lib/types/skills-status.js
+/** Read-only skill-source diagnosis shared by the session command and setup CLI. */
+async function treeHash(path) {
+	const hash = createHash("sha256");
+	async function visit(current, name) {
+		const entry = await lstat(current);
+		if (entry.isSymbolicLink()) throw new Error(`Symbolic link in skill tree: ${current}`);
+		hash.update(name + "\0");
+		if (entry.isDirectory()) {
+			hash.update("directory\0");
+			for (const child of (await readdir(current)).sort()) {
+				if (child === "__pycache__" || child.endsWith(".pyc")) continue;
+				await visit(join(current, child), name + "/" + child);
+			}
+		} else if (entry.isFile()) hash.update("file\0").update(await readFile(current)).update("\0");
+		else throw new Error(`Unsupported skill entry: ${current}`);
 	}
-	copied.sort();
-	skipped.sort();
+	await visit(path, "");
+	return hash.digest("hex");
+}
+async function comparison(path, packageHash) {
+	try {
+		return await treeHash(path) === packageHash ? "same" : "different";
+	} catch {
+		return "unreadable";
+	}
+}
+/**
+* Compare the actual winning catalog entries and project copies with the package.
+* @param options - installed source, workspace, mount and DSH catalog for this session.
+* @returns versions, effective paths and content comparisons without copying files.
+*/
+async function inspectWriterSkills(options) {
+	const root = await projectRootFor(options.workspaceDir);
+	const manifest = JSON.parse(await readFile(join(options.sourceDir, "..", "package.json"), "utf8"));
+	const upstreamSkillsVersion = (await readFile(join(options.sourceDir, "story", "VERSION"), "utf8")).trim();
+	const skills = [];
+	for (const name of await packagedSkillNames(options.sourceDir)) {
+		const packagedPath = join(options.sourceDir, name, "SKILL.md");
+		const packageHash = await treeHash(dirname(packagedPath));
+		const effective = options.catalog.find((skill) => skill.name === name);
+		const projectCopies = [];
+		for (const parent of [".dsh", ".agents"]) {
+			const path = join(root, parent, "skills", name);
+			try {
+				await lstat(path);
+			} catch (error) {
+				if (error instanceof Error && "code" in error && error.code === "ENOENT") continue;
+				projectCopies.push({
+					path,
+					comparison: "unreadable"
+				});
+				continue;
+			}
+			projectCopies.push({
+				path,
+				comparison: await comparison(path, packageHash)
+			});
+		}
+		skills.push({
+			name,
+			packagedPath,
+			projectCopies,
+			...effective?.path === void 0 ? {} : { effectivePath: effective.path },
+			...effective === void 0 ? {} : { effectiveSource: effective.source },
+			comparison: effective === void 0 ? "missing" : effective.path === void 0 ? "unreadable" : await comparison(dirname(effective.path), packageHash)
+		});
+	}
 	return {
+		packageVersion: manifest.version,
+		upstreamSkillsVersion,
+		mount: options.mount,
 		root,
-		destination,
-		copied,
-		skipped
+		skills
 	};
 }
 /**
-* Remove packaged Writer skill directories from `<project>/.agents/skills/<name>`.
-* Only deletes names that exist under the packaged `skills/` tree; other project skills stay.
-* @param options - source tree (for the name allowlist) and workspace directory.
-* @returns which skill names were removed or already missing.
+* Render compact source diagnostics for authors; paths identify actionable overrides.
+* @param status - inspected package and catalog.
+* @returns command text with effective sources and differing copies.
 */
-async function unsyncWriterSkills(options) {
-	const root = await projectRootFor(options.workspaceDir);
-	const destination = join(root, ".agents", "skills");
-	const removed = [];
-	const missing = [];
-	const names = await packagedSkillNames(options.sourceDir);
-	for (const name of names) {
-		const target = join(destination, name);
-		if (target !== destination && !target.startsWith(destination + sep)) continue;
-		let exists = false;
-		try {
-			exists = (await stat(target)).isDirectory();
-		} catch {
-			exists = false;
-		}
-		if (!exists) {
-			missing.push(name);
-			continue;
-		}
-		await rm(target, {
-			recursive: true,
-			force: true
-		});
-		removed.push(name);
-	}
-	removed.sort();
-	missing.sort();
-	return {
-		root,
-		destination,
-		removed,
-		missing
+function formatWriterSkillsStatus(status) {
+	const labels = {
+		same: "与包一致",
+		different: "与包不同",
+		unreadable: "无法比较",
+		missing: "未发现"
 	};
+	const lines = [
+		`Writer ${status.packageVersion} · oh-story ${status.upstreamSkillsVersion} · ${status.mount}`,
+		`项目：${status.root}`,
+		...status.skills.map((skill) => `${skill.name}：${skill.effectiveSource ?? "不可用"} · ${labels[skill.comparison]} · ${skill.effectivePath ?? "无文件路径"}`)
+	];
+	const overrides = status.skills.flatMap((skill) => skill.projectCopies.filter((copy) => copy.comparison !== "same").map((copy) => `${skill.name}：${copy.path}（${labels[copy.comparison]}）`));
+	if (overrides.length > 0) lines.push("项目副本差异：", ...overrides);
+	lines.push("项目同名技能优先于 bundled。/writer-sync-skills 备份并更新 .agents/skills；.dsh/skills 中的副本需单独处理。");
+	return lines.join("\n");
 }
+async function main() {
+	const { values } = parseArgs({ options: {
+		workspace: { type: "string" },
+		mount: { type: "string" },
+		json: { type: "boolean" }
+	} });
+	if (values.workspace === void 0) throw new Error("Usage: skills-status.js --workspace <directory> [--mount bundled|workspace] [--json]");
+	const mount = values.mount ?? process.env.DSH_WRITER_SKILL_MOUNT ?? "bundled";
+	if (mount !== "bundled" && mount !== "workspace") throw new Error("mount must be bundled or workspace");
+	const sourceDir = packageSkillsDir();
+	const ctx = new Context();
+	try {
+		await ctx.plugin(SkillRegistry);
+		await ctx.plugin(SkillFileSystem, {
+			watch: false,
+			...mount === "bundled" ? { bundledSkillDir: sourceDir } : {}
+		});
+		const catalog = await ctx.skills.list({ cwd: resolve(values.workspace) });
+		const status = await inspectWriterSkills({
+			sourceDir,
+			workspaceDir: values.workspace,
+			mount,
+			catalog
+		});
+		process.stdout.write((values.json ? JSON.stringify(status, null, 2) : formatWriterSkillsStatus(status)) + "\n");
+	} finally {
+		await ctx.fiber.dispose();
+	}
+}
+if (process.argv[1] !== void 0 && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) main().catch((error) => {
+	process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+	process.exitCode = 1;
+});
 //#endregion
 //#region lib/types/editable.js
 /** Workspace-relative paths the writing sidebar may save. */
@@ -467,15 +705,18 @@ function apply(context, config = {}) {
 	const gptImageApiKeyEnv = credentialName(config.gptImageApiKeyEnv, "GPT_IMAGE_API_KEY");
 	const gptImageBaseUrl = optionalText(config.gptImageBaseUrl);
 	const previousMount = process.env[MOUNT_ENV];
+	const previousStatusScript = process.env.DSH_WRITER_SKILLS_STATUS_SCRIPT;
 	const previousKeyEnv = process.env.WRITER_ZHUQUE_KEY_ENV;
 	const previousCoverKeyEnv = process.env.WRITER_COVER_KEY_ENV;
 	const previousCoverBaseUrl = process.env.GPT_IMAGE_BASE_URL;
 	process.env[MOUNT_ENV] = skillMount;
+	process.env.DSH_WRITER_SKILLS_STATUS_SCRIPT = join(skillsDir, "..", "lib", "types", "skills-status.js");
 	process.env.WRITER_ZHUQUE_KEY_ENV = makersApiKeyEnv;
 	process.env.WRITER_COVER_KEY_ENV = gptImageApiKeyEnv;
 	if (gptImageBaseUrl !== "") process.env.GPT_IMAGE_BASE_URL = gptImageBaseUrl;
 	context.effect(() => () => {
 		restoreEnv(MOUNT_ENV, previousMount);
+		restoreEnv("DSH_WRITER_SKILLS_STATUS_SCRIPT", previousStatusScript);
 		restoreEnv("WRITER_ZHUQUE_KEY_ENV", previousKeyEnv);
 		restoreEnv("WRITER_COVER_KEY_ENV", previousCoverKeyEnv);
 		restoreEnv("GPT_IMAGE_BASE_URL", previousCoverBaseUrl);
@@ -529,15 +770,28 @@ function apply(context, config = {}) {
 		ctx.effect(() => ctx.commands.register({
 			definitionId: CommandDefinitionId("@winterhuan/dsh-writer/sync-skills"),
 			name: "writer-sync-skills",
-			description: "把随包写作技能强制写入当前项目 .agents/skills（bundled 默认下也可写入，便于改副本或切 workspace）",
+			description: "备份同名项目副本，再把随包写作技能同步到 .agents/skills",
 			handler: (invocation) => syncCommand(ctx, invocation)
 		}), "writer: sync command");
 		ctx.effect(() => ctx.commands.register({
 			definitionId: CommandDefinitionId("@winterhuan/dsh-writer/unsync-skills"),
 			name: "writer-unsync-skills",
-			description: "删除此前 sync 写入的 Writer 技能目录，保留项目里其它 .agents/skills",
+			description: "把 .agents/skills 中的 Writer 同名目录移到备份，保留其它技能",
 			handler: (invocation) => unsyncCommand(ctx, invocation)
 		}), "writer: unsync command");
+		ctx.effect(() => ctx.commands.register({
+			definitionId: CommandDefinitionId("@winterhuan/dsh-writer/skills-status"),
+			name: "writer-skills-status",
+			description: "检查 Writer 版本、当前技能来源和项目副本差异",
+			handler: (invocation) => statusCommand(ctx, invocation)
+		}), "writer: status command");
+		ctx.effect(() => ctx.commands.register({
+			definitionId: CommandDefinitionId("@winterhuan/dsh-writer/restore-skills"),
+			name: "writer-restore-skills",
+			description: "从指定备份批次恢复项目技能，同时备份现有副本",
+			input: { hint: "<备份批次名>" },
+			handler: (invocation) => restoreCommand(invocation)
+		}), "writer: restore command");
 	});
 }
 async function syncCommand(context, invocation) {
@@ -556,10 +810,10 @@ async function syncCommand(context, invocation) {
 		text: "这个会话没有工作区目录。"
 	};
 	const result = await host.sync(cwd, true);
-	const mountNote = host.skillMount === "bundled" ? " 当前是 bundled 挂载：会话仍读包内技能；项目副本供改稿或切到 workspace 后使用。" : "";
+	const mountNote = host.skillMount === "bundled" ? " 当前是 bundled 挂载，项目同名技能仍优先；用 /writer-skills-status 核对实际来源。" : "";
 	return {
 		kind: "success",
-		text: `已强制同步 ${String(result.copied.length)} 个技能到 ${result.destination}。${mountNote}`
+		text: `已同步 ${String(result.copied.length)} 个技能到 ${result.destination}。${backupNote(result.backupPath)}${mountNote}`
 	};
 }
 async function unsyncCommand(context, invocation) {
@@ -584,8 +838,66 @@ async function unsyncCommand(context, invocation) {
 	};
 	return {
 		kind: "success",
-		text: `已删除 ${String(result.removed.length)} 个 Writer 技能目录（${result.removed.join("、")}）。未触碰其它 .agents/skills。`
+		text: `已移出 ${String(result.removed.length)} 个 Writer 技能目录（${result.removed.join("、")}）。${backupNote(result.backupPath)}`
+	};
+}
+function backupNote(path) {
+	return path === void 0 ? "" : ` 原副本已备份：${path}。用 /writer-restore-skills ${path.split(/[\\/]/).at(-1)} 恢复。`;
+}
+async function statusCommand(context, invocation) {
+	if (invocation.rawInput.trim() !== "") return {
+		kind: "error",
+		text: "用法：/writer-skills-status"
+	};
+	const host = context.get("writerHost");
+	if (host === void 0) return {
+		kind: "error",
+		text: "写作插件还没有就绪。"
+	};
+	const cwd = invocation.agent.session.header.cwd;
+	if (cwd === void 0) return {
+		kind: "error",
+		text: "这个会话没有工作区目录。"
+	};
+	const skills = invocation.agent.ctx.get("skills");
+	if (skills === void 0) return {
+		kind: "error",
+		text: "当前会话没有技能发现服务，请先切换到写作模式。"
+	};
+	const catalog = await skills.list({
+		cwd,
+		scope: invocation.agent,
+		signal: invocation.signal
+	});
+	return {
+		kind: "success",
+		text: formatWriterSkillsStatus(await inspectWriterSkills({
+			sourceDir: host.skillsDir,
+			workspaceDir: cwd,
+			mount: host.skillMount,
+			catalog
+		}))
+	};
+}
+async function restoreCommand(invocation) {
+	const batch = invocation.rawInput.trim();
+	if (batch === "") return {
+		kind: "error",
+		text: "用法：/writer-restore-skills <备份批次名>"
+	};
+	const cwd = invocation.agent.session.header.cwd;
+	if (cwd === void 0) return {
+		kind: "error",
+		text: "这个会话没有工作区目录。"
+	};
+	const result = await restoreWriterSkills({
+		workspaceDir: cwd,
+		batch
+	});
+	return {
+		kind: "success",
+		text: `已恢复 ${String(result.restored.length)} 个技能到 ${result.destination}。${backupNote(result.backupPath)}`
 	};
 }
 //#endregion
-export { Config, apply, classifyWriterPath, inject, isEditableWriterPath, name, packageSkillsDir, packagedSkillNames, projectRootFor, registerWriterRoute, resolveWriterSyncPreset, skillFilesystemRowDisabled, syncWriterSkills, unsyncWriterSkills, writerSkillMount };
+export { Config, apply, classifyWriterPath, formatWriterSkillsStatus, inject, inspectWriterSkills, isEditableWriterPath, name, packageSkillsDir, packagedSkillNames, projectRootFor, registerWriterRoute, resolveWriterSyncPreset, restoreWriterSkills, skillFilesystemRowDisabled, syncWriterSkills, unsyncWriterSkills, writerSkillMount };

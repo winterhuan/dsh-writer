@@ -1,10 +1,9 @@
-import { cp, mkdir, readdir, rm, stat } from 'node:fs/promises';
-import { join, resolve, sep } from 'node:path';
+import { cp, lstat, mkdir, mkdtemp, readdir, realpath, rename, rm, stat } from 'node:fs/promises';
+import { basename, join, relative, resolve, sep } from 'node:path';
 /**
  * Nearest ancestor containing `.git`, or the workspace directory itself.
- * Matches skill-filesystem's project root so the copy lands where discovery looks.
  * @param workspaceDir - session working directory.
- * @returns the project root.
+ * @returns the root used by filesystem skill discovery.
  */
 export async function projectRootFor(workspaceDir) {
     let current = resolve(workspaceDir);
@@ -14,7 +13,9 @@ export async function projectRootFor(workspaceDir) {
             await stat(join(current, '.git'));
             return current;
         }
-        catch {
+        catch (error) {
+            if (!isMissing(error))
+                throw error;
             const parent = resolve(current, '..');
             if (parent === current)
                 return start;
@@ -22,101 +23,217 @@ export async function projectRootFor(workspaceDir) {
         }
     }
 }
+function isMissing(error) {
+    return error instanceof Error && 'code' in error && error.code === 'ENOENT';
+}
+async function directory(path) {
+    try {
+        const entry = await lstat(path);
+        if (entry.isSymbolicLink() || !entry.isDirectory())
+            throw new Error(`Expected an ordinary directory: ${path}`);
+        return true;
+    }
+    catch (error) {
+        if (isMissing(error))
+            return false;
+        throw error;
+    }
+}
+async function ordinaryTree(path) {
+    const entry = await lstat(path);
+    if (entry.isSymbolicLink())
+        throw new Error(`Skill operations do not follow symbolic links: ${path}`);
+    if (entry.isDirectory()) {
+        for (const child of await readdir(path))
+            await ordinaryTree(join(path, child));
+    }
+    else if (!entry.isFile()) {
+        throw new Error(`Unsupported skill entry: ${path}`);
+    }
+}
 /**
- * Directory names under the packaged `skills/` tree that contain `SKILL.md`.
- * Used by sync and unsync so only Writer-owned skill folders are touched.
- * @param sourceDir - packaged skills directory.
- * @returns sorted skill directory names.
+ * Names of ordinary packaged directories containing `SKILL.md`.
+ * @param sourceDir - packaged skills root.
+ * @returns sorted skill names; symlink entries are excluded.
  */
 export async function packagedSkillNames(sourceDir) {
     const names = [];
-    const entries = await readdir(sourceDir, { withFileTypes: true });
-    for (const entry of entries) {
+    for (const entry of await readdir(sourceDir, { withFileTypes: true })) {
         if (!entry.isDirectory())
             continue;
         try {
-            const skill = await stat(join(sourceDir, entry.name, 'SKILL.md'));
-            if (!skill.isFile())
-                continue;
+            if ((await lstat(join(sourceDir, entry.name, 'SKILL.md'))).isFile())
+                names.push(entry.name);
         }
-        catch {
-            continue;
+        catch (error) {
+            if (!isMissing(error))
+                throw error;
         }
-        names.push(entry.name);
     }
-    names.sort();
-    return names;
+    return names.sort();
+}
+const pending = new Map();
+async function serialize(root, action) {
+    const previous = pending.get(root) ?? Promise.resolve();
+    const result = previous.then(action);
+    const settled = result.then(() => { }, () => { });
+    pending.set(root, settled);
+    try {
+        return await result;
+    }
+    finally {
+        if (pending.get(root) === settled)
+            pending.delete(root);
+    }
+}
+function overlaps(a, b) {
+    return a === b || a.startsWith(b + sep) || b.startsWith(a + sep);
+}
+async function destinations(root) {
+    const agents = join(root, '.agents');
+    const destination = join(agents, 'skills');
+    const backups = join(agents, 'writer-skill-backups');
+    for (const path of [agents, destination, backups]) {
+        if (!await directory(path))
+            await mkdir(path);
+    }
+    return { destination, backups };
+}
+async function replaceSkill(source, target, backup) {
+    const stage = await mkdtemp(join(resolve(target, '..'), '.writer-stage-'));
+    const stagedSkill = join(stage, 'skill');
+    try {
+        await cp(source, stagedSkill, { recursive: true, errorOnExist: true, force: false, dereference: false });
+        await ordinaryTree(stagedSkill);
+        if (backup !== undefined)
+            await rename(target, backup);
+        try {
+            await rename(stagedSkill, target);
+        }
+        catch (error) {
+            if (backup !== undefined)
+                await rename(backup, target);
+            throw error;
+        }
+    }
+    finally {
+        await rm(stage, { recursive: true, force: true });
+    }
 }
 /**
- * Copy packaged skill directories into `<project>/.agents/skills/<name>`.
- * An existing destination is left in place unless `force` is set.
- * @param options - source tree, workspace directory, and whether to replace existing skills.
- * @returns which skill names were copied or skipped.
+ * Copy Writer skills, preserving every replaced directory in a separate backup batch.
+ * All source and destination trees are validated before the first replacement.
+ * @param options - package source, session directory and explicit replacement choice.
+ * @returns copied/skipped names and the backup path when previous copies existed.
  */
 export async function syncWriterSkills(options) {
-    const root = await projectRootFor(options.workspaceDir);
-    const destination = join(root, '.agents', 'skills');
-    await mkdir(destination, { recursive: true });
-    const copied = [];
-    const skipped = [];
-    const names = await packagedSkillNames(options.sourceDir);
-    for (const name of names) {
-        const source = join(options.sourceDir, name);
-        const target = join(destination, name);
-        if (target !== destination && !target.startsWith(destination + sep))
-            continue;
-        let exists = false;
+    const root = await realpath(await projectRootFor(options.workspaceDir));
+    return serialize(root, async () => {
+        const source = await realpath(options.sourceDir);
+        const destinationPath = join(root, '.agents', 'skills');
+        if (overlaps(source, destinationPath))
+            throw new Error('Packaged and workspace skill directories must not overlap.');
+        const { destination, backups } = await destinations(root);
+        const names = await packagedSkillNames(source);
+        const copied = [];
+        const skipped = [];
+        const existing = [];
+        for (const name of names) {
+            await ordinaryTree(join(source, name));
+            if (await directory(join(destination, name))) {
+                if (!options.force) {
+                    skipped.push(name);
+                    continue;
+                }
+                await ordinaryTree(join(destination, name));
+                existing.push(name);
+            }
+            copied.push(name);
+        }
+        const backupPath = existing.length > 0 ? await mkdtemp(join(backups, 'sync-')) : undefined;
         try {
-            exists = (await stat(target)).isDirectory();
+            for (const name of copied) {
+                await replaceSkill(join(source, name), join(destination, name), backupPath !== undefined && existing.includes(name) ? join(backupPath, name) : undefined);
+            }
         }
-        catch {
-            exists = false;
+        catch (error) {
+            throw new Error(`Skill sync stopped. Previous copies remain in place or in ${backupPath ?? destination}.`, { cause: error });
         }
-        if (exists && !options.force) {
-            skipped.push(name);
-            continue;
-        }
-        if (exists)
-            await rm(target, { recursive: true, force: true });
-        await cp(source, target, { recursive: true });
-        copied.push(name);
-    }
-    copied.sort();
-    skipped.sort();
-    return { root, destination, copied, skipped };
+        return { root, destination, copied, skipped, ...(backupPath === undefined ? {} : { backupPath }) };
+    });
 }
 /**
- * Remove packaged Writer skill directories from `<project>/.agents/skills/<name>`.
- * Only deletes names that exist under the packaged `skills/` tree; other project skills stay.
- * @param options - source tree (for the name allowlist) and workspace directory.
- * @returns which skill names were removed or already missing.
+ * Move only package-named workspace skills to a recoverable backup batch.
+ * @param options - package source for the name allowlist, and session directory.
+ * @returns moved/missing names and the backup location.
  */
 export async function unsyncWriterSkills(options) {
-    const root = await projectRootFor(options.workspaceDir);
-    const destination = join(root, '.agents', 'skills');
-    const removed = [];
-    const missing = [];
-    const names = await packagedSkillNames(options.sourceDir);
-    for (const name of names) {
-        const target = join(destination, name);
-        if (target !== destination && !target.startsWith(destination + sep))
-            continue;
-        let exists = false;
-        try {
-            exists = (await stat(target)).isDirectory();
+    const root = await realpath(await projectRootFor(options.workspaceDir));
+    return serialize(root, async () => {
+        const source = await realpath(options.sourceDir);
+        if (overlaps(source, join(root, '.agents', 'skills')))
+            throw new Error('Packaged and workspace skill directories must not overlap.');
+        const { destination, backups } = await destinations(root);
+        const removed = [];
+        const missing = [];
+        for (const name of await packagedSkillNames(source)) {
+            if (!await directory(join(destination, name))) {
+                missing.push(name);
+                continue;
+            }
+            await ordinaryTree(join(destination, name));
+            removed.push(name);
         }
-        catch {
-            exists = false;
+        const backupPath = removed.length > 0 ? await mkdtemp(join(backups, 'unsync-')) : undefined;
+        if (backupPath !== undefined) {
+            try {
+                for (const name of removed)
+                    await rename(join(destination, name), join(backupPath, name));
+            }
+            catch (error) {
+                throw new Error(`Skill removal stopped. Previous copies remain in place or in ${backupPath}.`, { cause: error });
+            }
         }
-        if (!exists) {
-            missing.push(name);
-            continue;
-        }
-        await rm(target, { recursive: true, force: true });
-        removed.push(name);
+        return { root, destination, removed, missing, ...(backupPath === undefined ? {} : { backupPath }) };
+    });
+}
+/**
+ * Restore one backup batch; preserve both the batch and displaced current copies.
+ * @param options - session directory and direct batch name inside writer-skill-backups.
+ * @returns restored skill names and a backup of any displaced copies.
+ */
+export async function restoreWriterSkills(options) {
+    if (options.batch === '' || basename(options.batch) !== options.batch || options.batch === '.' || options.batch === '..') {
+        throw new Error('Use a direct backup batch name, such as sync-ABC123.');
     }
-    removed.sort();
-    missing.sort();
-    return { root, destination, removed, missing };
+    const root = await realpath(await projectRootFor(options.workspaceDir));
+    return serialize(root, async () => {
+        const { destination, backups } = await destinations(root);
+        const batch = join(backups, options.batch);
+        if (relative(backups, batch).startsWith('..') || !await directory(batch))
+            throw new Error(`Backup batch not found: ${options.batch}`);
+        await ordinaryTree(batch);
+        const restored = [];
+        const existing = [];
+        for (const entry of await readdir(batch, { withFileTypes: true })) {
+            if (!entry.isDirectory())
+                throw new Error(`Invalid backup entry: ${entry.name}`);
+            restored.push(entry.name);
+            if (await directory(join(destination, entry.name))) {
+                await ordinaryTree(join(destination, entry.name));
+                existing.push(entry.name);
+            }
+        }
+        const backupPath = existing.length > 0 ? await mkdtemp(join(backups, 'restore-')) : undefined;
+        try {
+            for (const name of restored) {
+                await replaceSkill(join(batch, name), join(destination, name), backupPath !== undefined && existing.includes(name) ? join(backupPath, name) : undefined);
+            }
+        }
+        catch (error) {
+            throw new Error(`Skill restore stopped. The original backup is unchanged at ${batch}; displaced copies remain in ${backupPath ?? destination}.`, { cause: error });
+        }
+        return { destination, restored: restored.sort(), ...(backupPath === undefined ? {} : { backupPath }) };
+    });
 }
 //# sourceMappingURL=sync-skills.js.map

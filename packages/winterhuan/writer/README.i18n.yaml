@@ -9,8 +9,8 @@
   en: e11eafc303f9cd37
   zh: b7beed1748b08ea2
 /winterhuan-dsh-writer/summary:
-  en: 2b62e29c477ff90c
-  zh: 052d05a065356799
+  en: fc1bf5bab4e72b62
+  zh: 7aabbeebf5d8858b
 /winterhuan-dsh-writer/table-of-contents:
   en: d152484eb41ac6b4
   zh: 82bbd1ae631975a1
@@ -21,14 +21,20 @@
   en: e80e840371651112
   zh: b340a119e492cb17
 /winterhuan-dsh-writer/use-this-package/choose-how-skills-are-mounted:
-  en: 5c4ad9d4d90ed4ba
-  zh: 29b7efb15d440daa
+  en: 3e6c74ac0c85e98c
+  zh: a37fdb9f54d78152
 /winterhuan-dsh-writer/use-this-package/scan-analyze-and-cover-skills:
   en: edd205ddc24968b4
   zh: f78dadfeebc18992
 /winterhuan-dsh-writer/use-this-package/use-the-sidebar:
-  en: e0c9ed0d97dd3f22
-  zh: 0183094b924f62ea
+  en: 80efeb0435b9132b
+  zh: 7ee57a6205c11087
+/winterhuan-dsh-writer/use-this-package/chapter-progress-and-reviews:
+  en: b966e826e37d9144
+  zh: 9cddb8af44061ea0
+/winterhuan-dsh-writer/use-this-package/dsh-writing-roles:
+  en: 7e52ce8ddeb996ed
+  zh: ac6b7dffff2876b1
 /winterhuan-dsh-writer/understand-the-implementation:
   en: 4b65d2f7212ccec4
   zh: e607eb555a21f7e7
@@ -42,8 +48,8 @@
   en: 0d6ea6a89268a27c
   zh: d275a798a2a3261a
 /winterhuan-dsh-writer/model-experience/writing-preset/what-the-model-sees:
-  en: 4fe9a064c80a2c38
-  zh: d9bb84df28f9a65d
+  en: 7b3bee9000e91ca8
+  zh: 060535d8298d0ee3
 /winterhuan-dsh-writer/model-experience/writing-preset/token-effect:
   en: 6f006ffcbec652b4
   zh: 7df300cb7834b1c9
@@ -51,8 +57,8 @@
   en: 5fc173f711662265
   zh: 532a90f736e3bd5f
 /winterhuan-dsh-writer/known-limitations-and-deferred-work:
-  en: 46eaee9ca5bfb3fa
-  zh: 3a0b9791cc8b5868
+  en: 3a966baea4a14f0d
+  zh: 2ac4e39a78a4f170
 /winterhuan-dsh-writer/known-limitations-and-deferred-work/dev-note:
   en: d2a525302f330d92
   zh: a65c77d2e94d18e5

@@ -15,7 +15,7 @@ import {
   formatBytes,
   loadedFilesLabel,
 } from './editor-shell.ts'
-import { applyEol, detectEol, eolLabel, normalizeEol, type WriterEol } from './eol.ts'
+import { eolLabel } from './eol.ts'
 import { WriterLineNumbers } from './LineNumbers.tsx'
 import {
   buildLoadedChildren,
@@ -31,8 +31,10 @@ import {
 } from './library.ts'
 import type { zh } from './locales.ts'
 import { markdownToSafeHtml } from './markdown.ts'
-import { readWorkspaceText, remoteMessage } from './read.ts'
-import { saveWriterFile, type WriterSave } from './save.ts'
+import { remoteMessage } from './read.ts'
+import { useWriterDocument } from './use-writer-document.ts'
+import { BookPanel } from './BookPanel.tsx'
+import { RevisionDiff } from './RevisionDiff.tsx'
 import {
   MAX_SEARCH_QUERY_LENGTH,
   SEARCH_DEBOUNCE_MS,
@@ -59,7 +61,7 @@ import {
 } from './workspace-status.ts'
 
 type Copy = (key: keyof typeof zh) => string
-type EditorMode = 'edit' | 'preview'
+type EditorMode = 'edit' | 'preview' | 'diff'
 
 interface DeskProps {
   readonly sessionId: SessionId
@@ -313,22 +315,21 @@ function SearchHits({
  * @param props - session, workspace root, remote, and copy.
  * @returns the desk.
  */
-export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
+export function WriterDesk(props: DeskProps) {
+  return <WriterDeskBody key={JSON.stringify([props.sessionId, props.cwd])} {...props} />
+}
+
+function WriterDeskBody({ sessionId, cwd, remote, t, visible }: DeskProps) {
+  const writerDocument = useWriterDocument(remote, sessionId, cwd, t)
+  const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument
   const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(undefined)
   const [libraries, setLibraries] = useState<readonly WriterTreeNode[]>([])
   const [projects, setProjects] = useState<readonly WriterTreeNode[]>([])
   const [scans, setScans] = useState<readonly WriterTreeNode[]>([])
   const [listings, setListings] = useState<Record<string, ListingCache>>({})
-  const [active, setActive] = useState<string | undefined>(undefined)
-  const [draft, setDraft] = useState('')
-  const [saved, setSaved] = useState('')
-  const [version, setVersion] = useState<string | undefined>(undefined)
-  const [eol, setEol] = useState<WriterEol>('\n')
   const [notice, setNotice] = useState<string | undefined>(undefined)
-  const [conflict, setConflict] = useState(false)
   const [conflictOpen, setConflictOpen] = useState(false)
   const [showLineNumbers, setShowLineNumbers] = useState(true)
-  const [busy, setBusy] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const [scanErrors, setScanErrors] = useState<readonly string[]>([])
@@ -356,7 +357,6 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   const view: WriterWorkspaceView = viewPick ?? preferredView
   const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans
   const rootPathsKey = roots.map(node => node.path).join('\0')
-  const dirty = draft !== saved
   const query = filter.trim()
   const showSearch = query !== ''
 
@@ -488,75 +488,20 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
     }
     if (!confirmDiscard()) return
     if (preview) setMode('preview')
-    setActive(path)
+    writerDocument.open(path)
   }
   selectFileRef.current = selectFile
 
   const rescan = (): void => {
     if (!confirmDiscard()) return
     selectionSeq.current += 1
-    setActive(undefined)
-    setDraft('')
-    setSaved('')
-    setVersion(undefined)
-    setEol('\n')
+    writerDocument.close()
     setReloadKey(value => value + 1)
   }
 
-  useEffect(() => {
-    if (!visible || active === undefined) return undefined
-    const controller = new AbortController()
-    const path = joinCwd(cwd, active)
-    setConflict(false)
-    setConflictOpen(false)
-    setNotice(undefined)
-    void readWorkspaceText(remote, sessionId, path, controller.signal).then((result) => {
-      if (controller.signal.aborted) return
-      if (!result.ok) {
-        setNotice(remoteMessage(result.error, t('loadError')))
-        return
-      }
-      const detected = detectEol(result.value.text)
-      const text = normalizeEol(result.value.text)
-      setEol(detected)
-      setDraft(text)
-      setSaved(text)
-      setVersion(result.value.version)
-      setCaret(0)
-    }).catch((error: unknown) => {
-      if (!controller.signal.aborted) setNotice(error instanceof Error ? error.message : t('loadError'))
-    })
-    return () => { controller.abort() }
-  }, [visible, active, sessionId, cwd, remote, reloadKey, t])
-
-  const save = (): void => {
-    if (active === undefined || version === undefined || conflict || draft === saved || busy) return
-    const path = active
-    const baseVersion = version
-    const submitted = draft
-    const payloadContent = applyEol(submitted, eol)
-    setBusy(true)
-    void saveWriterFile(sessionId, path, payloadContent, baseVersion, new AbortController().signal).then(async (response) => {
-      const payload = await response.json() as WriterSave & { error?: string }
-      if (response.status === 412) {
-        setConflict(true)
-        setConflictOpen(true)
-        setNotice(undefined)
-        return
-      }
-      if (!response.ok) {
-        setNotice(payload.error ?? t('saveError'))
-        return
-      }
-      // Keep dirty if the author typed more while the request was in flight.
-      setSaved(submitted)
-      setVersion(payload.version)
-      setNotice(t('saved'))
-      setConflict(false)
-    }).catch(() => {
-      setNotice(t('saveError'))
-    }).finally(() => { setBusy(false) })
-  }
+  useEffect(() => { setConflictOpen(conflict) }, [conflict])
+  useEffect(() => { setCaret(0) }, [active])
+  const save = writerDocument.save
   saveRef.current = save
 
   // Debounced filename search for the active tab.
@@ -630,7 +575,8 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
   }, [visible])
 
   const dirtyState = busy ? 'saving' : dirty ? 'dirty' : 'saved'
-  const dirtyText = busy ? t('dirtySaving') : dirty ? t('dirtyPending') : t('dirtySaved')
+  const dirtyText = writerDocument.loading ? t('documentLoading') : busy ? t('dirtySaving') : dirty ? t('dirtyPending') : t('dirtySaved')
+  const documentNotice = writerDocument.notice ?? notice
   const { line, col } = cursorLineCol(draft, caret)
   const truncationText = searchResult === undefined
     ? ''
@@ -927,9 +873,16 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
           </svg>
         </button>
       </header>
+      {view === 'projects' && <BookPanel
+        sessionId={sessionId} cwd={cwd} remote={remote} projects={projects}
+        active={active} draft={draft} dirty={dirty} version={version} visible={visible}
+        onOpen={selectFile} t={t}
+      />}
       <main className="writer-editor">
-        {active === undefined && notice === undefined && <p className="writer-empty">{t('emptyHelp')}</p>}
-        {notice !== undefined && <p role="alert" className="writer-alert">{notice}</p>}
+        {active === undefined && documentNotice === undefined && <p className="writer-empty">{t('emptyHelp')}</p>}
+        {writerDocument.storageError !== undefined && <p role="alert" className="writer-alert">{t(writerDocument.storageError === 'changed' ? 'draftStorageConflict' : 'draftStorageError')}</p>}
+        {documentNotice !== undefined && <p role="alert" className="writer-alert">{documentNotice}</p>}
+        {active !== undefined && !writerDocument.ready && !writerDocument.loading && <button type="button" onClick={() => { writerDocument.reload() }}>{t('retryDocument')}</button>}
         {conflictOpen && <Modal
           open
           onClose={() => { setConflictOpen(false) }}
@@ -944,8 +897,7 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
                 className="writer-conflict-reload"
                 onClick={() => {
                   setConflictOpen(false)
-                  setConflict(false)
-                  setReloadKey(value => value + 1)
+                  writerDocument.reload(true)
                 }}
               >{t('conflictReload')}</button>
             </>
@@ -977,8 +929,11 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
               <div className="writer-mode-switch" role="group" aria-label={t('editor')}>
                 <button type="button" aria-pressed={mode === 'edit'} onClick={() => { setMode('edit') }}>{t('modeEdit')}</button>
                 <button type="button" aria-pressed={mode === 'preview'} onClick={() => { setMode('preview') }}>{t('modePreview')}</button>
+                <button type="button" aria-pressed={mode === 'diff'} onClick={() => { setMode('diff') }}>{t('modeDiff')}</button>
               </div>
-              <button type="button" disabled={busy || conflict || version === undefined || draft === saved} onClick={save}>{t('save')}</button>
+              {conflict
+                ? <button type="button" onClick={() => { setConflictOpen(true) }}>{t('conflictReview')}</button>
+                : <button type="button" disabled={!writerDocument.ready || busy || version === undefined || draft === saved} onClick={save}>{t('save')}</button>}
             </div>
           </header>
           {mode === 'edit' ? (
@@ -993,8 +948,10 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
                 ref={editorRef}
                 aria-label={active}
                 value={draft}
+                readOnly={!writerDocument.ready}
+                aria-busy={writerDocument.loading}
                 onChange={(event) => {
-                  setDraft(event.target.value)
+                  writerDocument.edit(event.target.value)
                   setCaret(event.target.selectionStart)
                   setNotice(undefined)
                 }}
@@ -1003,6 +960,8 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps) {
                 onClick={event => { setCaret(event.currentTarget.selectionStart) }}
               />
             </div>
+          ) : mode === 'diff' ? (
+            <div className="writer-preview"><RevisionDiff path={active} before={saved} after={draft} t={t} /></div>
           ) : (
             <article
               className="writer-preview"

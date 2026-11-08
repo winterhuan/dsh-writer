@@ -1,7 +1,7 @@
 ---
 name: story-setup
 version: 1.3.6
-description: "网文写作工具集基础设施部署与检查。为 Claude Code / OpenCode / Codex / Google Antigravity / ZCode / OpenClaw / Reasonix 提供内置适配；Web AI / 通用 Agent 可走 skills + AGENTS.md 文件模式。触发方式：/story-setup、$story-setup、「准备写书」「帮我搭一下环境」「配置写作项目」「检查写作环境」。"
+description: "网文写作工具集基础设施部署与检查。为 DSH / Claude Code / OpenCode / Codex / Google Antigravity / ZCode / OpenClaw / Reasonix 提供内置适配；Web AI / 通用 Agent 可走 skills + AGENTS.md 文件模式。触发方式：/story-setup、$story-setup、「准备写书」「帮我搭一下环境」「配置写作项目」「检查写作环境」。"
 metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudecode"}}
 ---
 # story-setup：网文写作工具集基础设施部署
@@ -13,6 +13,8 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 作者第一次部署的顺序：判断当前宿主 → 确认项目根 → 按宿主部署 → 验收 → 告诉作者下一步。本文件写公共流程；各宿主的部署清单、算法、校验和报告提示见 Phase 2 对应文件，**只读本次目标宿主的那一份**。
 
 ## 选择模式
+
+**先识别 DSH**：当前宿主是 DeepSeek Harness 时，`check` 只读 [DSH 诊断](references/diagnostics-dsh.md)；安装、修复或部署只读 [DSH 部署](references/deploy-dsh.md) 并完成其验证，然后结束。不要进入下方其他宿主的版本、目录完整性或重复部署检查。已有其他宿主配置不改变本次目标。
 
 - 参数为 `check`，或用户只要求检查部署、诊断环境、排查 agent 不可用时：完整读取 [references/diagnostics.md](references/diagnostics.md)，按其中流程仅检查并报告；不进入下面的部署流程。
 - 用户要求安装、更新或修复时：执行下面的部署流程。检查后已明确授权的修复沿用本文件与宿主部署文件的部署与合并规则。

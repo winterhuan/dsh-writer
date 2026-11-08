@@ -5,6 +5,8 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story：网文工具箱路由
 
+**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按实际 `subagent` schema 加载随包角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。 在 DSH 上「工作台」指内置写作侧栏；检查或更新 Writer 使用 DSH 插件页及 `/writer-skills-status`，不启动本页后面的独立 Dashboard，不运行其他宿主的 oh-story 更新命令。
+
 识别用户的写作需求，并路由到对应 skill。
 
 ## 路由表
@@ -38,7 +40,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 ### 裸调用与新手
 
-只说 `/story`、看不出意图时，不贴路由表，给四个白话选项：「开一本长篇或接着写」→ `/story-long-write`；「写一篇短篇」→ `/story-short-write`；「把一章改得不那么 AI」→ `/story-deslop`；「更多（拆书、扫榜、导入旧稿、审稿、封面）」→ 再列进阶项。还没部署过（项目根没有 `.story-deployed`）时先建议 `/story-setup`，并说明部署完要新开一个会话再开始，写作助手才会生效。
+只说 `/story`、看不出意图时，不贴路由表，给四个白话选项：「开一本长篇或接着写」→ `/story-long-write`；「写一篇短篇」→ `/story-short-write`；「把一章改得不那么 AI」→ `/story-deslop`；「更多（拆书、扫榜、导入旧稿、审稿、封面）」→ 再列进阶项。DSH 中技能已挂载时可直接开始；仅需检查来源或助手能力时用 `/story-setup check`。其他宿主还没部署过（项目根没有 `.story-deployed`）时先建议 `/story-setup`，并说明部署完要新开一个会话再开始，写作助手才会生效。
 
 作者明确要填平台建书资料（书名、简介、标签）时走 `/story-publish`，只说“开书”照常进长篇写作。ClawHub 单独安装的 `story` 不带 story-publish，找不到它时直接告诉作者，请其安装完整技能包，不凭记忆给平台标签。
 
@@ -122,7 +124,9 @@ project_dir：{书目录的绝对路径；没有书目录时用项目根}
 
 ## Dashboard 工作台
 
-用户执行 `/story dashboard`，或明确要求打开工作台、查看项目文件时，启动本 skill 的本地 Dashboard：
+DSH 中请打开写作模式的右侧栏「写作」，不启动另一个服务。以下启动步骤仅供其他宿主使用。
+
+其他宿主执行 `/story dashboard`，或明确要求打开工作台、查看项目文件时，启动本 skill 的本地 Dashboard：
 
 1. 把**当前工作目录**作为默认工作区；用户明确给出目录时改用该目录。目录必须存在。
 2. 从当前已加载的 `story` skill 目录定位 `scripts/dashboard-server.mjs`，不要硬编码仓库路径、
@@ -149,7 +153,9 @@ project_dir：{书目录的绝对路径；没有书目录时用项目根}
 
 ## 版本更新检查
 
-用户问“有没有新版本”“检查更新”“升级”时执行。**先报告版本，是否安装由用户决定。**
+DSH 中先运行 `/writer-skills-status`，区分 Writer 包版本、oh-story 来源版本和项目副本；通过 DSH 插件页检查与更新 `@winterhuan/dsh-writer`。更新包后重启；需要同步项目副本时执行 `/writer-sync-skills`，旧副本会备份。不要用下面的 Claude、ZCode 或 npx 命令更新 DSH 安装。
+
+以下步骤仅供其他宿主使用。用户问“有没有新版本”“检查更新”“升级”时执行。**先报告版本，是否安装由用户决定。**
 
 1. **当前版本**：读本 skill 同目录的 `VERSION` 文件；缺失则视为未知。本 skill 在写作项目里（如项目下的 `skills/`、`.agents/skills/`、`.zcode/skills/`）时，读到的是项目副本的版本。
 2. **最新版本**：优先 `gh release view --json tagName,name,url -R zenstory-ai/oh-story-claudecode` 取 `tagName`；无 gh 用 `curl -fsS --max-time 5 https://api.github.com/repos/zenstory-ai/oh-story-claudecode/releases/latest` 取 `.tag_name`（jq 或 grep）。查不到 → 告知"暂时拉不到最新版本，可手动看 [Releases](https://github.com/zenstory-ai/oh-story-claudecode/releases)"，不报错。

@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import { FileTypeIcon, classifyFileType, IconFolderCloseRegular, IconFolderOpenRegular, Modal, } from '@deepseek-ai/dsh-client-ui-primitives';
 import { writerExtension } from "../editable.js";
 import { breadcrumbSegments, countLoadedFiles, editorByteSize, fileExtensionLabel, formatBytes, loadedFilesLabel, } from "./editor-shell.js";
-import { applyEol, detectEol, eolLabel, normalizeEol } from "./eol.js";
+import { eolLabel } from "./eol.js";
 import { WriterLineNumbers } from "./LineNumbers.js";
 import { buildLoadedChildren, defaultWriterTreeExpanded, DIRECTORY_PAGE_SIZE, preferredScanReport, rootToDirectoryNode, scanWriterWorkspace, visibleDirectoryEntries, } from "./library.js";
 import { markdownToSafeHtml } from "./markdown.js";
-import { readWorkspaceText, remoteMessage } from "./read.js";
-import { saveWriterFile } from "./save.js";
+import { remoteMessage } from "./read.js";
+import { useWriterDocument } from "./use-writer-document.js";
+import { BookPanel } from "./BookPanel.js";
+import { RevisionDiff } from "./RevisionDiff.js";
 import { MAX_SEARCH_QUERY_LENGTH, SEARCH_DEBOUNCE_MS, searchWriterFilenames, writerSearchTruncationMessage, } from "./search.js";
 import { WRITER_RAIL_MAX_WIDTH, WRITER_RAIL_MIN_WIDTH, clampRailWidth, fitRailWidth, readRailChrome, setRailCollapsed, setRailWidth, writeRailChrome, } from "./rail-chrome.js";
 import { workspaceShortName, writerScanHealth, } from "./workspace-status.js";
@@ -143,22 +145,20 @@ function SearchHits({ hits, query, selected, onSelect, t, }) {
  * @param props - session, workspace root, remote, and copy.
  * @returns the desk.
  */
-export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
+export function WriterDesk(props) {
+    return _jsx(WriterDeskBody, { ...props }, JSON.stringify([props.sessionId, props.cwd]));
+}
+function WriterDeskBody({ sessionId, cwd, remote, t, visible }) {
+    const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
+    const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
     const [viewPick, setViewPick] = useState(undefined);
     const [libraries, setLibraries] = useState([]);
     const [projects, setProjects] = useState([]);
     const [scans, setScans] = useState([]);
     const [listings, setListings] = useState({});
-    const [active, setActive] = useState(undefined);
-    const [draft, setDraft] = useState('');
-    const [saved, setSaved] = useState('');
-    const [version, setVersion] = useState(undefined);
-    const [eol, setEol] = useState('\n');
     const [notice, setNotice] = useState(undefined);
-    const [conflict, setConflict] = useState(false);
     const [conflictOpen, setConflictOpen] = useState(false);
     const [showLineNumbers, setShowLineNumbers] = useState(true);
-    const [busy, setBusy] = useState(false);
     const [reloadKey, setReloadKey] = useState(0);
     const [expanded, setExpanded] = useState({});
     const [scanErrors, setScanErrors] = useState([]);
@@ -185,7 +185,6 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
     const view = viewPick ?? preferredView;
     const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans;
     const rootPathsKey = roots.map(node => node.path).join('\0');
-    const dirty = draft !== saved;
     const query = filter.trim();
     const showSearch = query !== '';
     const patchDirectory = (path, update) => {
@@ -324,77 +323,19 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
             return;
         if (preview)
             setMode('preview');
-        setActive(path);
+        writerDocument.open(path);
     };
     selectFileRef.current = selectFile;
     const rescan = () => {
         if (!confirmDiscard())
             return;
         selectionSeq.current += 1;
-        setActive(undefined);
-        setDraft('');
-        setSaved('');
-        setVersion(undefined);
-        setEol('\n');
+        writerDocument.close();
         setReloadKey(value => value + 1);
     };
-    useEffect(() => {
-        if (!visible || active === undefined)
-            return undefined;
-        const controller = new AbortController();
-        const path = joinCwd(cwd, active);
-        setConflict(false);
-        setConflictOpen(false);
-        setNotice(undefined);
-        void readWorkspaceText(remote, sessionId, path, controller.signal).then((result) => {
-            if (controller.signal.aborted)
-                return;
-            if (!result.ok) {
-                setNotice(remoteMessage(result.error, t('loadError')));
-                return;
-            }
-            const detected = detectEol(result.value.text);
-            const text = normalizeEol(result.value.text);
-            setEol(detected);
-            setDraft(text);
-            setSaved(text);
-            setVersion(result.value.version);
-            setCaret(0);
-        }).catch((error) => {
-            if (!controller.signal.aborted)
-                setNotice(error instanceof Error ? error.message : t('loadError'));
-        });
-        return () => { controller.abort(); };
-    }, [visible, active, sessionId, cwd, remote, reloadKey, t]);
-    const save = () => {
-        if (active === undefined || version === undefined || conflict || draft === saved || busy)
-            return;
-        const path = active;
-        const baseVersion = version;
-        const submitted = draft;
-        const payloadContent = applyEol(submitted, eol);
-        setBusy(true);
-        void saveWriterFile(sessionId, path, payloadContent, baseVersion, new AbortController().signal).then(async (response) => {
-            const payload = await response.json();
-            if (response.status === 412) {
-                setConflict(true);
-                setConflictOpen(true);
-                setNotice(undefined);
-                return;
-            }
-            if (!response.ok) {
-                setNotice(payload.error ?? t('saveError'));
-                return;
-            }
-            // Keep dirty if the author typed more while the request was in flight.
-            setSaved(submitted);
-            setVersion(payload.version);
-            setNotice(t('saved'));
-            setConflict(false);
-        }).catch(() => {
-            setNotice(t('saveError'));
-        }).finally(() => { setBusy(false); });
-    };
+    useEffect(() => { setConflictOpen(conflict); }, [conflict]);
+    useEffect(() => { setCaret(0); }, [active]);
+    const save = writerDocument.save;
     saveRef.current = save;
     // Debounced filename search for the active tab.
     useEffect(() => {
@@ -467,7 +408,8 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
         return () => { document.removeEventListener('keydown', onKey); };
     }, [visible]);
     const dirtyState = busy ? 'saving' : dirty ? 'dirty' : 'saved';
-    const dirtyText = busy ? t('dirtySaving') : dirty ? t('dirtyPending') : t('dirtySaved');
+    const dirtyText = writerDocument.loading ? t('documentLoading') : busy ? t('dirtySaving') : dirty ? t('dirtyPending') : t('dirtySaved');
+    const documentNotice = writerDocument.notice ?? notice;
     const { line, col } = cursorLineCol(draft, caret);
     const truncationText = searchResult === undefined
         ? ''
@@ -615,14 +557,15 @@ export function WriterDesk({ sessionId, cwd, remote, t, visible }) {
                                             }) }) })] }), _jsxs("footer", { className: "writer-rail-note", children: [_jsx("span", { className: "writer-rail-dot", "data-health": health, "aria-hidden": "true" }), _jsx("p", { title: `${cwd} · ${t('localWorkspace')}`, children: health === 'ok' || health === 'loading' ? t('localWorkspace') : `${healthText} · ${t('localWorkspace')}` })] })] }), _jsx("div", { className: "writer-rail-resize", role: "separator", tabIndex: railCollapsed ? -1 : 0, "aria-orientation": "vertical", "aria-label": t('resizeRail'), "aria-valuemin": WRITER_RAIL_MIN_WIDTH, "aria-valuemax": WRITER_RAIL_MAX_WIDTH, "aria-valuenow": railWidth, "aria-controls": railId, hidden: railCollapsed || undefined, onPointerDown: onRailResizePointerDown, onPointerMove: onRailResizePointerMove, onPointerUp: endRailResize, onPointerCancel: endRailResize, onDoubleClick: (event) => {
                     event.preventDefault();
                     toggleRail();
-                }, onKeyDown: onRailResizeKeyDown }), _jsxs("section", { className: "writer-stage", children: [_jsxs("header", { className: "writer-stage-heading", children: [_jsx("button", { type: "button", className: "writer-rail-toggle", "aria-expanded": !railCollapsed, "aria-controls": railId, "aria-label": railCollapsed ? t('expandRail') : t('collapseRail'), title: railCollapsed ? t('expandRail') : t('collapseRail'), onClick: toggleRail, children: railCollapsed ? '›' : '‹' }), _jsxs("div", { className: "writer-masthead", "aria-label": t('masthead'), children: [_jsx("span", { className: "writer-workspace", title: cwd, children: shortName }), _jsxs("div", { className: "writer-masthead-actions", children: [_jsxs("div", { className: "writer-counts", title: t('filesCountHint'), "aria-label": countsAria, children: [_jsxs("span", { className: "writer-count", children: [_jsx("b", { children: libraries.length }), " ", t('countLibraries')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: projects.length }), " ", t('countProjects')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: scans.length }), " ", t('countScans')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: filesText }), " ", t('countFiles')] })] }), _jsxs("span", { className: "writer-connection", "data-health": health, role: "status", title: connectionTitle, children: [_jsx("span", { className: "writer-status-dot", "aria-hidden": "true" }), _jsx("span", { className: "writer-connection-label", children: connectionLabel })] })] })] }), _jsx("button", { type: "button", className: "writer-reload", title: t('reload'), "aria-label": t('reload'), onClick: rescan, children: _jsxs("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [_jsx("path", { d: "M20 6v5h-5" }), _jsx("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })] }) })] }), _jsxs("main", { className: "writer-editor", children: [active === undefined && notice === undefined && _jsx("p", { className: "writer-empty", children: t('emptyHelp') }), notice !== undefined && _jsx("p", { role: "alert", className: "writer-alert", children: notice }), conflictOpen && _jsx(Modal, { open: true, onClose: () => { setConflictOpen(false); }, title: t('conflictTitle'), description: t('conflictBody'), closeLabel: t('conflictClose'), footer: (_jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => { setConflictOpen(false); }, children: t('conflictKeep') }), _jsx("button", { type: "button", className: "writer-conflict-reload", onClick: () => {
+                }, onKeyDown: onRailResizeKeyDown }), _jsxs("section", { className: "writer-stage", children: [_jsxs("header", { className: "writer-stage-heading", children: [_jsx("button", { type: "button", className: "writer-rail-toggle", "aria-expanded": !railCollapsed, "aria-controls": railId, "aria-label": railCollapsed ? t('expandRail') : t('collapseRail'), title: railCollapsed ? t('expandRail') : t('collapseRail'), onClick: toggleRail, children: railCollapsed ? '›' : '‹' }), _jsxs("div", { className: "writer-masthead", "aria-label": t('masthead'), children: [_jsx("span", { className: "writer-workspace", title: cwd, children: shortName }), _jsxs("div", { className: "writer-masthead-actions", children: [_jsxs("div", { className: "writer-counts", title: t('filesCountHint'), "aria-label": countsAria, children: [_jsxs("span", { className: "writer-count", children: [_jsx("b", { children: libraries.length }), " ", t('countLibraries')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: projects.length }), " ", t('countProjects')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: scans.length }), " ", t('countScans')] }), _jsxs("span", { className: "writer-count", children: [_jsx("b", { children: filesText }), " ", t('countFiles')] })] }), _jsxs("span", { className: "writer-connection", "data-health": health, role: "status", title: connectionTitle, children: [_jsx("span", { className: "writer-status-dot", "aria-hidden": "true" }), _jsx("span", { className: "writer-connection-label", children: connectionLabel })] })] })] }), _jsx("button", { type: "button", className: "writer-reload", title: t('reload'), "aria-label": t('reload'), onClick: rescan, children: _jsxs("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [_jsx("path", { d: "M20 6v5h-5" }), _jsx("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })] }) })] }), view === 'projects' && _jsx(BookPanel, { sessionId: sessionId, cwd: cwd, remote: remote, projects: projects, active: active, draft: draft, dirty: dirty, version: version, visible: visible, onOpen: selectFile, t: t }), _jsxs("main", { className: "writer-editor", children: [active === undefined && documentNotice === undefined && _jsx("p", { className: "writer-empty", children: t('emptyHelp') }), writerDocument.storageError !== undefined && _jsx("p", { role: "alert", className: "writer-alert", children: t(writerDocument.storageError === 'changed' ? 'draftStorageConflict' : 'draftStorageError') }), documentNotice !== undefined && _jsx("p", { role: "alert", className: "writer-alert", children: documentNotice }), active !== undefined && !writerDocument.ready && !writerDocument.loading && _jsx("button", { type: "button", onClick: () => { writerDocument.reload(); }, children: t('retryDocument') }), conflictOpen && _jsx(Modal, { open: true, onClose: () => { setConflictOpen(false); }, title: t('conflictTitle'), description: t('conflictBody'), closeLabel: t('conflictClose'), footer: (_jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => { setConflictOpen(false); }, children: t('conflictKeep') }), _jsx("button", { type: "button", className: "writer-conflict-reload", onClick: () => {
                                                 setConflictOpen(false);
-                                                setConflict(false);
-                                                setReloadKey(value => value + 1);
-                                            }, children: t('conflictReload') })] })) }), active !== undefined && _jsxs(_Fragment, { children: [_jsxs("header", { className: "writer-editor-toolbar", children: [_jsxs("div", { className: "writer-document-identity", children: [_jsx("nav", { className: "writer-breadcrumbs", "aria-label": t('breadcrumbs'), children: crumbs.map((part, index) => (_jsxs("span", { children: [index > 0 && _jsx("i", { "aria-hidden": "true", children: " / " }), _jsx("span", { children: part })] }, `${String(index)}-${part}`))) }), _jsx("h2", { className: "writer-document-title", title: active, children: crumbs[crumbs.length - 1] ?? active })] }), _jsxs("div", { className: "writer-editor-actions", children: [_jsx("span", { className: "writer-dirty", "data-state": dirtyState, children: dirtyText }), _jsx("button", { type: "button", className: "writer-line-numbers-toggle", title: t('toggleLineNumbers'), "aria-label": t('toggleLineNumbers'), "aria-pressed": showLineNumbers, onClick: () => { setShowLineNumbers(value => !value); }, children: "#" }), _jsxs("div", { className: "writer-mode-switch", role: "group", "aria-label": t('editor'), children: [_jsx("button", { type: "button", "aria-pressed": mode === 'edit', onClick: () => { setMode('edit'); }, children: t('modeEdit') }), _jsx("button", { type: "button", "aria-pressed": mode === 'preview', onClick: () => { setMode('preview'); }, children: t('modePreview') })] }), _jsx("button", { type: "button", disabled: busy || conflict || version === undefined || draft === saved, onClick: save, children: t('save') })] })] }), mode === 'edit' ? (_jsxs("div", { className: showLineNumbers ? 'writer-editor-body show-line-numbers' : 'writer-editor-body', children: [_jsx(WriterLineNumbers, { text: draft, caret: caret, show: showLineNumbers, textareaRef: editorRef }), _jsx("textarea", { ref: editorRef, "aria-label": active, value: draft, onChange: (event) => {
-                                                    setDraft(event.target.value);
+                                                writerDocument.reload(true);
+                                            }, children: t('conflictReload') })] })) }), active !== undefined && _jsxs(_Fragment, { children: [_jsxs("header", { className: "writer-editor-toolbar", children: [_jsxs("div", { className: "writer-document-identity", children: [_jsx("nav", { className: "writer-breadcrumbs", "aria-label": t('breadcrumbs'), children: crumbs.map((part, index) => (_jsxs("span", { children: [index > 0 && _jsx("i", { "aria-hidden": "true", children: " / " }), _jsx("span", { children: part })] }, `${String(index)}-${part}`))) }), _jsx("h2", { className: "writer-document-title", title: active, children: crumbs[crumbs.length - 1] ?? active })] }), _jsxs("div", { className: "writer-editor-actions", children: [_jsx("span", { className: "writer-dirty", "data-state": dirtyState, children: dirtyText }), _jsx("button", { type: "button", className: "writer-line-numbers-toggle", title: t('toggleLineNumbers'), "aria-label": t('toggleLineNumbers'), "aria-pressed": showLineNumbers, onClick: () => { setShowLineNumbers(value => !value); }, children: "#" }), _jsxs("div", { className: "writer-mode-switch", role: "group", "aria-label": t('editor'), children: [_jsx("button", { type: "button", "aria-pressed": mode === 'edit', onClick: () => { setMode('edit'); }, children: t('modeEdit') }), _jsx("button", { type: "button", "aria-pressed": mode === 'preview', onClick: () => { setMode('preview'); }, children: t('modePreview') }), _jsx("button", { type: "button", "aria-pressed": mode === 'diff', onClick: () => { setMode('diff'); }, children: t('modeDiff') })] }), conflict
+                                                        ? _jsx("button", { type: "button", onClick: () => { setConflictOpen(true); }, children: t('conflictReview') })
+                                                        : _jsx("button", { type: "button", disabled: !writerDocument.ready || busy || version === undefined || draft === saved, onClick: save, children: t('save') })] })] }), mode === 'edit' ? (_jsxs("div", { className: showLineNumbers ? 'writer-editor-body show-line-numbers' : 'writer-editor-body', children: [_jsx(WriterLineNumbers, { text: draft, caret: caret, show: showLineNumbers, textareaRef: editorRef }), _jsx("textarea", { ref: editorRef, "aria-label": active, value: draft, readOnly: !writerDocument.ready, "aria-busy": writerDocument.loading, onChange: (event) => {
+                                                    writerDocument.edit(event.target.value);
                                                     setCaret(event.target.selectionStart);
                                                     setNotice(undefined);
-                                                }, onSelect: event => { setCaret(event.currentTarget.selectionStart); }, onKeyUp: event => { setCaret(event.currentTarget.selectionStart); }, onClick: event => { setCaret(event.currentTarget.selectionStart); } })] })) : (_jsx("article", { className: "writer-preview", "aria-label": `${active} ${t('modePreview')}`, dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) } })), _jsxs("footer", { className: "writer-status", children: [_jsx("span", { children: t('statusCursor').replace('{line}', String(line)).replace('{col}', String(col)) }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { className: "writer-document-meta", children: byteLabel }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: t('statusChars').replace('{n}', String(countCharacters(draft))) }), extLabel !== '' && _jsxs(_Fragment, { children: [_jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: extLabel })] }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: encodingText })] })] })] })] })] });
+                                                }, onSelect: event => { setCaret(event.currentTarget.selectionStart); }, onKeyUp: event => { setCaret(event.currentTarget.selectionStart); }, onClick: event => { setCaret(event.currentTarget.selectionStart); } })] })) : mode === 'diff' ? (_jsx("div", { className: "writer-preview", children: _jsx(RevisionDiff, { path: active, before: saved, after: draft, t: t }) })) : (_jsx("article", { className: "writer-preview", "aria-label": `${active} ${t('modePreview')}`, dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) } })), _jsxs("footer", { className: "writer-status", children: [_jsx("span", { children: t('statusCursor').replace('{line}', String(line)).replace('{col}', String(col)) }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { className: "writer-document-meta", children: byteLabel }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: t('statusChars').replace('{n}', String(countCharacters(draft))) }), extLabel !== '' && _jsxs(_Fragment, { children: [_jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: extLabel })] }), _jsx("span", { "aria-hidden": "true", children: "\u00B7" }), _jsx("span", { children: encodingText })] })] })] })] })] });
 }
 //# sourceMappingURL=desk.js.map

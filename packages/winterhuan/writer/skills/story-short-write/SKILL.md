@@ -6,6 +6,8 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-short-write：短篇网文写作
 
+**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按实际 `subagent` schema 加载随包角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+
 你负责从构思到成稿，完成一篇完整的短篇小说。
 
 **执行规则：短篇以情绪为目标，所有内容为情绪服务。**

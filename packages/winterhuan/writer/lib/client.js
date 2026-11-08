@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 		let react = require("react");
 		//#region \0dsh-global-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
-		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
+		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
 		const tagId = "@winterhuan/dsh-writer/plugin.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -47,6 +47,23 @@ window.__ModuleLoader__.load({
 		function isEditableWriterName(name) {
 			return EDITABLE_EXTENSIONS.has(writerExtension(name));
 		}
+		/**
+		* Accept only a relative path the sidebar is allowed to write.
+		* @param path - candidate workspace-relative path.
+		* @returns whether a save may target it.
+		*/
+		function isEditableWriterPath(path) {
+			return safeRelative(path) && isEditableWriterName(path);
+		}
+		/**
+		* Reject absolute paths, backslashes, and parent segments.
+		* @param path - candidate path.
+		* @returns whether every segment stays inside the workspace.
+		*/
+		function safeRelative(path) {
+			if (path === "" || path.startsWith("/") || path.includes("\\") || path.includes("\0")) return false;
+			return path.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
+		}
 		//#endregion
 		//#region lib/types/client/locales.js
 		const NS = "writerDesk";
@@ -57,6 +74,55 @@ window.__ModuleLoader__.load({
 			cr: "CR"
 		};
 		const zh$1 = {
+			draftRecovered: "已恢复此浏览器中的未保存草稿",
+			draftStorageError: "无法保存浏览器草稿，请及时保存文件并保持此页面打开",
+			draftStorageConflict: "此文件有另一个会话更新的浏览器草稿，当前编辑仍保留在页面中",
+			documentLoading: "正在读取文稿",
+			retryDocument: "重试读取",
+			diffTitle: "修改差异",
+			diffUnchanged: "内容没有变化",
+			diffWrap: "自动换行",
+			diffUnwrap: "取消自动换行",
+			diffCopy: "复制差异",
+			diffCopied: "已复制",
+			diffCollapse: "收起差异",
+			diffExpand: "展开其余 {n} 行",
+			modeDiff: "对比修改",
+			bookPanelTitle: "章节进度与审稿",
+			bookPanelBook: "查看作品",
+			bookPanelChapter: "章节",
+			bookChoose: "选择要查看的作品",
+			bookRefresh: "刷新进度",
+			bookRecordError: "无法读取记录：{path}",
+			bookNoTracking: "尚无长篇追踪记录",
+			bookCommitted: "已提交至第 {n} 章",
+			bookNext: "下一章：第 {n} 章",
+			bookCommitments: "下一章待兑现承诺",
+			bookMechanical: "字数与机械检查",
+			bookUnchecked: "尚无本章检查记录",
+			bookStale: "正文或细纲已修改，需要重新检查",
+			checkReady: "机械检查通过",
+			checkDecision: "字数需要作者决定",
+			checkBlocked: "有问题需要修复",
+			checkUnavailable: "检查工具不可用",
+			bookWordcount: "检查时 {actual} 字，目标 {target} 字",
+			bookOpenCheck: "打开检查记录",
+			bookCheckHelp: "在对话中要求检查本章，即可更新此处记录；机械检查不代表文学质量评价",
+			bookSemantic: "内容审稿",
+			bookUnreviewed: "尚无版本化审稿记录",
+			bookStaleReview: "正文已修改，旧审稿意见需要重新核对",
+			bookReviewCurrent: "审稿对应当前正文",
+			bookOpenReview: "打开审稿记录",
+			reviewMust: "必须改",
+			reviewSuggestion: "建议改",
+			reviewOptional: "可以不改",
+			reviewLine: "第 {n} 行",
+			reviewAccepted: "作者已接受此处写法",
+			reviewResolved: "已核对处理",
+			reviewChanges: "查看审稿后的修改",
+			reviewResolveHelp: "在对话中说明要接受或修订哪条意见；正文变化后，旧处理结论不会沿用",
+			bookUnfinished: "未完成的章节材料",
+			bookResumeHelp: "打开材料核对进度，然后在对话中要求继续该章；临时材料存在不代表正文已提交",
 			title: "写作",
 			description: "拆文库、写作项目与扫榜记录",
 			setting: "设定",
@@ -85,6 +151,7 @@ window.__ModuleLoader__.load({
 			conflictTitle: "磁盘上的文稿比当前版本更新",
 			conflictBody: "为避免覆盖其他程序写入的内容，写作台已暂停保存。你可以保留当前编辑继续比对，或重新载入磁盘版本。",
 			conflictKeep: "保留当前编辑",
+			conflictReview: "处理保存冲突",
 			conflictReload: "重新载入磁盘版本",
 			conflictClose: "关闭",
 			reloadDisk: "载入磁盘版本",
@@ -134,6 +201,55 @@ window.__ModuleLoader__.load({
 			resizeRail: "拖动调整文件树宽度"
 		};
 		const en$1 = {
+			draftRecovered: "Recovered this browser’s unsaved draft",
+			draftStorageError: "Browser draft recovery is unavailable. Save the file and keep this page open.",
+			draftStorageConflict: "Another session updated this file’s browser draft. Your edits remain open here.",
+			documentLoading: "Loading document",
+			retryDocument: "Retry reading",
+			diffTitle: "Changes",
+			diffUnchanged: "No content changes",
+			diffWrap: "Wrap lines",
+			diffUnwrap: "Unwrap lines",
+			diffCopy: "Copy changes",
+			diffCopied: "Copied",
+			diffCollapse: "Collapse changes",
+			diffExpand: "Show {n} more lines",
+			modeDiff: "Compare edits",
+			bookPanelTitle: "Chapter progress and reviews",
+			bookPanelBook: "Book",
+			bookPanelChapter: "Chapter",
+			bookChoose: "Choose a book",
+			bookRefresh: "Refresh progress",
+			bookRecordError: "Cannot read record: {path}",
+			bookNoTracking: "No serial tracking record",
+			bookCommitted: "Committed through chapter {n}",
+			bookNext: "Next: chapter {n}",
+			bookCommitments: "Commitments for the next chapter",
+			bookMechanical: "Length and mechanical checks",
+			bookUnchecked: "No check recorded for this chapter",
+			bookStale: "The manuscript or outline changed. Check again.",
+			checkReady: "Mechanical checks passed",
+			checkDecision: "The author needs to decide the length",
+			checkBlocked: "Issues need to be fixed",
+			checkUnavailable: "Check tools unavailable",
+			bookWordcount: "{actual} words at check time; target {target}",
+			bookOpenCheck: "Open check record",
+			bookCheckHelp: "Ask to check this chapter in the chat to update the record. Mechanical checks do not assess literary quality.",
+			bookSemantic: "Content review",
+			bookUnreviewed: "No versioned review",
+			bookStaleReview: "The manuscript changed. Reassess the previous review.",
+			bookReviewCurrent: "Review matches the current manuscript",
+			bookOpenReview: "Open review record",
+			reviewMust: "Must fix",
+			reviewSuggestion: "Suggested",
+			reviewOptional: "Optional",
+			reviewLine: "Line {n}",
+			reviewAccepted: "Accepted by the author",
+			reviewResolved: "Resolved",
+			reviewChanges: "Changes since review",
+			reviewResolveHelp: "Tell the assistant which finding to accept or revise. Decisions expire when the manuscript changes.",
+			bookUnfinished: "Unfinished chapter materials",
+			bookResumeHelp: "Open the materials, then ask to continue this chapter in the chat. Scratch files do not mean the chapter was committed.",
 			title: "Writing",
 			description: "Libraries, writing projects, and market scans",
 			setting: "Setting",
@@ -162,6 +278,7 @@ window.__ModuleLoader__.load({
 			conflictTitle: "The on-disk draft is newer than this editor",
 			conflictBody: "Saving is paused so another program's write is not overwritten. Keep your edits to compare, or reload the disk copy.",
 			conflictKeep: "Keep current edits",
+			conflictReview: "Resolve save conflict",
 			conflictReload: "Reload from disk",
 			conflictClose: "Close",
 			reloadDisk: "Load the disk copy",
@@ -825,10 +942,105 @@ window.__ModuleLoader__.load({
 			return {
 				ok: true,
 				value: {
-					text: new TextDecoder("utf-8", { fatal: false }).decode(result.value.data),
+					text: new TextDecoder("utf-8", {
+						fatal: true,
+						ignoreBOM: true
+					}).decode(result.value.data),
 					version: result.value.version
 				}
 			};
+		}
+		//#endregion
+		//#region lib/types/client/draft-storage.js
+		function draftKey(cwd, path) {
+			return `dsh.writer.draft.v1:${JSON.stringify([cwd, path])}`;
+		}
+		function selectionKey(cwd) {
+			return `dsh.writer.selection.v1:${cwd}`;
+		}
+		function isDraft(value) {
+			return typeof value === "object" && value !== null && "text" in value && typeof value.text === "string" && "baseText" in value && typeof value.baseText === "string" && "baseVersion" in value && typeof value.baseVersion === "string" && "eol" in value && (value.eol === "\n" || value.eol === "\r\n" || value.eol === "\r");
+		}
+		/**
+		* Read and validate a recovery copy without deleting malformed or inaccessible data.
+		* @param cwd - session workspace root.
+		* @param path - workspace-relative file.
+		* @returns the recovery copy and the browser value it came from, or a storage error.
+		*/
+		function readWriterDraft(cwd, path) {
+			let token = null;
+			try {
+				token = localStorage.getItem(draftKey(cwd, path));
+				if (token === null) return { token };
+				const value = JSON.parse(token);
+				return isDraft(value) ? {
+					draft: value,
+					token
+				} : {
+					token,
+					error: "unavailable"
+				};
+			} catch {
+				return {
+					token,
+					error: "unavailable"
+				};
+			}
+		}
+		/**
+		* Replace only the recovery copy this editor last observed.
+		* @param cwd - session workspace root.
+		* @param path - workspace-relative file.
+		* @param draft - unsaved text, or undefined to remove this editor's recovery copy.
+		* @param token - last successfully read or written browser value.
+		* @returns the new browser value or the reason recovery could not be updated.
+		*/
+		function writeWriterDraft(cwd, path, draft, token) {
+			try {
+				const key = draftKey(cwd, path);
+				if (localStorage.getItem(key) !== token) return {
+					token,
+					error: "changed"
+				};
+				const next = draft === void 0 ? null : JSON.stringify(draft);
+				if (next === null) localStorage.removeItem(key);
+				else localStorage.setItem(key, next);
+				return { token: next };
+			} catch {
+				return {
+					token,
+					error: "unavailable"
+				};
+			}
+		}
+		/**
+		* Restore the workspace's last open document; storage never authorizes an absolute path.
+		* @param cwd - session workspace root.
+		* @returns a relative file path, or undefined for a missing or invalid preference.
+		*/
+		function readWriterSelection(cwd) {
+			try {
+				const path = localStorage.getItem(selectionKey(cwd));
+				if (path === null || path === "" || path.includes("\\") || path.split("/").some((part) => part === "" || part === "." || part === "..")) return void 0;
+				return path;
+			} catch {
+				return;
+			}
+		}
+		/**
+		* Remember the open file without making document access depend on browser storage.
+		* @param cwd - session workspace root.
+		* @param path - workspace-relative file, or undefined to clear the selection.
+		* @returns whether the preference was saved.
+		*/
+		function writeWriterSelection(cwd, path) {
+			try {
+				if (path === void 0) localStorage.removeItem(selectionKey(cwd));
+				else localStorage.setItem(selectionKey(cwd), path);
+				return true;
+			} catch {
+				return false;
+			}
 		}
 		//#endregion
 		//#region lib/types/client/save.js
@@ -862,6 +1074,672 @@ window.__ModuleLoader__.load({
 					baseVersion
 				}),
 				signal
+			});
+		}
+		//#endregion
+		//#region lib/types/client/use-writer-document.js
+		/**
+		* Keep an editor alive while its sidebar is hidden. Mount separately per session/workspace.
+		* @param remote - workspace file reader.
+		* @param sessionId - session authorizing file access.
+		* @param cwd - workspace root used to isolate recovery copies.
+		* @param t - localized operation feedback.
+		* @returns document state and actions; late replies cannot update another open file.
+		*/
+		function useWriterDocument(remote, sessionId, cwd, t) {
+			const [documentState, setDocumentState] = (0, react.useState)();
+			const [storageError, setStorageError] = (0, react.useState)();
+			const current = (0, react.useRef)(void 0);
+			const mounted = (0, react.useRef)(true);
+			const readController = (0, react.useRef)(void 0);
+			const copy = (0, react.useRef)(t);
+			copy.current = t;
+			const publish = (next) => {
+				current.current = next;
+				if (mounted.current) setDocumentState(next);
+			};
+			const update = (owner, change) => {
+				const value = current.current;
+				if (!mounted.current || value?.owner !== owner) return;
+				publish(change(value));
+			};
+			const persist = (value) => {
+				if (value.version === void 0) return value;
+				const draft = value.text === value.baseText ? void 0 : {
+					text: value.text,
+					baseText: value.baseText,
+					baseVersion: value.version,
+					eol: value.eol
+				};
+				const result = writeWriterDraft(cwd, value.path, draft, value.storageToken);
+				setStorageError(result.error);
+				return {
+					...value,
+					storageToken: result.token
+				};
+			};
+			const discard = () => {
+				const value = current.current;
+				if (value === void 0) return;
+				const result = writeWriterDraft(cwd, value.path, void 0, value.storageToken);
+				if (result.error !== void 0) setStorageError(result.error);
+			};
+			const load = (path, discardOnSuccess = false) => {
+				readController.current?.abort();
+				const controller = new AbortController();
+				readController.current = controller;
+				const previous = current.current?.path === path ? current.current : void 0;
+				const recovery = previous === void 0 ? readWriterDraft(cwd, path) : void 0;
+				if (recovery?.error !== void 0) setStorageError(recovery.error);
+				const draft = recovery?.draft;
+				const owner = {};
+				publish({
+					owner,
+					path,
+					text: previous?.text ?? draft?.text ?? "",
+					baseText: previous?.baseText ?? draft?.baseText ?? "",
+					version: previous?.version ?? draft?.baseVersion,
+					eol: previous?.eol ?? draft?.eol ?? "\n",
+					status: "loading",
+					busy: false,
+					conflict: previous?.conflict ?? false,
+					notice: void 0,
+					storageToken: previous?.storageToken ?? recovery?.token ?? null
+				});
+				readWorkspaceText(remote, sessionId, `${cwd.replace(/[/\\]+$/u, "")}/${path}`, controller.signal).then((result) => {
+					if (controller.signal.aborted) return;
+					update(owner, (value) => {
+						if (!result.ok) return {
+							...value,
+							status: "failed",
+							notice: remoteMessage(result.error, copy.current("loadError"))
+						};
+						const diskText = normalizeEol(result.value.text);
+						const unsaved = value.version !== void 0 && value.text !== value.baseText;
+						if (!discardOnSuccess && unsaved && value.text !== diskText) return {
+							...value,
+							status: "ready",
+							conflict: value.version !== result.value.version,
+							notice: draft === void 0 ? void 0 : copy.current("draftRecovered")
+						};
+						return persist({
+							...value,
+							text: diskText,
+							baseText: diskText,
+							version: result.value.version,
+							eol: detectEol(result.value.text),
+							status: "ready",
+							conflict: false,
+							notice: void 0
+						});
+					});
+				}).catch((error) => {
+					if (controller.signal.aborted) return;
+					update(owner, (value) => ({
+						...value,
+						status: "failed",
+						notice: error instanceof Error ? error.message : copy.current("loadError")
+					}));
+				});
+			};
+			(0, react.useEffect)(() => {
+				mounted.current = true;
+				const path = readWriterSelection(cwd);
+				if (path !== void 0) load(path);
+				return () => {
+					mounted.current = false;
+					readController.current?.abort();
+				};
+			}, []);
+			const dirty = documentState !== void 0 && documentState.text !== documentState.baseText;
+			(0, react.useEffect)(() => {
+				if (!dirty) return void 0;
+				const warn = (event) => {
+					event.preventDefault();
+					event.returnValue = "";
+				};
+				window.addEventListener("beforeunload", warn);
+				return () => {
+					window.removeEventListener("beforeunload", warn);
+				};
+			}, [dirty]);
+			const save = () => {
+				const value = current.current;
+				if (value === void 0 || value.version === void 0 || value.status !== "ready" || value.conflict || value.busy || value.text === value.baseText) return;
+				const { owner, path, text, version, eol } = value;
+				publish({
+					...value,
+					busy: true,
+					notice: void 0
+				});
+				saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
+					const payload = await response.json();
+					update(owner, (latest) => {
+						if (response.status === 412) return {
+							...latest,
+							busy: false,
+							conflict: true,
+							notice: void 0
+						};
+						if (!response.ok) return {
+							...latest,
+							busy: false,
+							notice: payload.error ?? copy.current("saveError")
+						};
+						return persist({
+							...latest,
+							busy: false,
+							baseText: text,
+							version: payload.version,
+							notice: copy.current("saved")
+						});
+					});
+				}).catch(() => {
+					update(owner, (latest) => ({
+						...latest,
+						busy: false,
+						notice: copy.current("saveError")
+					}));
+				});
+			};
+			return {
+				active: documentState?.path,
+				draft: documentState?.text ?? "",
+				saved: documentState?.baseText ?? "",
+				version: documentState?.version,
+				eol: documentState?.eol ?? "\n",
+				loading: documentState?.status === "loading",
+				ready: documentState?.status === "ready",
+				busy: documentState?.busy ?? false,
+				dirty,
+				conflict: documentState?.conflict ?? false,
+				notice: documentState?.notice,
+				storageError,
+				open: (path) => {
+					if (path === current.current?.path) return;
+					discard();
+					publish(void 0);
+					if (!writeWriterSelection(cwd, path)) setStorageError("unavailable");
+					load(path);
+				},
+				close: () => {
+					readController.current?.abort();
+					discard();
+					publish(void 0);
+					if (!writeWriterSelection(cwd, void 0)) setStorageError("unavailable");
+				},
+				reload: (discardOnSuccess = false) => {
+					if (current.current !== void 0 && !current.current.busy) load(current.current.path, discardOnSuccess);
+				},
+				edit: (text) => {
+					const value = current.current;
+					if (value?.status !== "ready") return;
+					publish(persist({
+						...value,
+						text,
+						notice: void 0
+					}));
+				},
+				save
+			};
+		}
+		//#endregion
+		//#region lib/types/client/book-status.js
+		/** Read chapter progress from the book's authoritative files and versioned reports. */
+		function object(value) {
+			if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid record");
+			return value;
+		}
+		function text(value) {
+			if (typeof value !== "string") throw new Error("expected text");
+			return value;
+		}
+		function integer(value) {
+			if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("expected non-negative integer");
+			return value;
+		}
+		function strings(value) {
+			if (!Array.isArray(value)) throw new Error("expected text list");
+			return value.map(text);
+		}
+		function relative(value) {
+			const path = text(value);
+			if (!safeRelative(path) || /^[a-z][a-z\d+.-]*:/iu.test(path)) throw new Error("expected book-relative path");
+			return path;
+		}
+		function parse(source, path) {
+			try {
+				return object(JSON.parse(source));
+			} catch {
+				throw new Error(path);
+			}
+		}
+		/**
+		* Compute the raw UTF-8 digest used by the Python chapter and review scripts.
+		* @param value - decoded UTF-8 file, preserving its original line endings.
+		* @returns lowercase SHA-256.
+		*/
+		async function manuscriptDigest(value) {
+			const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+			return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+		}
+		/**
+		* Resolve a selected manuscript's chapter number; short stories return null.
+		* @param path - book-relative selected file.
+		* @returns chapter number, null for 正文.md, or undefined for other files.
+		*/
+		function selectedChapter(path) {
+			if (path === "正文.md") return null;
+			if (!path.startsWith("正文/")) return void 0;
+			const match = /(?:^|\/)第0*(\d+)章[^/]*\.md$/u.exec(path);
+			return match === null ? void 0 : Number(match[1]);
+		}
+		/**
+		* Load current progress and the selected chapter's reports. Missing reports are normal;
+		* malformed or inaccessible records reject with the owning path rather than imply a pass.
+		* @param files - book-scoped reads and directory listings.
+		* @param selected - selected chapter; absent selects the next uncommitted chapter.
+		* @returns one bounded chapter snapshot, without mutating project files.
+		*/
+		async function readBookStatus(files, selected) {
+			const statePath = "追踪/_tracking-state.json";
+			const source = await files.read(statePath);
+			let title = "";
+			let lastChapter;
+			let commitments = [];
+			if (source !== void 0) try {
+				const state = parse(source, statePath);
+				if (state.schema_version !== 4) throw new Error("unsupported tracking schema");
+				title = text(state.book_title);
+				lastChapter = integer(state.last_committed_chapter);
+				commitments = strings(object(state.context).next_chapter_commitments);
+			} catch {
+				throw new Error(statePath);
+			}
+			const chapter = selected !== void 0 ? selected : lastChapter === void 0 ? null : lastChapter + 1;
+			const stem = chapter === null ? "正文" : `第${String(chapter).padStart(3, "0")}章`;
+			const workDir = `.story/work/${stem}`;
+			const [checkSource, reviewSource, workEntries] = await Promise.all([
+				chapter === null ? void 0 : files.read(`.story/checks/${stem}.json`),
+				files.read(`.story/reviews/${stem}.json`),
+				files.list(workDir)
+			]);
+			let check;
+			if (checkSource !== void 0) {
+				const path = `.story/checks/${stem}.json`;
+				try {
+					const record = parse(checkSource, path);
+					if (record.schema !== "story-chapter-check/v1" || record.chapter !== chapter) throw new Error("schema");
+					const bodyPath = relative(record.body_path);
+					const outlinePath = relative(record.outline_path);
+					const [body, outline] = await Promise.all([files.read(bodyPath), files.read(outlinePath)]);
+					const length = object(record.length);
+					const quality = object(record.quality);
+					if (!Array.isArray(quality.blocking_findings) || !Array.isArray(quality.tool_errors)) throw new Error("findings");
+					check = {
+						path,
+						bodyPath,
+						outlinePath,
+						status: text(record.status),
+						target: integer(length.target),
+						actual: integer(length.actual),
+						stale: body === void 0 || outline === void 0 || await manuscriptDigest(body) !== record.body_sha256 || await manuscriptDigest(outline) !== record.outline_sha256,
+						findings: [...quality.blocking_findings, ...quality.tool_errors].map((item) => text(object(item).message))
+					};
+				} catch {
+					throw new Error(path);
+				}
+			}
+			let review;
+			if (reviewSource !== void 0) {
+				const path = `.story/reviews/${stem}.json`;
+				try {
+					const record = parse(reviewSource, path);
+					if (record.schema !== "story-review/v1" || record.chapter !== chapter || !Array.isArray(record.findings)) throw new Error("schema");
+					const bodyPath = relative(record.body_path);
+					const bodyText = text(record.body_text);
+					if (await manuscriptDigest(bodyText) !== record.body_sha256) throw new Error("snapshot");
+					const currentText = await files.read(bodyPath);
+					const stale = currentText === void 0 || await manuscriptDigest(currentText) !== record.body_sha256;
+					const findings = record.findings.map((value) => {
+						const item = object(value);
+						const severity = item.severity;
+						if (severity !== "must" && severity !== "suggestion" && severity !== "optional") throw new Error("severity");
+						const line = integer(item.line);
+						const quote = text(item.quote);
+						if (line < 1 || quote === "" || !(bodyText.split(/\r\n|\r|\n/u)[line - 1] ?? "").includes(quote)) throw new Error("quote");
+						let resolution;
+						if (!stale && item.resolution !== null && item.resolution !== void 0) {
+							const resolved = object(item.resolution);
+							if (resolved.body_sha256 !== record.body_sha256 || resolved.kind !== "accepted" && resolved.kind !== "resolved") throw new Error("resolution");
+							resolution = resolved.kind;
+						}
+						return {
+							id: text(item.id),
+							severity,
+							line,
+							quote,
+							explanation: text(item.explanation),
+							suggestion: text(item.suggestion),
+							...resolution === void 0 ? {} : { resolution }
+						};
+					});
+					review = {
+						path,
+						stale,
+						summary: text(record.summary),
+						bodyPath,
+						bodyText,
+						currentText: currentText ?? "",
+						findings
+					};
+				} catch {
+					throw new Error(path);
+				}
+			}
+			return {
+				title,
+				...lastChapter === void 0 ? {} : { lastChapter },
+				chapter,
+				commitments,
+				workFiles: workEntries.filter((entry) => entry.type === "file" && safeRelative(entry.name) && !entry.name.includes("/")).slice(0, 20).map((entry) => `${workDir}/${entry.name}`),
+				...check === void 0 ? {} : { check },
+				...review === void 0 ? {} : { review }
+			};
+		}
+		//#endregion
+		//#region lib/types/client/RevisionDiff.js
+		/** Reuse DSH's bounded diff renderer for draft and review-version comparisons. */
+		/**
+		* Render an explicit comparison without changing either version.
+		* @param props - source versions and localized chrome.
+		* @returns the shared diff, or an unchanged message.
+		*/
+		function RevisionDiff({ path, before, after, t }) {
+			const diffs = (0, react.useMemo)(() => [{
+				path,
+				oldText: before,
+				newText: after
+			}], [
+				path,
+				before,
+				after
+			]);
+			if (before === after) return (0, react_jsx_runtime.jsx)("p", {
+				className: "writer-muted",
+				children: t("diffUnchanged")
+			});
+			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
+				diffs,
+				labels: {
+					codeLabel: t("diffTitle"),
+					wrapLabel: t("diffWrap"),
+					unwrapLabel: t("diffUnwrap"),
+					copy: t("diffCopy"),
+					copied: t("diffCopied"),
+					collapseAria: t("diffCollapse"),
+					collapse: t("diffCollapse"),
+					expandAria: (hidden) => t("diffExpand").replace("{n}", String(hidden)),
+					expand: (hidden) => t("diffExpand").replace("{n}", String(hidden))
+				}
+			});
+		}
+		//#endregion
+		//#region lib/types/client/BookPanel.js
+		/** On-demand chapter progress and cited reviews inside the existing writing sidebar. */
+		function missing(error) {
+			return error.code === "workspace-file/not-found";
+		}
+		const checkLabels = {
+			ready: "checkReady",
+			needs_decision: "checkDecision",
+			blocked: "checkBlocked",
+			invalid: "checkBlocked",
+			tool_unavailable: "checkUnavailable"
+		};
+		/**
+		* Read a single book's reports when expanded, without running tools or editing tracking files.
+		* @param props - workspace identity, current draft, discovered books, and file-selection action.
+		* @returns collapsible progress and review details.
+		*/
+		function BookPanel({ sessionId, cwd, remote, projects, active, draft, dirty, version, visible, onOpen, t }) {
+			const [open, setOpen] = (0, react.useState)(false);
+			const [bookPick, setBookPick] = (0, react.useState)();
+			const [activeBook, setActiveBook] = (0, react.useState)();
+			const [chapterPick, setChapterPick] = (0, react.useState)();
+			const [chapterInput, setChapterInput] = (0, react.useState)();
+			const [status, setStatus] = (0, react.useState)();
+			const [error, setError] = (0, react.useState)();
+			const [loading, setLoading] = (0, react.useState)(false);
+			const [refresh, setRefresh] = (0, react.useState)(0);
+			const bookPaths = projects.map((project) => project.path).join("\0");
+			const containing = projects.filter((project) => project.path === "" || active?.startsWith(`${project.path}/`)).sort((left, right) => right.path.length - left.path.length)[0]?.path;
+			const book = bookPick !== void 0 && projects.some((project) => project.path === bookPick) ? bookPick : containing ?? (activeBook !== void 0 && projects.some((project) => project.path === activeBook) ? activeBook : projects.length === 1 ? projects[0]?.path : void 0);
+			const withinBook = active === void 0 || book === void 0 ? void 0 : book === "" ? active : active.startsWith(`${book}/`) ? active.slice(book.length + 1) : void 0;
+			const chapter = chapterPick ?? (withinBook === void 0 ? void 0 : selectedChapter(withinBook));
+			const joinBook = (path) => book === "" ? path : `${book}/${path}`;
+			(0, react.useEffect)(() => {
+				setChapterPick(void 0);
+				setChapterInput(void 0);
+			}, [active, book]);
+			(0, react.useEffect)(() => {
+				if (!open || !visible) return;
+				const controller = new AbortController();
+				readWorkspaceText(remote, sessionId, `${cwd}/.active-book`, controller.signal).then((result) => {
+					if (controller.signal.aborted || !result.ok) return;
+					const path = result.value.text.trim().replace(/\/$/u, "");
+					if (path === "." || safeRelative(path)) setActiveBook(path === "." ? "" : path);
+				}).catch(() => {});
+				return () => {
+					controller.abort();
+				};
+			}, [
+				open,
+				visible,
+				remote,
+				sessionId,
+				cwd,
+				refresh
+			]);
+			(0, react.useEffect)(() => {
+				if (!open || !visible || book === void 0) return;
+				const controller = new AbortController();
+				const absolute = (path) => `${cwd}/${book === "" ? "" : `${book}/`}${path}`;
+				setLoading(true);
+				setError(void 0);
+				setStatus(void 0);
+				readBookStatus({
+					read: async (path) => {
+						const result = await readWorkspaceText(remote, sessionId, absolute(path), controller.signal);
+						if (result.ok) return result.value.text;
+						if (missing(result.error)) return void 0;
+						throw new Error(`${path}: ${remoteMessage(result.error, t("loadError"))}`);
+					},
+					list: async (path) => {
+						const result = await remote.workspaceFiles.list(sessionId, absolute(path), controller.signal);
+						if (result.ok) {
+							if (result.value.truncated) throw new Error(`${path}: ${t("truncated")}`);
+							return result.value.entries;
+						}
+						if (missing(result.error)) return [];
+						throw new Error(`${path}: ${remoteMessage(result.error, t("loadError"))}`);
+					}
+				}, chapter).then((value) => {
+					if (!controller.signal.aborted) setStatus(value);
+				}).catch((cause) => {
+					if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : t("loadError"));
+				}).finally(() => {
+					if (!controller.signal.aborted) setLoading(false);
+				});
+				return () => {
+					controller.abort();
+				};
+			}, [
+				open,
+				visible,
+				book,
+				chapter,
+				sessionId,
+				cwd,
+				remote,
+				version,
+				refresh,
+				bookPaths,
+				t
+			]);
+			if (projects.length === 0) return null;
+			const check = status?.check;
+			const draftAffectsChapter = dirty && withinBook !== void 0 && (selectedChapter(withinBook) === status?.chapter || withinBook === check?.outlinePath || withinBook === check?.bodyPath);
+			const review = status?.review;
+			const reviewDraft = review !== void 0 && withinBook === review.bodyPath ? draft : void 0;
+			const staleReview = review?.stale === true || review !== void 0 && reviewDraft !== void 0 && normalizeEol(review.bodyText) !== reviewDraft;
+			return (0, react_jsx_runtime.jsxs)("details", {
+				className: "writer-book-panel",
+				open,
+				onToggle: (event) => {
+					setOpen(event.currentTarget.open);
+				},
+				children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookPanelTitle") }), open && (0, react_jsx_runtime.jsxs)("div", {
+					className: "writer-book-content",
+					children: [(0, react_jsx_runtime.jsxs)("div", {
+						className: "writer-book-controls",
+						children: [
+							(0, react_jsx_runtime.jsxs)("label", { children: [
+								t("bookPanelBook"),
+								" ",
+								(0, react_jsx_runtime.jsxs)("select", {
+									value: book ?? "__choose__",
+									onChange: (event) => {
+										setBookPick(event.target.value);
+									},
+									children: [book === void 0 && (0, react_jsx_runtime.jsx)("option", {
+										value: "__choose__",
+										children: t("bookChoose")
+									}), projects.map((project) => (0, react_jsx_runtime.jsx)("option", {
+										value: project.path,
+										children: project.name || t("workspaceBook")
+									}, project.path))]
+								})
+							] }),
+							book !== void 0 && chapter !== null && status?.chapter !== null && (0, react_jsx_runtime.jsxs)("label", { children: [
+								t("bookPanelChapter"),
+								" ",
+								(0, react_jsx_runtime.jsx)("input", {
+									type: "number",
+									min: 1,
+									value: chapterInput ?? chapterPick ?? status?.chapter ?? 1,
+									onChange: (event) => {
+										setChapterInput(event.target.value);
+									},
+									onBlur: (event) => {
+										const value = Number(event.target.value);
+										if (Number.isSafeInteger(value) && value > 0) setChapterPick(value);
+										else setChapterInput(void 0);
+									},
+									onKeyDown: (event) => {
+										if (event.key === "Enter") event.currentTarget.blur();
+									}
+								})
+							] }),
+							(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								disabled: loading,
+								onClick: () => {
+									setRefresh((value) => value + 1);
+								},
+								children: t("bookRefresh")
+							})
+						]
+					}), book === void 0 ? (0, react_jsx_runtime.jsx)("p", { children: t("bookChoose") }) : loading ? (0, react_jsx_runtime.jsx)("p", {
+						role: "status",
+						children: t("loading")
+					}) : error !== void 0 ? (0, react_jsx_runtime.jsx)("p", {
+						role: "alert",
+						children: t("bookRecordError").replace("{path}", error)
+					}) : status !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+						(0, react_jsx_runtime.jsxs)("p", { children: [
+							status.title || projects.find((project) => project.path === book)?.name,
+							" · ",
+							status.lastChapter === void 0 ? t("bookNoTracking") : t("bookCommitted").replace("{n}", String(status.lastChapter))
+						] }),
+						status.lastChapter !== void 0 && (0, react_jsx_runtime.jsx)("p", { children: t("bookNext").replace("{n}", String(status.lastChapter + 1)) }),
+						status.commitments.length > 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookCommitments") }), (0, react_jsx_runtime.jsx)("ul", { children: status.commitments.map((item, index) => (0, react_jsx_runtime.jsx)("li", { children: item }, index)) })] }),
+						(0, react_jsx_runtime.jsxs)("div", {
+							className: "writer-book-report",
+							children: [
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookMechanical") }),
+								(0, react_jsx_runtime.jsx)("p", { children: check === void 0 ? t("bookUnchecked") : check.stale || draftAffectsChapter ? t("bookStale") : t(checkLabels[check.status] ?? "checkUnavailable") }),
+								check !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									(0, react_jsx_runtime.jsx)("p", { children: t("bookWordcount").replace("{actual}", String(check.actual)).replace("{target}", String(check.target)) }),
+									check.findings.length > 0 && (0, react_jsx_runtime.jsx)("ul", { children: check.findings.map((finding, index) => (0, react_jsx_runtime.jsx)("li", { children: finding }, index)) }),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => {
+											onOpen(joinBook(check.path));
+										},
+										children: t("bookOpenCheck")
+									})
+								] }),
+								(0, react_jsx_runtime.jsx)("p", {
+									className: "writer-muted",
+									children: t("bookCheckHelp")
+								})
+							]
+						}),
+						(0, react_jsx_runtime.jsxs)("div", {
+							className: "writer-book-report",
+							children: [
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookSemantic") }),
+								(0, react_jsx_runtime.jsx)("p", { children: review === void 0 ? t("bookUnreviewed") : staleReview ? t("bookStaleReview") : t("bookReviewCurrent") }),
+								review !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									(0, react_jsx_runtime.jsx)("p", { children: review.summary }),
+									(0, react_jsx_runtime.jsx)("ul", { children: review.findings.map((finding) => (0, react_jsx_runtime.jsxs)("li", { children: [
+										(0, react_jsx_runtime.jsxs)("span", { children: [
+											t(finding.severity === "must" ? "reviewMust" : finding.severity === "suggestion" ? "reviewSuggestion" : "reviewOptional"),
+											" · ",
+											t("reviewLine").replace("{n}", String(finding.line))
+										] }),
+										(0, react_jsx_runtime.jsx)("blockquote", { children: finding.quote }),
+										(0, react_jsx_runtime.jsx)("p", { children: finding.explanation }),
+										(0, react_jsx_runtime.jsx)("p", { children: finding.suggestion }),
+										!staleReview && finding.resolution !== void 0 && (0, react_jsx_runtime.jsx)("span", { children: t(finding.resolution === "accepted" ? "reviewAccepted" : "reviewResolved") })
+									] }, finding.id)) }),
+									(0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("reviewChanges") }), (0, react_jsx_runtime.jsx)(RevisionDiff, {
+										path: review.bodyPath,
+										before: normalizeEol(review.bodyText),
+										after: reviewDraft ?? normalizeEol(review.currentText),
+										t
+									})] }),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => {
+											onOpen(joinBook(review.path));
+										},
+										children: t("bookOpenReview")
+									}),
+									(0, react_jsx_runtime.jsx)("p", {
+										className: "writer-muted",
+										children: t("reviewResolveHelp")
+									})
+								] })
+							]
+						}),
+						status.workFiles.length > 0 && (0, react_jsx_runtime.jsxs)("div", {
+							className: "writer-book-report",
+							children: [
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookUnfinished") }),
+								(0, react_jsx_runtime.jsx)("p", { children: t("bookResumeHelp") }),
+								status.workFiles.filter(isEditableWriterPath).map((path) => (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => {
+										onOpen(joinBook(path));
+									},
+									children: path.split("/").pop()
+								}, path))
+							]
+						})
+					] })]
+				})]
 			});
 		}
 		/** Align with Dashboard `MAX_SEARCH_NODES`. */
@@ -1397,22 +2275,20 @@ window.__ModuleLoader__.load({
 		* @param props - session, workspace root, remote, and copy.
 		* @returns the desk.
 		*/
-		function WriterDesk({ sessionId, cwd, remote, t, visible }) {
+		function WriterDesk(props) {
+			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, JSON.stringify([props.sessionId, props.cwd]));
+		}
+		function WriterDeskBody({ sessionId, cwd, remote, t, visible }) {
+			const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
+			const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
 			const [viewPick, setViewPick] = (0, react.useState)(void 0);
 			const [libraries, setLibraries] = (0, react.useState)([]);
 			const [projects, setProjects] = (0, react.useState)([]);
 			const [scans, setScans] = (0, react.useState)([]);
 			const [listings, setListings] = (0, react.useState)({});
-			const [active, setActive] = (0, react.useState)(void 0);
-			const [draft, setDraft] = (0, react.useState)("");
-			const [saved, setSaved] = (0, react.useState)("");
-			const [version, setVersion] = (0, react.useState)(void 0);
-			const [eol, setEol] = (0, react.useState)("\n");
 			const [notice, setNotice] = (0, react.useState)(void 0);
-			const [conflict, setConflict] = (0, react.useState)(false);
 			const [conflictOpen, setConflictOpen] = (0, react.useState)(false);
 			const [showLineNumbers, setShowLineNumbers] = (0, react.useState)(true);
-			const [busy, setBusy] = (0, react.useState)(false);
 			const [reloadKey, setReloadKey] = (0, react.useState)(0);
 			const [expanded, setExpanded] = (0, react.useState)({});
 			const [scanErrors, setScanErrors] = (0, react.useState)([]);
@@ -1437,7 +2313,6 @@ window.__ModuleLoader__.load({
 			const view = viewPick ?? preferredView;
 			const roots = view === "libraries" ? libraries : view === "projects" ? projects : scans;
 			const rootPathsKey = roots.map((node) => node.path).join("\0");
-			const dirty = draft !== saved;
 			const query = filter.trim();
 			const showSearch = query !== "";
 			const patchDirectory = (path, update) => {
@@ -1599,83 +2474,22 @@ window.__ModuleLoader__.load({
 				}
 				if (!confirmDiscard()) return;
 				if (preview) setMode("preview");
-				setActive(path);
+				writerDocument.open(path);
 			};
 			selectFileRef.current = selectFile;
 			const rescan = () => {
 				if (!confirmDiscard()) return;
 				selectionSeq.current += 1;
-				setActive(void 0);
-				setDraft("");
-				setSaved("");
-				setVersion(void 0);
-				setEol("\n");
+				writerDocument.close();
 				setReloadKey((value) => value + 1);
 			};
 			(0, react.useEffect)(() => {
-				if (!visible || active === void 0) return void 0;
-				const controller = new AbortController();
-				const path = joinCwd(cwd, active);
-				setConflict(false);
-				setConflictOpen(false);
-				setNotice(void 0);
-				readWorkspaceText(remote, sessionId, path, controller.signal).then((result) => {
-					if (controller.signal.aborted) return;
-					if (!result.ok) {
-						setNotice(remoteMessage(result.error, t("loadError")));
-						return;
-					}
-					const detected = detectEol(result.value.text);
-					const text = normalizeEol(result.value.text);
-					setEol(detected);
-					setDraft(text);
-					setSaved(text);
-					setVersion(result.value.version);
-					setCaret(0);
-				}).catch((error) => {
-					if (!controller.signal.aborted) setNotice(error instanceof Error ? error.message : t("loadError"));
-				});
-				return () => {
-					controller.abort();
-				};
-			}, [
-				visible,
-				active,
-				sessionId,
-				cwd,
-				remote,
-				reloadKey,
-				t
-			]);
-			const save = () => {
-				if (active === void 0 || version === void 0 || conflict || draft === saved || busy) return;
-				const path = active;
-				const baseVersion = version;
-				const submitted = draft;
-				const payloadContent = applyEol(submitted, eol);
-				setBusy(true);
-				saveWriterFile(sessionId, path, payloadContent, baseVersion, new AbortController().signal).then(async (response) => {
-					const payload = await response.json();
-					if (response.status === 412) {
-						setConflict(true);
-						setConflictOpen(true);
-						setNotice(void 0);
-						return;
-					}
-					if (!response.ok) {
-						setNotice(payload.error ?? t("saveError"));
-						return;
-					}
-					setSaved(submitted);
-					setVersion(payload.version);
-					setNotice(t("saved"));
-					setConflict(false);
-				}).catch(() => {
-					setNotice(t("saveError"));
-				}).finally(() => {
-					setBusy(false);
-				});
-			};
+				setConflictOpen(conflict);
+			}, [conflict]);
+			(0, react.useEffect)(() => {
+				setCaret(0);
+			}, [active]);
+			const save = writerDocument.save;
 			saveRef.current = save;
 			(0, react.useEffect)(() => {
 				if (!visible) return void 0;
@@ -1747,7 +2561,8 @@ window.__ModuleLoader__.load({
 				};
 			}, [visible]);
 			const dirtyState = busy ? "saving" : dirty ? "dirty" : "saved";
-			const dirtyText = busy ? t("dirtySaving") : dirty ? t("dirtyPending") : t("dirtySaved");
+			const dirtyText = writerDocument.loading ? t("documentLoading") : busy ? t("dirtySaving") : dirty ? t("dirtyPending") : t("dirtySaved");
+			const documentNotice = writerDocument.notice ?? notice;
 			const { line, col } = cursorLineCol(draft, caret);
 			const truncationText = searchResult === void 0 ? "" : writerSearchTruncationMessage(searchResult.truncation, searchResult.limits, searchResult.scanErrors);
 			const shortName = workspaceShortName(cwd);
@@ -2046,258 +2861,312 @@ window.__ModuleLoader__.load({
 					}),
 					(0, react_jsx_runtime.jsxs)("section", {
 						className: "writer-stage",
-						children: [(0, react_jsx_runtime.jsxs)("header", {
-							className: "writer-stage-heading",
-							children: [
-								(0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									className: "writer-rail-toggle",
-									"aria-expanded": !railCollapsed,
-									"aria-controls": railId,
-									"aria-label": railCollapsed ? t("expandRail") : t("collapseRail"),
-									title: railCollapsed ? t("expandRail") : t("collapseRail"),
-									onClick: toggleRail,
-									children: railCollapsed ? "›" : "‹"
-								}),
-								(0, react_jsx_runtime.jsxs)("div", {
-									className: "writer-masthead",
-									"aria-label": t("masthead"),
-									children: [(0, react_jsx_runtime.jsx)("span", {
-										className: "writer-workspace",
-										title: cwd,
-										children: shortName
-									}), (0, react_jsx_runtime.jsxs)("div", {
-										className: "writer-masthead-actions",
-										children: [(0, react_jsx_runtime.jsxs)("div", {
-											className: "writer-counts",
-											title: t("filesCountHint"),
-											"aria-label": countsAria,
-											children: [
-												(0, react_jsx_runtime.jsxs)("span", {
-													className: "writer-count",
-													children: [
-														(0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
-														" ",
-														t("countLibraries")
-													]
-												}),
-												(0, react_jsx_runtime.jsxs)("span", {
-													className: "writer-count",
-													children: [
-														(0, react_jsx_runtime.jsx)("b", { children: projects.length }),
-														" ",
-														t("countProjects")
-													]
-												}),
-												(0, react_jsx_runtime.jsxs)("span", {
-													className: "writer-count",
-													children: [
-														(0, react_jsx_runtime.jsx)("b", { children: scans.length }),
-														" ",
-														t("countScans")
-													]
-												}),
-												(0, react_jsx_runtime.jsxs)("span", {
-													className: "writer-count",
-													children: [
-														(0, react_jsx_runtime.jsx)("b", { children: filesText }),
-														" ",
-														t("countFiles")
-													]
-												})
-											]
-										}), (0, react_jsx_runtime.jsxs)("span", {
-											className: "writer-connection",
-											"data-health": health,
-											role: "status",
-											title: connectionTitle,
-											children: [(0, react_jsx_runtime.jsx)("span", {
-												className: "writer-status-dot",
-												"aria-hidden": "true"
-											}), (0, react_jsx_runtime.jsx)("span", {
-												className: "writer-connection-label",
-												children: connectionLabel
-											})]
-										})]
-									})]
-								}),
-								(0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									className: "writer-reload",
-									title: t("reload"),
-									"aria-label": t("reload"),
-									onClick: rescan,
-									children: (0, react_jsx_runtime.jsxs)("svg", {
-										viewBox: "0 0 24 24",
-										"aria-hidden": "true",
-										children: [(0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
-									})
-								})
-							]
-						}), (0, react_jsx_runtime.jsxs)("main", {
-							className: "writer-editor",
-							children: [
-								active === void 0 && notice === void 0 && (0, react_jsx_runtime.jsx)("p", {
-									className: "writer-empty",
-									children: t("emptyHelp")
-								}),
-								notice !== void 0 && (0, react_jsx_runtime.jsx)("p", {
-									role: "alert",
-									className: "writer-alert",
-									children: notice
-								}),
-								conflictOpen && (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
-									open: true,
-									onClose: () => {
-										setConflictOpen(false);
-									},
-									title: t("conflictTitle"),
-									description: t("conflictBody"),
-									closeLabel: t("conflictClose"),
-									footer: (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("button", {
+						children: [
+							(0, react_jsx_runtime.jsxs)("header", {
+								className: "writer-stage-heading",
+								children: [
+									(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
-										onClick: () => {
-											setConflictOpen(false);
-										},
-										children: t("conflictKeep")
-									}), (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "writer-conflict-reload",
-										onClick: () => {
-											setConflictOpen(false);
-											setConflict(false);
-											setReloadKey((value) => value + 1);
-										},
-										children: t("conflictReload")
-									})] })
-								}),
-								active !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									(0, react_jsx_runtime.jsxs)("header", {
-										className: "writer-editor-toolbar",
-										children: [(0, react_jsx_runtime.jsxs)("div", {
-											className: "writer-document-identity",
-											children: [(0, react_jsx_runtime.jsx)("nav", {
-												className: "writer-breadcrumbs",
-												"aria-label": t("breadcrumbs"),
-												children: crumbs.map((part, index) => (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && (0, react_jsx_runtime.jsx)("i", {
-													"aria-hidden": "true",
-													children: " / "
-												}), (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
-											}), (0, react_jsx_runtime.jsx)("h2", {
-												className: "writer-document-title",
-												title: active,
-												children: crumbs[crumbs.length - 1] ?? active
-											})]
+										className: "writer-rail-toggle",
+										"aria-expanded": !railCollapsed,
+										"aria-controls": railId,
+										"aria-label": railCollapsed ? t("expandRail") : t("collapseRail"),
+										title: railCollapsed ? t("expandRail") : t("collapseRail"),
+										onClick: toggleRail,
+										children: railCollapsed ? "›" : "‹"
+									}),
+									(0, react_jsx_runtime.jsxs)("div", {
+										className: "writer-masthead",
+										"aria-label": t("masthead"),
+										children: [(0, react_jsx_runtime.jsx)("span", {
+											className: "writer-workspace",
+											title: cwd,
+											children: shortName
 										}), (0, react_jsx_runtime.jsxs)("div", {
-											className: "writer-editor-actions",
-											children: [
-												(0, react_jsx_runtime.jsx)("span", {
-													className: "writer-dirty",
-													"data-state": dirtyState,
-													children: dirtyText
-												}),
-												(0, react_jsx_runtime.jsx)("button", {
-													type: "button",
-													className: "writer-line-numbers-toggle",
-													title: t("toggleLineNumbers"),
-													"aria-label": t("toggleLineNumbers"),
-													"aria-pressed": showLineNumbers,
-													onClick: () => {
-														setShowLineNumbers((value) => !value);
-													},
-													children: "#"
-												}),
-												(0, react_jsx_runtime.jsxs)("div", {
-													className: "writer-mode-switch",
-													role: "group",
-													"aria-label": t("editor"),
-													children: [(0, react_jsx_runtime.jsx)("button", {
-														type: "button",
-														"aria-pressed": mode === "edit",
-														onClick: () => {
-															setMode("edit");
-														},
-														children: t("modeEdit")
-													}), (0, react_jsx_runtime.jsx)("button", {
-														type: "button",
-														"aria-pressed": mode === "preview",
-														onClick: () => {
-															setMode("preview");
-														},
-														children: t("modePreview")
-													})]
-												}),
-												(0, react_jsx_runtime.jsx)("button", {
-													type: "button",
-													disabled: busy || conflict || version === void 0 || draft === saved,
-													onClick: save,
-													children: t("save")
-												})
-											]
+											className: "writer-masthead-actions",
+											children: [(0, react_jsx_runtime.jsxs)("div", {
+												className: "writer-counts",
+												title: t("filesCountHint"),
+												"aria-label": countsAria,
+												children: [
+													(0, react_jsx_runtime.jsxs)("span", {
+														className: "writer-count",
+														children: [
+															(0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
+															" ",
+															t("countLibraries")
+														]
+													}),
+													(0, react_jsx_runtime.jsxs)("span", {
+														className: "writer-count",
+														children: [
+															(0, react_jsx_runtime.jsx)("b", { children: projects.length }),
+															" ",
+															t("countProjects")
+														]
+													}),
+													(0, react_jsx_runtime.jsxs)("span", {
+														className: "writer-count",
+														children: [
+															(0, react_jsx_runtime.jsx)("b", { children: scans.length }),
+															" ",
+															t("countScans")
+														]
+													}),
+													(0, react_jsx_runtime.jsxs)("span", {
+														className: "writer-count",
+														children: [
+															(0, react_jsx_runtime.jsx)("b", { children: filesText }),
+															" ",
+															t("countFiles")
+														]
+													})
+												]
+											}), (0, react_jsx_runtime.jsxs)("span", {
+												className: "writer-connection",
+												"data-health": health,
+												role: "status",
+												title: connectionTitle,
+												children: [(0, react_jsx_runtime.jsx)("span", {
+													className: "writer-status-dot",
+													"aria-hidden": "true"
+												}), (0, react_jsx_runtime.jsx)("span", {
+													className: "writer-connection-label",
+													children: connectionLabel
+												})]
+											})]
 										})]
 									}),
-									mode === "edit" ? (0, react_jsx_runtime.jsxs)("div", {
-										className: showLineNumbers ? "writer-editor-body show-line-numbers" : "writer-editor-body",
-										children: [(0, react_jsx_runtime.jsx)(WriterLineNumbers, {
-											text: draft,
-											caret,
-											show: showLineNumbers,
-											textareaRef: editorRef
-										}), (0, react_jsx_runtime.jsx)("textarea", {
-											ref: editorRef,
-											"aria-label": active,
-											value: draft,
-											onChange: (event) => {
-												setDraft(event.target.value);
-												setCaret(event.target.selectionStart);
-												setNotice(void 0);
-											},
-											onSelect: (event) => {
-												setCaret(event.currentTarget.selectionStart);
-											},
-											onKeyUp: (event) => {
-												setCaret(event.currentTarget.selectionStart);
-											},
-											onClick: (event) => {
-												setCaret(event.currentTarget.selectionStart);
-											}
-										})]
-									}) : (0, react_jsx_runtime.jsx)("article", {
-										className: "writer-preview",
-										"aria-label": `${active} ${t("modePreview")}`,
-										dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) }
-									}),
-									(0, react_jsx_runtime.jsxs)("footer", {
-										className: "writer-status",
-										children: [
-											(0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
-											(0, react_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												children: "·"
-											}),
-											(0, react_jsx_runtime.jsx)("span", {
-												className: "writer-document-meta",
-												children: byteLabel
-											}),
-											(0, react_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												children: "·"
-											}),
-											(0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
-											extLabel !== "" && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												children: "·"
-											}), (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
-											(0, react_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												children: "·"
-											}),
-											(0, react_jsx_runtime.jsx)("span", { children: encodingText })
-										]
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										className: "writer-reload",
+										title: t("reload"),
+										"aria-label": t("reload"),
+										onClick: rescan,
+										children: (0, react_jsx_runtime.jsxs)("svg", {
+											viewBox: "0 0 24 24",
+											"aria-hidden": "true",
+											children: [(0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
+										})
 									})
-								] })
-							]
-						})]
+								]
+							}),
+							view === "projects" && (0, react_jsx_runtime.jsx)(BookPanel, {
+								sessionId,
+								cwd,
+								remote,
+								projects,
+								active,
+								draft,
+								dirty,
+								version,
+								visible,
+								onOpen: selectFile,
+								t
+							}),
+							(0, react_jsx_runtime.jsxs)("main", {
+								className: "writer-editor",
+								children: [
+									active === void 0 && documentNotice === void 0 && (0, react_jsx_runtime.jsx)("p", {
+										className: "writer-empty",
+										children: t("emptyHelp")
+									}),
+									writerDocument.storageError !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+										role: "alert",
+										className: "writer-alert",
+										children: t(writerDocument.storageError === "changed" ? "draftStorageConflict" : "draftStorageError")
+									}),
+									documentNotice !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+										role: "alert",
+										className: "writer-alert",
+										children: documentNotice
+									}),
+									active !== void 0 && !writerDocument.ready && !writerDocument.loading && (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => {
+											writerDocument.reload();
+										},
+										children: t("retryDocument")
+									}),
+									conflictOpen && (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
+										open: true,
+										onClose: () => {
+											setConflictOpen(false);
+										},
+										title: t("conflictTitle"),
+										description: t("conflictBody"),
+										closeLabel: t("conflictClose"),
+										footer: (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: () => {
+												setConflictOpen(false);
+											},
+											children: t("conflictKeep")
+										}), (0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											className: "writer-conflict-reload",
+											onClick: () => {
+												setConflictOpen(false);
+												writerDocument.reload(true);
+											},
+											children: t("conflictReload")
+										})] })
+									}),
+									active !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+										(0, react_jsx_runtime.jsxs)("header", {
+											className: "writer-editor-toolbar",
+											children: [(0, react_jsx_runtime.jsxs)("div", {
+												className: "writer-document-identity",
+												children: [(0, react_jsx_runtime.jsx)("nav", {
+													className: "writer-breadcrumbs",
+													"aria-label": t("breadcrumbs"),
+													children: crumbs.map((part, index) => (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && (0, react_jsx_runtime.jsx)("i", {
+														"aria-hidden": "true",
+														children: " / "
+													}), (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
+												}), (0, react_jsx_runtime.jsx)("h2", {
+													className: "writer-document-title",
+													title: active,
+													children: crumbs[crumbs.length - 1] ?? active
+												})]
+											}), (0, react_jsx_runtime.jsxs)("div", {
+												className: "writer-editor-actions",
+												children: [
+													(0, react_jsx_runtime.jsx)("span", {
+														className: "writer-dirty",
+														"data-state": dirtyState,
+														children: dirtyText
+													}),
+													(0, react_jsx_runtime.jsx)("button", {
+														type: "button",
+														className: "writer-line-numbers-toggle",
+														title: t("toggleLineNumbers"),
+														"aria-label": t("toggleLineNumbers"),
+														"aria-pressed": showLineNumbers,
+														onClick: () => {
+															setShowLineNumbers((value) => !value);
+														},
+														children: "#"
+													}),
+													(0, react_jsx_runtime.jsxs)("div", {
+														className: "writer-mode-switch",
+														role: "group",
+														"aria-label": t("editor"),
+														children: [
+															(0, react_jsx_runtime.jsx)("button", {
+																type: "button",
+																"aria-pressed": mode === "edit",
+																onClick: () => {
+																	setMode("edit");
+																},
+																children: t("modeEdit")
+															}),
+															(0, react_jsx_runtime.jsx)("button", {
+																type: "button",
+																"aria-pressed": mode === "preview",
+																onClick: () => {
+																	setMode("preview");
+																},
+																children: t("modePreview")
+															}),
+															(0, react_jsx_runtime.jsx)("button", {
+																type: "button",
+																"aria-pressed": mode === "diff",
+																onClick: () => {
+																	setMode("diff");
+																},
+																children: t("modeDiff")
+															})
+														]
+													}),
+													conflict ? (0, react_jsx_runtime.jsx)("button", {
+														type: "button",
+														onClick: () => {
+															setConflictOpen(true);
+														},
+														children: t("conflictReview")
+													}) : (0, react_jsx_runtime.jsx)("button", {
+														type: "button",
+														disabled: !writerDocument.ready || busy || version === void 0 || draft === saved,
+														onClick: save,
+														children: t("save")
+													})
+												]
+											})]
+										}),
+										mode === "edit" ? (0, react_jsx_runtime.jsxs)("div", {
+											className: showLineNumbers ? "writer-editor-body show-line-numbers" : "writer-editor-body",
+											children: [(0, react_jsx_runtime.jsx)(WriterLineNumbers, {
+												text: draft,
+												caret,
+												show: showLineNumbers,
+												textareaRef: editorRef
+											}), (0, react_jsx_runtime.jsx)("textarea", {
+												ref: editorRef,
+												"aria-label": active,
+												value: draft,
+												readOnly: !writerDocument.ready,
+												"aria-busy": writerDocument.loading,
+												onChange: (event) => {
+													writerDocument.edit(event.target.value);
+													setCaret(event.target.selectionStart);
+													setNotice(void 0);
+												},
+												onSelect: (event) => {
+													setCaret(event.currentTarget.selectionStart);
+												},
+												onKeyUp: (event) => {
+													setCaret(event.currentTarget.selectionStart);
+												},
+												onClick: (event) => {
+													setCaret(event.currentTarget.selectionStart);
+												}
+											})]
+										}) : mode === "diff" ? (0, react_jsx_runtime.jsx)("div", {
+											className: "writer-preview",
+											children: (0, react_jsx_runtime.jsx)(RevisionDiff, {
+												path: active,
+												before: saved,
+												after: draft,
+												t
+											})
+										}) : (0, react_jsx_runtime.jsx)("article", {
+											className: "writer-preview",
+											"aria-label": `${active} ${t("modePreview")}`,
+											dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) }
+										}),
+										(0, react_jsx_runtime.jsxs)("footer", {
+											className: "writer-status",
+											children: [
+												(0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
+												(0, react_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}),
+												(0, react_jsx_runtime.jsx)("span", {
+													className: "writer-document-meta",
+													children: byteLabel
+												}),
+												(0, react_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}),
+												(0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
+												extLabel !== "" && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}), (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
+												(0, react_jsx_runtime.jsx)("span", {
+													"aria-hidden": "true",
+													children: "·"
+												}),
+												(0, react_jsx_runtime.jsx)("span", { children: encodingText })
+											]
+										})
+									] })
+								]
+							})
+						]
 					})
 				]
 			});

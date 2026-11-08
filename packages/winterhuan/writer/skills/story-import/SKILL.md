@@ -6,6 +6,8 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-import：逆向导入已有小说
 
+**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按实际 `subagent` schema 加载随包角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+
 你是小说项目逆向工程师，把作者已有的书整理成**可续写的写作工程**，包含设定、大纲、正文及所需追踪。`拆文库/{导入书名}/` 保留为分析数据源；向作者汇报工程整理结果和续写入口。
 
 > Agent 兼容性：只检查当前宿主：Claude `.claude/agents/{agent}.md`（`subagent_type`）、OpenCode `.opencode/agents/{agent}.md`（`subagent` 的 `agent`）、Codex `.codex/agents/{agent}.toml`（`agent_type`）、Antigravity `.agents/agents/agent-name/agent.md`（`invoke_subagent` + `TypeName`）。ZCode 查插件注册的同名角色，用 `Agent` 按实际 schema 派发，不要求 `.zcode/agents`。仅角色/工具不可用或返回未知 agent 时降级 solo/direct，不因其他端目录存在或宿主名固定串行。

@@ -9,7 +9,7 @@ kind: "package-bundle"
 
 ## 概要
 
-本 bundle 给 DSH 增加写作模式。新会话可以使用 oh-story 的长篇、短篇和去 AI 味技能，右侧栏浏览拆文库、写作项目与扫榜记录并编辑允许的文本文件。默认 `skillMount` 为 `bundled`：预设直接读插件包内 `skills`，不自动拷进项目。需要写入项目时执行 `/writer-sync-skills`（强制覆盖包内同名目录）；用 `/writer-unsync-skills` 只删除这些 Writer 技能目录，保留其它 `.agents/skills`。把 `skillMount` 改成 `workspace` 并重启，即可在首次进入写作模式时自动拷贝。侧栏不嵌入、也不启动 oh-story Dashboard。
+本 bundle 为 DSH 增加写作预设、oh-story 技能与工作区侧栏。作者可以编辑文稿并恢复浏览器草稿，查看章节进度和版本化审稿，比较修改差异。技能默认来自插件包；项目同名副本优先。同步和撤销同步把原副本保留为可恢复备份。会话、文件访问和子代理由 DSH 提供，书内文件仍是数据来源。
 
 ## 目录
 
@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.9&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -52,7 +52,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 `workspace` 不设置 `bundledSkillDir`。会话第一次进入写作模式时，Host 把包内每个技能目录拷到 `<项目>/.agents/skills/<name>/`。项目是含 `.git` 的最近祖先；没有时用会话目录。目标目录已存在则不覆盖。技能靠项目根的 `.agents/skills` 被发现。
 
-两种模式下都可以执行 `/writer-sync-skills`，强制把包内技能写入 `.agents/skills`。`/writer-unsync-skills` 只删除与包内 `skills/` 同名的目录，不会动项目里其它技能。修改 `skillMount` 后要重启，预设在挂载时读取这个值。
+两种模式都支持 `/writer-skills-status`，显示包与 oh-story 版本、实际生效路径及与包内资源的差异。`/writer-sync-skills` 先暂存包内技能，再把现有 `.agents/skills` 副本移入 `.agents/writer-skill-backups/<批次>` 后替换。`/writer-unsync-skills` 只把包内同名技能移入备份，其它技能保留。`/writer-restore-skills <批次>` 恢复备份，并将被替换的当前副本保存为另一批次。命令返回备份路径，拒绝符号链接目标和自复制。`.dsh/skills` 覆盖只诊断、不修改。修改 `skillMount` 后需要重启。
 
 ```yaml
 - id: writer
@@ -78,11 +78,25 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 ### 使用侧栏
 
-先打开写作模式，再从右侧栏打开写作。左栏信息架构对齐 oh-story Dashboard（等分 Tab → 文件名搜索 → 树 → 脚注），皮肤仍跟 DSH。拆文库 / 项目 / 扫榜三个 Tab（带数量）、懒加载真实目录树（约 200 条分页，根默认收起；打开文稿所在链路自动展开）、换文件脏确认、可编扩展名为 `.md` / `.txt` / `.json` / `.yaml` / `.yml` / `.toml`。文件名搜索（防抖、限当前 Tab、对齐 Dashboard 结果/节点/深度上限），Esc 清空；侧栏可见且焦点不在对话输入时 ⌘/Ctrl+K 聚焦搜索，⌘/Ctrl+S 保存。编辑 ↔ Markdown 预览、脏态（待保存/已保存/保存中）、分段面包屑、可切换行号 gutter（滚动对齐与当前行）、编辑器底栏（行·列、字节、字数、扩展名、UTF-8·EOL），保存时保留原换行。舞台顶栏显示工作区短名、「本地工作区 · 文稿不会上传」徽标与列举健康态（可用 / 部分失败 / 扫描失败）；拆文库/写作项目/扫榜/已展开文稿计数（或「按需」）在舞台过窄时隐藏（Tab 徽标仍有数量）。扫描失败时有明确提示与重试。树行用 DSH 文件类型图标（文件夹开/合两态），markdown 不显示扩展名徽标；搜索命中单行显示并高亮关键词、随行附目录；左栏脚注只留健康点与本地工作区文案（异常时附健康态文字）。保存带上一次读取得到的版本；磁盘冲突时弹出 dialog（保留当前编辑 / 重新载入磁盘版本），保存暂停直至重载。列表、读取与搜索遍历走会话的 `workspaceFiles`，**不**启动本机 dashboard-server。删文件与视图态 localStorage 持久化仍未接入（P3e 补齐编辑壳抛光）。
+在 `writer` 会话中打开写作侧栏。拆文库、项目和按日期保存的扫榜记录分别提供 Tab、懒加载目录树和文件名搜索。编辑器支持 `.md`、`.txt`、`.json`、`.yaml`、`.yml`、`.toml`，提供 Markdown 预览、行号、原换行保留，以及相对载入版本的修改对比。Cmd/Ctrl+S 保存；焦点不在对话输入时，Cmd/Ctrl+K 聚焦文件名搜索。
 
-「扫榜」Tab 按日期倒序列出 `扫榜/YYYYMMDD/` 记录，包括同日重复扫描的 `-2` 等后缀。展开记录时默认预览长篇的 `选题决策.md` 或短篇的 `短篇扫榜结论.md`；没有结论时，打开 `扫榜聚合.md` 或首份可读取的 Markdown 榜单。展开后的目录树保留全部聚合表与原始榜单入口，文件名搜索只查当前 Tab。缺少结论的记录仍会显示；扫榜目录与写作项目分开列出。
+未保存正文及其磁盘基线按工作区和文件路径保存在当前浏览器。收起侧栏保留编辑器，重新打开页面恢复上次文稿和草稿。读取或保存失败保留草稿。存储失败持续提示，带未保存修改离开页面会触发浏览器提醒。另一会话更新了恢复副本时会报告冲突，不覆盖它。恢复仅限当前浏览器源；存储被禁用或已满时可能不可用，不能代替书稿备份。
 
-在 DSH 里，`story-setup` 把宿主认成 `dsh`，不部署 Claude Code 的 `.claude/hooks`，也不部署 Codex 的 `.codex/hooks.json`。作者明确要求其他宿主时，那些宿主仍走自己的部署文件。
+保存必须携带上次读取的版本号。迟到的读取或保存回包不会更新另一文稿或会话。磁盘变更时保留本地草稿并暂停保存，直到作者重新载入磁盘版本。换文件前询问是否放弃未保存修改。扫榜 Tab 打开日期记录中的结论、聚合表或可读取榜单。
+
+### 章节进度与审稿
+
+在项目视图展开「章节进度与审稿」。选择作品和章节，或打开章节正文来查看。未选正文时，面板使用 `.active-book` 或唯一发现的作品，并默认显示下一未提交章。刷新重新读取文件，不放弃编辑器草稿。
+
+进度来自 `追踪/_tracking-state.json`，包含已提交章号和下一章承诺。`storyctl.py chapter check` 将机械检查写入 `.story/checks/第NNN章.json`，正文或细纲指纹变化使结果过期。记录缺失或不可读不等于通过。可以打开 `.story/work/第NNN章/` 中的未完成材料，再在对话里要求继续该章。
+
+`story-review` 将带引文的意见记录到 `.story/reviews/第NNN章.json`，短篇使用 `正文.json`。记录包含审稿时正文指纹与文本、严重度、行号、引文、解释和建议。侧栏分别显示机械检查与内容审稿，并比较当前文本和审稿版本。正文变化（包括未保存草稿）会将审稿标记为过期，不再把旧的接受或处理结论显示为当前有效。
+
+在对话中要求接受某条意见或重新核对修订。审稿记录器要求当前指纹和每项决定的理由，过期记录必须重新审查。语义意见不增加强制章节提交门禁。版本化审稿最多记录 1 MiB 正文与 100 条意见；超出时应拆分请求或只给报告，不宣称已有版本化记录。
+
+### DSH 写作角色
+
+`story-setup` 识别 DSH 并跳过其他宿主的 hooks，检查模式诊断实际技能来源。写作、研究、拆文和审稿通过组装后的包内角色说明调用 DSH 原生 `subagent`，不要求其它软件的项目角色目录。子会话接收明确的工作区、职责、参考路径和任务。缺少工具或运行失败时如实报告由主会话直接执行。Writer 使用 DSH 侧栏与插件更新流程。
 
 -----
 
@@ -114,7 +128,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 #### 模型看到的内容
 
-预设为 `writer` 的会话会看到该预设的 persona，以及 oh-story 技能目录，其中包括 `story`、`story-long-write`、`story-short-write`、`story-deslop`、`story-zhuque`、扫榜/拆文/封面技能和 `browser-cdp`。persona 要求按任务加载对应技能，在 DSH 上跑 `story-setup` 时跳过 Claude Code 与 Codex 的 hooks，并且不要启动 oh-story Dashboard。`story-zhuque` 只用于作者明确提出的朱雀检测。侧栏保存不是模型工具。
+预设为 `writer` 的会话会看到该预设的 persona，以及 oh-story 技能目录，其中包括 `story`、`story-long-write`、`story-short-write`、`story-deslop`、`story-zhuque`、扫榜/拆文/封面技能和 `browser-cdp`。persona 要求按任务加载对应技能，在 DSH 上跑 `story-setup` 时跳过 Claude Code 与 Codex 的 hooks，并且不要启动 oh-story Dashboard。`story-zhuque` 只用于作者明确提出的朱雀检测。侧栏保存不是模型工具。 DSH 任务技能按需读取原生角色派发说明。角色组装器返回完整提示词文本，调用方将它连同参考路径交给子会话。审稿说明要求分析前取得正文指纹、完成后写入经过校验的记录。技能诊断和恢复命令返回生效路径及备份位置。这些操作只在调用时增加上下文。
 
 #### Token 影响
 
@@ -127,7 +141,7 @@ persona 在该预设修订的生命周期内保持稳定。默认 `bundled` 时�
 ## 已知限制与待办
 <a id="known-limitations-and-deferred-work"></a>
 
-- 侧栏对标 Dashboard 的拆文库/写作项目发现、可编扩展、文件名搜索、预览、编辑器壳、P3d 顶栏/健康态与 P3e 面包屑/行号/底栏字节/冲突 dialog/文稿计数/仅本机文案，但不启本机 dashboard-server，也不换 zs 主题。删文件与视图态 localStorage 持久化尚未做。它不创建书、不做章节守卫，也不自建读取接口。`workspace` 在执行 `/writer-sync-skills` 之前不会替换已有技能目录。`/writer-unsync-skills` 只删除包内同名 Writer 技能目录。若以前拷过一份且发现仍包含项目根，项目里的副本仍然优先于 bundled 技能。朱雀只在调用 `story-zhuque` 且对应环境变量已设置时运行。封面生图只在作者要求出图且已配置 `GPT_IMAGE_API_KEY`（或配置的名字）时走 API；仅提示词不需要密钥。
+- 不提供文件删除和自动合稿。浏览器草稿不跨设备或浏览器源共享。打开面板、编辑器保存后或手动刷新时更新报告；外部文件修改需要刷新。机械检查和版本指纹不认证文学质量或审稿独立性。项目副本在更新或移出之前仍优先于包内技能。朱雀与封面生图仍须作者明确请求并使用各自配置的凭据。
 
 <a id="dev-note"></a>
 ### 开发备注

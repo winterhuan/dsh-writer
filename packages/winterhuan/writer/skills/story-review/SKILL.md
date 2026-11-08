@@ -6,6 +6,8 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-review：多视角对抗式审查
 
+**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按实际 `subagent` schema 加载随包角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+
 > Spawn 版本提示（不阻断 spawn）：先读取项目根 `.story-deployed` 的 `agents_version`。与本版 `agents_version: 39` 不一致时（标记缺失、字段缺失/非整数、小于或大于 38）**照常按当前宿主角色来源检查并 spawn**；同时在「这次怎么审的」里用一句白话提示作者「审稿助手是旧版，运行 /story-setup（ZCode 先更新插件）后新开会话」，`Notice: agents bundle 版本不匹配（项目 {N}，本版 39）` 原文写进技术备注行；大于 38 时额外提示先更新 oh-story-claudecode，不要用本地旧版 setup 降级覆盖。版本提示本身不触发降级；文件缺失或异常、工具不可用、递归限制或调用失败按 Phase 0 处理，技术备注写 `Fallback: ... -> solo`。
 
 你负责协调审查，找出小说的结构、角色、文字与设定问题，给出有原文依据的修改建议。
@@ -132,7 +134,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
    - 优先把文件路径、章节名、行号范围传给 reviewer，不要把整本或大量章节完整复制进每个 prompt。
    - 单文件或短片段可附 300-1200 字关键摘录。
    - 多章/整卷/整本审查必须分批：按章节或文件组拆分，每批输出独立 findings，再综合；分批前先完整读 [references/batch-review.md](references/batch-review.md)（跨批状态、连续性、乱序提醒）。
-3. **读取支撑材料**：solo 和分批审查时由你读正文、相关设定、角色档案、大纲、`追踪/上下文.md` 与伏笔文件；full/lean 只读定范围、定平台和分批开放项要用的文件，其余由 reviewer 按路径自己读。缺材料时在报告里标为证据不足。
+3. **固定正文版本并读取支撑材料**：本地正文先按 [审稿记录](references/review-record.md) 计算原始字节摘要，保存后再读稿或派 reviewer；报告与记录使用该摘要。solo 和分批审查时由你读正文、相关设定、角色档案、大纲、`追踪/上下文.md` 与伏笔文件；full/lean 只读定范围、定平台和分批开放项要用的文件，其余由 reviewer 按路径自己读。缺材料时在报告里标为证据不足。
 4. **识别篇幅与目标平台，加载 rubric**：
    - 通用 rubric 每次都加载：读 `story-review/references/quality-rubric.md`，不可读时用内置通用网文内容 rubric。平台表叠加在通用 rubric 上，不替代它。
    - 篇幅：书目录下有 `正文/` 或 `设定/` 子目录的是长篇，有 `正文.md` 或 `设定.md` 文件的是短篇（与 `/story` 路由同一口径）。
@@ -158,7 +160,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
    - 将 `ellipsis`、`double-hyphen`、`markdown-divider` 结果作为 `format` findings 合并进报告。`em-dash` 破折号只采用 `check-ai-patterns.js` 的语义改写建议（见下条）；`normalize-punctuation.js` 报的同一位置 `em-dash` 在合并时去重丢弃，避免同处出现「机械替换」与「按功能改写」两条相互冲突的 finding。另外人工检查标点节奏是否通篇句号化或随机堆砌，脚本不替代语气判断。
    - `check-ai-patterns.js` 的 blocking / advisory 都先作为 `prose` 候选，按 `style_resolution`、原文功能及三层方法逐条复核；确认造成具体阅读损失后，按下方严重度定义定级。功能性纠错、叙述与停顿保留，不把脚本级别直接换成必须修改的 finding。检测器改法仅作参考，不覆盖文风与事实边界。完整语义复核见 `expression.md`、`narrative-focus.md`、`story-logic.md`，只报告问题与建议，不落改。
    - `check-degeneration.js` 报告模型退化（逐字复读/截断/占位符/工程词泄漏），每条带 `severity: blocking|advisory`：blocking（复读/截断/tier1 工程词）作为 S1/S2 `prose` findings，修复建议是「重新生成该段，不是改写」；advisory（tier2 章节/歧义词）作为 S3。
-   - 这三个预检脚本只读；`story-review` **不修改正文、设定或大纲文件**，需要自动修复正文时建议转 `/story-deslop`。full / lean 模式只有下方「追踪文件维护」允许修改 `追踪/`；分批审查的所有模式都可按 batch-review.md 写 **.story-review/state.md**，solo 除该状态外不写项目内容。
+   - 这三个预检脚本只读；`story-review` **不修改正文、设定或大纲文件**，需要自动修复正文时建议转 `/story-deslop`。full / lean 模式只有下方「追踪文件维护」允许修改 `追踪/`；分批审查的所有模式都可按 batch-review.md 写 **.story-review/state.md**，所有模式都可按 [审稿记录](references/review-record.md) 写 `.story/reviews/` 与书内工作目录；solo 不写其他项目内容。
    - 默认 `--quote-mode keep`，不把知乎盐言短篇的 `「」` 当作问题；只有项目明确指定引号风格时才检查对应转换建议。
 
 ---
@@ -203,6 +205,10 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ## solo 模式
 
 降级或指定 solo 时读 [references/solo.md](references/solo.md)，按其中流程与输出格式执行。
+
+## 保存审稿记录
+
+本地正文完成 full、lean 或 solo 审查后，主会话按 [审稿记录](references/review-record.md) 验证并保存 findings 与实际模式；报告给出已保存记录的路径。审稿记录不代替下方追踪修订。
 
 ## 追踪文件维护
 

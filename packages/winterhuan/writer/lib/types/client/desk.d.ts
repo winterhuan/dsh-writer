@@ -15,6 +15,6 @@ interface DeskProps {
  * @param props - session, workspace root, remote, and copy.
  * @returns the desk.
  */
-export declare function WriterDesk({ sessionId, cwd, remote, t, visible }: DeskProps): import("react/jsx-runtime").JSX.Element;
+export declare function WriterDesk(props: DeskProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=desk.d.ts.map

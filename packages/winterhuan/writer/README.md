@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-This bundle adds 写作模式 to a DSH profile. A new session can use the oh-story skills for serials, short stories, and revision, and the sidebar browses libraries, projects, and market scans with editable text files. By default `skillMount` is `bundled`: the preset reads the package `skills` directory without copying into the project. Run `/writer-sync-skills` to write packaged skills into `<project>/.agents/skills` (force replace). Run `/writer-unsync-skills` to remove only those Writer skill directories and keep other project skills. Set `skillMount` to `workspace` and restart for first-entry auto-copy. The sidebar does not embed or start the oh-story dashboard.
+This bundle adds a writing preset, oh-story skills, and a workspace sidebar to DSH. Authors can edit manuscripts with browser draft recovery, inspect chapter progress and versioned reviews, and compare revisions. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups. DSH supplies sessions, filesystem access, and subagents; book files remain the source of truth.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ This bundle adds 写作模式 to a DSH profile. A new session can use the oh-sto
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#babf5dc849fc89d721c43901b2e6c64c00fed62f&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.9&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -52,7 +52,7 @@ In `bundled` mode the host does not auto-copy skills. The preset's skill-filesys
 
 In `workspace` mode the host does not set `bundledSkillDir`. The first time a session enters 写作模式, the host copies each packaged skill directory to `<project>/.agents/skills/<name>/`, where the project is the nearest ancestor containing `.git`, or the session directory when there is none. A directory that already exists is left unchanged. Skill discovery uses the normal project root `.agents/skills`.
 
-Either mode can run `/writer-sync-skills` to force-write packaged skill directories into `.agents/skills`. Run `/writer-unsync-skills` to delete only the packaged skill names (the same directory names under this package's `skills/`); other folders under `.agents/skills` stay. Restart after changing `skillMount`, because the preset reads the mode when it mounts.
+Both modes support `/writer-skills-status`, which shows package and oh-story versions, effective skill paths, and differences from bundled resources. `/writer-sync-skills` stages packaged skills before moving existing `.agents/skills` copies into `.agents/writer-skill-backups/<batch>` and replacing them. `/writer-unsync-skills` moves only packaged skill names into a backup; other skills stay. `/writer-restore-skills <batch>` restores a backup and preserves displaced current copies in another batch. Commands report backup paths; symlink destinations and self-copy are rejected. `.dsh/skills` overrides are diagnosed but never changed. Restart after changing `skillMount`.
 
 ```yaml
 - id: writer
@@ -78,11 +78,25 @@ These packaged skills are author-triggered. They do not block chapter writing.
 
 ### Use the sidebar
 
-Open 写作模式, then open 写作 from the right sidebar. The left rail follows Dashboard information architecture (equal tabs → filename search → tree → footnote); skin stays on DSH tokens. Libraries / Projects / Scans tabs (with counts), lazy real directory tree (~200-entry pages, roots start collapsed; the chain holding the open file auto-expands), dirty-switch confirm, and editable extensions `.md` / `.txt` / `.json` / `.yaml` / `.yml` / `.toml`. Filename search (debounced, scoped to the active tab, Dashboard result/node/depth caps) with Esc to clear; ⌘/Ctrl+K focuses search when the chat composer is not focused; ⌘/Ctrl+S saves. Edit ↔ Markdown preview, dirty badge (unsaved / saved / saving), segmented breadcrumbs, a toggleable line-number gutter (scroll-synced, active line), editor status bar (line·column, bytes, character count, extension, UTF-8·EOL), and EOL preserved on save. The stage masthead shows the workspace short name, the local-workspace badge, and listing health (ready / partial / failed) with an explicit retry when a scan fails; the library/project/scan/loaded-draft counts (or “on demand”) hide when the stage gets narrow (the tab badges keep the counts). Tree rows use DSH file-type icons (folders switch open/closed), markdown files carry no extension badge; search hits are single-line with the query highlighted and the directory inline. The rail footnote keeps only the health dot and the local-workspace copy (health text joins it when unhealthy). A save sends the version from the last read. On a disk conflict, a dialog offers keep-current-edits or reload-from-disk; saving stays paused until reload. Lists, reads, and search walks use the session `workspaceFiles` remote; the sidebar does **not** start a local dashboard-server. Delete and view-state persistence (localStorage) are still deferred (P3e covers the editor-shell polish).
+Open the writing sidebar in a `writer` session. Libraries, projects, and dated market scans have separate tabs, lazy directory trees, and filename search. The editor supports `.md`, `.txt`, `.json`, `.yaml`, `.yml`, and `.toml`, Markdown preview, line numbers, original line endings, and a comparison with the loaded version. Cmd/Ctrl+S saves; Cmd/Ctrl+K focuses filename search when the chat composer is not focused.
 
-The Scans tab lists `扫榜/YYYYMMDD/` records newest first, including same-day suffixes such as `-2`. Expand a record to preview `选题决策.md` (long-form) or `短篇扫榜结论.md` (short-form). If neither is available, it opens `扫榜聚合.md` or the first readable Markdown ranking file. The expanded tree keeps every aggregate and original ranking file accessible; search stays within the selected tab. Missing conclusions do not hide a record. Scan folders are separate from writing projects.
+Unsaved text and its disk baseline are stored in this browser under the workspace and file path. Hiding the sidebar preserves the editor; reopening the page restores the last document and its draft. Failed reads or saves retain the draft. Storage failures stay visible, and leaving the page with unsaved changes triggers the browser warning. Concurrent recovery-copy changes are reported rather than overwritten. Recovery is local to this browser origin and may be unavailable when storage is disabled or full; it is not a manuscript backup.
 
-On DSH, `story-setup` treats the host as `dsh` and does not deploy Claude Code `.claude/hooks` or Codex `.codex/hooks.json`. Other hosts still follow their own deploy files when you ask for them.
+Saving requires the version returned by the last read. Late reads and save replies cannot update another document or session. If the disk changed, the editor preserves the local draft and pauses saving until the author reloads the disk version. Switching files asks before discarding unsaved edits. The market-scan tab opens each dated record's conclusion, aggregate, or readable ranking report.
+
+### Chapter progress and reviews
+
+Expand “Chapter progress and reviews” in the Projects view. Select a book and chapter, or open a chapter manuscript to inspect it. Without a selected manuscript, the panel uses `.active-book` or the only discovered book and defaults to the next uncommitted chapter. Refresh reads current files without discarding the editor draft.
+
+Progress comes from `追踪/_tracking-state.json`: the last committed chapter and next-chapter commitments. `storyctl.py chapter check` records mechanical results in `.story/checks/第NNN章.json`; manuscript or outline fingerprint changes invalidate them. Missing or unreadable records do not imply a pass. Incomplete files under `.story/work/第NNN章/` can be opened before asking the assistant to continue that chapter.
+
+`story-review` records cited findings in `.story/reviews/第NNN章.json` (short stories use `正文.json`). Each record includes the reviewed manuscript fingerprint and text, severity, line, quotation, explanation, and suggestion. The sidebar distinguishes mechanical checks from content review and compares current text with the reviewed version. Changing the manuscript, including an unsaved draft, marks the review stale and stops presenting earlier accepted or resolved findings as current.
+
+Ask the assistant to accept a finding or recheck a revision. The review recorder requires the current fingerprint and a reason for each decision; stale records must be reviewed again. Semantic findings do not add a mandatory chapter-commit gate. Recording a review is limited to 1 MiB of manuscript and 100 findings; larger requests must be split or reported without claiming a versioned record.
+
+### DSH writing roles
+
+`story-setup` detects DSH and skips other hosts' hooks. Its check mode diagnoses effective skill sources. Writing, research, analysis, and review use packaged role instructions assembled for DSH's native `subagent` tool; project role directories from other applications are not prerequisites. The child receives an explicit workspace, role, references, and task. Missing tools or runtime failures are reported as a direct-review fallback. Writer uses the DSH sidebar and plugin update flow.
 
 -----
 
@@ -114,7 +128,7 @@ The patch in [cordis.patch.yml](cordis.patch.yml) inserts the host and the prese
 
 #### What the model sees
 
-A session on preset `writer` receives the preset persona and the oh-story skill catalog, including `story`, `story-long-write`, `story-short-write`, `story-deslop`, `story-zhuque`, scan/analyze/cover skills, and `browser-cdp`. The persona tells the model to load the matching skill, to skip Claude Code and Codex hooks during `story-setup` on DSH, and not to start the oh-story dashboard. `story-zhuque` is for an explicit Zhuque request. The sidebar save is not a model tool.
+A session on preset `writer` receives the preset persona and the oh-story skill catalog, including `story`, `story-long-write`, `story-short-write`, `story-deslop`, `story-zhuque`, scan/analyze/cover skills, and `browser-cdp`. The persona tells the model to load the matching skill, to skip Claude Code and Codex hooks during `story-setup` on DSH, and not to start the oh-story dashboard. `story-zhuque` is for an explicit Zhuque request. The sidebar save is not a model tool. DSH task skills load the native-role dispatch reference on demand. The role builder returns the assembled prompt text, which is sent to the child with the referenced resource paths. Review instructions require a manuscript fingerprint before analysis and a validated record afterward. Skill diagnostics and recovery commands return effective paths and backup locations. These operations add context only when invoked.
 
 #### Token effect
 
@@ -127,7 +141,7 @@ The persona is stable for the life of the preset revision. With the default `bun
 ## Known Limitations and Deferred Work
 <a id="known-limitations-and-deferred-work"></a>
 
-- The sidebar mirrors Dashboard library/project discovery, editable extensions, filename search, preview, editor-shell basics, P3d masthead/health polish, and P3e breadcrumbs/line numbers/byte meta/conflict dialog/draft counts/local-workspace copy, without starting a local dashboard-server or adopting the zs theme. Delete and view-state localStorage persistence are still deferred. It does not create a book, run chapter guards, or list files through a private read API. `workspace` mode will not replace an existing skill directory until `/writer-sync-skills`. `/writer-unsync-skills` removes only packaged Writer skill names. A project copy still outranks a bundled skill if both are present after an earlier copy and discovery includes project roots. Zhuque runs only when `story-zhuque` is invoked and the named environment variable is set. Cover image generation needs `GPT_IMAGE_API_KEY` (or the configured name) only when the author asks for an image; prompt-only delivery does not.
+- File deletion and automatic manuscript merging are not provided. Browser drafts are not shared across devices or origins. Reports refresh when opened, after an editor save, or on explicit refresh; external file edits require refresh. Mechanical checks and version fingerprints do not certify literary quality or reviewer independence. Workspace copies still override bundled skills until updated or removed. Zhuque and cover generation remain explicit author requests with their own configured credentials.
 
 <a id="dev-note"></a>
 ### Dev Note

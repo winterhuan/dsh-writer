@@ -1,44 +1,42 @@
-/** Outcome of one copy into `.agents/skills`. */
+/** Outcome of copying Writer skills; replaced directories remain in `backupPath`. */
 export interface SyncResult {
-    /** Project root that owns `.agents/skills`. */
     readonly root: string;
-    /** Destination skill root. */
     readonly destination: string;
-    /** Skill directory names written by this call. */
     readonly copied: readonly string[];
-    /** Skill directory names left untouched because they already existed. */
     readonly skipped: readonly string[];
+    readonly backupPath?: string;
 }
-/** Outcome of removing packaged skill directories from `.agents/skills`. */
+/** Outcome of moving Writer skill directories out of discovery into a backup. */
 export interface UnsyncResult {
-    /** Project root that owns `.agents/skills`. */
     readonly root: string;
-    /** Destination skill root. */
     readonly destination: string;
-    /** Skill directory names removed by this call. */
     readonly removed: readonly string[];
-    /** Packaged skill names that were not present under `.agents/skills`. */
     readonly missing: readonly string[];
+    readonly backupPath?: string;
+}
+/** Restored directories and any displaced current copies. */
+export interface RestoreResult {
+    readonly destination: string;
+    readonly restored: readonly string[];
+    readonly backupPath?: string;
 }
 /**
  * Nearest ancestor containing `.git`, or the workspace directory itself.
- * Matches skill-filesystem's project root so the copy lands where discovery looks.
  * @param workspaceDir - session working directory.
- * @returns the project root.
+ * @returns the root used by filesystem skill discovery.
  */
 export declare function projectRootFor(workspaceDir: string): Promise<string>;
 /**
- * Directory names under the packaged `skills/` tree that contain `SKILL.md`.
- * Used by sync and unsync so only Writer-owned skill folders are touched.
- * @param sourceDir - packaged skills directory.
- * @returns sorted skill directory names.
+ * Names of ordinary packaged directories containing `SKILL.md`.
+ * @param sourceDir - packaged skills root.
+ * @returns sorted skill names; symlink entries are excluded.
  */
 export declare function packagedSkillNames(sourceDir: string): Promise<readonly string[]>;
 /**
- * Copy packaged skill directories into `<project>/.agents/skills/<name>`.
- * An existing destination is left in place unless `force` is set.
- * @param options - source tree, workspace directory, and whether to replace existing skills.
- * @returns which skill names were copied or skipped.
+ * Copy Writer skills, preserving every replaced directory in a separate backup batch.
+ * All source and destination trees are validated before the first replacement.
+ * @param options - package source, session directory and explicit replacement choice.
+ * @returns copied/skipped names and the backup path when previous copies existed.
  */
 export declare function syncWriterSkills(options: {
     readonly sourceDir: string;
@@ -46,13 +44,21 @@ export declare function syncWriterSkills(options: {
     readonly force: boolean;
 }): Promise<SyncResult>;
 /**
- * Remove packaged Writer skill directories from `<project>/.agents/skills/<name>`.
- * Only deletes names that exist under the packaged `skills/` tree; other project skills stay.
- * @param options - source tree (for the name allowlist) and workspace directory.
- * @returns which skill names were removed or already missing.
+ * Move only package-named workspace skills to a recoverable backup batch.
+ * @param options - package source for the name allowlist, and session directory.
+ * @returns moved/missing names and the backup location.
  */
 export declare function unsyncWriterSkills(options: {
     readonly sourceDir: string;
     readonly workspaceDir: string;
 }): Promise<UnsyncResult>;
+/**
+ * Restore one backup batch; preserve both the batch and displaced current copies.
+ * @param options - session directory and direct batch name inside writer-skill-backups.
+ * @returns restored skill names and a backup of any displaced copies.
+ */
+export declare function restoreWriterSkills(options: {
+    readonly workspaceDir: string;
+    readonly batch: string;
+}): Promise<RestoreResult>;
 //# sourceMappingURL=sync-skills.d.ts.map
