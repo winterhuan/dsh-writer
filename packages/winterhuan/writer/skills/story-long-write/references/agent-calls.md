@@ -1,6 +1,6 @@
 # agent-calls.md：spawn 子代理的调用方式
 
-DSH 派发先读 [DSH 子会话说明](../../story-setup/references/dsh-agents.md)：把下列任务 prompt 交给角色组装脚本，再调用实际 `subagent`；角色模板名不是注册的 preset。
+DSH 派发先读 [DSH 子会话说明](../../story-setup/references/dsh-agents.md)：调用 `writer_agent`，将下列角色名放入 `role`、任务要求放入 `prompt`；后续任务通过返回的子会话 ID 续接。
 
 派出 agent 时才读。下文只给目标角色与 prompt；调用参数按 SKILL 顶部的当前宿主映射，不照搬其他宿主工具字段。
 

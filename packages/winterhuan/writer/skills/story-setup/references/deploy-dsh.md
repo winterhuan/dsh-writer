@@ -26,7 +26,7 @@ DSH 没有 Claude Code / Codex 的 hook 运行时。本文件**禁止**写入或
    references_dir: .agents/skills/story-setup/references/agent-references
    ```
    bundled 且工作区没有 `.agents/skills/story-setup` 时，`references_dir` 写插件包内 `skills/story-setup/references/agent-references` 的绝对路径。
-3. 需要写作或审稿助手时使用 [DSH 子会话说明](dsh-agents.md) 的随包角色正文与原生 `subagent`，不安装其他宿主的 agent 配置。
+3. 需要写作或审稿助手时使用 [DSH 子会话说明](dsh-agents.md) 的 `writer_agent` 角色派发入口，不安装其他宿主的 agent 配置。
 4. 不改 `CLAUDE.md`。不把 Codex / Claude Code 的管理块写进 `AGENTS.md`。
 
 ## 验证

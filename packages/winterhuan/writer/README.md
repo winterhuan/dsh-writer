@@ -28,7 +28,7 @@ This bundle adds a writing preset, oh-story skills, and a workspace sidebar to D
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.9&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.10&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -96,7 +96,7 @@ Ask the assistant to accept a finding or recheck a revision. The review recorder
 
 ### DSH writing roles
 
-`story-setup` detects DSH and skips other hosts' hooks. Its check mode diagnoses effective skill sources. Writing, research, analysis, and review use packaged role instructions assembled for DSH's native `subagent` tool; project role directories from other applications are not prerequisites. The child receives an explicit workspace, role, references, and task. Missing tools or runtime failures are reported as a direct-review fallback. Writer uses the DSH sidebar and plugin update flow.
+`story-setup` detects DSH and skips other hosts' hooks; check mode diagnoses effective skill sources. The model supplies a role, task, and book directory to `writer_agent`. The plugin loads the role from the session's effective `story-setup` and delegates through native `subagent`; project skill copies retain precedence. Each call creates a new instance and returns its native child session ID. The main agent manages this ID for the task. Follow-ups within the same task use `send_message`; independent tasks and reviews requiring fresh context create new instances. Discovery and interruption use `list_agents` and `interrupt_agent`. Roles share the Writer Preset and inherit native child model defaults; explicit model selection remains subject to DSH policy. Missing roles, tools, or failed starts are reported for the main session to handle under the skill workflow. Read-only role instructions constrain the prompt without creating a separate sandbox or loading another host's model, tool, or hook configuration.
 
 -----
 
@@ -128,11 +128,11 @@ The patch in [cordis.patch.yml](cordis.patch.yml) inserts the host and the prese
 
 #### What the model sees
 
-A session on preset `writer` receives the preset persona and the oh-story skill catalog, including `story`, `story-long-write`, `story-short-write`, `story-deslop`, `story-zhuque`, scan/analyze/cover skills, and `browser-cdp`. The persona tells the model to load the matching skill, to skip Claude Code and Codex hooks during `story-setup` on DSH, and not to start the oh-story dashboard. `story-zhuque` is for an explicit Zhuque request. The sidebar save is not a model tool. DSH task skills load the native-role dispatch reference on demand. The role builder returns the assembled prompt text, which is sent to the child with the referenced resource paths. Review instructions require a manuscript fingerprint before analysis and a validated record afterward. Skill diagnostics and recovery commands return effective paths and backup locations. These operations add context only when invoked.
+A session on preset `writer` receives the preset persona and the oh-story skill catalog, including `story`, `story-long-write`, `story-short-write`, `story-deslop`, `story-zhuque`, scan/analyze/cover skills, and `browser-cdp`. The persona tells the model to load the matching skill, to skip Claude Code and Codex hooks during `story-setup` on DSH, and not to start the oh-story dashboard. `story-zhuque` is for an explicit Zhuque request. The sidebar save is not a model tool. DSH task skills load the native-role dispatch reference on demand. The `writer_agent` parameters list seven roles and their responsibilities. The plugin sends role instructions and the task directly to the child; the main session receives only the role name and child session ID. Review instructions require a manuscript fingerprint before analysis and a validated record afterward. Skill diagnostics and recovery commands return effective paths and backup locations. These operations add context only when invoked.
 
 #### Token effect
 
-The persona prefix is sent on every turn of a writing session. Loading a skill adds that skill's instructions for that turn. Sessions on another preset do not receive this persona or the forced skill copy.
+The persona prefix and role tool schema are sent on every turn of a writing session; role bodies enter only the delegated child conversation. Loading a skill adds that skill's instructions for that turn. Sessions on another preset do not receive this persona or the forced skill copy.
 
 #### KV Cache effect
 

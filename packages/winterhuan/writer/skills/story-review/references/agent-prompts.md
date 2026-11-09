@@ -1,6 +1,6 @@
 # story-review：full/lean 模式派子代理与综合
 
-DSH 派发先读 [DSH 子会话说明](../../story-setup/references/dsh-agents.md)：把下列任务 prompt 交给角色组装脚本，再调用实际 `subagent`；角色模板名不是注册的 preset。
+DSH 派发先读 [DSH 子会话说明](../../story-setup/references/dsh-agents.md)：调用 `writer_agent`，将下列角色名放入 `role`、任务要求放入 `prompt`；后续任务通过返回的子会话 ID 续接。
 
 只有实际模式仍是 full/lean 时才读本文件。
 

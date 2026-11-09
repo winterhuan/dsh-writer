@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@deepseek-ai/cordis'
@@ -27,7 +27,8 @@ it('runs source diagnostics in a real agent and unregisters every command on unl
   const execute = async (input: string) => ctx.commands.execute(agent, input, [], new AbortController().signal)
   const status = await execute('/writer-skills-status')
   expect(status?.result.kind, JSON.stringify(status?.result)).toBe('success')
-  expect(status?.result.text).toContain('Writer 0.1.9')
+  const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
+  expect(status?.result.text).toContain(`Writer ${manifest.version}`)
   expect(status?.result.text).toContain('story-long-write：bundled')
   expect((await execute('/writer-skills-status unexpected'))?.result.kind).toBe('error')
   expect((await execute('/writer-restore-skills'))?.result.kind).toBe('error')

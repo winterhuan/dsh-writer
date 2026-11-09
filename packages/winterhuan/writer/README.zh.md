@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.9&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.10&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -96,7 +96,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 ### DSH 写作角色
 
-`story-setup` 识别 DSH 并跳过其他宿主的 hooks，检查模式诊断实际技能来源。写作、研究、拆文和审稿通过组装后的包内角色说明调用 DSH 原生 `subagent`，不要求其它软件的项目角色目录。子会话接收明确的工作区、职责、参考路径和任务。缺少工具或运行失败时如实报告由主会话直接执行。Writer 使用 DSH 侧栏与插件更新流程。
+`story-setup` 识别 DSH 并跳过其他宿主的 hooks，检查模式诊断实际技能来源。模型通过 `writer_agent` 指定角色、任务和书目录；插件从当前会话生效的 `story-setup` 加载角色并通过原生 `subagent` 派发，项目技能副本仍优先。每次调用创建新实例，返回原生子会话 ID，由主 Agent 为本次任务管理。同一任务的后续工作使用 `send_message`；独立任务和需要独立上下文的审稿创建新实例。发现和中断使用 `list_agents`、`interrupt_agent`。各角色共享 Writer Preset，默认继承原生子会话模型配置，显式模型选择仍受 DSH 策略检查。缺少角色、工具或派发失败时如实报告，由主会话按技能流程处理。角色只读要求是提示词约束，不建立独立沙箱，也不加载其他宿主的模型、工具或 hooks 配置。
 
 -----
 
@@ -128,11 +128,11 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 #### 模型看到的内容
 
-预设为 `writer` 的会话会看到该预设的 persona，以及 oh-story 技能目录，其中包括 `story`、`story-long-write`、`story-short-write`、`story-deslop`、`story-zhuque`、扫榜/拆文/封面技能和 `browser-cdp`。persona 要求按任务加载对应技能，在 DSH 上跑 `story-setup` 时跳过 Claude Code 与 Codex 的 hooks，并且不要启动 oh-story Dashboard。`story-zhuque` 只用于作者明确提出的朱雀检测。侧栏保存不是模型工具。 DSH 任务技能按需读取原生角色派发说明。角色组装器返回完整提示词文本，调用方将它连同参考路径交给子会话。审稿说明要求分析前取得正文指纹、完成后写入经过校验的记录。技能诊断和恢复命令返回生效路径及备份位置。这些操作只在调用时增加上下文。
+预设为 `writer` 的会话会看到该预设的 persona，以及 oh-story 技能目录，其中包括 `story`、`story-long-write`、`story-short-write`、`story-deslop`、`story-zhuque`、扫榜/拆文/封面技能和 `browser-cdp`。persona 要求按任务加载对应技能，在 DSH 上跑 `story-setup` 时跳过 Claude Code 与 Codex 的 hooks，并且不要启动 oh-story Dashboard。`story-zhuque` 只用于作者明确提出的朱雀检测。侧栏保存不是模型工具。 DSH 任务技能按需读取原生角色派发说明。`writer_agent` 的参数列出七个角色及职责；插件直接向子会话传入角色正文和任务，主会话只收到角色名与子会话 ID。审稿说明要求分析前取得正文指纹、完成后写入经过校验的记录。技能诊断和恢复命令返回生效路径及备份位置。这些操作只在调用时增加上下文。
 
 #### Token 影响
 
-写作会话的每一轮都会带上 persona 前缀。加载某个技能时，那一轮会加上该技能的说明。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
+写作会话的每一轮都会带上 persona 前缀和角色工具 schema；角色正文仅在派发时进入子会话。加载某个技能时，那一轮会加上该技能的说明。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
 
 #### KV Cache 影响
 

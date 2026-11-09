@@ -5,7 +5,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story：网文工具箱路由
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按实际 `subagent` schema 加载随包角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。 在 DSH 上「工作台」指内置写作侧栏；检查或更新 Writer 使用 DSH 插件页及 `/writer-skills-status`，不启动本页后面的独立 Dashboard，不运行其他宿主的 oh-story 更新命令。
+**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。 在 DSH 上「工作台」指内置写作侧栏；检查或更新 Writer 使用 DSH 插件页及 `/writer-skills-status`，不启动本页后面的独立 Dashboard，不运行其他宿主的 oh-story 更新命令。
 
 识别用户的写作需求，并路由到对应 skill。
 

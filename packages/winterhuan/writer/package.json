@@ -1,6 +1,6 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Thin DSH writing mode that mounts oh-story skills and a Dashboard-aligned workspace sidebar",
   "type": "module",
   "license": "MIT",
@@ -23,6 +23,10 @@
     "./client": {
       "types": "./lib/types/client/index.d.ts",
       "default": "./lib/client.js"
+    },
+    "./agents": {
+      "types": "./lib/types/writer-agent.d.ts",
+      "default": "./lib/types/writer-agent.js"
     }
   },
   "files": [
@@ -79,7 +83,8 @@
     "@deepseek-ai/dsh-tool-web": "0.2.2-rc.1",
     "@deepseek-ai/dsh-tool-workflow": "0.2.2-rc.1",
     "@deepseek-ai/dsh-workflow-ptc": "0.2.2-rc.1",
-    "@deepseek-ai/schemastery": "~3.19.0"
+    "@deepseek-ai/schemastery": "~3.19.0",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "~4.1.0",
@@ -108,7 +113,12 @@
     "@deepseek-ai/dsh-typert-protocol": "0.2.2-rc.1",
     "@deepseek-ai/dsh-typert-registry": "0.2.2-rc.1",
     "@types/react": "18.3.28",
-    "react": "18.3.1"
+    "react": "18.3.1",
+    "@deepseek-ai/dsh-working-directory": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-subagent": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-subagent-spawn-in-process": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-session-persistence-jsonl": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-session-query": "0.2.2-rc.1"
   },
   "scripts": {
     "build": "tsc -b tsconfig.host.json tsconfig.client.json && tsdown --config-loader native",

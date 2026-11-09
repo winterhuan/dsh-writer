@@ -31,6 +31,5 @@ describe('skill mount', () => {
     expect(patch).toContain('story-long-write')
     expect(patch).toContain('story-short-write')
     expect(patch).toContain('story-deslop')
-    expect(patch).not.toContain('/agent')
   })
 })
