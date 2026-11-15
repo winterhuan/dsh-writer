@@ -60,6 +60,11 @@
 .writer-wb-book-list li { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--dsw-alias-border-l2); padding: 10px 0; }
 .writer-wb-book-list li > button:first-child { display: grid; flex: 1; grid-template-columns: minmax(120px, 1fr) minmax(120px, 2fr) auto; gap: 12px; border: 0; text-align: left; }
 .writer-wb-book-list span, .writer-wb-book-list small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dsw-alias-label-secondary); }
+.writer-wb-candidates { margin-top: 16px; }
+.writer-wb-candidates h3 { margin: 0; font-size: 14px; font-weight: 500; }
+.writer-wb-candidates .writer-wb-book-list li > span { display: grid; flex: 1; min-width: 0; grid-template-columns: minmax(120px, 1fr) minmax(120px, 2fr); gap: 12px; }
+.writer-wb-candidates .writer-wb-book-list li > span > strong:only-child { grid-column: 1 / -1; }
+.writer-wb-candidates .writer-wb-book-list li > button[aria-pressed='true'] { background: var(--dsw-alias-bg-raised); }
 .writer-wb-book { display: flex; flex: 1; flex-direction: column; min-height: 0; }
 .writer-wb-book-nav { flex-wrap: wrap; }
 .writer-wb-book-nav strong { margin-right: auto; }

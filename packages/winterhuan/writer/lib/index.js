@@ -4595,6 +4595,62 @@ function WorkspaceId(id) {
 }
 Service.init;
 //#endregion
+//#region lib/types/workbench-discovery.js
+const LONG_MARKERS = /* @__PURE__ */ new Set([
+	"正文",
+	"大纲",
+	"设定",
+	"追踪"
+]);
+const SHORT_COMPANIONS = /* @__PURE__ */ new Set(["小节大纲.md", "设定.md"]);
+const IGNORED = /* @__PURE__ */ new Set([
+	"拆文库",
+	"扫榜",
+	".git",
+	".agents",
+	".writer",
+	"node_modules"
+]);
+async function discoverWriterBooks(list) {
+	const candidates = [];
+	async function walk(path, depth) {
+		if (depth > 3) return;
+		let entries;
+		try {
+			entries = await list(path);
+		} catch {
+			return;
+		}
+		const directories = new Set(entries.filter((entry) => entry.type === "directory").map((entry) => entry.name));
+		const files = new Set(entries.filter((entry) => entry.type === "file").map((entry) => entry.name));
+		if ([...LONG_MARKERS].some((name) => directories.has(name))) {
+			const title = path.split("/").pop() ?? path;
+			candidates.push({
+				path,
+				title,
+				form: "long"
+			});
+			return;
+		}
+		if (files.has("正文.md") && [...SHORT_COMPANIONS].some((name) => files.has(name))) {
+			const title = path.split("/").pop() ?? path;
+			candidates.push({
+				path,
+				title,
+				form: "short"
+			});
+			return;
+		}
+		if (depth === 3) return;
+		for (const entry of entries) {
+			if (entry.type !== "directory" || IGNORED.has(entry.name) || entry.name.startsWith(".")) continue;
+			await walk(path ? `${path}/${entry.name}` : entry.name, depth + 1);
+		}
+	}
+	await walk("", 0);
+	return candidates;
+}
+//#endregion
 //#region lib/types/workbench.js
 const bookSchema = z.object({
 	id: z.string().required(),
@@ -4701,14 +4757,26 @@ var WriterWorkbench = class {
 	}
 	/** @returns saved references and currently registered native workspaces, without opening Sessions. */
 	catalog() {
-		return this.run(async () => ({
-			books: await this.read(),
-			workspaces: this.ctx.workspaceRegistry.list().map((w) => ({
-				id: w.id,
-				path: w.path,
-				title: w.title
-			}))
-		}));
+		return this.run(async () => {
+			const books = await this.read();
+			return {
+				books,
+				workspaces: await Promise.all(this.ctx.workspaceRegistry.list().map(async (workspace) => {
+					const candidates = await discoverWriterBooks(async (path) => (await readdir(resolve(workspace.path, path), { withFileTypes: true })).map((entry) => ({
+						name: entry.name,
+						type: entry.isDirectory() ? "directory" : entry.isFile() ? "file" : "other"
+					})));
+					const registered = new Set(books.filter((book) => book.workspaceId === workspace.id).map((book) => book.path));
+					return {
+						id: workspace.id,
+						path: workspace.path,
+						title: workspace.title,
+						sessionIds: workspace.sessionIds,
+						candidates: candidates.filter((candidate) => !registered.has(candidate.path))
+					};
+				}))
+			};
+		});
 	}
 	async location(workspaceId, path, exists = true) {
 		const workspace = this.ctx.workspaceRegistry.get(WorkspaceId(workspaceId));

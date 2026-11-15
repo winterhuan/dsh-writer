@@ -9,6 +9,7 @@ import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
 import type { zh } from './workbench-locales.ts'
 import { WriterDesk } from './desk.tsx'
 import { writeWriterSelection } from './draft-storage.ts'
+import { preferredWriterWorkspace, writerSessionsInWorkspace } from './workbench-selection.ts'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface SlotMap { 'writer.workbench': { kind: 'single'; scope: 'root' } }
@@ -56,8 +57,9 @@ export function Workbench({ t, retain, action, load, openSession, initializeDraf
   const [assistantOpen, setAssistantOpen] = useState(true)
   const [title, setTitle] = useState('')
   const [path, setPath] = useState('')
-  const [workspaceId, setWorkspaceId] = useState('')
+  const [workspaceId, setWorkspaceId] = useState<string | undefined>()
   const [linkSessionId, setLinkSessionId] = useState('')
+  const [candidatePath, setCandidatePath] = useState<string>()
   const [form, setForm] = useState<'long' | 'short'>('long')
   const root = useRef<HTMLElement>(null)
   const checkpoint = useRef<() => boolean>(() => true)
@@ -74,8 +76,13 @@ export function Workbench({ t, retain, action, load, openSession, initializeDraf
   const active = books.find(book => book.id === bookId)
   const sessions = useSessions(state => state.ids.flatMap(id => {
     const session = state.byId[id]
-    return session && session.origin !== 'subagent' && session.projectionValues?.agentPreset === 'writer' ? [session] : []
+    return session ? [session] : []
   }))
+  const selectedWorkspaceId = workspaceId ?? preferredWriterWorkspace(catalog?.workspaces ?? []) ?? ''
+  const selectedWorkspace = catalog?.workspaces.find(workspace => workspace.id === selectedWorkspaceId)
+  const pathExists = Boolean(path.trim()) && (selectedWorkspace?.candidates.some(candidate => candidate.path === path.trim()) === true
+    || books.some(book => book.workspaceId === selectedWorkspaceId && book.path === path.trim()))
+  const workspaceSessions = writerSessionsInWorkspace(sessions, selectedWorkspace, selectedWorkspace?.sessionIds ?? [])
   const sessionId = active && selectedSessionId && active.phases.some(phase => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId
   const librarySession = books.find(book => book.sessionId !== null)
   const perform = async (input: unknown): Promise<void> => {
@@ -106,19 +113,20 @@ export function Workbench({ t, retain, action, load, openSession, initializeDraf
         {(['works', 'analysis', 'market'] as const).map(key => <button type="button" key={key} aria-current={section === key ? 'page' : undefined} onClick={() => setSection(key)}>{t(key)}</button>)}
       </nav>
       {section === 'works' ? <section className="writer-wb-works"><div className="writer-wb-toolbar"><h2>{t('works')}</h2><button type="button" onClick={refresh}>{t('refresh')}</button></div>
-        <form onSubmit={event => { event.preventDefault(); if (workspaceId && path.trim() && title.trim()) void perform({ action: 'create', workspaceId, path: path.trim(), title: title.trim(), form }) }}>
-          <select aria-label={t('workspace')} value={workspaceId} onChange={event => setWorkspaceId(event.target.value)}><option value="">{t('chooseWorkspace')}</option>{catalog?.workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.title}</option>)}</select>
-          <input aria-label={t('bookTitle')} value={title} onChange={event => setTitle(event.target.value)} placeholder={t('bookTitle')} />
-          <input aria-label={t('folder')} value={path} onChange={event => setPath(event.target.value)} placeholder={t('folder')} />
+        <form onSubmit={event => { event.preventDefault(); if (selectedWorkspaceId && path.trim() && title.trim()) void perform({ action: 'create', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form }) }}>
+          <select aria-label={t('workspace')} value={selectedWorkspaceId} onChange={event => { setWorkspaceId(event.target.value); setLinkSessionId(''); setCandidatePath(undefined) }}><option value="">{t('chooseWorkspace')}</option>{catalog?.workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.title}</option>)}</select>
+          <input aria-label={t('bookTitle')} value={title} onChange={event => { setTitle(event.target.value); setCandidatePath(undefined) }} placeholder={t('bookTitle')} />
+          <input aria-label={t('folder')} value={path} onChange={event => { setPath(event.target.value); setCandidatePath(undefined) }} placeholder={t('folder')} />
           <select aria-label={t('form')} value={form} onChange={event => setForm(event.target.value as 'long' | 'short')}><option value="long">{t('longForm')}</option><option value="short">{t('shortForm')}</option></select>
-          <button type="submit" disabled={busy}>{t('createBook')}</button>
+          <button type="submit" disabled={busy || pathExists}>{t('createBook')}</button>
         </form>
-        <select aria-label={t('writerSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{sessions.map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select>
-        <button type="button" disabled={busy || !workspaceId || !path.trim() || !title.trim() || !linkSessionId} onClick={() => { void perform({ action: 'register', workspaceId, path: path.trim(), title: title.trim(), form, sessionId: linkSessionId }) }}>{t('registerExisting')}</button>
+        <select aria-label={t('writerSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{workspaceSessions.map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select>
+        <button type="button" disabled={busy || !selectedWorkspaceId || !path.trim() || !title.trim() || !linkSessionId} onClick={() => { void perform({ action: 'register', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form, sessionId: linkSessionId }) }}>{t('registerExisting')}</button>
+        {selectedWorkspace && <section className="writer-wb-candidates"><h3>{t('foundBooks')}</h3><ul className="writer-wb-book-list">{selectedWorkspace.candidates.map(candidate => <li key={candidate.path}><span><strong>{candidate.title}</strong>{candidate.path !== candidate.title && <small>{candidate.path}</small>}</span><button type="button" aria-pressed={candidatePath === candidate.path} onClick={() => { setCandidatePath(candidate.path); setPath(candidate.path); setTitle(candidate.title); setForm(candidate.form) }}>{t('selectBook')}</button></li>)}</ul></section>}
         <ul className="writer-wb-book-list">{books.map(book => <li key={book.id}><button type="button" onClick={() => { if (!canLeaveDocument()) return; setBookId(book.id); setSelectedSessionId(book.sessionId ?? undefined) }}><strong>{book.title}</strong><span>{book.path}</span><small>{book.sessionId ? t('sessionBound') : t('sessionNeeded')}</small></button><button type="button" disabled={busy} onClick={() => { if (canLeaveDocument()) void perform({ action: 'open', id: book.id }) }}>{t('open')}</button></li>)}</ul>
       </section> : librarySession ? <section className="writer-wb-library"><header><h2>{t(section)}</h2><span>{librarySession.title}</span></header><WriterDesk key={`${librarySession.id}:${section}`} sessionId={SessionId(librarySession.sessionId!)} cwd={librarySession.cwd} remote={remote} t={deskT} visible initialView={section === 'analysis' ? 'libraries' : 'scans'} /></section> : <section className="writer-wb-placeholder"><h2>{t(section)}</h2><p>{section === 'analysis' ? t('analysisEmpty') : t('marketEmpty')}</p></section>}
     </div> : <div className="writer-wb-book">
-      <nav className="writer-wb-book-nav"><strong>{active.title}</strong><button type="button" onClick={() => requestAssistant(t('planningTask', { title: active.title, path: active.path }))}>{t('startPlanning')}</button>{active.phases.map((phase, index) => <button key={phase.sessionId} type="button" aria-current={phase.sessionId === sessionId ? 'page' : undefined} onClick={() => { if (canLeaveDocument()) setSelectedSessionId(phase.sessionId) }}>{t('phase')} {index + 1}</button>)}<button type="button" disabled={busy} onClick={() => { if (canLeaveDocument()) void perform({ action: 'phase', id: active.id }) }}>{t('newPhase')}</button><select aria-label={t('chooseWriterSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{sessions.filter(session => session.cwd === active.cwd).map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select><button type="button" disabled={busy || !linkSessionId} onClick={() => { if (canLeaveDocument()) void perform({ action: 'bind', id: active.id, sessionId: linkSessionId }) }}>{t('linkSession')}</button></nav>
+      <nav className="writer-wb-book-nav"><strong>{active.title}</strong><button type="button" onClick={() => requestAssistant(t('planningTask', { title: active.title, path: active.path }))}>{t('startPlanning')}</button>{active.phases.map((phase, index) => <button key={phase.sessionId} type="button" aria-current={phase.sessionId === sessionId ? 'page' : undefined} onClick={() => { if (canLeaveDocument()) setSelectedSessionId(phase.sessionId) }}>{t('phase')} {index + 1}</button>)}<button type="button" disabled={busy} onClick={() => { if (canLeaveDocument()) void perform({ action: 'phase', id: active.id }) }}>{t('newPhase')}</button><select aria-label={t('chooseWriterSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{writerSessionsInWorkspace(sessions, catalog?.workspaces.find(workspace => workspace.id === active.workspaceId), catalog?.workspaces.find(workspace => workspace.id === active.workspaceId)?.sessionIds ?? []).map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select><button type="button" disabled={busy || !linkSessionId} onClick={() => { if (canLeaveDocument()) void perform({ action: 'bind', id: active.id, sessionId: linkSessionId }) }}>{t('linkSession')}</button></nav>
       <div className="writer-wb-mobile-tabs"><button type="button" aria-pressed={smallView === 'document'} onClick={() => setSmallView('document')}>{t('document')}</button><button type="button" aria-pressed={smallView === 'assistant'} onClick={() => setSmallView('assistant')}>{t('assistant')}</button></div>
       <div className="writer-wb-columns" data-assistant-open={assistantOpen ? 'true' : 'false'} data-narrow={narrow ? 'true' : undefined} data-small-view={smallView}>
         <section className="writer-wb-document">{sessionId ? <WriterDesk key={active.id} sessionId={SessionId(sessionId)} cwd={active.cwd} remote={remote} t={deskT} checkpoint={() => checkpoint.current()} visible /> : <p>{t('sessionNeeded')}</p>}</section>

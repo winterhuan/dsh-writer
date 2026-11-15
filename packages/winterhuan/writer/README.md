@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-This bundle adds a novel-writing workbench, the Writer preset, and oh-story skills to DSH. The workbench registers books, links native Sessions, navigates long- and short-fiction files, edits manuscripts, and recovers browser drafts. Its assistant uses the official DSH Conversation and opens expanded by default. Analysis and market-research sections use the existing workspace browser; book files and native Session histories are not mirrored. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
+This bundle adds a novel-writing workbench, the Writer preset, and oh-story skills to DSH. The workbench discovers existing manuscripts in native workspaces, links selected books to their existing Writer Sessions, navigates long- and short-fiction files, edits manuscripts, and recovers browser drafts. Its assistant uses the official DSH Conversation and opens expanded by default. Book files and native Session histories are not mirrored. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ This bundle adds a novel-writing workbench, the Writer preset, and oh-story skil
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.0&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.1&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -75,6 +75,10 @@ These packaged skills are author-triggered. They do not block chapter writing.
 | `story-short-analyze` | `/story-short-analyze` | Short-form teardown. Needs Python 3. |
 | `story-cover` | `/story-cover` | Prompt-only needs no key. Generating an image on DSH uses the GPT Image credential above. Codex hosts may still use `$imagegen`. |
 | `browser-cdp` | `/browser-cdp` | Browser entry: Box by default, optional Ego, login/CAPTCHA handoff and collector recovery. |
+
+### Open existing novels
+
+Open the Writer workbench and select a native workspace. The `novels` workspace is selected by default when present. The workbench lists folders that match the existing long- or short-fiction structure. Selecting a folder fills its title, relative path, and form; it does not register the book. Choose a Writer Session that belongs to the same workspace, then select Register existing folder. The Host verifies the folder and Session membership again before saving the association. Manuscripts and Session histories stay in their existing locations.
 
 ### Use the sidebar
 

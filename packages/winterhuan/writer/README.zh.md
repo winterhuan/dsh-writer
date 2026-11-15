@@ -9,7 +9,7 @@ kind: "package-bundle"
 
 ## 概要
 
-本 bundle 为 DSH 增加小说创作工作台、Writer 预设与 oh-story 技能。工作台提供作品登记、原生会话关联、长短篇文件导航、文稿编辑和浏览器草稿恢复；助手使用 DSH 原生 Conversation，默认展开。分析资料与市场调研入口和作品文件浏览共用现有工作区读取能力，不复制书稿或会话记录。技能默认来自插件包；项目同名副本优先。同步和撤销同步把原副本保留为可恢复备份。
+本 bundle 为 DSH 增加小说创作工作台、Writer 预设与 oh-story 技能。工作台发现原生工作区中的已有书稿，将作者选定的作品关联到已有 Writer 会话，并提供长短篇文件导航、文稿编辑和浏览器草稿恢复；助手使用 DSH 原生 Conversation，默认展开。工作台不复制书稿或会话记录。技能默认来自插件包；项目同名副本优先。同步和撤销同步把原副本保留为可恢复备份。
 
 ## 目录
 
@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.0&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.1&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -75,6 +75,10 @@ dsh plugin --profile web add packages/winterhuan/writer
 | `story-short-analyze` | `/story-short-analyze` | 短篇拆文。需要 Python 3。 |
 | `story-cover` | `/story-cover` | 仅提示词不需要 Key。在 DSH 上要出图时用上面的 GPT Image 凭据。Codex 宿主仍可用 `$imagegen`。 |
 | `browser-cdp` | `/browser-cdp` | 浏览器入口：默认 Box、可选 Ego、登录/验证码交接与采集恢复。 |
+
+### 打开已有小说
+
+打开 Writer 工作台并选择原生工作区。存在 `novels` 工作区时默认选中它。工作台按现有长短篇目录结构列出候选文件夹。选择后会填入书名、相对路径和篇幅，但不会登记作品。选择属于同一工作区的 Writer 会话，再点「登记已有目录」。Host 保存关联前会重新核实目录和会话成员关系。书稿与会话历史仍保留在原位置。
 
 ### 使用侧栏
 

@@ -2,12 +2,13 @@ import { SessionId } from '@deepseek-ai/dsh-session';
 import { WorkspaceId } from '@deepseek-ai/dsh-workspace';
 import { withFileLock, writeFileAtomic } from '@deepseek-ai/dsh-atomic-write';
 import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, realpath, stat } from 'node:fs/promises';
+import { mkdir, readFile, readdir, realpath, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import z from '@deepseek-ai/schemastery';
 import { safeRelative } from "./editable.js";
 import { isTrustedWriterRequest } from "./request-trust.js";
+import { discoverWriterBooks } from "./workbench-discovery.js";
 const bookSchema = z.object({
     id: z.string().required(), title: z.string().required(), form: z.union(['long', 'short']), workspaceId: z.string().required(), cwd: z.string().required(), path: z.string().required(),
     phases: z.array(z.object({ sessionId: z.string().required(), createdAt: z.string().required() })),
@@ -72,7 +73,18 @@ export class WriterWorkbench {
     }
     /** @returns saved references and currently registered native workspaces, without opening Sessions. */
     catalog() {
-        return this.run(async () => ({ books: await this.read(), workspaces: this.ctx.workspaceRegistry.list().map(w => ({ id: w.id, path: w.path, title: w.title })) }));
+        return this.run(async () => {
+            const books = await this.read();
+            const workspaces = await Promise.all(this.ctx.workspaceRegistry.list().map(async (workspace) => {
+                const candidates = await discoverWriterBooks(async (path) => (await readdir(resolve(workspace.path, path), { withFileTypes: true })).map(entry => ({
+                    name: entry.name,
+                    type: entry.isDirectory() ? 'directory' : entry.isFile() ? 'file' : 'other',
+                })));
+                const registered = new Set(books.filter(book => book.workspaceId === workspace.id).map(book => book.path));
+                return { id: workspace.id, path: workspace.path, title: workspace.title, sessionIds: workspace.sessionIds, candidates: candidates.filter(candidate => !registered.has(candidate.path)) };
+            }));
+            return { books, workspaces };
+        });
     }
     async location(workspaceId, path, exists = true) {
         const workspace = this.ctx.workspaceRegistry.get(WorkspaceId(workspaceId));

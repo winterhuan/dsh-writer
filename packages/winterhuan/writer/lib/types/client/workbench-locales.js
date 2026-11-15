@@ -1,6 +1,6 @@
 export const en = {
     title: 'Writer', allWorks: 'All works', navigation: 'Workbench sections', works: 'Works', analysis: 'Analysis library', market: 'Market research', writerSession: 'Writer session', chooseWriterSession: 'Select a Writer session', registerExisting: 'Register existing folder', linkSession: 'Link session',
-    refresh: 'Refresh', workspace: 'Workspace', chooseWorkspace: 'Choose a workspace', bookTitle: 'Book title', folder: 'Book folder', form: 'Form',
+    refresh: 'Refresh', workspace: 'Workspace', chooseWorkspace: 'Choose a workspace', bookTitle: 'Book title', folder: 'Book folder', form: 'Form', foundBooks: 'Existing books', selectBook: 'Use folder',
     longForm: 'Long fiction', shortForm: 'Short fiction', createBook: 'Create book', open: 'Open', sessionBound: 'Session linked', sessionNeeded: 'Create or link a writer session',
     startPlanning: 'Plan this book', planningTask: 'Plan the next useful step for book {title} at {path}. Read its existing files before proposing changes. Do not modify files until asked.',
     phase: 'Phase', newPhase: 'New phase', document: 'Manuscript', assistant: 'Assistant', collapse: 'Collapse assistant', expand: 'Expand assistant',
@@ -14,7 +14,7 @@ export const en = {
 };
 export const zh = {
     title: '小说创作工作台', allWorks: '全部作品', navigation: '工作台分区', works: '作品', analysis: '分析资料', market: '市场调研', writerSession: 'Writer 会话', chooseWriterSession: '选择 Writer 会话', registerExisting: '登记已有目录', linkSession: '关联会话',
-    refresh: '刷新', workspace: '工作区', chooseWorkspace: '选择工作区', bookTitle: '书名', folder: '书籍目录', form: '篇幅',
+    refresh: '刷新', workspace: '工作区', chooseWorkspace: '选择工作区', bookTitle: '书名', folder: '书籍目录', form: '篇幅', foundBooks: '发现的作品目录', selectBook: '使用此目录',
     longForm: '长篇小说', shortForm: '短篇小说', createBook: '创建作品', open: '打开', sessionBound: '已关联会话', sessionNeeded: '创建或关联 Writer 会话',
     startPlanning: '规划本书', planningTask: '为《{title}》（目录 {path}）规划下一步。先阅读现有文件再提出建议，未经要求不要修改文件。',
     phase: '阶段', newPhase: '新建阶段会话', document: '正文', assistant: '助手', collapse: '收起助手', expand: '展开助手',

@@ -15,6 +15,8 @@ export declare const en: {
     bookTitle: string;
     folder: string;
     form: string;
+    foundBooks: string;
+    selectBook: string;
     longForm: string;
     shortForm: string;
     createBook: string;
@@ -71,6 +73,8 @@ export declare const zh: {
     bookTitle: string;
     folder: string;
     form: string;
+    foundBooks: string;
+    selectBook: string;
     longForm: string;
     shortForm: string;
     createBook: string;

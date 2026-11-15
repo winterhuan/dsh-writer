@@ -20,6 +20,8 @@ export interface WriterCatalog {
         readonly id: string;
         readonly path: string;
         readonly title: string;
+        readonly sessionIds: readonly string[];
+        readonly candidates: readonly import('./workbench-discovery.ts').WriterBookCandidate[];
     }[];
 }
 /** Explicit author operations. Selecting a book never submits a prompt. */

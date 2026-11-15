@@ -14,7 +14,13 @@ export interface WriterBook {
 /** Workbench catalog; availability is checked again before each binding or write. */
 export interface WriterCatalog {
   readonly books: readonly WriterBook[]
-  readonly workspaces: readonly { readonly id: string; readonly path: string; readonly title: string }[]
+  readonly workspaces: readonly {
+    readonly id: string
+    readonly path: string
+    readonly title: string
+    readonly sessionIds: readonly string[]
+    readonly candidates: readonly import('./workbench-discovery.ts').WriterBookCandidate[]
+  }[]
 }
 
 /** Explicit author operations. Selecting a book never submits a prompt. */

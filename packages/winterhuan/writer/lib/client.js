@@ -4,11 +4,11 @@ window.__ModuleLoader__.load({
 		var module = { exports: {} };
 		var exports = module.exports;
 		Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-		let react_jsx_runtime = require("react/jsx-runtime");
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 		let react = require("react");
+		let react_jsx_runtime = require("react/jsx-runtime");
 		//#region \0dsh-global-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
-		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-workbench{min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex}.writer-wb-header,.writer-wb-toolbar,.writer-wb-book-nav,.writer-wb-assistant>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:12px;min-height:48px;padding:0 16px;display:flex}:global([data-platform=\"darwin\"]) .writer-wb-header{padding-top:calc(var(--dsh-frame-top-clearance,0px) + 8px)}.writer-wb-header>div{align-items:baseline;gap:12px;min-width:0;display:flex}.writer-wb-header h1,.writer-wb-toolbar h2,.writer-wb-assistant h2{margin:0;font-size:16px;font-weight:500}.writer-wb-header>button,.writer-workbench button,.writer-wb-nav button,.writer-wb-book-nav button{color:inherit;border:1px solid var(--dsw-alias-border-l2);cursor:pointer;font:inherit;background:0 0;border-radius:4px;padding:6px 10px}.writer-wb-header>button{margin-left:auto}.writer-wb-home{flex:1;grid-template-columns:190px minmax(0,1fr);min-height:0;display:grid}.writer-wb-nav{border-right:1px solid var(--dsw-alias-border-l2);flex-direction:column;align-items:stretch;gap:4px;padding:12px;display:flex}.writer-wb-nav button{text-align:left;border-color:#0000}.writer-wb-nav button[aria-current=page]{background:var(--dsw-alias-bg-raised);border-color:var(--dsw-alias-border-l2)}.writer-wb-works,.writer-wb-placeholder{min-width:0;padding:16px 20px;overflow:auto}.writer-wb-library{flex-direction:column;flex:1;min-width:0;min-height:0;display:flex}.writer-wb-library>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:baseline;gap:12px;padding:12px 16px;display:flex}.writer-wb-library>header h2{margin:0;font-size:16px;font-weight:500}.writer-wb-library>.writer-desk{flex:1;min-height:0}.writer-wb-toolbar{margin:-16px -20px 16px}.writer-wb-toolbar button{margin-left:auto}.writer-wb-works form{border-bottom:1px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:8px;padding-bottom:16px;display:flex}.writer-wb-works input,.writer-wb-works select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:120px;max-width:220px;color:inherit;font:inherit;border-radius:4px;padding:7px 9px}.writer-wb-book-list{margin:0;padding:0;list-style:none}.writer-wb-book-list li{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:8px;padding:10px 0;display:flex}.writer-wb-book-list li>button:first-child{text-align:left;border:0;flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr) auto;gap:12px;display:grid}.writer-wb-book-list span,.writer-wb-book-list small{text-overflow:ellipsis;white-space:nowrap;color:var(--dsw-alias-label-secondary);overflow:hidden}.writer-wb-book{flex-direction:column;flex:1;min-height:0;display:flex}.writer-wb-book-nav{flex-wrap:wrap}.writer-wb-book-nav strong{margin-right:auto}.writer-wb-columns{--writer-wb-split:64%;grid-template-columns:minmax(0, var(--writer-wb-split)) 6px minmax(300px, 1fr);flex:1;min-height:0;display:grid}.writer-wb-document{min-width:0;min-height:0;overflow:hidden}.writer-wb-document>.writer-desk{height:100%}.writer-wb-resize{cursor:col-resize;background:var(--dsw-alias-border-l2)}.writer-wb-assistant{flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]){grid-template-columns:minmax(0,1fr) 6px 0}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-assistant,.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-resize{display:none}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-assistant>header{flex:none;justify-content:space-between}.writer-wb-assistant>[data-slot],.writer-wb-assistant>div{flex:1;min-height:0;overflow:auto}.writer-wb-mobile-tabs{display:none}.writer-wb-error{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);max-width:420px;padding:8px 12px;position:absolute;bottom:16px;right:16px}@media (width<=760px){.writer-wb-home{grid-template-columns:1fr}.writer-wb-nav{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2);flex-direction:row;overflow:auto}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-mobile-tabs{border-bottom:1px solid var(--dsw-alias-border-l2);gap:8px;padding:6px 12px;display:flex}.writer-wb-book-list li>button:first-child{grid-template-columns:1fr;gap:2px}}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
+		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-workbench{min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex}.writer-wb-header,.writer-wb-toolbar,.writer-wb-book-nav,.writer-wb-assistant>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:12px;min-height:48px;padding:0 16px;display:flex}:global([data-platform=\"darwin\"]) .writer-wb-header{padding-top:calc(var(--dsh-frame-top-clearance,0px) + 8px)}.writer-wb-header>div{align-items:baseline;gap:12px;min-width:0;display:flex}.writer-wb-header h1,.writer-wb-toolbar h2,.writer-wb-assistant h2{margin:0;font-size:16px;font-weight:500}.writer-wb-header>button,.writer-workbench button,.writer-wb-nav button,.writer-wb-book-nav button{color:inherit;border:1px solid var(--dsw-alias-border-l2);cursor:pointer;font:inherit;background:0 0;border-radius:4px;padding:6px 10px}.writer-wb-header>button{margin-left:auto}.writer-wb-home{flex:1;grid-template-columns:190px minmax(0,1fr);min-height:0;display:grid}.writer-wb-nav{border-right:1px solid var(--dsw-alias-border-l2);flex-direction:column;align-items:stretch;gap:4px;padding:12px;display:flex}.writer-wb-nav button{text-align:left;border-color:#0000}.writer-wb-nav button[aria-current=page]{background:var(--dsw-alias-bg-raised);border-color:var(--dsw-alias-border-l2)}.writer-wb-works,.writer-wb-placeholder{min-width:0;padding:16px 20px;overflow:auto}.writer-wb-library{flex-direction:column;flex:1;min-width:0;min-height:0;display:flex}.writer-wb-library>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:baseline;gap:12px;padding:12px 16px;display:flex}.writer-wb-library>header h2{margin:0;font-size:16px;font-weight:500}.writer-wb-library>.writer-desk{flex:1;min-height:0}.writer-wb-toolbar{margin:-16px -20px 16px}.writer-wb-toolbar button{margin-left:auto}.writer-wb-works form{border-bottom:1px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:8px;padding-bottom:16px;display:flex}.writer-wb-works input,.writer-wb-works select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:120px;max-width:220px;color:inherit;font:inherit;border-radius:4px;padding:7px 9px}.writer-wb-book-list{margin:0;padding:0;list-style:none}.writer-wb-book-list li{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:8px;padding:10px 0;display:flex}.writer-wb-book-list li>button:first-child{text-align:left;border:0;flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr) auto;gap:12px;display:grid}.writer-wb-book-list span,.writer-wb-book-list small{text-overflow:ellipsis;white-space:nowrap;color:var(--dsw-alias-label-secondary);overflow:hidden}.writer-wb-candidates{margin-top:16px}.writer-wb-candidates h3{margin:0;font-size:14px;font-weight:500}.writer-wb-candidates .writer-wb-book-list li>span{flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr);gap:12px;min-width:0;display:grid}.writer-wb-candidates .writer-wb-book-list li>span>strong:only-child{grid-column:1/-1}.writer-wb-candidates .writer-wb-book-list li>button[aria-pressed=true]{background:var(--dsw-alias-bg-raised)}.writer-wb-book{flex-direction:column;flex:1;min-height:0;display:flex}.writer-wb-book-nav{flex-wrap:wrap}.writer-wb-book-nav strong{margin-right:auto}.writer-wb-columns{--writer-wb-split:64%;grid-template-columns:minmax(0, var(--writer-wb-split)) 6px minmax(300px, 1fr);flex:1;min-height:0;display:grid}.writer-wb-document{min-width:0;min-height:0;overflow:hidden}.writer-wb-document>.writer-desk{height:100%}.writer-wb-resize{cursor:col-resize;background:var(--dsw-alias-border-l2)}.writer-wb-assistant{flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]){grid-template-columns:minmax(0,1fr) 6px 0}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-assistant,.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-resize{display:none}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-assistant>header{flex:none;justify-content:space-between}.writer-wb-assistant>[data-slot],.writer-wb-assistant>div{flex:1;min-height:0;overflow:auto}.writer-wb-mobile-tabs{display:none}.writer-wb-error{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);max-width:420px;padding:8px 12px;position:absolute;bottom:16px;right:16px}@media (width<=760px){.writer-wb-home{grid-template-columns:1fr}.writer-wb-nav{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2);flex-direction:row;overflow:auto}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-mobile-tabs{border-bottom:1px solid var(--dsw-alias-border-l2);gap:8px;padding:6px 12px;display:flex}.writer-wb-book-list li>button:first-child{grid-template-columns:1fr;gap:2px}}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
 		const tagId = "@winterhuan/dsh-writer/plugin.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -18,7 +18,7 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		//#endregion
-		//#region lib/types/client/locales.js
+		//#region src/client/locales.ts
 		const NS = "writerDesk";
 		/** Standard line-ending names shown unchanged in either locale. */
 		const EOL_NAMES = {
@@ -285,11 +285,10 @@ window.__ModuleLoader__.load({
 			resizeRail: "Drag to resize the file tree"
 		};
 		//#endregion
-		//#region lib/types/client/sidebar.js
+		//#region src/client/sidebar.tsx
 		const name = "writer";
 		//#endregion
-		//#region lib/types/client/zhuque-locales.js
-		/** Locale bundles for the Writer settings page (Zhuque + cover keys). */
+		//#region src/client/zhuque-locales.ts
 		/** English copy. */
 		const en$1 = {
 			title: "Writing",
@@ -355,7 +354,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/ZhuqueSettingsCard.js
+		//#region src/client/ZhuqueSettingsCard.tsx
 		/**
 		* Render the Writer settings page, or its one-liner when the Plugins page asks for a summary.
 		* @param props - the view asked for, locale copy, the page snapshot, and its form actions.
@@ -367,13 +366,13 @@ window.__ModuleLoader__.load({
 			if (props.view === "summary") return t("description");
 			const control = state.key;
 			const cover = state.coverKey;
-			return (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
 				labels: formLabels(t),
 				state,
 				onSave: props.save,
 				onDiscard: props.discard,
 				children: [
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
 						id: "plugin-config-writer-makers-key",
 						label: t("makersKeyLabel"),
 						hint: t(control.writable ? "makersKeyHint" : "makersKeyReadOnlyHint"),
@@ -385,7 +384,7 @@ window.__ModuleLoader__.load({
 						text: control.draft.text,
 						configured: control.configured
 					}),
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
 						id: "plugin-config-writer-cover-key",
 						label: t("coverKeyLabel"),
 						hint: t(cover.writable ? "coverKeyHint" : "coverKeyReadOnlyHint"),
@@ -397,7 +396,7 @@ window.__ModuleLoader__.load({
 						text: cover.draft.text,
 						configured: cover.configured
 					}),
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
 						id: "plugin-config-writer-cover-base-url",
 						label: t("gptImageBaseUrlLabel"),
 						hint: t("gptImageBaseUrlHint"),
@@ -418,12 +417,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/zhuque-settings-controller.js
-		/**
-		* The Writer settings page's staged form over the `writer` namespace.
-		* Key literals never ride a response: they write through the credentials
-		* domain under the references `makersApiKeyEnv` and `gptImageApiKeyEnv` name.
-		*/
+		//#region src/client/zhuque-settings-controller.ts
 		/** Namespace of the writer plugin. Spelled here so the client half does not import Host values. */
 		const WRITER_SETTINGS_NS = "writer";
 		const FALLBACK_MAKERS_REF = "MAKERS_API_KEY";
@@ -581,11 +575,7 @@ window.__ModuleLoader__.load({
 			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_COVER_REF;
 		}
 		//#endregion
-		//#region lib/types/client/zhuque-settings.js
-		/**
-		* Writer settings page (Zhuque + cover keys), browser half. Registers into the
-		* Plugins page's `plugins.item` slot while the Host serves the `writer` namespace.
-		*/
+		//#region src/client/zhuque-settings.ts
 		/** Dictionary namespace owned by the Writing settings page. */
 		const ZHUQUE_NS = "settings.writer";
 		/** Cordis services the Writing settings page needs beyond the sidebar. */
@@ -617,7 +607,7 @@ window.__ModuleLoader__.load({
 			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
 		}
 		//#endregion
-		//#region lib/types/client/workbench-locales.js
+		//#region src/client/workbench-locales.ts
 		const en = {
 			title: "Writer",
 			allWorks: "All works",
@@ -635,6 +625,8 @@ window.__ModuleLoader__.load({
 			bookTitle: "Book title",
 			folder: "Book folder",
 			form: "Form",
+			foundBooks: "Existing books",
+			selectBook: "Use folder",
 			longForm: "Long fiction",
 			shortForm: "Short fiction",
 			createBook: "Create book",
@@ -691,6 +683,8 @@ window.__ModuleLoader__.load({
 			bookTitle: "书名",
 			folder: "书籍目录",
 			form: "篇幅",
+			foundBooks: "发现的作品目录",
+			selectBook: "使用此目录",
 			longForm: "长篇小说",
 			shortForm: "短篇小说",
 			createBook: "创建作品",
@@ -764,7 +758,7 @@ window.__ModuleLoader__.load({
 			return brandString(id);
 		}
 		//#endregion
-		//#region lib/types/editable.js
+		//#region src/editable.ts
 		/** Workspace-relative paths the writing sidebar may save. */
 		/** File extensions Dashboard and the sidebar treat as editable. */
 		const EDITABLE_EXTENSIONS = /* @__PURE__ */ new Set([
@@ -811,7 +805,7 @@ window.__ModuleLoader__.load({
 			return path.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
 		}
 		//#endregion
-		//#region lib/types/client/eol.js
+		//#region src/client/eol.ts
 		/** EOL helpers so textarea stays LF while disk keeps its style. */
 		/**
 		* Detect the dominant line ending in file text.
@@ -861,7 +855,7 @@ window.__ModuleLoader__.load({
 			return EOL_NAMES.lf;
 		}
 		//#endregion
-		//#region lib/types/client/editor-shell.js
+		//#region src/client/editor-shell.ts
 		/**
 		* Format a byte length the way Dashboard `formatBytes` does.
 		* @param bytes - non-negative size.
@@ -929,7 +923,7 @@ window.__ModuleLoader__.load({
 			return loaded.replace("{n}", String(count));
 		}
 		//#endregion
-		//#region lib/types/client/LineNumbers.js
+		//#region src/client/LineNumbers.tsx
 		/** Toggleable line-number gutter synced to the prose textarea (Dashboard-aligned). */
 		/**
 		* Render a scroll-synced gutter with wrap-aware row heights and an active line.
@@ -1039,7 +1033,7 @@ window.__ModuleLoader__.load({
 				mirrorRef.current = null;
 			}, []);
 			if (!show) return null;
-			return (0, react_jsx_runtime.jsx)("div", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 				ref: gutterRef,
 				className: "writer-line-gutter",
 				"aria-hidden": "true",
@@ -1327,7 +1321,7 @@ window.__ModuleLoader__.load({
 			return selected === path || selected.startsWith(`${path}/`);
 		}
 		//#endregion
-		//#region lib/types/client/markdown.js
+		//#region src/client/markdown.ts
 		/** Safe Markdown → HTML for the writing preview (Dashboard-aligned, no deps). */
 		function escapeHtml(value) {
 			return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#039;");
@@ -1400,7 +1394,7 @@ window.__ModuleLoader__.load({
 			return output.join("");
 		}
 		//#endregion
-		//#region lib/types/client/read.js
+		//#region src/client/read.ts
 		/**
 		* Failure text from a Remote result.
 		* @param error - the failed result's error.
@@ -1434,7 +1428,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/draft-storage.js
+		//#region src/client/draft-storage.ts
 		function draftKey(cwd, path) {
 			return `dsh.writer.draft.v1:${JSON.stringify([cwd, path])}`;
 		}
@@ -1526,7 +1520,7 @@ window.__ModuleLoader__.load({
 			}
 		}
 		//#endregion
-		//#region lib/types/client/save.js
+		//#region src/client/save.ts
 		/**
 		* Build the save URL. The host accepts PUT only.
 		* @param sessionId - session that owns the workspace.
@@ -1560,7 +1554,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/use-writer-document.js
+		//#region src/client/use-writer-document.ts
 		/**
 		* Keep an editor alive while its sidebar is hidden. Mount separately per session/workspace.
 		* @param remote - workspace file reader.
@@ -1800,7 +1794,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/book-status.js
+		//#region src/client/book-status.ts
 		/** Read chapter progress from the book's authoritative files and versioned reports. */
 		function object(value) {
 			if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid record");
@@ -1964,7 +1958,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/RevisionDiff.js
+		//#region src/client/RevisionDiff.tsx
 		/** Reuse DSH's bounded diff renderer for draft and review-version comparisons. */
 		/**
 		* Render an explicit comparison without changing either version.
@@ -1981,11 +1975,11 @@ window.__ModuleLoader__.load({
 				before,
 				after
 			]);
-			if (before === after) return (0, react_jsx_runtime.jsx)("p", {
+			if (before === after) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 				className: "writer-muted",
 				children: t("diffUnchanged")
 			});
-			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
 				diffs,
 				labels: {
 					codeLabel: t("diffTitle"),
@@ -2001,7 +1995,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/BookPanel.js
+		//#region src/client/BookPanel.tsx
 		/** On-demand chapter progress and cited reviews inside the existing writing sidebar. */
 		function missing(error) {
 			return error.code === "workspace-file/not-found";
@@ -2109,38 +2103,38 @@ window.__ModuleLoader__.load({
 			const review = status?.review;
 			const reviewDraft = review !== void 0 && withinBook === review.bodyPath ? draft : void 0;
 			const staleReview = review?.stale === true || review !== void 0 && reviewDraft !== void 0 && normalizeEol(review.bodyText) !== reviewDraft;
-			return (0, react_jsx_runtime.jsxs)("details", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", {
 				className: "writer-book-panel",
 				open,
 				onToggle: (event) => {
 					setOpen(event.currentTarget.open);
 				},
-				children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookPanelTitle") }), open && (0, react_jsx_runtime.jsxs)("div", {
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("bookPanelTitle") }), open && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 					className: "writer-book-content",
-					children: [(0, react_jsx_runtime.jsxs)("div", {
+					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: "writer-book-controls",
 						children: [
-							(0, react_jsx_runtime.jsxs)("label", { children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: [
 								t("bookPanelBook"),
 								" ",
-								(0, react_jsx_runtime.jsxs)("select", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 									value: book ?? "__choose__",
 									onChange: (event) => {
 										setBookPick(event.target.value);
 									},
-									children: [book === void 0 && (0, react_jsx_runtime.jsx)("option", {
+									children: [book === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "__choose__",
 										children: t("bookChoose")
-									}), projects.map((project) => (0, react_jsx_runtime.jsx)("option", {
+									}), projects.map((project) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: project.path,
 										children: project.name || t("workspaceBook")
 									}, project.path))]
 								})
 							] }),
-							book !== void 0 && chapter !== null && status?.chapter !== null && (0, react_jsx_runtime.jsxs)("label", { children: [
+							book !== void 0 && chapter !== null && status?.chapter !== null && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: [
 								t("bookPanelChapter"),
 								" ",
-								(0, react_jsx_runtime.jsx)("input", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "number",
 									min: 1,
 									value: chapterInput ?? chapterPick ?? status?.chapter ?? 1,
@@ -2157,7 +2151,7 @@ window.__ModuleLoader__.load({
 									}
 								})
 							] }),
-							(0, react_jsx_runtime.jsx)("button", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: loading,
 								onClick: () => {
@@ -2166,29 +2160,29 @@ window.__ModuleLoader__.load({
 								children: t("bookRefresh")
 							})
 						]
-					}), book === void 0 ? (0, react_jsx_runtime.jsx)("p", { children: t("bookChoose") }) : loading ? (0, react_jsx_runtime.jsx)("p", {
+					}), book === void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookChoose") }) : loading ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 						role: "status",
 						children: t("loading")
-					}) : error !== void 0 ? (0, react_jsx_runtime.jsx)("p", {
+					}) : error !== void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 						role: "alert",
 						children: t("bookRecordError").replace("{path}", error)
-					}) : status !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-						(0, react_jsx_runtime.jsxs)("p", { children: [
+					}) : status !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("p", { children: [
 							status.title || projects.find((project) => project.path === book)?.name,
 							" · ",
 							status.lastChapter === void 0 ? t("bookNoTracking") : t("bookCommitted").replace("{n}", String(status.lastChapter))
 						] }),
-						status.lastChapter !== void 0 && (0, react_jsx_runtime.jsx)("p", { children: t("bookNext").replace("{n}", String(status.lastChapter + 1)) }),
-						status.commitments.length > 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookCommitments") }), (0, react_jsx_runtime.jsx)("ul", { children: status.commitments.map((item, index) => (0, react_jsx_runtime.jsx)("li", { children: item }, index)) })] }),
-						(0, react_jsx_runtime.jsxs)("div", {
+						status.lastChapter !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookNext").replace("{n}", String(status.lastChapter + 1)) }),
+						status.commitments.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("bookCommitments") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: status.commitments.map((item, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: item }, index)) })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								(0, react_jsx_runtime.jsx)("strong", { children: t("bookMechanical") }),
-								(0, react_jsx_runtime.jsx)("p", { children: check === void 0 ? t("bookUnchecked") : check.stale || draftAffectsChapter ? t("bookStale") : t(checkLabels[check.status] ?? "checkUnavailable") }),
-								check !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									(0, react_jsx_runtime.jsx)("p", { children: t("bookWordcount").replace("{actual}", String(check.actual)).replace("{target}", String(check.target)) }),
-									check.findings.length > 0 && (0, react_jsx_runtime.jsx)("ul", { children: check.findings.map((finding, index) => (0, react_jsx_runtime.jsx)("li", { children: finding }, index)) }),
-									(0, react_jsx_runtime.jsx)("button", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookMechanical") }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: check === void 0 ? t("bookUnchecked") : check.stale || draftAffectsChapter ? t("bookStale") : t(checkLabels[check.status] ?? "checkUnavailable") }),
+								check !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookWordcount").replace("{actual}", String(check.actual)).replace("{target}", String(check.target)) }),
+									check.findings.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: check.findings.map((finding, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: finding }, index)) }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											onOpen(joinBook(check.path));
@@ -2196,56 +2190,56 @@ window.__ModuleLoader__.load({
 										children: t("bookOpenCheck")
 									})
 								] }),
-								(0, react_jsx_runtime.jsx)("p", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 									className: "writer-muted",
 									children: t("bookCheckHelp")
 								})
 							]
 						}),
-						(0, react_jsx_runtime.jsxs)("div", {
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								(0, react_jsx_runtime.jsx)("strong", { children: t("bookSemantic") }),
-								(0, react_jsx_runtime.jsx)("p", { children: review === void 0 ? t("bookUnreviewed") : staleReview ? t("bookStaleReview") : t("bookReviewCurrent") }),
-								review !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									(0, react_jsx_runtime.jsx)("p", { children: review.summary }),
-									(0, react_jsx_runtime.jsx)("ul", { children: review.findings.map((finding) => (0, react_jsx_runtime.jsxs)("li", { children: [
-										(0, react_jsx_runtime.jsxs)("span", { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookSemantic") }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: review === void 0 ? t("bookUnreviewed") : staleReview ? t("bookStaleReview") : t("bookReviewCurrent") }),
+								review !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: review.summary }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: review.findings.map((finding) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
 											t(finding.severity === "must" ? "reviewMust" : finding.severity === "suggestion" ? "reviewSuggestion" : "reviewOptional"),
 											" · ",
 											t("reviewLine").replace("{n}", String(finding.line))
 										] }),
-										(0, react_jsx_runtime.jsx)("blockquote", { children: finding.quote }),
-										(0, react_jsx_runtime.jsx)("p", { children: finding.explanation }),
-										(0, react_jsx_runtime.jsx)("p", { children: finding.suggestion }),
-										!staleReview && finding.resolution !== void 0 && (0, react_jsx_runtime.jsx)("span", { children: t(finding.resolution === "accepted" ? "reviewAccepted" : "reviewResolved") })
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("blockquote", { children: finding.quote }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: finding.explanation }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: finding.suggestion }),
+										!staleReview && finding.resolution !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t(finding.resolution === "accepted" ? "reviewAccepted" : "reviewResolved") })
 									] }, finding.id)) }),
-									(0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("reviewChanges") }), (0, react_jsx_runtime.jsx)(RevisionDiff, {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("reviewChanges") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RevisionDiff, {
 										path: review.bodyPath,
 										before: normalizeEol(review.bodyText),
 										after: reviewDraft ?? normalizeEol(review.currentText),
 										t
 									})] }),
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											onOpen(joinBook(review.path));
 										},
 										children: t("bookOpenReview")
 									}),
-									(0, react_jsx_runtime.jsx)("p", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										children: t("reviewResolveHelp")
 									})
 								] })
 							]
 						}),
-						status.workFiles.length > 0 && (0, react_jsx_runtime.jsxs)("div", {
+						status.workFiles.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								(0, react_jsx_runtime.jsx)("strong", { children: t("bookUnfinished") }),
-								(0, react_jsx_runtime.jsx)("p", { children: t("bookResumeHelp") }),
-								status.workFiles.filter(isEditableWriterPath).map((path) => (0, react_jsx_runtime.jsx)("button", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookUnfinished") }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookResumeHelp") }),
+								status.workFiles.filter(isEditableWriterPath).map((path) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									onClick: () => {
 										onOpen(joinBook(path));
@@ -2405,7 +2399,7 @@ window.__ModuleLoader__.load({
 			return messages.join("；");
 		}
 		//#endregion
-		//#region lib/types/client/rail-chrome.js
+		//#region src/client/rail-chrome.ts
 		/** Chrome prefs for the writing left rail: width and collapsed (localStorage only). */
 		const WRITER_RAIL_STORAGE_KEY = "writer.rail.chrome";
 		/**
@@ -2516,8 +2510,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/workspace-status.js
-		/** Workspace masthead helpers: short cwd name and scan health. */
+		//#region src/client/workspace-status.ts
 		/**
 		* Last path segment of a workspace cwd for the masthead.
 		* @param cwd - absolute or relative workspace root.
@@ -2543,7 +2536,7 @@ window.__ModuleLoader__.load({
 			return "ok";
 		}
 		//#endregion
-		//#region lib/types/client/desk.js
+		//#region src/client/desk.tsx
 		function joinCwd(cwd, relative) {
 			const root = cwd.replace(/[/\\]+$/u, "");
 			if (relative === "" || relative === ".") return root;
@@ -2615,9 +2608,9 @@ window.__ModuleLoader__.load({
 			if (needle === "") return stem;
 			const at = stem.toLowerCase().indexOf(needle);
 			if (at < 0) return stem;
-			return (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 				stem.slice(0, at),
-				(0, react_jsx_runtime.jsx)("mark", { children: stem.slice(at, at + needle.length) }),
+				/* @__PURE__ */ (0, react_jsx_runtime.jsx)("mark", { children: stem.slice(at, at + needle.length) }),
 				stem.slice(at + needle.length)
 			] });
 		}
@@ -2636,7 +2629,7 @@ window.__ModuleLoader__.load({
 				const childIndent = { "--writer-indent": `${String((depth + 1) * 12)}px` };
 				if (node.kind === "file") {
 					const { stem, ext } = fileStemAndExt(node.name);
-					return (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsxs)("button", {
+					return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: node.editable ? "writer-tree-file" : "writer-tree-file writer-tree-file-disabled",
 						style: indent,
@@ -2648,17 +2641,17 @@ window.__ModuleLoader__.load({
 							if (node.editable) onSelect(node.path);
 						},
 						children: [
-							(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
 								kind: (0, _deepseek_ai_dsh_client_ui_primitives.classifyFileType)(node.name),
 								size: 16,
 								className: "writer-tree-kind"
 							}),
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-label",
 								"aria-hidden": "true",
 								children: stem || node.name
 							}),
-							ext !== "" && ext !== "md" && (0, react_jsx_runtime.jsx)("span", {
+							ext !== "" && ext !== "md" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-ext",
 								"aria-hidden": "true",
 								children: ext
@@ -2673,9 +2666,9 @@ window.__ModuleLoader__.load({
 				const hasMore = listing !== void 0 && node.shown < total;
 				const apiTruncated = (listing?.truncated ?? node.truncated) && node.shown >= total && total > 0;
 				const folderName = node.name === "" || node.name === "." ? t("workspaceBook") : node.name;
-				return (0, react_jsx_runtime.jsxs)("li", {
+				return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", {
 					className: "writer-tree-folder",
-					children: [(0, react_jsx_runtime.jsxs)("button", {
+					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: "writer-tree-toggle",
 						style: indent,
@@ -2684,23 +2677,23 @@ window.__ModuleLoader__.load({
 						onClick: () => {
 							onToggle(key, !open);
 						},
-						children: [open ? (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpenRegular, {
+						children: [open ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpenRegular, {
 							className: "writer-tree-kind",
 							"aria-hidden": "true"
-						}) : (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderCloseRegular, {
+						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderCloseRegular, {
 							className: "writer-tree-kind",
 							"aria-hidden": "true"
-						}), (0, react_jsx_runtime.jsx)("span", {
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 							className: "writer-tree-label",
 							children: folderName
 						})]
-					}), open && (0, react_jsx_runtime.jsxs)("ul", { children: [
-						node.loading && (0, react_jsx_runtime.jsx)("li", {
+					}), open && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("ul", { children: [
+						node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("loading")
 						}),
-						node.loadError !== void 0 && !node.loading && (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsx)("button", {
+						node.loadError !== void 0 && !node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							className: "writer-tree-status-action",
 							style: childIndent,
@@ -2709,7 +2702,7 @@ window.__ModuleLoader__.load({
 							},
 							children: t("loadDirError")
 						}) }),
-						node.loaded && !node.loading && node.children.length === 0 && node.loadError === void 0 && (0, react_jsx_runtime.jsx)("li", {
+						node.loaded && !node.loading && node.children.length === 0 && node.loadError === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("emptyDir")
@@ -2726,7 +2719,7 @@ window.__ModuleLoader__.load({
 							onRetry,
 							t
 						}),
-						hasMore && !node.loading && (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsx)("button", {
+						hasMore && !node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							className: "writer-tree-status-action",
 							style: childIndent,
@@ -2735,7 +2728,7 @@ window.__ModuleLoader__.load({
 							},
 							children: t("loadMore")
 						}) }),
-						apiTruncated && (0, react_jsx_runtime.jsx)("li", {
+						apiTruncated && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("truncated")
@@ -2745,12 +2738,12 @@ window.__ModuleLoader__.load({
 			});
 		}
 		function SearchHits({ hits, query, selected, onSelect, t }) {
-			return (0, react_jsx_runtime.jsx)("ul", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
 				className: "writer-tree writer-search-hits",
 				children: hits.map((hit) => {
 					const { stem, ext } = fileStemAndExt(hit.name);
 					const dir = searchHitDir(hit.path);
-					return (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsxs)("button", {
+					return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: hit.editable ? "writer-tree-file" : "writer-tree-file writer-tree-file-disabled",
 						title: hit.editable ? hit.path : t("notEditable").replace("{path}", hit.path),
@@ -2761,22 +2754,22 @@ window.__ModuleLoader__.load({
 							if (hit.editable) onSelect(hit.path);
 						},
 						children: [
-							(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
 								kind: (0, _deepseek_ai_dsh_client_ui_primitives.classifyFileType)(hit.name),
 								size: 16,
 								className: "writer-tree-kind"
 							}),
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-label",
 								"aria-hidden": "true",
 								children: highlightStem(stem || hit.name, query)
 							}),
-							ext !== "" && ext !== "md" && (0, react_jsx_runtime.jsx)("span", {
+							ext !== "" && ext !== "md" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-ext",
 								"aria-hidden": "true",
 								children: ext
 							}),
-							dir !== "" && (0, react_jsx_runtime.jsx)("span", {
+							dir !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-search-dir",
 								"aria-hidden": "true",
 								children: dir
@@ -2792,7 +2785,7 @@ window.__ModuleLoader__.load({
 		* @returns the desk.
 		*/
 		function WriterDesk(props) {
-			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
 		}
 		function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }) {
 			const checkpointRef = (0, react.useRef)(() => true);
@@ -3182,25 +3175,25 @@ window.__ModuleLoader__.load({
 				}
 			};
 			const deskStyle = { ["--writer-rail-width"]: `${String(fittedRailWidth)}px` };
-			return (0, react_jsx_runtime.jsxs)("div", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 				ref: deskRef,
 				className: "writer-desk",
 				"data-workbench": "writer",
 				"data-rail-collapsed": railCollapsed ? "true" : void 0,
 				style: deskStyle,
 				children: [
-					(0, react_jsx_runtime.jsxs)("aside", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("aside", {
 						id: railId,
 						className: "writer-rail",
 						"aria-label": t("tree"),
 						hidden: railCollapsed || void 0,
 						children: [
-							(0, react_jsx_runtime.jsxs)("nav", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("nav", {
 								className: "writer-tabs",
 								"aria-label": t("workspaceTabs"),
 								role: "tablist",
 								children: [
-									(0, react_jsx_runtime.jsxs)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: librariesTabId,
 										role: "tab",
@@ -3210,12 +3203,12 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("libraries");
 										},
-										children: [(0, react_jsx_runtime.jsx)("span", { children: t("libraries") }), libraries.length > 0 && (0, react_jsx_runtime.jsx)("b", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("libraries") }), libraries.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: libraries.length
 										})]
 									}),
-									(0, react_jsx_runtime.jsxs)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: projectsTabId,
 										role: "tab",
@@ -3225,12 +3218,12 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("projects");
 										},
-										children: [(0, react_jsx_runtime.jsx)("span", { children: t("projects") }), projects.length > 0 && (0, react_jsx_runtime.jsx)("b", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("projects") }), projects.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: projects.length
 										})]
 									}),
-									(0, react_jsx_runtime.jsxs)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: scansTabId,
 										role: "tab",
@@ -3240,17 +3233,17 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("scans");
 										},
-										children: [(0, react_jsx_runtime.jsx)("span", { children: t("scans") }), scans.length > 0 && (0, react_jsx_runtime.jsx)("b", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("scans") }), scans.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: scans.length
 										})]
 									})
 								]
 							}),
-							(0, react_jsx_runtime.jsx)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 								className: "writer-search-slot",
 								role: "search",
-								children: (0, react_jsx_runtime.jsx)("input", {
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									ref: searchRef,
 									type: "search",
 									value: filter,
@@ -3270,60 +3263,60 @@ window.__ModuleLoader__.load({
 									}
 								})
 							}),
-							(0, react_jsx_runtime.jsxs)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 								className: "writer-tree-panel",
 								id: tabPanelId,
 								role: "tabpanel",
 								"aria-labelledby": view === "libraries" ? librariesTabId : view === "projects" ? projectsTabId : scansTabId,
 								"aria-busy": scanning || void 0,
 								children: [
-									health === "failed" && !showSearch && (0, react_jsx_runtime.jsxs)("div", {
+									health === "failed" && !showSearch && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-scan-banner",
 										role: "alert",
-										children: [(0, react_jsx_runtime.jsx)("p", { children: t("scanFailed") }), (0, react_jsx_runtime.jsx)("button", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("scanFailed") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: rescan,
 											children: t("retryScan")
 										})]
 									}),
-									health === "partial" && !showSearch && (0, react_jsx_runtime.jsxs)("div", {
+									health === "partial" && !showSearch && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-scan-banner writer-scan-banner-warn",
 										role: "status",
-										children: [(0, react_jsx_runtime.jsx)("p", { children: t("scanPartial") }), (0, react_jsx_runtime.jsx)("button", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("scanPartial") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: rescan,
 											children: t("retryScan")
 										})]
 									}),
-									scanning && !showSearch ? (0, react_jsx_runtime.jsx)("p", {
+									scanning && !showSearch ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("healthLoading")
-									}) : showSearch ? searching ? (0, react_jsx_runtime.jsx)("p", {
+									}) : showSearch ? searching ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("searching").replace("{query}", query)
-									}) : searchResult !== void 0 && searchResult.results.length === 0 ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("p", {
+									}) : searchResult !== void 0 && searchResult.results.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: (searchResult.truncated ? t("searchIncomplete") : t("searchEmpty")).replace("{query}", query)
-									}), truncationText !== "" && (0, react_jsx_runtime.jsx)("p", {
+									}), truncationText !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										role: "status",
 										children: truncationText
-									})] }) : searchResult !== void 0 ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)(SearchHits, {
+									})] }) : searchResult !== void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SearchHits, {
 										hits: searchResult.results,
 										query,
 										selected: active,
 										onSelect: selectFile,
 										t
-									}), truncationText !== "" && (0, react_jsx_runtime.jsx)("p", {
+									}), truncationText !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										role: "status",
 										children: truncationText
-									})] }) : null : health === "failed" ? null : roots.length === 0 ? (0, react_jsx_runtime.jsx)("p", {
+									})] }) : null : health === "failed" ? null : roots.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: view === "libraries" ? t("emptyLibraries") : view === "projects" ? t("emptyProjects") : t("emptyScans")
-									}) : (0, react_jsx_runtime.jsx)("nav", {
+									}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
 										"aria-label": t("tree"),
-										children: (0, react_jsx_runtime.jsx)("ul", {
+										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
 											className: "writer-tree",
 											children: TreeNodes({
 												nodes: roots,
@@ -3343,20 +3336,20 @@ window.__ModuleLoader__.load({
 									})
 								]
 							}),
-							(0, react_jsx_runtime.jsxs)("footer", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("footer", {
 								className: "writer-rail-note",
-								children: [(0, react_jsx_runtime.jsx)("span", {
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 									className: "writer-rail-dot",
 									"data-health": health,
 									"aria-hidden": "true"
-								}), (0, react_jsx_runtime.jsx)("p", {
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 									title: `${cwd} · ${t("localWorkspace")}`,
 									children: health === "ok" || health === "loading" ? t("localWorkspace") : `${healthText} · ${t("localWorkspace")}`
 								})]
 							})
 						]
 					}),
-					(0, react_jsx_runtime.jsx)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: "writer-rail-resize",
 						role: "separator",
 						tabIndex: railCollapsed ? -1 : 0,
@@ -3377,13 +3370,13 @@ window.__ModuleLoader__.load({
 						},
 						onKeyDown: onRailResizeKeyDown
 					}),
-					(0, react_jsx_runtime.jsxs)("section", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 						className: "writer-stage",
 						children: [
-							(0, react_jsx_runtime.jsxs)("header", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 								className: "writer-stage-heading",
 								children: [
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										className: "writer-rail-toggle",
 										"aria-expanded": !railCollapsed,
@@ -3393,83 +3386,83 @@ window.__ModuleLoader__.load({
 										onClick: toggleRail,
 										children: railCollapsed ? "›" : "‹"
 									}),
-									(0, react_jsx_runtime.jsxs)("div", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-masthead",
 										"aria-label": t("masthead"),
-										children: [(0, react_jsx_runtime.jsx)("span", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 											className: "writer-workspace",
 											title: cwd,
 											children: shortName
-										}), (0, react_jsx_runtime.jsxs)("div", {
+										}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 											className: "writer-masthead-actions",
-											children: [(0, react_jsx_runtime.jsxs)("div", {
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-counts",
 												title: t("filesCountHint"),
 												"aria-label": countsAria,
 												children: [
-													(0, react_jsx_runtime.jsxs)("span", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															(0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
 															" ",
 															t("countLibraries")
 														]
 													}),
-													(0, react_jsx_runtime.jsxs)("span", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															(0, react_jsx_runtime.jsx)("b", { children: projects.length }),
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: projects.length }),
 															" ",
 															t("countProjects")
 														]
 													}),
-													(0, react_jsx_runtime.jsxs)("span", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															(0, react_jsx_runtime.jsx)("b", { children: scans.length }),
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: scans.length }),
 															" ",
 															t("countScans")
 														]
 													}),
-													(0, react_jsx_runtime.jsxs)("span", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															(0, react_jsx_runtime.jsx)("b", { children: filesText }),
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: filesText }),
 															" ",
 															t("countFiles")
 														]
 													})
 												]
-											}), (0, react_jsx_runtime.jsxs)("span", {
+											}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 												className: "writer-connection",
 												"data-health": health,
 												role: "status",
 												title: connectionTitle,
-												children: [(0, react_jsx_runtime.jsx)("span", {
+												children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													className: "writer-status-dot",
 													"aria-hidden": "true"
-												}), (0, react_jsx_runtime.jsx)("span", {
+												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													className: "writer-connection-label",
 													children: connectionLabel
 												})]
 											})]
 										})]
 									}),
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										className: "writer-reload",
 										title: t("reload"),
 										"aria-label": t("reload"),
 										onClick: rescan,
-										children: (0, react_jsx_runtime.jsxs)("svg", {
+										children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
 											viewBox: "0 0 24 24",
 											"aria-hidden": "true",
-											children: [(0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
 										})
 									})
 								]
 							}),
-							view === "projects" && (0, react_jsx_runtime.jsx)(BookPanel, {
+							view === "projects" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(BookPanel, {
 								sessionId,
 								cwd,
 								remote,
@@ -3482,31 +3475,31 @@ window.__ModuleLoader__.load({
 								onOpen: selectFile,
 								t
 							}),
-							(0, react_jsx_runtime.jsxs)("main", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("main", {
 								className: "writer-editor",
 								children: [
-									active === void 0 && documentNotice === void 0 && (0, react_jsx_runtime.jsx)("p", {
+									active === void 0 && documentNotice === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("emptyHelp")
 									}),
-									writerDocument.storageError !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+									writerDocument.storageError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										role: "alert",
 										className: "writer-alert",
 										children: t(writerDocument.storageError === "changed" ? "draftStorageConflict" : "draftStorageError")
 									}),
-									documentNotice !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+									documentNotice !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 										role: "alert",
 										className: "writer-alert",
 										children: documentNotice
 									}),
-									active !== void 0 && !writerDocument.ready && !writerDocument.loading && (0, react_jsx_runtime.jsx)("button", {
+									active !== void 0 && !writerDocument.ready && !writerDocument.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											writerDocument.reload();
 										},
 										children: t("retryDocument")
 									}),
-									conflictOpen && (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
+									conflictOpen && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
 										open: true,
 										onClose: () => {
 											setConflictOpen(false);
@@ -3514,13 +3507,13 @@ window.__ModuleLoader__.load({
 										title: t("conflictTitle"),
 										description: t("conflictBody"),
 										closeLabel: t("conflictClose"),
-										footer: (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("button", {
+										footer: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: () => {
 												setConflictOpen(false);
 											},
 											children: t("conflictKeep")
-										}), (0, react_jsx_runtime.jsx)("button", {
+										}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											className: "writer-conflict-reload",
 											onClick: () => {
@@ -3530,32 +3523,32 @@ window.__ModuleLoader__.load({
 											children: t("conflictReload")
 										})] })
 									}),
-									active !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-										(0, react_jsx_runtime.jsxs)("header", {
+									active !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 											className: "writer-editor-toolbar",
-											children: [(0, react_jsx_runtime.jsxs)("div", {
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-document-identity",
-												children: [(0, react_jsx_runtime.jsx)("nav", {
+												children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
 													className: "writer-breadcrumbs",
 													"aria-label": t("breadcrumbs"),
-													children: crumbs.map((part, index) => (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && (0, react_jsx_runtime.jsx)("i", {
+													children: crumbs.map((part, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("i", {
 														"aria-hidden": "true",
 														children: " / "
-													}), (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
-												}), (0, react_jsx_runtime.jsx)("h2", {
+													}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
+												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", {
 													className: "writer-document-title",
 													title: active,
 													children: crumbs[crumbs.length - 1] ?? active
 												})]
-											}), (0, react_jsx_runtime.jsxs)("div", {
+											}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-editor-actions",
 												children: [
-													(0, react_jsx_runtime.jsx)("span", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 														className: "writer-dirty",
 														"data-state": dirtyState,
 														children: dirtyText
 													}),
-													(0, react_jsx_runtime.jsx)("button", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														className: "writer-line-numbers-toggle",
 														title: t("toggleLineNumbers"),
@@ -3566,12 +3559,12 @@ window.__ModuleLoader__.load({
 														},
 														children: "#"
 													}),
-													(0, react_jsx_runtime.jsxs)("div", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 														className: "writer-mode-switch",
 														role: "group",
 														"aria-label": t("editor"),
 														children: [
-															(0, react_jsx_runtime.jsx)("button", {
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "edit",
 																onClick: () => {
@@ -3579,7 +3572,7 @@ window.__ModuleLoader__.load({
 																},
 																children: t("modeEdit")
 															}),
-															(0, react_jsx_runtime.jsx)("button", {
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "preview",
 																onClick: () => {
@@ -3587,7 +3580,7 @@ window.__ModuleLoader__.load({
 																},
 																children: t("modePreview")
 															}),
-															(0, react_jsx_runtime.jsx)("button", {
+															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "diff",
 																onClick: () => {
@@ -3597,13 +3590,13 @@ window.__ModuleLoader__.load({
 															})
 														]
 													}),
-													conflict ? (0, react_jsx_runtime.jsx)("button", {
+													conflict ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														onClick: () => {
 															setConflictOpen(true);
 														},
 														children: t("conflictReview")
-													}) : (0, react_jsx_runtime.jsx)("button", {
+													}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														disabled: !writerDocument.ready || busy || version === void 0 || draft === saved,
 														onClick: save,
@@ -3612,14 +3605,14 @@ window.__ModuleLoader__.load({
 												]
 											})]
 										}),
-										mode === "edit" ? (0, react_jsx_runtime.jsxs)("div", {
+										mode === "edit" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 											className: showLineNumbers ? "writer-editor-body show-line-numbers" : "writer-editor-body",
-											children: [(0, react_jsx_runtime.jsx)(WriterLineNumbers, {
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterLineNumbers, {
 												text: draft,
 												caret,
 												show: showLineNumbers,
 												textareaRef: editorRef
-											}), (0, react_jsx_runtime.jsx)("textarea", {
+											}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 												ref: editorRef,
 												"aria-label": active,
 												value: draft,
@@ -3640,45 +3633,45 @@ window.__ModuleLoader__.load({
 													setCaret(event.currentTarget.selectionStart);
 												}
 											})]
-										}) : mode === "diff" ? (0, react_jsx_runtime.jsx)("div", {
+										}) : mode === "diff" ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 											className: "writer-preview",
-											children: (0, react_jsx_runtime.jsx)(RevisionDiff, {
+											children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RevisionDiff, {
 												path: active,
 												before: saved,
 												after: draft,
 												t
 											})
-										}) : (0, react_jsx_runtime.jsx)("article", {
+										}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("article", {
 											className: "writer-preview",
 											"aria-label": `${active} ${t("modePreview")}`,
 											dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) }
 										}),
-										(0, react_jsx_runtime.jsxs)("footer", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("footer", {
 											className: "writer-status",
 											children: [
-												(0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
-												(0, react_jsx_runtime.jsx)("span", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												(0, react_jsx_runtime.jsx)("span", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													className: "writer-document-meta",
 													children: byteLabel
 												}),
-												(0, react_jsx_runtime.jsx)("span", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												(0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
-												extLabel !== "" && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("span", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
+												extLabel !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
-												}), (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
-												(0, react_jsx_runtime.jsx)("span", {
+												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												(0, react_jsx_runtime.jsx)("span", { children: encodingText })
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: encodingText })
 											]
 										})
 									] })
@@ -3690,7 +3683,17 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/workbench.js
+		//#region src/client/workbench-selection.ts
+		function preferredWriterWorkspace(workspaces) {
+			return workspaces.find((workspace) => /(?:^|[\\/])novels$/iu.test(workspace.path))?.id ?? workspaces.find((workspace) => /novels|小说/iu.test(workspace.title))?.id;
+		}
+		function writerSessionsInWorkspace(sessions, workspace, memberIds) {
+			if (!workspace) return [];
+			const members = new Set(memberIds);
+			return sessions.filter((session) => members.has(session.id) && session.cwd === workspace.path && session.origin !== "subagent" && session.projectionValues?.agentPreset === "writer");
+		}
+		//#endregion
+		//#region src/client/workbench.tsx
 		/** Works library, book editor, and the official DSH Conversation surface. */
 		/** Open the main workbench panel. */
 		function Main({ renderSlot }) {
@@ -3698,7 +3701,7 @@ window.__ModuleLoader__.load({
 		}
 		/** Sidebar launcher for the complete writing workbench. */
 		function Launcher({ size }) {
-			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
 		}
 		function NativeConversation({ useSession, useConversation, renderFactorySlot }) {
 			const session = useSession((value) => value);
@@ -3722,8 +3725,9 @@ window.__ModuleLoader__.load({
 			const [assistantOpen, setAssistantOpen] = (0, react.useState)(true);
 			const [title, setTitle] = (0, react.useState)("");
 			const [path, setPath] = (0, react.useState)("");
-			const [workspaceId, setWorkspaceId] = (0, react.useState)("");
+			const [workspaceId, setWorkspaceId] = (0, react.useState)();
 			const [linkSessionId, setLinkSessionId] = (0, react.useState)("");
+			const [candidatePath, setCandidatePath] = (0, react.useState)();
 			const [form, setForm] = (0, react.useState)("long");
 			const root = (0, react.useRef)(null);
 			const checkpoint = (0, react.useRef)(() => true);
@@ -3744,8 +3748,12 @@ window.__ModuleLoader__.load({
 			const active = books.find((book) => book.id === bookId);
 			const sessions = useSessions((state) => state.ids.flatMap((id) => {
 				const session = state.byId[id];
-				return session && session.origin !== "subagent" && session.projectionValues?.agentPreset === "writer" ? [session] : [];
+				return session ? [session] : [];
 			}));
+			const selectedWorkspaceId = workspaceId ?? preferredWriterWorkspace(catalog?.workspaces ?? []) ?? "";
+			const selectedWorkspace = catalog?.workspaces.find((workspace) => workspace.id === selectedWorkspaceId);
+			const pathExists = Boolean(path.trim()) && (selectedWorkspace?.candidates.some((candidate) => candidate.path === path.trim()) === true || books.some((book) => book.workspaceId === selectedWorkspaceId && book.path === path.trim()));
+			const workspaceSessions = writerSessionsInWorkspace(sessions, selectedWorkspace, selectedWorkspace?.sessionIds ?? []);
 			const sessionId = active && selectedSessionId && active.phases.some((phase) => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId;
 			const librarySession = books.find((book) => book.sessionId !== null);
 			const perform = async (input) => {
@@ -3784,119 +3792,129 @@ window.__ModuleLoader__.load({
 					openSession(sessionId);
 				}).finally(() => reference.release());
 			};
-			return (0, react_jsx_runtime.jsxs)("main", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("main", {
 				ref: root,
 				className: "writer-workbench",
 				"data-workbench": "writer",
 				children: [
-					(0, react_jsx_runtime.jsxs)("header", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 						className: "writer-wb-header",
-						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h1", { children: t("title") }), active && (0, react_jsx_runtime.jsx)("span", { children: active.title })] }), active && (0, react_jsx_runtime.jsx)("button", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h1", { children: t("title") }), active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: active.title })] }), active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							onClick: goBack,
 							children: t("allWorks")
 						})]
 					}),
-					!active ? (0, react_jsx_runtime.jsxs)("div", {
+					!active ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: "writer-wb-home",
-						children: [(0, react_jsx_runtime.jsx)("nav", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
 							className: "writer-wb-nav",
 							"aria-label": t("navigation"),
 							children: [
 								"works",
 								"analysis",
 								"market"
-							].map((key) => (0, react_jsx_runtime.jsx)("button", {
+							].map((key) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								"aria-current": section === key ? "page" : void 0,
 								onClick: () => setSection(key),
 								children: t(key)
 							}, key))
-						}), section === "works" ? (0, react_jsx_runtime.jsxs)("section", {
+						}), section === "works" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 							className: "writer-wb-works",
 							children: [
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: "writer-wb-toolbar",
-									children: [(0, react_jsx_runtime.jsx)("h2", { children: t("works") }), (0, react_jsx_runtime.jsx)("button", {
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t("works") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: refresh,
 										children: t("refresh")
 									})]
 								}),
-								(0, react_jsx_runtime.jsxs)("form", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("form", {
 									onSubmit: (event) => {
 										event.preventDefault();
-										if (workspaceId && path.trim() && title.trim()) perform({
+										if (selectedWorkspaceId && path.trim() && title.trim()) perform({
 											action: "create",
-											workspaceId,
+											workspaceId: selectedWorkspaceId,
 											path: path.trim(),
 											title: title.trim(),
 											form
 										});
 									},
 									children: [
-										(0, react_jsx_runtime.jsxs)("select", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 											"aria-label": t("workspace"),
-											value: workspaceId,
-											onChange: (event) => setWorkspaceId(event.target.value),
-											children: [(0, react_jsx_runtime.jsx)("option", {
+											value: selectedWorkspaceId,
+											onChange: (event) => {
+												setWorkspaceId(event.target.value);
+												setLinkSessionId("");
+												setCandidatePath(void 0);
+											},
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 												value: "",
 												children: t("chooseWorkspace")
-											}), catalog?.workspaces.map((workspace) => (0, react_jsx_runtime.jsx)("option", {
+											}), catalog?.workspaces.map((workspace) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 												value: workspace.id,
 												children: workspace.title
 											}, workspace.id))]
 										}),
-										(0, react_jsx_runtime.jsx)("input", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 											"aria-label": t("bookTitle"),
 											value: title,
-											onChange: (event) => setTitle(event.target.value),
+											onChange: (event) => {
+												setTitle(event.target.value);
+												setCandidatePath(void 0);
+											},
 											placeholder: t("bookTitle")
 										}),
-										(0, react_jsx_runtime.jsx)("input", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 											"aria-label": t("folder"),
 											value: path,
-											onChange: (event) => setPath(event.target.value),
+											onChange: (event) => {
+												setPath(event.target.value);
+												setCandidatePath(void 0);
+											},
 											placeholder: t("folder")
 										}),
-										(0, react_jsx_runtime.jsxs)("select", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 											"aria-label": t("form"),
 											value: form,
 											onChange: (event) => setForm(event.target.value),
-											children: [(0, react_jsx_runtime.jsx)("option", {
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 												value: "long",
 												children: t("longForm")
-											}), (0, react_jsx_runtime.jsx)("option", {
+											}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 												value: "short",
 												children: t("shortForm")
 											})]
 										}),
-										(0, react_jsx_runtime.jsx)("button", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "submit",
-											disabled: busy,
+											disabled: busy || pathExists,
 											children: t("createBook")
 										})
 									]
 								}),
-								(0, react_jsx_runtime.jsxs)("select", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 									"aria-label": t("writerSession"),
 									value: linkSessionId,
 									onChange: (event) => setLinkSessionId(event.target.value),
-									children: [(0, react_jsx_runtime.jsx)("option", {
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "",
 										children: t("chooseWriterSession")
-									}), sessions.map((session) => (0, react_jsx_runtime.jsx)("option", {
+									}), workspaceSessions.map((session) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: session.id,
 										children: session.displayTitle
 									}, session.id))]
 								}),
-								(0, react_jsx_runtime.jsx)("button", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
-									disabled: busy || !workspaceId || !path.trim() || !title.trim() || !linkSessionId,
+									disabled: busy || !selectedWorkspaceId || !path.trim() || !title.trim() || !linkSessionId,
 									onClick: () => {
 										perform({
 											action: "register",
-											workspaceId,
+											workspaceId: selectedWorkspaceId,
 											path: path.trim(),
 											title: title.trim(),
 											form,
@@ -3905,9 +3923,26 @@ window.__ModuleLoader__.load({
 									},
 									children: t("registerExisting")
 								}),
-								(0, react_jsx_runtime.jsx)("ul", {
+								selectedWorkspace && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+									className: "writer-wb-candidates",
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: t("foundBooks") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
+										className: "writer-wb-book-list",
+										children: selectedWorkspace.candidates.map((candidate) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: candidate.title }), candidate.path !== candidate.title && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: candidate.path })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											"aria-pressed": candidatePath === candidate.path,
+											onClick: () => {
+												setCandidatePath(candidate.path);
+												setPath(candidate.path);
+												setTitle(candidate.title);
+												setForm(candidate.form);
+											},
+											children: t("selectBook")
+										})] }, candidate.path))
+									})]
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
 									className: "writer-wb-book-list",
-									children: books.map((book) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsxs)("button", {
+									children: books.map((book) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										onClick: () => {
 											if (!canLeaveDocument()) return;
@@ -3915,11 +3950,11 @@ window.__ModuleLoader__.load({
 											setSelectedSessionId(book.sessionId ?? void 0);
 										},
 										children: [
-											(0, react_jsx_runtime.jsx)("strong", { children: book.title }),
-											(0, react_jsx_runtime.jsx)("span", { children: book.path }),
-											(0, react_jsx_runtime.jsx)("small", { children: book.sessionId ? t("sessionBound") : t("sessionNeeded") })
+											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: book.title }),
+											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: book.path }),
+											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: book.sessionId ? t("sessionBound") : t("sessionNeeded") })
 										]
-									}), (0, react_jsx_runtime.jsx)("button", {
+									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										disabled: busy,
 										onClick: () => {
@@ -3932,9 +3967,9 @@ window.__ModuleLoader__.load({
 									})] }, book.id))
 								})
 							]
-						}) : librarySession ? (0, react_jsx_runtime.jsxs)("section", {
+						}) : librarySession ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 							className: "writer-wb-library",
-							children: [(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t(section) }), (0, react_jsx_runtime.jsx)("span", { children: librarySession.title })] }), (0, react_jsx_runtime.jsx)(WriterDesk, {
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t(section) }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: librarySession.title })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDesk, {
 								sessionId: SessionId(librarySession.sessionId),
 								cwd: librarySession.cwd,
 								remote,
@@ -3942,18 +3977,18 @@ window.__ModuleLoader__.load({
 								visible: true,
 								initialView: section === "analysis" ? "libraries" : "scans"
 							}, `${librarySession.id}:${section}`)]
-						}) : (0, react_jsx_runtime.jsxs)("section", {
+						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 							className: "writer-wb-placeholder",
-							children: [(0, react_jsx_runtime.jsx)("h2", { children: t(section) }), (0, react_jsx_runtime.jsx)("p", { children: section === "analysis" ? t("analysisEmpty") : t("marketEmpty") })]
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t(section) }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: section === "analysis" ? t("analysisEmpty") : t("marketEmpty") })]
 						})]
-					}) : (0, react_jsx_runtime.jsxs)("div", {
+					}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: "writer-wb-book",
 						children: [
-							(0, react_jsx_runtime.jsxs)("nav", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("nav", {
 								className: "writer-wb-book-nav",
 								children: [
-									(0, react_jsx_runtime.jsx)("strong", { children: active.title }),
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: active.title }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => requestAssistant(t("planningTask", {
 											title: active.title,
@@ -3961,7 +3996,7 @@ window.__ModuleLoader__.load({
 										})),
 										children: t("startPlanning")
 									}),
-									active.phases.map((phase, index) => (0, react_jsx_runtime.jsxs)("button", {
+									active.phases.map((phase, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										"aria-current": phase.sessionId === sessionId ? "page" : void 0,
 										onClick: () => {
@@ -3973,7 +4008,7 @@ window.__ModuleLoader__.load({
 											index + 1
 										]
 									}, phase.sessionId)),
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										disabled: busy,
 										onClick: () => {
@@ -3984,19 +4019,19 @@ window.__ModuleLoader__.load({
 										},
 										children: t("newPhase")
 									}),
-									(0, react_jsx_runtime.jsxs)("select", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 										"aria-label": t("chooseWriterSession"),
 										value: linkSessionId,
 										onChange: (event) => setLinkSessionId(event.target.value),
-										children: [(0, react_jsx_runtime.jsx)("option", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 											value: "",
 											children: t("chooseWriterSession")
-										}), sessions.filter((session) => session.cwd === active.cwd).map((session) => (0, react_jsx_runtime.jsx)("option", {
+										}), writerSessionsInWorkspace(sessions, catalog?.workspaces.find((workspace) => workspace.id === active.workspaceId), catalog?.workspaces.find((workspace) => workspace.id === active.workspaceId)?.sessionIds ?? []).map((session) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 											value: session.id,
 											children: session.displayTitle
 										}, session.id))]
 									}),
-									(0, react_jsx_runtime.jsx)("button", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										disabled: busy || !linkSessionId,
 										onClick: () => {
@@ -4010,51 +4045,51 @@ window.__ModuleLoader__.load({
 									})
 								]
 							}),
-							(0, react_jsx_runtime.jsxs)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 								className: "writer-wb-mobile-tabs",
-								children: [(0, react_jsx_runtime.jsx)("button", {
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									"aria-pressed": smallView === "document",
 									onClick: () => setSmallView("document"),
 									children: t("document")
-								}), (0, react_jsx_runtime.jsx)("button", {
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									"aria-pressed": smallView === "assistant",
 									onClick: () => setSmallView("assistant"),
 									children: t("assistant")
 								})]
 							}),
-							(0, react_jsx_runtime.jsxs)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 								className: "writer-wb-columns",
 								"data-assistant-open": assistantOpen ? "true" : "false",
 								"data-narrow": narrow ? "true" : void 0,
 								"data-small-view": smallView,
 								children: [
-									(0, react_jsx_runtime.jsx)("section", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("section", {
 										className: "writer-wb-document",
-										children: sessionId ? (0, react_jsx_runtime.jsx)(WriterDesk, {
+										children: sessionId ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDesk, {
 											sessionId: SessionId(sessionId),
 											cwd: active.cwd,
 											remote,
 											t: deskT,
 											checkpoint: () => checkpoint.current(),
 											visible: true
-										}, active.id) : (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })
+										}, active.id) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })
 									}),
-									(0, react_jsx_runtime.jsx)("div", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 										className: "writer-wb-resize",
 										role: "separator",
 										"aria-orientation": "vertical",
 										"aria-valuenow": 66
 									}),
-									(0, react_jsx_runtime.jsxs)("section", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 										className: "writer-wb-assistant",
 										"aria-label": t("assistant"),
-										children: [(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), (0, react_jsx_runtime.jsx)("button", {
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: () => setAssistantOpen((value) => !value),
 											children: assistantOpen ? t("collapse") : t("expand")
-										})] }), sessionId ? (0, react_jsx_runtime.jsx)(AssistantPanel, {
+										})] }), sessionId ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(AssistantPanel, {
 											book: {
 												...active,
 												sessionId
@@ -4063,13 +4098,13 @@ window.__ModuleLoader__.load({
 											renderSlot,
 											SessionProvider,
 											t
-										}, sessionId) : (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })]
+										}, sessionId) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })]
 									})
 								]
 							})
 						]
 					}),
-					error && (0, react_jsx_runtime.jsx)("p", {
+					error && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 						role: "alert",
 						className: "writer-wb-error",
 						children: error
@@ -4092,17 +4127,17 @@ window.__ModuleLoader__.load({
 					current.release();
 				};
 			}, [book.sessionId, retain]);
-			if (!reference || failure) return (0, react_jsx_runtime.jsx)("p", {
+			if (!reference || failure) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 				role: failure ? "alert" : "status",
 				children: t(failure ? "sessionUnavailable" : "loading")
 			});
-			return (0, react_jsx_runtime.jsx)(SessionProvider, {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SessionProvider, {
 				session: reference,
 				children: renderSlot("writer.workbench.conversation", {})
 			});
 		}
 		//#endregion
-		//#region lib/types/client/workbench-entry.js
+		//#region src/client/workbench-entry.tsx
 		const inject$1 = [
 			"slots",
 			"locale",
@@ -4182,7 +4217,7 @@ window.__ModuleLoader__.load({
 			return value;
 		}
 		//#endregion
-		//#region lib/types/client/index.js
+		//#region src/client/index.ts
 		/** Services required by the sidebar and the Writing settings page. */
 		const inject = [...zhuqueInject, ...inject$1];
 		/**
