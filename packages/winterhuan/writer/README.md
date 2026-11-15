@@ -1,5 +1,5 @@
 ---
-description: "Add a writing preset that mounts oh-story skills and a sidebar for libraries, writing projects, and market scans."
+description: "Add a novel-writing workbench with native Writer conversations and oh-story skills."
 kind: "package-bundle"
 ---
 
@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-This bundle adds a writing preset, oh-story skills, and a workspace sidebar to DSH. Authors can edit manuscripts with browser draft recovery, inspect chapter progress and versioned reviews, and compare revisions. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups. DSH supplies sessions, filesystem access, and subagents; book files remain the source of truth.
+This bundle adds a novel-writing workbench, the Writer preset, and oh-story skills to DSH. The workbench registers books, links native Sessions, navigates long- and short-fiction files, edits manuscripts, and recovers browser drafts. Its assistant uses the official DSH Conversation and opens expanded by default. Analysis and market-research sections use the existing workspace browser; book files and native Session histories are not mirrored. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ This bundle adds a writing preset, oh-story skills, and a workspace sidebar to D
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.10&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.0&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.

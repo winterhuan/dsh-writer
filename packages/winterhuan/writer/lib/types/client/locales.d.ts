@@ -57,6 +57,8 @@ export declare const zh: {
     bookResumeHelp: string;
     title: string;
     description: string;
+    openWorkbench: string;
+    openWorkbenchDescription: string;
     setting: string;
     outline: string;
     chapters: string;

@@ -69,6 +69,8 @@ interface DeskProps {
   readonly remote: ClientRemote
   readonly t: Copy
   readonly visible: boolean
+  readonly checkpoint?: () => boolean
+  readonly initialView?: WriterWorkspaceView
 }
 
 interface ListingCache {
@@ -316,13 +318,15 @@ function SearchHits({
  * @returns the desk.
  */
 export function WriterDesk(props: DeskProps) {
-  return <WriterDeskBody key={JSON.stringify([props.sessionId, props.cwd])} {...props} />
+  return <WriterDeskBody key={props.cwd} {...props} />
 }
 
-function WriterDeskBody({ sessionId, cwd, remote, t, visible }: DeskProps) {
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }: DeskProps) {
+  const checkpointRef = useRef<() => boolean>(() => true)
   const writerDocument = useWriterDocument(remote, sessionId, cwd, t)
+  if (checkpoint) checkpointRef.current = writerDocument.checkpoint
   const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument
-  const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(undefined)
+  const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(initialView)
   const [libraries, setLibraries] = useState<readonly WriterTreeNode[]>([])
   const [projects, setProjects] = useState<readonly WriterTreeNode[]>([])
   const [scans, setScans] = useState<readonly WriterTreeNode[]>([])

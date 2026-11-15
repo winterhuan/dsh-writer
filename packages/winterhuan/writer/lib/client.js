@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 		let react = require("react");
 		//#region \0dsh-global-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
-		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
+		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-workbench{min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex}.writer-wb-header,.writer-wb-toolbar,.writer-wb-book-nav,.writer-wb-assistant>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:12px;min-height:48px;padding:0 16px;display:flex}:global([data-platform=\"darwin\"]) .writer-wb-header{padding-top:calc(var(--dsh-frame-top-clearance,0px) + 8px)}.writer-wb-header>div{align-items:baseline;gap:12px;min-width:0;display:flex}.writer-wb-header h1,.writer-wb-toolbar h2,.writer-wb-assistant h2{margin:0;font-size:16px;font-weight:500}.writer-wb-header>button,.writer-workbench button,.writer-wb-nav button,.writer-wb-book-nav button{color:inherit;border:1px solid var(--dsw-alias-border-l2);cursor:pointer;font:inherit;background:0 0;border-radius:4px;padding:6px 10px}.writer-wb-header>button{margin-left:auto}.writer-wb-home{flex:1;grid-template-columns:190px minmax(0,1fr);min-height:0;display:grid}.writer-wb-nav{border-right:1px solid var(--dsw-alias-border-l2);flex-direction:column;align-items:stretch;gap:4px;padding:12px;display:flex}.writer-wb-nav button{text-align:left;border-color:#0000}.writer-wb-nav button[aria-current=page]{background:var(--dsw-alias-bg-raised);border-color:var(--dsw-alias-border-l2)}.writer-wb-works,.writer-wb-placeholder{min-width:0;padding:16px 20px;overflow:auto}.writer-wb-library{flex-direction:column;flex:1;min-width:0;min-height:0;display:flex}.writer-wb-library>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:baseline;gap:12px;padding:12px 16px;display:flex}.writer-wb-library>header h2{margin:0;font-size:16px;font-weight:500}.writer-wb-library>.writer-desk{flex:1;min-height:0}.writer-wb-toolbar{margin:-16px -20px 16px}.writer-wb-toolbar button{margin-left:auto}.writer-wb-works form{border-bottom:1px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:8px;padding-bottom:16px;display:flex}.writer-wb-works input,.writer-wb-works select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:120px;max-width:220px;color:inherit;font:inherit;border-radius:4px;padding:7px 9px}.writer-wb-book-list{margin:0;padding:0;list-style:none}.writer-wb-book-list li{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:8px;padding:10px 0;display:flex}.writer-wb-book-list li>button:first-child{text-align:left;border:0;flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr) auto;gap:12px;display:grid}.writer-wb-book-list span,.writer-wb-book-list small{text-overflow:ellipsis;white-space:nowrap;color:var(--dsw-alias-label-secondary);overflow:hidden}.writer-wb-book{flex-direction:column;flex:1;min-height:0;display:flex}.writer-wb-book-nav{flex-wrap:wrap}.writer-wb-book-nav strong{margin-right:auto}.writer-wb-columns{--writer-wb-split:64%;grid-template-columns:minmax(0, var(--writer-wb-split)) 6px minmax(300px, 1fr);flex:1;min-height:0;display:grid}.writer-wb-document{min-width:0;min-height:0;overflow:hidden}.writer-wb-document>.writer-desk{height:100%}.writer-wb-resize{cursor:col-resize;background:var(--dsw-alias-border-l2)}.writer-wb-assistant{flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]){grid-template-columns:minmax(0,1fr) 6px 0}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-assistant,.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-resize{display:none}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-assistant>header{flex:none;justify-content:space-between}.writer-wb-assistant>[data-slot],.writer-wb-assistant>div{flex:1;min-height:0;overflow:auto}.writer-wb-mobile-tabs{display:none}.writer-wb-error{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);max-width:420px;padding:8px 12px;position:absolute;bottom:16px;right:16px}@media (width<=760px){.writer-wb-home{grid-template-columns:1fr}.writer-wb-nav{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2);flex-direction:row;overflow:auto}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-mobile-tabs{border-bottom:1px solid var(--dsw-alias-border-l2);gap:8px;padding:6px 12px;display:flex}.writer-wb-book-list li>button:first-child{grid-template-columns:1fr;gap:2px}}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
 		const tagId = "@winterhuan/dsh-writer/plugin.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -16,53 +16,6 @@ window.__ModuleLoader__.load({
 			tag.dataset.pluginCss = tagId;
 			tag.textContent = css;
 			document.head.appendChild(tag);
-		}
-		//#endregion
-		//#region lib/types/editable.js
-		/** Workspace-relative paths the writing sidebar may save. */
-		/** File extensions Dashboard and the sidebar treat as editable. */
-		const EDITABLE_EXTENSIONS = /* @__PURE__ */ new Set([
-			".md",
-			".txt",
-			".json",
-			".yaml",
-			".yml",
-			".toml"
-		]);
-		/**
-		* Lowercase extension of a basename, including the leading dot.
-		* @param name - file basename or relative path.
-		* @returns extension such as `.md`, or `''` when none.
-		*/
-		function writerExtension(name) {
-			const base = name.includes("/") ? name.split("/").pop() ?? name : name;
-			const index = base.lastIndexOf(".");
-			return index >= 0 ? base.slice(index).toLowerCase() : "";
-		}
-		/**
-		* Whether a basename uses an editable extension.
-		* @param name - file basename or relative path.
-		* @returns true for md / txt / json / yaml / yml / toml.
-		*/
-		function isEditableWriterName(name) {
-			return EDITABLE_EXTENSIONS.has(writerExtension(name));
-		}
-		/**
-		* Accept only a relative path the sidebar is allowed to write.
-		* @param path - candidate workspace-relative path.
-		* @returns whether a save may target it.
-		*/
-		function isEditableWriterPath(path) {
-			return safeRelative(path) && isEditableWriterName(path);
-		}
-		/**
-		* Reject absolute paths, backslashes, and parent segments.
-		* @param path - candidate path.
-		* @returns whether every segment stays inside the workspace.
-		*/
-		function safeRelative(path) {
-			if (path === "" || path.startsWith("/") || path.includes("\\") || path.includes("\0")) return false;
-			return path.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
 		}
 		//#endregion
 		//#region lib/types/client/locales.js
@@ -73,7 +26,7 @@ window.__ModuleLoader__.load({
 			crlf: "CRLF",
 			cr: "CR"
 		};
-		const zh$1 = {
+		const zh$2 = {
 			draftRecovered: "已恢复此浏览器中的未保存草稿",
 			draftStorageError: "无法保存浏览器草稿，请及时保存文件并保持此页面打开",
 			draftStorageConflict: "此文件有另一个会话更新的浏览器草稿，当前编辑仍保留在页面中",
@@ -125,6 +78,8 @@ window.__ModuleLoader__.load({
 			bookResumeHelp: "打开材料核对进度，然后在对话中要求继续该章；临时材料存在不代表正文已提交",
 			title: "写作",
 			description: "拆文库、写作项目与扫榜记录",
+			openWorkbench: "打开创作工作台",
+			openWorkbenchDescription: "在统一工作台中管理作品、文稿与助手",
 			setting: "设定",
 			outline: "大纲",
 			chapters: "章节",
@@ -200,7 +155,7 @@ window.__ModuleLoader__.load({
 			expandRail: "显示文件树",
 			resizeRail: "拖动调整文件树宽度"
 		};
-		const en$1 = {
+		const en$2 = {
 			draftRecovered: "Recovered this browser’s unsaved draft",
 			draftStorageError: "Browser draft recovery is unavailable. Save the file and keep this page open.",
 			draftStorageConflict: "Another session updated this file’s browser draft. Your edits remain open here.",
@@ -252,6 +207,8 @@ window.__ModuleLoader__.load({
 			bookResumeHelp: "Open the materials, then ask to continue this chapter in the chat. Scratch files do not mean the chapter was committed.",
 			title: "Writing",
 			description: "Libraries, writing projects, and market scans",
+			openWorkbench: "Open writing workbench",
+			openWorkbenchDescription: "Manage works, manuscripts, and the assistant in one workspace",
 			setting: "Setting",
 			outline: "Outline",
 			chapters: "Chapters",
@@ -327,6 +284,532 @@ window.__ModuleLoader__.load({
 			expandRail: "Show file tree",
 			resizeRail: "Drag to resize the file tree"
 		};
+		//#endregion
+		//#region lib/types/client/sidebar.js
+		const name = "writer";
+		//#endregion
+		//#region lib/types/client/zhuque-locales.js
+		/** Locale bundles for the Writer settings page (Zhuque + cover keys). */
+		/** English copy. */
+		const en$1 = {
+			title: "Writing",
+			description: "Zhuque detection and cover image API keys for author-triggered skills.",
+			keySet: "A key is configured.",
+			keyUnset: "No key is configured.",
+			makersKeyLabel: "EdgeOne Makers API key (Zhuque detection)",
+			makersKeyHint: "Used by story-zhuque when you ask for a Zhuque check. Stored outside the settings file. Leave blank to keep the current key; a MAKERS_API_KEY exported in the shell that starts dsh also works.",
+			makersKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
+			coverKeyLabel: "GPT Image API key (cover generation)",
+			coverKeyHint: "Used by story-cover when you ask for a generated cover image. Prompt-only delivery needs no key. Stored outside the settings file. Leave blank to keep the current key; a GPT_IMAGE_API_KEY exported in the shell that starts dsh also works.",
+			coverKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
+			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
+			gptImageBaseUrlLabel: "GPT Image API base URL",
+			gptImageBaseUrlHint: "Base URL of an OpenAI-compatible endpoint for cover generation. Saved into the settings file; the host injects it as GPT_IMAGE_BASE_URL. Leave blank to use a shell-exported value or the default.",
+			overridden: "Overrides the default.",
+			reset: "Reset",
+			invalidText: "This value is not accepted.",
+			readOnly: "This setting is read-only.",
+			unavailable: "Writing settings are not available.",
+			save: "Save",
+			saving: "Saving…",
+			discard: "Discard",
+			saveFailed: "Could not save. Try again."
+		};
+		/** Simplified Chinese copy. */
+		const zh$1 = {
+			title: "写作",
+			description: "明确要求朱雀检测或封面生图时使用的密钥。",
+			keySet: "已配置密钥。",
+			keyUnset: "未配置密钥。",
+			makersKeyLabel: "EdgeOne Makers API Key（朱雀检测）",
+			makersKeyHint: "供 story-zhuque 在你明确要求朱雀检测时使用。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 MAKERS_API_KEY 同样有效。",
+			makersKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
+			coverKeyLabel: "GPT Image API Key（封面生图）",
+			coverKeyHint: "供 story-cover 在你明确要求生成封面图时使用。仅提示词交付不需要密钥。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 GPT_IMAGE_API_KEY 同样有效。",
+			coverKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
+			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
+			gptImageBaseUrlLabel: "GPT Image API Base URL",
+			gptImageBaseUrlHint: "封面生图兼容端点的 Base URL，保存在设置文件里，Host 会注入为 GPT_IMAGE_BASE_URL。留空表示使用 shell 导出的值或默认值。",
+			overridden: "覆盖默认值。",
+			reset: "重置",
+			invalidText: "此值不被接受。",
+			readOnly: "此设置只读。",
+			unavailable: "写作设置不可用。",
+			save: "保存",
+			saving: "正在保存…",
+			discard: "放弃",
+			saveFailed: "未能保存。请再试一次。"
+		};
+		/**
+		* Labels the shared settings form reads from this page's dictionary.
+		* @param t - the bound translator.
+		* @returns the form chrome labels.
+		*/
+		function formLabels(t) {
+			return {
+				unavailable: t("unavailable"),
+				readOnly: t("readOnly"),
+				saveFailed: t("saveFailed"),
+				save: t("save"),
+				saving: t("saving")
+			};
+		}
+		//#endregion
+		//#region lib/types/client/ZhuqueSettingsCard.js
+		/**
+		* Render the Writer settings page, or its one-liner when the Plugins page asks for a summary.
+		* @param props - the view asked for, locale copy, the page snapshot, and its form actions.
+		* @returns the one-liner, or the form.
+		*/
+		function ZhuqueSettingsCard(props) {
+			const { t } = props;
+			const state = props.useWriterZhuqueCard((snapshot) => snapshot);
+			if (props.view === "summary") return t("description");
+			const control = state.key;
+			const cover = state.coverKey;
+			return (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
+				labels: formLabels(t),
+				state,
+				onSave: props.save,
+				onDiscard: props.discard,
+				children: [
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+						id: "plugin-config-writer-makers-key",
+						label: t("makersKeyLabel"),
+						hint: t(control.writable ? "makersKeyHint" : "makersKeyReadOnlyHint"),
+						stateLabel: control.configured ? t("keySet") : t("keyUnset"),
+						onEdit: (text) => {
+							props.edit("makersApiKey", text);
+						},
+						disabled: !control.writable,
+						text: control.draft.text,
+						configured: control.configured
+					}),
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+						id: "plugin-config-writer-cover-key",
+						label: t("coverKeyLabel"),
+						hint: t(cover.writable ? "coverKeyHint" : "coverKeyReadOnlyHint"),
+						stateLabel: cover.configured ? t("keySet") : t("keyUnset"),
+						onEdit: (text) => {
+							props.edit("gptImageApiKey", text);
+						},
+						disabled: !cover.writable,
+						text: cover.draft.text,
+						configured: cover.configured
+					}),
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
+						id: "plugin-config-writer-cover-base-url",
+						label: t("gptImageBaseUrlLabel"),
+						hint: t("gptImageBaseUrlHint"),
+						overriddenLabel: t("overridden"),
+						resetLabel: t("reset"),
+						invalidLabel: t("invalidText"),
+						placeholder: t("gptImageBaseUrlPlaceholder"),
+						disabled: !state.writable,
+						...state.gptImageBaseUrl,
+						onEdit: (text) => {
+							props.edit("gptImageBaseUrl", text);
+						},
+						onReset: () => {
+							props.resetField("gptImageBaseUrl");
+						}
+					})
+				]
+			});
+		}
+		//#endregion
+		//#region lib/types/client/zhuque-settings-controller.js
+		/**
+		* The Writer settings page's staged form over the `writer` namespace.
+		* Key literals never ride a response: they write through the credentials
+		* domain under the references `makersApiKeyEnv` and `gptImageApiKeyEnv` name.
+		*/
+		/** Namespace of the writer plugin. Spelled here so the client half does not import Host values. */
+		const WRITER_SETTINGS_NS = "writer";
+		const FALLBACK_MAKERS_REF = "MAKERS_API_KEY";
+		const FALLBACK_COVER_REF = "GPT_IMAGE_API_KEY";
+		/** Bridges the `writer` scope and the credentials domain onto Zhuque and cover keys. */
+		var WriterZhuqueCardController = class {
+			scope;
+			ctx;
+			form;
+			store;
+			makersState = {
+				ref: "",
+				configured: false,
+				writable: true
+			};
+			coverState = {
+				ref: "",
+				configured: false,
+				writable: true
+			};
+			/**
+			* @param scope - the shared configuration form for the `writer` namespace.
+			* @param ctx - the page plugin's context.
+			*/
+			constructor(scope, ctx) {
+				this.scope = scope;
+				this.ctx = ctx;
+				this.form = new _deepseek_ai_dsh_client_ui_primitives.SettingsFormModel(scope, [(0, _deepseek_ai_dsh_client_ui_primitives.settingsTextField)("gptImageBaseUrl")], [{
+					field: "makersApiKey",
+					write: (text) => this.writeKey("makers", text)
+				}, {
+					field: "gptImageApiKey",
+					write: (text) => this.writeKey("cover", text)
+				}]);
+				this.store = this.form.bind(() => this.projection());
+				scope.subscribe(() => {
+					this.readCredentials();
+				});
+				this.readCredentials();
+			}
+			projection() {
+				return {
+					...this.form.shell(),
+					key: {
+						draft: this.form.field("makersApiKey"),
+						configured: this.makersState.configured,
+						writable: this.makersState.writable
+					},
+					coverKey: {
+						draft: this.form.field("gptImageApiKey"),
+						configured: this.coverState.configured,
+						writable: this.coverState.writable
+					},
+					gptImageBaseUrl: this.form.field("gptImageBaseUrl")
+				};
+			}
+			/** Ask the credentials domain about both references the section names. */
+			async readCredentials() {
+				const snapshot = this.scope.getSnapshot();
+				const makersRef = makersRefOf(snapshot);
+				const coverRef = coverRefOf(snapshot);
+				let projected = false;
+				if (makersRef !== this.makersState.ref) {
+					this.makersState = {
+						ref: makersRef,
+						configured: false,
+						writable: true
+					};
+					projected = true;
+				}
+				if (coverRef !== this.coverState.ref) {
+					this.coverState = {
+						ref: coverRef,
+						configured: false,
+						writable: true
+					};
+					projected = true;
+				}
+				if (projected) this.store.set(this.projection());
+				const response = await this.ctx.remote.credentials.describe([makersRef, coverRef]);
+				if (!response.ok) return;
+				const latest = this.scope.getSnapshot();
+				if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest)) return;
+				const makersView = response.value[makersRef];
+				const coverView = response.value[coverRef];
+				const nextMakers = {
+					ref: makersRef,
+					configured: makersView?.configured ?? false,
+					writable: makersView?.writable ?? true
+				};
+				const nextCover = {
+					ref: coverRef,
+					configured: coverView?.configured ?? false,
+					writable: coverView?.writable ?? true
+				};
+				const makersSame = nextMakers.configured === this.makersState.configured && nextMakers.writable === this.makersState.writable && nextMakers.ref === this.makersState.ref;
+				const coverSame = nextCover.configured === this.coverState.configured && nextCover.writable === this.coverState.writable && nextCover.ref === this.coverState.ref;
+				if (makersSame && coverSame) return;
+				this.makersState = nextMakers;
+				this.coverState = nextCover;
+				this.store.set(this.projection());
+			}
+			/**
+			* Re-read after the Host reports a change to a watched reference.
+			* @param ref - the reference the Host reports as changed.
+			*/
+			refreshCredential(ref) {
+				if (this.makersState.ref !== ref && this.coverState.ref !== ref) return;
+				this.readCredentials();
+			}
+			/**
+			* Build the face the page's slot registration injects.
+			* @returns the page snapshot and its form actions.
+			*/
+			inject() {
+				return {
+					hooks: { writerZhuqueCard: this.store },
+					...this.form.actions()
+				};
+			}
+			/**
+			* Write a staged key, then re-read whether the Host now holds one.
+			* @param which - Zhuque or cover.
+			* @param value - the staged credential literal.
+			* @returns whether the Host reports a configured credential afterwards.
+			*/
+			async writeKey(which, value) {
+				const snapshot = this.scope.getSnapshot();
+				const ref = which === "makers" ? makersRefOf(snapshot) : coverRefOf(snapshot);
+				if (!(await this.ctx.remote.credentials.set(ref, value)).ok) return false;
+				await this.readCredentials();
+				return which === "makers" ? this.makersState.configured : this.coverState.configured;
+			}
+			/** Release configuration subscriptions. */
+			dispose() {
+				this.form.dispose();
+			}
+		};
+		/**
+		* The Zhuque credential reference the section names, or MAKERS_API_KEY.
+		* @param snapshot - the current scope snapshot.
+		* @returns the reference to address.
+		*/
+		function makersRefOf(snapshot) {
+			const declared = snapshot.value?.makersApiKeyEnv;
+			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_MAKERS_REF;
+		}
+		/**
+		* The cover credential reference the section names, or GPT_IMAGE_API_KEY.
+		* @param snapshot - the current scope snapshot.
+		* @returns the reference to address.
+		*/
+		function coverRefOf(snapshot) {
+			const declared = snapshot.value?.gptImageApiKeyEnv;
+			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_COVER_REF;
+		}
+		//#endregion
+		//#region lib/types/client/zhuque-settings.js
+		/**
+		* Writer settings page (Zhuque + cover keys), browser half. Registers into the
+		* Plugins page's `plugins.item` slot while the Host serves the `writer` namespace.
+		*/
+		/** Dictionary namespace owned by the Writing settings page. */
+		const ZHUQUE_NS = "settings.writer";
+		/** Cordis services the Writing settings page needs beyond the sidebar. */
+		const zhuqueInject = ["remote.credentials", "configForms"];
+		/**
+		* Mount the Writing settings page while the Host serves the writer namespace.
+		* @param ctx - the browser plugin context.
+		*/
+		function applyZhuqueSettings(ctx) {
+			const t = ctx.locale.bind(ZHUQUE_NS);
+			ctx.effect(() => ctx.locale.register(ZHUQUE_NS, {
+				zh: zh$1,
+				en: en$1
+			}), "writer: zhuque dictionaries");
+			const card = new WriterZhuqueCardController(ctx.configForms.get(WRITER_SETTINGS_NS), ctx);
+			ctx.effect(() => () => {
+				card.dispose();
+			}, "writer: zhuque form subscription");
+			ctx.effect(() => ctx.remote.$on("credentials/reference-updated", (ref) => {
+				card.refreshCredential(ref);
+			}), "writer: zhuque credential invalidations");
+			ctx.effect(() => ctx.configForms.whileServed([WRITER_SETTINGS_NS], () => ctx.slots.inject("plugins.item", () => ctx.slots.register({
+				name: "plugins.item",
+				id: "writer",
+				order: 40,
+				label: () => t("title"),
+				locale: ZHUQUE_NS,
+				inject: () => card.inject()
+			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
+		}
+		//#endregion
+		//#region lib/types/client/workbench-locales.js
+		const en = {
+			title: "Writer",
+			allWorks: "All works",
+			navigation: "Workbench sections",
+			works: "Works",
+			analysis: "Analysis library",
+			market: "Market research",
+			writerSession: "Writer session",
+			chooseWriterSession: "Select a Writer session",
+			registerExisting: "Register existing folder",
+			linkSession: "Link session",
+			refresh: "Refresh",
+			workspace: "Workspace",
+			chooseWorkspace: "Choose a workspace",
+			bookTitle: "Book title",
+			folder: "Book folder",
+			form: "Form",
+			longForm: "Long fiction",
+			shortForm: "Short fiction",
+			createBook: "Create book",
+			open: "Open",
+			sessionBound: "Session linked",
+			sessionNeeded: "Create or link a writer session",
+			startPlanning: "Plan this book",
+			planningTask: "Plan the next useful step for book {title} at {path}. Read its existing files before proposing changes. Do not modify files until asked.",
+			phase: "Phase",
+			newPhase: "New phase",
+			document: "Manuscript",
+			assistant: "Assistant",
+			collapse: "Collapse assistant",
+			expand: "Expand assistant",
+			analysisEmpty: "No analysis materials are registered yet",
+			marketEmpty: "No market research is attached to this book yet",
+			draftCheckpointFailed: "The unsaved draft could not be protected. Keep this book open and save the manuscript before switching.",
+			loadFailed: "The workbench could not load",
+			operationFailed: "The operation could not be completed",
+			create: "Create",
+			loading: "Loading session",
+			sessionUnavailable: "This native session is unavailable",
+			invalidBookPath: "Choose a valid book folder",
+			workspaceMissing: "This workspace is unavailable",
+			bookMissing: "This book folder is unavailable",
+			bookExists: "This folder is already registered",
+			sessionMissing: "This native session is unavailable",
+			sessionMismatch: "This session belongs to another workspace",
+			writerRequired: "Choose a session using the Writer preset",
+			sessionInUse: "This session is linked to another book",
+			sessionBusy: "Stop the running session before starting a new phase",
+			bindingNeedsRepair: "The session link needs repair",
+			invalidBookTitle: "Enter a book title",
+			filesUnavailable: "File access is unavailable",
+			untrustedRequest: "The request was not trusted",
+			requestTooLarge: "The request is too large",
+			invalidRequest: "The request is invalid",
+			workbenchFailed: "The workbench operation failed"
+		};
+		const zh = {
+			title: "小说创作工作台",
+			allWorks: "全部作品",
+			navigation: "工作台分区",
+			works: "作品",
+			analysis: "分析资料",
+			market: "市场调研",
+			writerSession: "Writer 会话",
+			chooseWriterSession: "选择 Writer 会话",
+			registerExisting: "登记已有目录",
+			linkSession: "关联会话",
+			refresh: "刷新",
+			workspace: "工作区",
+			chooseWorkspace: "选择工作区",
+			bookTitle: "书名",
+			folder: "书籍目录",
+			form: "篇幅",
+			longForm: "长篇小说",
+			shortForm: "短篇小说",
+			createBook: "创建作品",
+			open: "打开",
+			sessionBound: "已关联会话",
+			sessionNeeded: "创建或关联 Writer 会话",
+			startPlanning: "规划本书",
+			planningTask: "为《{title}》（目录 {path}）规划下一步。先阅读现有文件再提出建议，未经要求不要修改文件。",
+			phase: "阶段",
+			newPhase: "新建阶段会话",
+			document: "正文",
+			assistant: "助手",
+			collapse: "收起助手",
+			expand: "展开助手",
+			analysisEmpty: "尚未登记分析资料",
+			marketEmpty: "本书尚未关联市场调研资料",
+			draftCheckpointFailed: "未能保护当前草稿，请留在本书并先保存文稿",
+			loadFailed: "工作台加载失败",
+			operationFailed: "操作未能完成",
+			create: "创建",
+			loading: "正在加载会话",
+			sessionUnavailable: "原生会话不可用",
+			invalidBookPath: "请选择有效的书籍目录",
+			workspaceMissing: "工作区不可用",
+			bookMissing: "书籍目录不可用",
+			bookExists: "该目录已登记",
+			sessionMissing: "原生会话不可用",
+			sessionMismatch: "该会话不属于此工作区",
+			writerRequired: "请选择使用 Writer 预设的会话",
+			sessionInUse: "该会话已关联其他作品",
+			sessionBusy: "请先停止运行中的会话，再创建新阶段",
+			bindingNeedsRepair: "会话关联需要修复",
+			invalidBookTitle: "请输入书名",
+			filesUnavailable: "文件访问不可用",
+			untrustedRequest: "请求未通过信任校验",
+			requestTooLarge: "请求内容过大",
+			invalidRequest: "请求无效",
+			workbenchFailed: "工作台操作失败"
+		};
+		//#endregion
+		//#region ../../../node_modules/.pnpm/@deepseek-ai+dsh-brand@0.2.2-rc.1_@deepseek-ai+cordis@4.1.0/node_modules/@deepseek-ai/dsh-brand/lib/index.js
+		/**
+		* Duplicate-install-safe nominal primitive helpers.
+		*
+		* A brand makes structurally identical strings or numbers non-interchangeable
+		* at the type level: a `SessionId` cannot be passed where a `ToolCallId` is
+		* expected, and an event sequence cannot be passed as a log offset. Comparison,
+		* logging, and serialization retain the underlying primitive behavior.
+		*
+		* This package owns no concrete domain value and keeps no runtime identity or mutable
+		* state, so independently installed copies produce interchangeable values.
+		*
+		* @module @deepseek-ai/dsh-brand
+		*/
+		/**
+		* Apply a compile-time string brand without changing the value.
+		* @param value - string admitted by the domain that owns the target brand.
+		* @returns the same string with the requested compile-time brand.
+		*/
+		function brandString(value) {
+			return value;
+		}
+		//#endregion
+		//#region ../../../node_modules/.pnpm/@deepseek-ai+dsh-session@0.2.2-rc.1_@deepseek-ai+cordis@4.1.0_@deepseek-ai+dsh-scope@0._2c1eb9e8f9f716fa5ffcff871cbb2b70/node_modules/@deepseek-ai/dsh-session/lib/types/types.js
+		/**
+		* Brand a string as a {@link SessionId}.
+		* @param id - the raw session id string.
+		* @returns the same string with the session-id brand.
+		*/
+		function SessionId(id) {
+			return brandString(id);
+		}
+		//#endregion
+		//#region lib/types/editable.js
+		/** Workspace-relative paths the writing sidebar may save. */
+		/** File extensions Dashboard and the sidebar treat as editable. */
+		const EDITABLE_EXTENSIONS = /* @__PURE__ */ new Set([
+			".md",
+			".txt",
+			".json",
+			".yaml",
+			".yml",
+			".toml"
+		]);
+		/**
+		* Lowercase extension of a basename, including the leading dot.
+		* @param name - file basename or relative path.
+		* @returns extension such as `.md`, or `''` when none.
+		*/
+		function writerExtension(name) {
+			const base = name.includes("/") ? name.split("/").pop() ?? name : name;
+			const index = base.lastIndexOf(".");
+			return index >= 0 ? base.slice(index).toLowerCase() : "";
+		}
+		/**
+		* Whether a basename uses an editable extension.
+		* @param name - file basename or relative path.
+		* @returns true for md / txt / json / yaml / yml / toml.
+		*/
+		function isEditableWriterName(name) {
+			return EDITABLE_EXTENSIONS.has(writerExtension(name));
+		}
+		/**
+		* Accept only a relative path the sidebar is allowed to write.
+		* @param path - candidate workspace-relative path.
+		* @returns whether a save may target it.
+		*/
+		function isEditableWriterPath(path) {
+			return safeRelative(path) && isEditableWriterName(path);
+		}
+		/**
+		* Reject absolute paths, backslashes, and parent segments.
+		* @param path - candidate path.
+		* @returns whether every segment stays inside the workspace.
+		*/
+		function safeRelative(path) {
+			if (path === "" || path.startsWith("/") || path.includes("\\") || path.includes("\0")) return false;
+			return path.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
+		}
 		//#endregion
 		//#region lib/types/client/eol.js
 		/** EOL helpers so textarea stays LF while disk keeps its style. */
@@ -1092,6 +1575,8 @@ window.__ModuleLoader__.load({
 			const current = (0, react.useRef)(void 0);
 			const mounted = (0, react.useRef)(true);
 			const readController = (0, react.useRef)(void 0);
+			const authorizedSession = (0, react.useRef)(sessionId);
+			const ownerSession = (0, react.useRef)(sessionId);
 			const copy = (0, react.useRef)(t);
 			copy.current = t;
 			const publish = (next) => {
@@ -1191,6 +1676,24 @@ window.__ModuleLoader__.load({
 					readController.current?.abort();
 				};
 			}, []);
+			(0, react.useEffect)(() => {
+				if (authorizedSession.current === sessionId) return;
+				authorizedSession.current = sessionId;
+				if (current.current) load(current.current.path);
+			}, [sessionId]);
+			(0, react.useEffect)(() => {
+				const refresh = () => {
+					const value = current.current;
+					if (window.document.visibilityState === "hidden" || !value || value.busy || value.status === "loading") return;
+					load(value.path);
+				};
+				const timer = window.setInterval(refresh, 15e3);
+				window.addEventListener("focus", refresh);
+				return () => {
+					window.clearInterval(timer);
+					window.removeEventListener("focus", refresh);
+				};
+			}, [sessionId, cwd]);
 			const dirty = documentState !== void 0 && documentState.text !== documentState.baseText;
 			(0, react.useEffect)(() => {
 				if (!dirty) return void 0;
@@ -1203,16 +1706,18 @@ window.__ModuleLoader__.load({
 					window.removeEventListener("beforeunload", warn);
 				};
 			}, [dirty]);
-			const save = () => {
+			const save = async () => {
 				const value = current.current;
-				if (value === void 0 || value.version === void 0 || value.status !== "ready" || value.conflict || value.busy || value.text === value.baseText) return;
+				if (value === void 0 || ownerSession.current !== sessionId || value.version === void 0 || value.status !== "ready" || value.conflict || value.busy || authorizedSession.current !== sessionId) return false;
+				if (value.text === value.baseText) return true;
 				const { owner, path, text, version, eol } = value;
 				publish({
 					...value,
 					busy: true,
 					notice: void 0
 				});
-				saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
+				ownerSession.current = sessionId;
+				return saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
 					const payload = await response.json();
 					update(owner, (latest) => {
 						if (response.status === 412) return {
@@ -1234,12 +1739,14 @@ window.__ModuleLoader__.load({
 							notice: copy.current("saved")
 						});
 					});
+					return response.ok && current.current?.owner === owner && current.current.text === current.current.baseText;
 				}).catch(() => {
 					update(owner, (latest) => ({
 						...latest,
 						busy: false,
 						notice: copy.current("saveError")
 					}));
+					return false;
 				});
 			};
 			return {
@@ -1249,7 +1756,7 @@ window.__ModuleLoader__.load({
 				version: documentState?.version,
 				eol: documentState?.eol ?? "\n",
 				loading: documentState?.status === "loading",
-				ready: documentState?.status === "ready",
+				ready: documentState?.status === "ready" && authorizedSession.current === sessionId,
 				busy: documentState?.busy ?? false,
 				dirty,
 				conflict: documentState?.conflict ?? false,
@@ -1279,6 +1786,15 @@ window.__ModuleLoader__.load({
 						text,
 						notice: void 0
 					}));
+				},
+				checkpoint: () => {
+					const value = current.current;
+					if (!value) return true;
+					if (value.busy) return false;
+					const next = persist(value);
+					publish(next);
+					const result = readWriterDraft(cwd, value.path);
+					return !result.error && (value.text === value.baseText || result.draft?.text === value.text);
 				},
 				save
 			};
@@ -2276,12 +2792,14 @@ window.__ModuleLoader__.load({
 		* @returns the desk.
 		*/
 		function WriterDesk(props) {
-			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, JSON.stringify([props.sessionId, props.cwd]));
+			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
 		}
-		function WriterDeskBody({ sessionId, cwd, remote, t, visible }) {
+		function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }) {
+			const checkpointRef = (0, react.useRef)(() => true);
 			const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
+			if (checkpoint) checkpointRef.current = writerDocument.checkpoint;
 			const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
-			const [viewPick, setViewPick] = (0, react.useState)(void 0);
+			const [viewPick, setViewPick] = (0, react.useState)(initialView);
 			const [libraries, setLibraries] = (0, react.useState)([]);
 			const [projects, setProjects] = (0, react.useState)([]);
 			const [scans, setScans] = (0, react.useState)([]);
@@ -3172,439 +3690,501 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/mode.js
-		/**
-		* Whether the on-screen session uses the writing preset.
-		* @param context - browser session services.
-		* @param sessionId - session to inspect.
-		* @returns true when the projection says `writer`.
-		*/
-		function isWriterSession(context, sessionId) {
-			return sessionId !== void 0 && context.sessions.list.getSnapshot().byId[sessionId]?.projectionValues?.agentPreset === "writer";
+		//#region lib/types/client/workbench.js
+		/** Works library, book editor, and the official DSH Conversation surface. */
+		/** Open the main workbench panel. */
+		function Main({ renderSlot }) {
+			return renderSlot("writer.workbench", {});
 		}
-		/**
-		* Register the tab type, and show its guide entry only for a writing session.
-		* @param context - browser session and sidebar services.
-		* @param definition - tab type including its guide entry.
-		* @returns a disposer for the subscriptions and the current registration.
-		*/
-		function registerWriterTab(context, definition) {
-			const current = context.uiSession.adapter.current;
-			let visible;
-			let release;
-			const sync = () => {
-				const next = isWriterSession(context, current.getSnapshot().key);
-				if (next === visible) return;
-				visible = next;
-				release?.();
-				release = context.sidebarRightTabs.register({
-					...definition,
-					guide: next ? definition.guide ?? [] : []
-				});
+		/** Sidebar launcher for the complete writing workbench. */
+		function Launcher({ size }) {
+			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
+		}
+		function NativeConversation({ useSession, useConversation, renderFactorySlot }) {
+			const session = useSession((value) => value);
+			const conversation = useConversation((value) => value);
+			return renderFactorySlot("conversation.content", {
+				variant: "embedded",
+				phase: session.openState === "loading" && conversation.activeTargets.size === 0 ? "settling" : "active",
+				hero: false
+			});
+		}
+		/** Main works screen and native assistant bindings. */
+		function Workbench({ t, retain, action, load, openSession, initializeDraft, renderSlot, SessionProvider, remote, deskT, useSessions }) {
+			const [catalog, setCatalog] = (0, react.useState)();
+			const [bookId, setBookId] = (0, react.useState)();
+			const [selectedSessionId, setSelectedSessionId] = (0, react.useState)();
+			const [section, setSection] = (0, react.useState)("works");
+			const [error, setError] = (0, react.useState)();
+			const [busy, setBusy] = (0, react.useState)(false);
+			const [narrow, setNarrow] = (0, react.useState)(false);
+			const [smallView, setSmallView] = (0, react.useState)("document");
+			const [assistantOpen, setAssistantOpen] = (0, react.useState)(true);
+			const [title, setTitle] = (0, react.useState)("");
+			const [path, setPath] = (0, react.useState)("");
+			const [workspaceId, setWorkspaceId] = (0, react.useState)("");
+			const [linkSessionId, setLinkSessionId] = (0, react.useState)("");
+			const [form, setForm] = (0, react.useState)("long");
+			const root = (0, react.useRef)(null);
+			const checkpoint = (0, react.useRef)(() => true);
+			const refresh = () => {
+				load().then(setCatalog).catch(() => setError(t("loadFailed")));
 			};
-			const stopCurrent = current.subscribe(sync);
-			const stopSessions = context.sessions.list.subscribe(sync);
-			sync();
-			return () => {
-				stopCurrent();
-				stopSessions();
-				release?.();
+			(0, react.useEffect)(() => {
+				refresh();
+			}, []);
+			(0, react.useEffect)(() => {
+				const node = root.current;
+				if (!node) return;
+				const observer = new ResizeObserver((entries) => setNarrow((entries[0]?.contentRect.width ?? 0) < 920));
+				observer.observe(node);
+				return () => observer.disconnect();
+			}, []);
+			const books = catalog?.books ?? [];
+			const active = books.find((book) => book.id === bookId);
+			const sessions = useSessions((state) => state.ids.flatMap((id) => {
+				const session = state.byId[id];
+				return session && session.origin !== "subagent" && session.projectionValues?.agentPreset === "writer" ? [session] : [];
+			}));
+			const sessionId = active && selectedSessionId && active.phases.some((phase) => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId;
+			const librarySession = books.find((book) => book.sessionId !== null);
+			const perform = async (input) => {
+				setBusy(true);
+				setError(void 0);
+				try {
+					const book = await action(input);
+					if (input && typeof input === "object" && "action" in input && input.action === "create") writeWriterSelection(book.cwd, `${book.path}/${book.form === "long" ? "设定/创作意图.md" : "设定.md"}`);
+					setBookId(book.id);
+					setSelectedSessionId(book.sessionId ?? void 0);
+					setSection("works");
+					refresh();
+				} catch (cause) {
+					setError(t(cause instanceof Error ? cause.message : "operationFailed"));
+				} finally {
+					setBusy(false);
+				}
 			};
-		}
-		//#endregion
-		//#region lib/types/client/sidebar.js
-		const name = "writer";
-		const inject$1 = [
-			"slots",
-			"sessions",
-			"uiSession",
-			"locale",
-			"sidebarRightTabs",
-			"remote",
-			"remote.workspaceFiles"
-		];
-		const TAB_ID = "@winterhuan/dsh-writer";
-		/**
-		* Register the writing tab and its body. The guide entry follows the selected preset.
-		* @param context - browser services.
-		*/
-		function apply$1(context) {
-			context.effect(() => context.locale.register(NS, {
-				zh: zh$1,
-				en: en$1
-			}), "writer: dictionaries");
-			const t = context.locale.bind(NS);
-			context.effect(() => registerWriterTab(context, {
-				id: TAB_ID,
-				kind: "writer",
-				title: () => t("title"),
-				guide: [{
-					id: "writer",
-					order: 22,
-					title: () => t("title"),
-					description: () => t("description"),
-					icon: _deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular
-				}]
-			}), "writer: sidebar type");
-			function Sidebar({ sessionId, useTabInfo, useSessions, t: copy }) {
-				const preset = useSessions((state) => state.byId[sessionId]?.projectionValues?.agentPreset);
-				const cwd = useSessions((state) => state.byId[sessionId]?.cwd);
-				const { tab } = useTabInfo();
-				(0, react.useEffect)(() => {
-					if (typeof preset === "string" && preset !== "writer") tab.actions.close();
-				}, [preset, tab.actions]);
-				if (preset !== "writer") return null;
-				if (cwd === void 0) return (0, react_jsx_runtime.jsx)("p", {
-					className: "writer-empty",
-					children: copy("noWorkspace")
-				});
-				return (0, react_jsx_runtime.jsx)(WriterDesk, {
-					sessionId,
-					cwd,
-					remote: context.remote,
-					t: copy,
-					visible: tab.visible
-				});
-			}
-			context.effect(() => context.slots.inject("sidebar.right.pane.tab", () => context.slots.register({
-				name: "sidebar.right.pane.tab",
-				key: TAB_ID,
-				locale: NS
-			}, Sidebar)), "writer: sidebar body");
-		}
-		//#endregion
-		//#region lib/types/client/zhuque-locales.js
-		/** Locale bundles for the Writer settings page (Zhuque + cover keys). */
-		/** English copy. */
-		const en = {
-			title: "Writing",
-			description: "Zhuque detection and cover image API keys for author-triggered skills.",
-			keySet: "A key is configured.",
-			keyUnset: "No key is configured.",
-			makersKeyLabel: "EdgeOne Makers API key (Zhuque detection)",
-			makersKeyHint: "Used by story-zhuque when you ask for a Zhuque check. Stored outside the settings file. Leave blank to keep the current key; a MAKERS_API_KEY exported in the shell that starts dsh also works.",
-			makersKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
-			coverKeyLabel: "GPT Image API key (cover generation)",
-			coverKeyHint: "Used by story-cover when you ask for a generated cover image. Prompt-only delivery needs no key. Stored outside the settings file. Leave blank to keep the current key; a GPT_IMAGE_API_KEY exported in the shell that starts dsh also works.",
-			coverKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
-			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
-			gptImageBaseUrlLabel: "GPT Image API base URL",
-			gptImageBaseUrlHint: "Base URL of an OpenAI-compatible endpoint for cover generation. Saved into the settings file; the host injects it as GPT_IMAGE_BASE_URL. Leave blank to use a shell-exported value or the default.",
-			overridden: "Overrides the default.",
-			reset: "Reset",
-			invalidText: "This value is not accepted.",
-			readOnly: "This setting is read-only.",
-			unavailable: "Writing settings are not available.",
-			save: "Save",
-			saving: "Saving…",
-			discard: "Discard",
-			saveFailed: "Could not save. Try again."
-		};
-		/** Simplified Chinese copy. */
-		const zh = {
-			title: "写作",
-			description: "明确要求朱雀检测或封面生图时使用的密钥。",
-			keySet: "已配置密钥。",
-			keyUnset: "未配置密钥。",
-			makersKeyLabel: "EdgeOne Makers API Key（朱雀检测）",
-			makersKeyHint: "供 story-zhuque 在你明确要求朱雀检测时使用。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 MAKERS_API_KEY 同样有效。",
-			makersKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
-			coverKeyLabel: "GPT Image API Key（封面生图）",
-			coverKeyHint: "供 story-cover 在你明确要求生成封面图时使用。仅提示词交付不需要密钥。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 GPT_IMAGE_API_KEY 同样有效。",
-			coverKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
-			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
-			gptImageBaseUrlLabel: "GPT Image API Base URL",
-			gptImageBaseUrlHint: "封面生图兼容端点的 Base URL，保存在设置文件里，Host 会注入为 GPT_IMAGE_BASE_URL。留空表示使用 shell 导出的值或默认值。",
-			overridden: "覆盖默认值。",
-			reset: "重置",
-			invalidText: "此值不被接受。",
-			readOnly: "此设置只读。",
-			unavailable: "写作设置不可用。",
-			save: "保存",
-			saving: "正在保存…",
-			discard: "放弃",
-			saveFailed: "未能保存。请再试一次。"
-		};
-		/**
-		* Labels the shared settings form reads from this page's dictionary.
-		* @param t - the bound translator.
-		* @returns the form chrome labels.
-		*/
-		function formLabels(t) {
-			return {
-				unavailable: t("unavailable"),
-				readOnly: t("readOnly"),
-				saveFailed: t("saveFailed"),
-				save: t("save"),
-				saving: t("saving")
+			const canLeaveDocument = () => {
+				if (checkpoint.current()) return true;
+				setError(t("draftCheckpointFailed"));
+				return false;
 			};
-		}
-		//#endregion
-		//#region lib/types/client/ZhuqueSettingsCard.js
-		/**
-		* Render the Writer settings page, or its one-liner when the Plugins page asks for a summary.
-		* @param props - the view asked for, locale copy, the page snapshot, and its form actions.
-		* @returns the one-liner, or the form.
-		*/
-		function ZhuqueSettingsCard(props) {
-			const { t } = props;
-			const state = props.useWriterZhuqueCard((snapshot) => snapshot);
-			if (props.view === "summary") return t("description");
-			const control = state.key;
-			const cover = state.coverKey;
-			return (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
-				labels: formLabels(t),
-				state,
-				onSave: props.save,
-				onDiscard: props.discard,
+			const goBack = () => {
+				if (active && canLeaveDocument()) {
+					setBookId(void 0);
+					setSelectedSessionId(void 0);
+					setSmallView("document");
+				}
+			};
+			const requestAssistant = (prompt) => {
+				if (!sessionId) return;
+				const reference = retain(sessionId);
+				reference.ready.then(() => {
+					initializeDraft(reference, prompt);
+					openSession(sessionId);
+				}).finally(() => reference.release());
+			};
+			return (0, react_jsx_runtime.jsxs)("main", {
+				ref: root,
+				className: "writer-workbench",
+				"data-workbench": "writer",
 				children: [
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
-						id: "plugin-config-writer-makers-key",
-						label: t("makersKeyLabel"),
-						hint: t(control.writable ? "makersKeyHint" : "makersKeyReadOnlyHint"),
-						stateLabel: control.configured ? t("keySet") : t("keyUnset"),
-						onEdit: (text) => {
-							props.edit("makersApiKey", text);
-						},
-						disabled: !control.writable,
-						text: control.draft.text,
-						configured: control.configured
+					(0, react_jsx_runtime.jsxs)("header", {
+						className: "writer-wb-header",
+						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h1", { children: t("title") }), active && (0, react_jsx_runtime.jsx)("span", { children: active.title })] }), active && (0, react_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: goBack,
+							children: t("allWorks")
+						})]
 					}),
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
-						id: "plugin-config-writer-cover-key",
-						label: t("coverKeyLabel"),
-						hint: t(cover.writable ? "coverKeyHint" : "coverKeyReadOnlyHint"),
-						stateLabel: cover.configured ? t("keySet") : t("keyUnset"),
-						onEdit: (text) => {
-							props.edit("gptImageApiKey", text);
-						},
-						disabled: !cover.writable,
-						text: cover.draft.text,
-						configured: cover.configured
+					!active ? (0, react_jsx_runtime.jsxs)("div", {
+						className: "writer-wb-home",
+						children: [(0, react_jsx_runtime.jsx)("nav", {
+							className: "writer-wb-nav",
+							"aria-label": t("navigation"),
+							children: [
+								"works",
+								"analysis",
+								"market"
+							].map((key) => (0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								"aria-current": section === key ? "page" : void 0,
+								onClick: () => setSection(key),
+								children: t(key)
+							}, key))
+						}), section === "works" ? (0, react_jsx_runtime.jsxs)("section", {
+							className: "writer-wb-works",
+							children: [
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: "writer-wb-toolbar",
+									children: [(0, react_jsx_runtime.jsx)("h2", { children: t("works") }), (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: refresh,
+										children: t("refresh")
+									})]
+								}),
+								(0, react_jsx_runtime.jsxs)("form", {
+									onSubmit: (event) => {
+										event.preventDefault();
+										if (workspaceId && path.trim() && title.trim()) perform({
+											action: "create",
+											workspaceId,
+											path: path.trim(),
+											title: title.trim(),
+											form
+										});
+									},
+									children: [
+										(0, react_jsx_runtime.jsxs)("select", {
+											"aria-label": t("workspace"),
+											value: workspaceId,
+											onChange: (event) => setWorkspaceId(event.target.value),
+											children: [(0, react_jsx_runtime.jsx)("option", {
+												value: "",
+												children: t("chooseWorkspace")
+											}), catalog?.workspaces.map((workspace) => (0, react_jsx_runtime.jsx)("option", {
+												value: workspace.id,
+												children: workspace.title
+											}, workspace.id))]
+										}),
+										(0, react_jsx_runtime.jsx)("input", {
+											"aria-label": t("bookTitle"),
+											value: title,
+											onChange: (event) => setTitle(event.target.value),
+											placeholder: t("bookTitle")
+										}),
+										(0, react_jsx_runtime.jsx)("input", {
+											"aria-label": t("folder"),
+											value: path,
+											onChange: (event) => setPath(event.target.value),
+											placeholder: t("folder")
+										}),
+										(0, react_jsx_runtime.jsxs)("select", {
+											"aria-label": t("form"),
+											value: form,
+											onChange: (event) => setForm(event.target.value),
+											children: [(0, react_jsx_runtime.jsx)("option", {
+												value: "long",
+												children: t("longForm")
+											}), (0, react_jsx_runtime.jsx)("option", {
+												value: "short",
+												children: t("shortForm")
+											})]
+										}),
+										(0, react_jsx_runtime.jsx)("button", {
+											type: "submit",
+											disabled: busy,
+											children: t("createBook")
+										})
+									]
+								}),
+								(0, react_jsx_runtime.jsxs)("select", {
+									"aria-label": t("writerSession"),
+									value: linkSessionId,
+									onChange: (event) => setLinkSessionId(event.target.value),
+									children: [(0, react_jsx_runtime.jsx)("option", {
+										value: "",
+										children: t("chooseWriterSession")
+									}), sessions.map((session) => (0, react_jsx_runtime.jsx)("option", {
+										value: session.id,
+										children: session.displayTitle
+									}, session.id))]
+								}),
+								(0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									disabled: busy || !workspaceId || !path.trim() || !title.trim() || !linkSessionId,
+									onClick: () => {
+										perform({
+											action: "register",
+											workspaceId,
+											path: path.trim(),
+											title: title.trim(),
+											form,
+											sessionId: linkSessionId
+										});
+									},
+									children: t("registerExisting")
+								}),
+								(0, react_jsx_runtime.jsx)("ul", {
+									className: "writer-wb-book-list",
+									children: books.map((book) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsxs)("button", {
+										type: "button",
+										onClick: () => {
+											if (!canLeaveDocument()) return;
+											setBookId(book.id);
+											setSelectedSessionId(book.sessionId ?? void 0);
+										},
+										children: [
+											(0, react_jsx_runtime.jsx)("strong", { children: book.title }),
+											(0, react_jsx_runtime.jsx)("span", { children: book.path }),
+											(0, react_jsx_runtime.jsx)("small", { children: book.sessionId ? t("sessionBound") : t("sessionNeeded") })
+										]
+									}), (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										disabled: busy,
+										onClick: () => {
+											if (canLeaveDocument()) perform({
+												action: "open",
+												id: book.id
+											});
+										},
+										children: t("open")
+									})] }, book.id))
+								})
+							]
+						}) : librarySession ? (0, react_jsx_runtime.jsxs)("section", {
+							className: "writer-wb-library",
+							children: [(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t(section) }), (0, react_jsx_runtime.jsx)("span", { children: librarySession.title })] }), (0, react_jsx_runtime.jsx)(WriterDesk, {
+								sessionId: SessionId(librarySession.sessionId),
+								cwd: librarySession.cwd,
+								remote,
+								t: deskT,
+								visible: true,
+								initialView: section === "analysis" ? "libraries" : "scans"
+							}, `${librarySession.id}:${section}`)]
+						}) : (0, react_jsx_runtime.jsxs)("section", {
+							className: "writer-wb-placeholder",
+							children: [(0, react_jsx_runtime.jsx)("h2", { children: t(section) }), (0, react_jsx_runtime.jsx)("p", { children: section === "analysis" ? t("analysisEmpty") : t("marketEmpty") })]
+						})]
+					}) : (0, react_jsx_runtime.jsxs)("div", {
+						className: "writer-wb-book",
+						children: [
+							(0, react_jsx_runtime.jsxs)("nav", {
+								className: "writer-wb-book-nav",
+								children: [
+									(0, react_jsx_runtime.jsx)("strong", { children: active.title }),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => requestAssistant(t("planningTask", {
+											title: active.title,
+											path: active.path
+										})),
+										children: t("startPlanning")
+									}),
+									active.phases.map((phase, index) => (0, react_jsx_runtime.jsxs)("button", {
+										type: "button",
+										"aria-current": phase.sessionId === sessionId ? "page" : void 0,
+										onClick: () => {
+											if (canLeaveDocument()) setSelectedSessionId(phase.sessionId);
+										},
+										children: [
+											t("phase"),
+											" ",
+											index + 1
+										]
+									}, phase.sessionId)),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										disabled: busy,
+										onClick: () => {
+											if (canLeaveDocument()) perform({
+												action: "phase",
+												id: active.id
+											});
+										},
+										children: t("newPhase")
+									}),
+									(0, react_jsx_runtime.jsxs)("select", {
+										"aria-label": t("chooseWriterSession"),
+										value: linkSessionId,
+										onChange: (event) => setLinkSessionId(event.target.value),
+										children: [(0, react_jsx_runtime.jsx)("option", {
+											value: "",
+											children: t("chooseWriterSession")
+										}), sessions.filter((session) => session.cwd === active.cwd).map((session) => (0, react_jsx_runtime.jsx)("option", {
+											value: session.id,
+											children: session.displayTitle
+										}, session.id))]
+									}),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										disabled: busy || !linkSessionId,
+										onClick: () => {
+											if (canLeaveDocument()) perform({
+												action: "bind",
+												id: active.id,
+												sessionId: linkSessionId
+											});
+										},
+										children: t("linkSession")
+									})
+								]
+							}),
+							(0, react_jsx_runtime.jsxs)("div", {
+								className: "writer-wb-mobile-tabs",
+								children: [(0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									"aria-pressed": smallView === "document",
+									onClick: () => setSmallView("document"),
+									children: t("document")
+								}), (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									"aria-pressed": smallView === "assistant",
+									onClick: () => setSmallView("assistant"),
+									children: t("assistant")
+								})]
+							}),
+							(0, react_jsx_runtime.jsxs)("div", {
+								className: "writer-wb-columns",
+								"data-assistant-open": assistantOpen ? "true" : "false",
+								"data-narrow": narrow ? "true" : void 0,
+								"data-small-view": smallView,
+								children: [
+									(0, react_jsx_runtime.jsx)("section", {
+										className: "writer-wb-document",
+										children: sessionId ? (0, react_jsx_runtime.jsx)(WriterDesk, {
+											sessionId: SessionId(sessionId),
+											cwd: active.cwd,
+											remote,
+											t: deskT,
+											checkpoint: () => checkpoint.current(),
+											visible: true
+										}, active.id) : (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })
+									}),
+									(0, react_jsx_runtime.jsx)("div", {
+										className: "writer-wb-resize",
+										role: "separator",
+										"aria-orientation": "vertical",
+										"aria-valuenow": 66
+									}),
+									(0, react_jsx_runtime.jsxs)("section", {
+										className: "writer-wb-assistant",
+										"aria-label": t("assistant"),
+										children: [(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), (0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: () => setAssistantOpen((value) => !value),
+											children: assistantOpen ? t("collapse") : t("expand")
+										})] }), sessionId ? (0, react_jsx_runtime.jsx)(AssistantPanel, {
+											book: {
+												...active,
+												sessionId
+											},
+											retain,
+											renderSlot,
+											SessionProvider,
+											t
+										}, sessionId) : (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })]
+									})
+								]
+							})
+						]
 					}),
-					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
-						id: "plugin-config-writer-cover-base-url",
-						label: t("gptImageBaseUrlLabel"),
-						hint: t("gptImageBaseUrlHint"),
-						overriddenLabel: t("overridden"),
-						resetLabel: t("reset"),
-						invalidLabel: t("invalidText"),
-						placeholder: t("gptImageBaseUrlPlaceholder"),
-						disabled: !state.writable,
-						...state.gptImageBaseUrl,
-						onEdit: (text) => {
-							props.edit("gptImageBaseUrl", text);
-						},
-						onReset: () => {
-							props.resetField("gptImageBaseUrl");
-						}
+					error && (0, react_jsx_runtime.jsx)("p", {
+						role: "alert",
+						className: "writer-wb-error",
+						children: error
 					})
 				]
 			});
 		}
-		//#endregion
-		//#region lib/types/client/zhuque-settings-controller.js
-		/**
-		* The Writer settings page's staged form over the `writer` namespace.
-		* Key literals never ride a response: they write through the credentials
-		* domain under the references `makersApiKeyEnv` and `gptImageApiKeyEnv` name.
-		*/
-		/** Namespace of the writer plugin. Spelled here so the client half does not import Host values. */
-		const WRITER_SETTINGS_NS = "writer";
-		const FALLBACK_MAKERS_REF = "MAKERS_API_KEY";
-		const FALLBACK_COVER_REF = "GPT_IMAGE_API_KEY";
-		/** Bridges the `writer` scope and the credentials domain onto Zhuque and cover keys. */
-		var WriterZhuqueCardController = class {
-			scope;
-			ctx;
-			form;
-			store;
-			makersState = {
-				ref: "",
-				configured: false,
-				writable: true
-			};
-			coverState = {
-				ref: "",
-				configured: false,
-				writable: true
-			};
-			/**
-			* @param scope - the shared configuration form for the `writer` namespace.
-			* @param ctx - the page plugin's context.
-			*/
-			constructor(scope, ctx) {
-				this.scope = scope;
-				this.ctx = ctx;
-				this.form = new _deepseek_ai_dsh_client_ui_primitives.SettingsFormModel(scope, [(0, _deepseek_ai_dsh_client_ui_primitives.settingsTextField)("gptImageBaseUrl")], [{
-					field: "makersApiKey",
-					write: (text) => this.writeKey("makers", text)
-				}, {
-					field: "gptImageApiKey",
-					write: (text) => this.writeKey("cover", text)
-				}]);
-				this.store = this.form.bind(() => this.projection());
-				scope.subscribe(() => {
-					this.readCredentials();
+		function AssistantPanel({ book, retain, renderSlot, SessionProvider, t }) {
+			const [reference, setReference] = (0, react.useState)();
+			const [failure, setFailure] = (0, react.useState)(false);
+			(0, react.useEffect)(() => {
+				const current = retain(book.sessionId);
+				let alive = true;
+				setReference(current);
+				current.ready.catch(() => {
+					if (alive) setFailure(true);
 				});
-				this.readCredentials();
-			}
-			projection() {
-				return {
-					...this.form.shell(),
-					key: {
-						draft: this.form.field("makersApiKey"),
-						configured: this.makersState.configured,
-						writable: this.makersState.writable
-					},
-					coverKey: {
-						draft: this.form.field("gptImageApiKey"),
-						configured: this.coverState.configured,
-						writable: this.coverState.writable
-					},
-					gptImageBaseUrl: this.form.field("gptImageBaseUrl")
+				return () => {
+					alive = false;
+					current.release();
 				};
-			}
-			/** Ask the credentials domain about both references the section names. */
-			async readCredentials() {
-				const snapshot = this.scope.getSnapshot();
-				const makersRef = makersRefOf(snapshot);
-				const coverRef = coverRefOf(snapshot);
-				let projected = false;
-				if (makersRef !== this.makersState.ref) {
-					this.makersState = {
-						ref: makersRef,
-						configured: false,
-						writable: true
-					};
-					projected = true;
-				}
-				if (coverRef !== this.coverState.ref) {
-					this.coverState = {
-						ref: coverRef,
-						configured: false,
-						writable: true
-					};
-					projected = true;
-				}
-				if (projected) this.store.set(this.projection());
-				const response = await this.ctx.remote.credentials.describe([makersRef, coverRef]);
-				if (!response.ok) return;
-				const latest = this.scope.getSnapshot();
-				if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest)) return;
-				const makersView = response.value[makersRef];
-				const coverView = response.value[coverRef];
-				const nextMakers = {
-					ref: makersRef,
-					configured: makersView?.configured ?? false,
-					writable: makersView?.writable ?? true
-				};
-				const nextCover = {
-					ref: coverRef,
-					configured: coverView?.configured ?? false,
-					writable: coverView?.writable ?? true
-				};
-				const makersSame = nextMakers.configured === this.makersState.configured && nextMakers.writable === this.makersState.writable && nextMakers.ref === this.makersState.ref;
-				const coverSame = nextCover.configured === this.coverState.configured && nextCover.writable === this.coverState.writable && nextCover.ref === this.coverState.ref;
-				if (makersSame && coverSame) return;
-				this.makersState = nextMakers;
-				this.coverState = nextCover;
-				this.store.set(this.projection());
-			}
-			/**
-			* Re-read after the Host reports a change to a watched reference.
-			* @param ref - the reference the Host reports as changed.
-			*/
-			refreshCredential(ref) {
-				if (this.makersState.ref !== ref && this.coverState.ref !== ref) return;
-				this.readCredentials();
-			}
-			/**
-			* Build the face the page's slot registration injects.
-			* @returns the page snapshot and its form actions.
-			*/
-			inject() {
-				return {
-					hooks: { writerZhuqueCard: this.store },
-					...this.form.actions()
-				};
-			}
-			/**
-			* Write a staged key, then re-read whether the Host now holds one.
-			* @param which - Zhuque or cover.
-			* @param value - the staged credential literal.
-			* @returns whether the Host reports a configured credential afterwards.
-			*/
-			async writeKey(which, value) {
-				const snapshot = this.scope.getSnapshot();
-				const ref = which === "makers" ? makersRefOf(snapshot) : coverRefOf(snapshot);
-				if (!(await this.ctx.remote.credentials.set(ref, value)).ok) return false;
-				await this.readCredentials();
-				return which === "makers" ? this.makersState.configured : this.coverState.configured;
-			}
-			/** Release configuration subscriptions. */
-			dispose() {
-				this.form.dispose();
-			}
-		};
-		/**
-		* The Zhuque credential reference the section names, or MAKERS_API_KEY.
-		* @param snapshot - the current scope snapshot.
-		* @returns the reference to address.
-		*/
-		function makersRefOf(snapshot) {
-			const declared = snapshot.value?.makersApiKeyEnv;
-			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_MAKERS_REF;
-		}
-		/**
-		* The cover credential reference the section names, or GPT_IMAGE_API_KEY.
-		* @param snapshot - the current scope snapshot.
-		* @returns the reference to address.
-		*/
-		function coverRefOf(snapshot) {
-			const declared = snapshot.value?.gptImageApiKeyEnv;
-			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_COVER_REF;
+			}, [book.sessionId, retain]);
+			if (!reference || failure) return (0, react_jsx_runtime.jsx)("p", {
+				role: failure ? "alert" : "status",
+				children: t(failure ? "sessionUnavailable" : "loading")
+			});
+			return (0, react_jsx_runtime.jsx)(SessionProvider, {
+				session: reference,
+				children: renderSlot("writer.workbench.conversation", {})
+			});
 		}
 		//#endregion
-		//#region lib/types/client/zhuque-settings.js
-		/**
-		* Writer settings page (Zhuque + cover keys), browser half. Registers into the
-		* Plugins page's `plugins.item` slot while the Host serves the `writer` namespace.
-		*/
-		/** Dictionary namespace owned by the Writing settings page. */
-		const ZHUQUE_NS = "settings.writer";
-		/** Cordis services the Writing settings page needs beyond the sidebar. */
-		const zhuqueInject = ["remote.credentials", "configForms"];
-		/**
-		* Mount the Writing settings page while the Host serves the writer namespace.
-		* @param ctx - the browser plugin context.
-		*/
-		function applyZhuqueSettings(ctx) {
-			const t = ctx.locale.bind(ZHUQUE_NS);
-			ctx.effect(() => ctx.locale.register(ZHUQUE_NS, {
-				zh,
-				en
-			}), "writer: zhuque dictionaries");
-			const card = new WriterZhuqueCardController(ctx.configForms.get(WRITER_SETTINGS_NS), ctx);
-			ctx.effect(() => () => {
-				card.dispose();
-			}, "writer: zhuque form subscription");
-			ctx.effect(() => ctx.remote.$on("credentials/reference-updated", (ref) => {
-				card.refreshCredential(ref);
-			}), "writer: zhuque credential invalidations");
-			ctx.effect(() => ctx.configForms.whileServed([WRITER_SETTINGS_NS], () => ctx.slots.inject("plugins.item", () => ctx.slots.register({
-				name: "plugins.item",
-				id: "writer",
-				order: 40,
+		//#region lib/types/client/workbench-entry.js
+		const inject$1 = [
+			"slots",
+			"locale",
+			"layout",
+			"sessions",
+			"uiSession",
+			"uiWorkspace",
+			"conversation",
+			"remote",
+			"remote.workspaceFiles"
+		];
+		/** @param ctx - native Client services for panel selection, Sessions, and input drafts. */
+		function apply$1(ctx) {
+			ctx.effect(() => ctx.locale.register("writerWorkbench", {
+				en,
+				zh
+			}), "writer: workbench locale");
+			ctx.effect(() => ctx.locale.register(NS, {
+				en: en$2,
+				zh: zh$2
+			}), "writer: document locale");
+			const t = ctx.locale.bind("writerWorkbench");
+			const deskT = ctx.locale.bind(NS);
+			ctx.effect(() => ctx.slots.inject("main", function* () {
+				yield ctx.slots.register({
+					name: "main",
+					key: "writer-workbench",
+					children: { "writer.workbench": {
+						kind: "single",
+						scope: "root"
+					} }
+				}, Main);
+				yield ctx.slots.register({
+					name: "writer.workbench",
+					locale: "writerWorkbench",
+					children: { "writer.workbench.conversation": {
+						kind: "single",
+						scope: "session"
+					} },
+					inject: () => ({
+						retain: (id) => ctx.sessions.retain(id, { source: "mainView" }),
+						action: async (value) => await request("/writer-workbench", value),
+						load: async () => validateCatalog(await request("/writer-workbench")),
+						openSession: (id) => {
+							ctx.uiWorkspace.openSession(id);
+						},
+						initializeDraft: (reference, prompt) => ctx.conversation.input.requestDraftInitialization(reference.binding, {
+							prompt,
+							whenDraftExists: "append"
+						}),
+						remote: ctx.remote,
+						deskT: (key) => deskT(key)
+					})
+				}, Workbench);
+			}), "writer: workbench panel");
+			ctx.effect(() => ctx.slots.inject("writer.workbench.conversation", () => ctx.slots.register({ name: "writer.workbench.conversation" }, NativeConversation)), "writer: native conversation");
+			ctx.effect(() => ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({
+				name: "sidebar.panellist",
+				id: "writer-workbench",
+				order: 26,
 				label: () => t("title"),
-				locale: ZHUQUE_NS,
-				inject: () => card.inject()
-			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
+				locale: "writerWorkbench"
+			}, Launcher)), "writer: workbench launcher");
+		}
+		async function request(path, value) {
+			const response = await fetch(path, value === void 0 ? { cache: "no-store" } : {
+				method: "POST",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify(value)
+			});
+			const result = await response.json();
+			if (!response.ok) throw new Error(result && typeof result === "object" && "error" in result && typeof result.error === "string" ? result.error : "workbenchFailed");
+			return result;
+		}
+		function validateCatalog(value) {
+			if (!value || typeof value !== "object" || !Array.isArray(value.books) || !Array.isArray(value.workspaces)) throw new Error("loadFailed");
+			return value;
 		}
 		//#endregion
 		//#region lib/types/client/index.js
 		/** Services required by the sidebar and the Writing settings page. */
-		const inject = [...inject$1, ...zhuqueInject];
+		const inject = [...zhuqueInject, ...inject$1];
 		/**
 		* Register the writing sidebar and the Plugins-page Writing credential entry.
 		* @param context - browser services.

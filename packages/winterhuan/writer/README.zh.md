@@ -1,5 +1,5 @@
 ---
-description: "为 DSH 增加写作模式：挂载 oh-story 技能，并在侧栏浏览和编辑拆文库、写作项目与扫榜记录。"
+description: "为 DSH 增加小说创作工作台、原生 Writer 会话和 oh-story 技能。"
 kind: "package-bundle"
 ---
 
@@ -9,7 +9,7 @@ kind: "package-bundle"
 
 ## 概要
 
-本 bundle 为 DSH 增加写作预设、oh-story 技能与工作区侧栏。作者可以编辑文稿并恢复浏览器草稿，查看章节进度和版本化审稿，比较修改差异。技能默认来自插件包；项目同名副本优先。同步和撤销同步把原副本保留为可恢复备份。会话、文件访问和子代理由 DSH 提供，书内文件仍是数据来源。
+本 bundle 为 DSH 增加小说创作工作台、Writer 预设与 oh-story 技能。工作台提供作品登记、原生会话关联、长短篇文件导航、文稿编辑和浏览器草稿恢复；助手使用 DSH 原生 Conversation，默认展开。分析资料与市场调研入口和作品文件浏览共用现有工作区读取能力，不复制书稿或会话记录。技能默认来自插件包；项目同名副本优先。同步和撤销同步把原副本保留为可恢复备份。
 
 ## 目录
 
@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.1.10&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.0&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。

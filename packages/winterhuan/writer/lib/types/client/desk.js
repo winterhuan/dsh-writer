@@ -146,12 +146,15 @@ function SearchHits({ hits, query, selected, onSelect, t, }) {
  * @returns the desk.
  */
 export function WriterDesk(props) {
-    return _jsx(WriterDeskBody, { ...props }, JSON.stringify([props.sessionId, props.cwd]));
+    return _jsx(WriterDeskBody, { ...props }, props.cwd);
 }
-function WriterDeskBody({ sessionId, cwd, remote, t, visible }) {
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }) {
+    const checkpointRef = useRef(() => true);
     const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
+    if (checkpoint)
+        checkpointRef.current = writerDocument.checkpoint;
     const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
-    const [viewPick, setViewPick] = useState(undefined);
+    const [viewPick, setViewPick] = useState(initialView);
     const [libraries, setLibraries] = useState([]);
     const [projects, setProjects] = useState([]);
     const [scans, setScans] = useState([]);

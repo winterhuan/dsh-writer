@@ -174,6 +174,34 @@ it('keeps edits typed during a save and stores them against the newly saved vers
   }
 })
 
+it('rebinds reads to a new phase Session without remounting the selected document', async () => {
+  const { remote, readBytes } = reader()
+  const fetch = vi.fn(async () => new Response(JSON.stringify({ path: a, bytes: 20, version: 'a2' })))
+  vi.stubGlobal('fetch', fetch)
+  const { result, rerender } = renderHook(({ currentSession }) => useWriterDocument(remote, currentSession, '/ws', copy), { initialProps: { currentSession: sessionId } })
+  act(() => { result.current.open(a) })
+  await waitFor(() => { expect(result.current.ready).toBe(true) })
+  act(() => { result.current.edit('阶段切换前的草稿') })
+  rerender({ currentSession: SessionId('next-phase') })
+  await waitFor(() => { expect(readBytes).toHaveBeenLastCalledWith('next-phase', '/ws/novel/a.md', {}, expect.any(AbortSignal)) })
+  expect(result.current).toMatchObject({ active: a, draft: '阶段切换前的草稿', dirty: true, ready: true })
+  expect(fetch).not.toHaveBeenCalled()
+})
+
+it('checkpoints a dirty document before navigation and refuses when browser storage is unavailable', async () => {
+  const { remote } = reader()
+  const { result } = renderHook(() => useWriterDocument(remote, sessionId, '/ws', copy))
+  act(() => { result.current.open(a) })
+  await waitFor(() => { expect(result.current.ready).toBe(true) })
+  act(() => { result.current.edit('需保留的草稿') })
+  expect(result.current.checkpoint()).toBe(true)
+  expect(readWriterDraft('/ws', a).draft?.text).toBe('需保留的草稿')
+  const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new DOMException('quota', 'QuotaExceededError') })
+  act(() => { result.current.edit('只能留在内存的草稿') })
+  expect(result.current.checkpoint()).toBe(false)
+  expect(setItem).toHaveBeenCalled()
+})
+
 it('warns before leaving an unsaved draft and removes the warning after saving', async () => {
   const { remote } = reader()
   vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ path: a, bytes: 9, version: 'a2' }))))

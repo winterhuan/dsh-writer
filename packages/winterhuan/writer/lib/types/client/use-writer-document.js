@@ -17,6 +17,8 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
     const current = useRef(undefined);
     const mounted = useRef(true);
     const readController = useRef(undefined);
+    const authorizedSession = useRef(sessionId);
+    const ownerSession = useRef(sessionId);
     const copy = useRef(t);
     copy.current = t;
     const publish = (next) => {
@@ -105,6 +107,24 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
         // Session/workspace identity is the keyed WriterDesk mount, not sidebar visibility.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        if (authorizedSession.current === sessionId)
+            return;
+        authorizedSession.current = sessionId;
+        if (current.current)
+            load(current.current.path);
+    }, [sessionId]);
+    useEffect(() => {
+        const refresh = () => {
+            const value = current.current;
+            if (window.document.visibilityState === 'hidden' || !value || value.busy || value.status === 'loading')
+                return;
+            load(value.path);
+        };
+        const timer = window.setInterval(refresh, 15_000);
+        window.addEventListener('focus', refresh);
+        return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); };
+    }, [sessionId, cwd]);
     const dirty = documentState !== undefined && documentState.text !== documentState.baseText;
     useEffect(() => {
         if (!dirty)
@@ -116,14 +136,17 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
         window.addEventListener('beforeunload', warn);
         return () => { window.removeEventListener('beforeunload', warn); };
     }, [dirty]);
-    const save = () => {
+    const save = async () => {
         const value = current.current;
-        if (value === undefined || value.version === undefined || value.status !== 'ready'
-            || value.conflict || value.busy || value.text === value.baseText)
-            return;
+        if (value === undefined || ownerSession.current !== sessionId || value.version === undefined || value.status !== 'ready'
+            || value.conflict || value.busy || authorizedSession.current !== sessionId)
+            return false;
+        if (value.text === value.baseText)
+            return true;
         const { owner, path, text, version, eol } = value;
         publish({ ...value, busy: true, notice: undefined });
-        void saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
+        ownerSession.current = sessionId;
+        return saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
             const payload = await response.json();
             update(owner, (latest) => {
                 if (response.status === 412)
@@ -132,8 +155,10 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
                     return { ...latest, busy: false, notice: payload.error ?? copy.current('saveError') };
                 return persist({ ...latest, busy: false, baseText: text, version: payload.version, notice: copy.current('saved') });
             });
+            return response.ok && current.current?.owner === owner && current.current.text === current.current.baseText;
         }).catch(() => {
             update(owner, latest => ({ ...latest, busy: false, notice: copy.current('saveError') }));
+            return false;
         });
     };
     return {
@@ -143,7 +168,7 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
         version: documentState?.version,
         eol: documentState?.eol ?? '\n',
         loading: documentState?.status === 'loading',
-        ready: documentState?.status === 'ready',
+        ready: documentState?.status === 'ready' && authorizedSession.current === sessionId,
         busy: documentState?.busy ?? false,
         dirty, conflict: documentState?.conflict ?? false,
         notice: documentState?.notice, storageError,
@@ -172,6 +197,17 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
             if (value?.status !== 'ready')
                 return;
             publish(persist({ ...value, text, notice: undefined }));
+        },
+        checkpoint: () => {
+            const value = current.current;
+            if (!value)
+                return true;
+            if (value.busy)
+                return false;
+            const next = persist(value);
+            publish(next);
+            const result = readWriterDraft(cwd, value.path);
+            return !result.error && (value.text === value.baseText || result.draft?.text === value.text);
         },
         save,
     };

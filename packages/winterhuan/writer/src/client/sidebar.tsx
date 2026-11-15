@@ -1,24 +1,22 @@
 /** Register the writing sidebar: tab type, then the keyed body slot. */
 import type { Context } from '@deepseek-ai/cordis'
-import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
-import type {} from '@deepseek-ai/dsh-api-remotes/client'
-import type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 import type {} from '@deepseek-ai/dsh-client-ui-sidebar-right/client'
+import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
+import type { MainPanelId } from '@deepseek-ai/dsh-client-ui-layout/client'
 import { IconEditOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
 import { useEffect } from 'react'
-import { WriterDesk } from './desk.tsx'
 import { en, NS, zh } from './locales.ts'
 import { registerWriterTab } from './mode.ts'
 
 export const name = 'writer'
-export const inject = ['slots', 'sessions', 'uiSession', 'locale', 'sidebarRightTabs', 'remote', 'remote.workspaceFiles']
+export const inject = ['slots', 'sessions', 'uiSession', 'locale', 'sidebarRightTabs', 'layout']
 
 const TAB_ID = '@winterhuan/dsh-writer'
-type Props = PropsRuntime<'sidebar.right.pane.tab'> & PropsLocale<typeof NS>
+type Props = PropsRuntime<'sidebar.right.pane.tab'> & PropsLocale<typeof NS> & { readonly openWorkbench: () => void }
 
 /**
  * Register the writing tab and its body. The guide entry follows the selected preset.
@@ -33,17 +31,15 @@ export function apply(context: Context): void {
     title: () => t('title'),
     guide: [{ id: 'writer', order: 22, title: () => t('title'), description: () => t('description'), icon: IconEditOutlineRegular }],
   }), 'writer: sidebar type')
-  function Sidebar({ sessionId, useTabInfo, useSessions, t: copy }: Props) {
+  function Sidebar({ sessionId, useTabInfo, useSessions, t: copy, openWorkbench }: Props) {
     const preset = useSessions(state => state.byId[sessionId]?.projectionValues?.agentPreset)
-    const cwd = useSessions(state => state.byId[sessionId]?.cwd)
     const { tab } = useTabInfo()
     useEffect(() => { if (typeof preset === 'string' && preset !== 'writer') tab.actions.close() }, [preset, tab.actions])
     if (preset !== 'writer') return null
-    if (cwd === undefined) return <p className="writer-empty">{copy('noWorkspace')}</p>
-    return <WriterDesk sessionId={sessionId} cwd={cwd} remote={context.remote as ClientRemote} t={copy} visible={tab.visible} />
+    return <div className="writer-sidebar-launcher"><p>{copy('openWorkbenchDescription')}</p><button type="button" onClick={openWorkbench}>{copy('openWorkbench')}</button></div>
   }
   context.effect(() => context.slots.inject('sidebar.right.pane.tab', () => context.slots.register(
-    { name: 'sidebar.right.pane.tab', key: TAB_ID, locale: NS },
+    { name: 'sidebar.right.pane.tab', key: TAB_ID, locale: NS, inject: () => ({ openWorkbench: () => context.layout.selectPanel('writer-workbench' as MainPanelId) }) },
     Sidebar,
   )), 'writer: sidebar body')
 }

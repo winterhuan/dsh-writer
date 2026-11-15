@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/winterhuan/writer/README.md
 /:
-  en: 1a2622be91dd29e5
-  zh: b5c0e4e70654a5ad
+  en: 38e6b7bfd5c75f43
+  zh: f557458b7983bad3
 /winterhuan-dsh-writer:
   en: e11eafc303f9cd37
   zh: b7beed1748b08ea2
 /winterhuan-dsh-writer/summary:
-  en: fc1bf5bab4e72b62
-  zh: 7aabbeebf5d8858b
+  en: 0512524060fe7cd0
+  zh: 3715d4b7a5af06c6
 /winterhuan-dsh-writer/table-of-contents:
   en: d152484eb41ac6b4
   zh: 82bbd1ae631975a1
