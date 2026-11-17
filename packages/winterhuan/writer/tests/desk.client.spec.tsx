@@ -347,7 +347,7 @@ it('shows a scan-failed banner with retry when the workspace root is unreadable'
   expect(screen.getByRole('button', { name: zh.retryScan })).toBeTruthy()
 })
 
-it('reports an inaccessible child as a partial scan even when no novels are found', async () => {
+it('silently skips inaccessible directories that have not been recognized as writing projects', async () => {
   const failing: ClientRemote = {
     workspaceFiles: {
       list: async (_session: string, path: string) => path === cwd
@@ -356,10 +356,12 @@ it('reports an inaccessible child as a partial scan even when no novels are foun
     },
   } as ClientRemote
   render(<WriterDesk sessionId={SessionId('session-external')} cwd={cwd} remote={failing} t={key => zh[key]} visible />)
-  expect(await screen.findByText(zh.scanPartial)).toBeTruthy()
+  expect(await screen.findByText(zh.emptyProjects)).toBeTruthy()
+  expect(screen.queryByText(zh.scanPartial)).toBeNull()
   expect(screen.queryByText(zh.scanFailed)).toBeNull()
-  expect(screen.getByText(zh.directoryOutsideWorkspace.replace('{path}', 'external'))).toBeTruthy()
-  expect(screen.getByRole('button', { name: zh.retryScan })).toBeTruthy()
+  expect(screen.queryByText(zh.directoryOutsideWorkspace.replace('{path}', 'external'))).toBeNull()
+  expect(screen.queryByRole('button', { name: zh.retryScan })).toBeNull()
+  expect(screen.queryAllByText(zh.healthPartial)).toHaveLength(0)
 })
 
 it('shows a conflict dialog with keep and reload actions', async () => {

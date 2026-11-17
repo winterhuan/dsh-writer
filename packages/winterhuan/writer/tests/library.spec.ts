@@ -212,3 +212,18 @@ it('treats missing scan folders as empty and reports unreadable existing ones', 
 it('rejects a scan when its workspace root cannot be read', async () => {
   await expect(scanWriterWorkspace(dirTree({}))).rejects.toThrow('missing .')
 })
+
+it('shows only recognized projects and skips unreadable or unmatched candidates', async () => {
+  const scan = await scanWriterWorkspace(dirTree({
+    '': [
+      { name: 'external', type: 'directory' },
+      { name: 'novel', type: 'directory' },
+      { name: 'demo', type: 'directory' },
+    ],
+    novel: [{ name: '正文', type: 'directory' }],
+    demo: [{ name: 'drafts', type: 'directory' }, { name: 'bible.md', type: 'file' }, { name: 'outline.md', type: 'file' }],
+    'demo/drafts': [{ name: 'ch-001.md', type: 'file' }],
+  }))
+  expect(scan.projects.map(root => root.path)).toEqual(['novel'])
+  expect(scan.scanErrors).toEqual([])
+})

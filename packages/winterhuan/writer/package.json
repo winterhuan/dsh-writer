@@ -1,6 +1,6 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Novel-writing workbench for DSH with native Writer conversations and oh-story skills",
   "type": "module",
   "license": "MIT",

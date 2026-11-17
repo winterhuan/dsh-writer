@@ -243,13 +243,12 @@ export async function listLibraryRoots(
 }
 
 /**
- * Writing projects deep ≤3 with long/short markers, skipping library paths.
+ * Writing projects deep ≤3 with long/short markers, skipping library paths and unreadable candidates.
  * @param readDir - list one workspace-relative directory.
  * @param libraryPaths - relative paths of library roots to skip.
  * @param currentPath - path being inspected.
  * @param depth - depth from workspace root.
  * @param projects - accumulator.
- * @param scanErrors - soft errors.
  * @returns project roots.
  */
 export async function findProjectRoots(
@@ -258,15 +257,14 @@ export async function findProjectRoots(
   currentPath = '',
   depth = 0,
   projects: WriterWorkspaceRoot[] = [],
-  scanErrors: string[] = [],
 ): Promise<WriterWorkspaceRoot[]> {
   if (depth > 3 || isUnderAnyPath(currentPath, libraryPaths)) return projects
 
   let entries: readonly DirEntry[]
   try {
     entries = await readDir(currentPath)
-  } catch (error) {
-    scanErrors.push(error instanceof Error ? error.message : `unreadable:${currentPath || '.'}`)
+  } catch {
+    // A candidate is not a writing project until its markers can be read.
     return projects
   }
 
@@ -294,7 +292,6 @@ export async function findProjectRoots(
       joinRel(currentPath, entry.name),
       depth + 1,
       projects,
-      scanErrors,
     )
   }
   return projects
@@ -325,7 +322,7 @@ export async function scanWriterWorkspace(
   }
   scans.sort((left, right) => compareWriterNames(right.name, left.name))
   const libraryPaths = libraries.map(root => root.path)
-  const projects = await findProjectRoots(list, libraryPaths, '', 0, [], scanErrors)
+  const projects = await findProjectRoots(list, libraryPaths)
   projects.sort((left, right) => compareWriterNames(left.path, right.path))
   return { libraries, projects, scans, scanErrors }
 }

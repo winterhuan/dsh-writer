@@ -166,24 +166,23 @@ export async function listLibraryRoots(readDir) {
     return { roots, scanErrors };
 }
 /**
- * Writing projects deep ≤3 with long/short markers, skipping library paths.
+ * Writing projects deep ≤3 with long/short markers, skipping library paths and unreadable candidates.
  * @param readDir - list one workspace-relative directory.
  * @param libraryPaths - relative paths of library roots to skip.
  * @param currentPath - path being inspected.
  * @param depth - depth from workspace root.
  * @param projects - accumulator.
- * @param scanErrors - soft errors.
  * @returns project roots.
  */
-export async function findProjectRoots(readDir, libraryPaths, currentPath = '', depth = 0, projects = [], scanErrors = []) {
+export async function findProjectRoots(readDir, libraryPaths, currentPath = '', depth = 0, projects = []) {
     if (depth > 3 || isUnderAnyPath(currentPath, libraryPaths))
         return projects;
     let entries;
     try {
         entries = await readDir(currentPath);
     }
-    catch (error) {
-        scanErrors.push(error instanceof Error ? error.message : `unreadable:${currentPath || '.'}`);
+    catch {
+        // A candidate is not a writing project until its markers can be read.
         return projects;
     }
     const childDirectoryNames = new Set(entries.filter(entry => entry.type === 'directory').map(entry => entry.name));
@@ -201,7 +200,7 @@ export async function findProjectRoots(readDir, libraryPaths, currentPath = '', 
             continue;
         if (currentPath === '' && entry.name === '扫榜')
             continue;
-        await findProjectRoots(readDir, libraryPaths, joinRel(currentPath, entry.name), depth + 1, projects, scanErrors);
+        await findProjectRoots(readDir, libraryPaths, joinRel(currentPath, entry.name), depth + 1, projects);
     }
     return projects;
 }
@@ -230,7 +229,7 @@ export async function scanWriterWorkspace(readDir) {
     }
     scans.sort((left, right) => compareWriterNames(right.name, left.name));
     const libraryPaths = libraries.map(root => root.path);
-    const projects = await findProjectRoots(list, libraryPaths, '', 0, [], scanErrors);
+    const projects = await findProjectRoots(list, libraryPaths);
     projects.sort((left, right) => compareWriterNames(left.path, right.path));
     return { libraries, projects, scans, scanErrors };
 }

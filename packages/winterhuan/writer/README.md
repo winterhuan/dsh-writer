@@ -28,7 +28,7 @@ This bundle adds a writing workbench, writing sidebar, Writer preset, and oh-sto
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.2&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.3&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -82,7 +82,7 @@ Open the writing workbench and select a workspace; the first visit prefers `nove
 
 ### Use the sidebar
 
-Open the writing sidebar in a `writer` session. Libraries, projects, and dated market scans have separate tabs, lazy directory trees, and filename search. The editor supports `.md`, `.txt`, `.json`, `.yaml`, `.yml`, and `.toml`, Markdown preview, line numbers, original line endings, and a comparison with the loaded version. Cmd/Ctrl+S saves; Cmd/Ctrl+K focuses filename search when the chat composer is not focused. An unreadable workspace root fails the scan; an unreadable child folder shows a partial-scan notice with its first error, even when no novels are found. DSH blocks directory links outside the workspace; add their targets as separate workspaces to browse them.
+Open the writing sidebar in a `writer` session. Libraries, projects, and dated market scans have separate tabs, lazy directory trees, and filename search. The editor supports `.md`, `.txt`, `.json`, `.yaml`, `.yml`, and `.toml`, Markdown preview, line numbers, original line endings, and a comparison with the loaded version. Cmd/Ctrl+S saves; Cmd/Ctrl+K focuses filename search when the chat composer is not focused. Only folders matching the existing writing-project markers appear. Unmatched or unreadable candidate folders are skipped without a scan warning. An unreadable workspace root still fails the scan, and loading errors inside recognized content remain visible.
 
 Unsaved text and its disk baseline are stored in this browser under the workspace and file path. Hiding the sidebar preserves the editor; reopening the page restores the last document and its draft. Failed reads or saves retain the draft. Storage failures stay visible, and leaving the page with unsaved changes triggers the browser warning. Concurrent recovery-copy changes are reported rather than overwritten. Recovery is local to this browser origin and may be unavailable when storage is disabled or full; it is not a manuscript backup.
 

@@ -106,16 +106,15 @@ export declare function listLibraryRoots(readDir: (path: string) => Promise<read
     readonly scanErrors: string[];
 }>;
 /**
- * Writing projects deep ≤3 with long/short markers, skipping library paths.
+ * Writing projects deep ≤3 with long/short markers, skipping library paths and unreadable candidates.
  * @param readDir - list one workspace-relative directory.
  * @param libraryPaths - relative paths of library roots to skip.
  * @param currentPath - path being inspected.
  * @param depth - depth from workspace root.
  * @param projects - accumulator.
- * @param scanErrors - soft errors.
  * @returns project roots.
  */
-export declare function findProjectRoots(readDir: (path: string) => Promise<readonly DirEntry[]>, libraryPaths: readonly string[], currentPath?: string, depth?: number, projects?: WriterWorkspaceRoot[], scanErrors?: string[]): Promise<WriterWorkspaceRoot[]>;
+export declare function findProjectRoots(readDir: (path: string) => Promise<readonly DirEntry[]>, libraryPaths: readonly string[], currentPath?: string, depth?: number, projects?: WriterWorkspaceRoot[]): Promise<WriterWorkspaceRoot[]>;
 /**
  * Discover libraries, writing projects, and dated market scans.
  * @param readDir - list one workspace-relative directory.

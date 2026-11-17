@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.2&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.3&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -82,7 +82,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 ### 使用侧栏
 
-在 `writer` 会话中打开写作侧栏。拆文库、项目和按日期保存的扫榜记录分别提供 Tab、懒加载目录树和文件名搜索。编辑器支持 `.md`、`.txt`、`.json`、`.yaml`、`.yml`、`.toml`，提供 Markdown 预览、行号、原换行保留，以及相对载入版本的修改对比。Cmd/Ctrl+S 保存；焦点不在对话输入时，Cmd/Ctrl+K 聚焦文件名搜索。工作区根目录不可读时扫描失败；子目录不可读时显示部分扫描提示和首个错误，即使没有发现小说也不会判为整体失败。DSH 会阻止指向工作区外的目录链接；将其目标目录单独添加为工作区后可浏览。
+在 `writer` 会话中打开写作侧栏。拆文库、项目和按日期保存的扫榜记录分别提供 Tab、懒加载目录树和文件名搜索。编辑器支持 `.md`、`.txt`、`.json`、`.yaml`、`.yml`、`.toml`，提供 Markdown 预览、行号、原换行保留，以及相对载入版本的修改对比。Cmd/Ctrl+S 保存；焦点不在对话输入时，Cmd/Ctrl+K 聚焦文件名搜索。只展示符合现有写作项目识别规则的目录。未匹配或不可读的候选目录直接跳过，不显示扫描警告。工作区根目录不可读时仍提示扫描失败，已识别内容内部的加载错误仍会显示。
 
 未保存正文及其磁盘基线按工作区和文件路径保存在当前浏览器。收起侧栏保留编辑器，重新打开页面恢复上次文稿和草稿。读取或保存失败保留草稿。存储失败持续提示，带未保存修改离开页面会触发浏览器提醒。另一会话更新了恢复副本时会报告冲突，不覆盖它。恢复仅限当前浏览器源；存储被禁用或已满时可能不可用，不能代替书稿备份。
 
