@@ -174,9 +174,9 @@ it('keeps edits typed during a save and stores them against the newly saved vers
   }
 })
 
-it('rebinds reads to a new phase Session without remounting the selected document', async () => {
+it('rebinds reads and saves to a new phase Session without remounting the selected document', async () => {
   const { remote, readBytes } = reader()
-  const fetch = vi.fn(async () => new Response(JSON.stringify({ path: a, bytes: 20, version: 'a2' })))
+  const fetch = vi.fn(async (_url: string, _init: RequestInit) => new Response(JSON.stringify({ path: a, bytes: 20, version: 'a2' })))
   vi.stubGlobal('fetch', fetch)
   const { result, rerender } = renderHook(({ currentSession }) => useWriterDocument(remote, currentSession, '/ws', copy), { initialProps: { currentSession: sessionId } })
   act(() => { result.current.open(a) })
@@ -186,6 +186,12 @@ it('rebinds reads to a new phase Session without remounting the selected documen
   await waitFor(() => { expect(readBytes).toHaveBeenLastCalledWith('next-phase', '/ws/novel/a.md', {}, expect.any(AbortSignal)) })
   expect(result.current).toMatchObject({ active: a, draft: '阶段切换前的草稿', dirty: true, ready: true })
   expect(fetch).not.toHaveBeenCalled()
+  await act(async () => { expect(await result.current.save()).toBe(true) })
+  expect(fetch).toHaveBeenCalledOnce()
+  expect(fetch.mock.calls[0]?.[0]).toContain('sessionId=next-phase')
+  expect(JSON.parse(String(fetch.mock.calls[0]?.[1]?.body))).toEqual({ content: '阶段切换前的草稿', baseVersion: 'a1' })
+  expect(result.current.dirty).toBe(false)
+  expect(readWriterDraft('/ws', a).draft).toBeUndefined()
 })
 
 it('checkpoints a dirty document before navigation and refuses when browser storage is unavailable', async () => {
@@ -200,6 +206,49 @@ it('checkpoints a dirty document before navigation and refuses when browser stor
   act(() => { result.current.edit('只能留在内存的草稿') })
   expect(result.current.checkpoint()).toBe(false)
   expect(setItem).toHaveBeenCalled()
+})
+
+it('keeps a draft unsaved until the new Session can read its baseline', async () => {
+  const { remote, readBytes } = reader()
+  const fetch = vi.fn(async (_url: string, _init: RequestInit) => new Response(JSON.stringify({ path: a, bytes: 12, version: 'a2' })))
+  vi.stubGlobal('fetch', fetch)
+  const { result, rerender } = renderHook(({ currentSession }) => useWriterDocument(remote, currentSession, '/ws', copy), { initialProps: { currentSession: sessionId } })
+  act(() => { result.current.open(a) })
+  await waitFor(() => { expect(result.current.ready).toBe(true) })
+  act(() => { result.current.edit('等待重新授权的稿件') })
+  const oldSave = result.current.save
+  const pending = Promise.withResolvers<RemoteResult<WorkspaceFileBytes>>()
+  readBytes.mockImplementationOnce(() => pending.promise)
+  rerender({ currentSession: SessionId('next-phase') })
+  expect(result.current.ready).toBe(false)
+  await act(async () => { expect(await result.current.save()).toBe(false) })
+  await act(async () => { pending.reject(new Error('read unavailable')) })
+  await waitFor(() => { expect(result.current.loading).toBe(false) })
+  expect(result.current).toMatchObject({ ready: false, dirty: true, draft: '等待重新授权的稿件' })
+  await act(async () => { expect(await result.current.save()).toBe(false) })
+  expect(fetch).not.toHaveBeenCalled()
+  act(() => { result.current.reload() })
+  await waitFor(() => { expect(result.current.ready).toBe(true) })
+  await act(async () => { expect(await oldSave()).toBe(false) })
+  expect(fetch).not.toHaveBeenCalled()
+  await act(async () => { expect(await result.current.save()).toBe(true) })
+  expect(fetch.mock.calls[0]?.[0]).toContain('sessionId=next-phase')
+})
+
+it('keeps the version conflict when the new Session reads an externally changed manuscript', async () => {
+  const { remote, readBytes } = reader()
+  const fetch = vi.fn()
+  vi.stubGlobal('fetch', fetch)
+  const { result, rerender } = renderHook(({ currentSession }) => useWriterDocument(remote, currentSession, '/ws', copy), { initialProps: { currentSession: sessionId } })
+  act(() => { result.current.open(a) })
+  await waitFor(() => { expect(result.current.ready).toBe(true) })
+  act(() => { result.current.edit('仍需保留的草稿') })
+  readBytes.mockResolvedValueOnce(bytes('/ws/novel/a.md', '磁盘上的新稿', 'a2'))
+  rerender({ currentSession: SessionId('next-phase') })
+  await waitFor(() => { expect(result.current.conflict).toBe(true) })
+  expect(result.current.draft).toBe('仍需保留的草稿')
+  await act(async () => { expect(await result.current.save()).toBe(false) })
+  expect(fetch).not.toHaveBeenCalled()
 })
 
 it('warns before leaving an unsaved draft and removes the warning after saving', async () => {

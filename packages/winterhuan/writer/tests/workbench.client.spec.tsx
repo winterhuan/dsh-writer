@@ -142,6 +142,25 @@ it('uses the sidebar session when entering the workbench', async () => {
   expect(f.retain).toHaveBeenCalledWith('second')
 })
 
+it('keeps the active conversation and its draft when a background conversation updates', async () => {
+  const f = fixture()
+  const view = render(<Workbench {...f.props} />)
+  await act(async () => f.references[0]!.settle())
+  const input = screen.getByLabelText('native-draft')
+  fireEvent.change(input, { target: { value: '只属于当前对话的要求' } })
+  f.catalog.byId[SessionId('second')]!.updatedAt = 100
+  view.rerender(<Workbench {...f.props} />)
+  expect(screen.getByLabelText(zh.writerSession)).toHaveProperty('value', 'first')
+  expect(screen.getByLabelText('native-draft')).toBe(input)
+  expect(input).toHaveProperty('value', '只属于当前对话的要求')
+  expect(f.references[0]!.release).not.toHaveBeenCalled()
+  expect(f.retain).toHaveBeenCalledOnce()
+  fireEvent.change(screen.getByLabelText(zh.writerSession), { target: { value: 'second' } })
+  expect(screen.getByLabelText(zh.writerSession)).toHaveProperty('value', 'second')
+  expect(f.references[0]!.release).toHaveBeenCalledOnce()
+  expect(f.retain).toHaveBeenLastCalledWith('second')
+})
+
 it('creates a Writer conversation only after an explicit request and keeps failure retryable', async () => {
   const f = fixture()
   render(<Workbench {...f.props} />)

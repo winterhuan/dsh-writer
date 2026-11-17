@@ -17,25 +17,16 @@ export function workspaceShortName(cwd: string): string {
 
 /**
  * Derive listing health from scan progress and soft/hard failures.
- * @param input - scanning flag, hard failure, roots, and soft errors.
+ * @param input - scanning flag, root failure, and child-directory errors.
  * @returns health for the masthead / rail footnote.
  */
 export function writerScanHealth(input: {
   readonly scanning: boolean
   readonly hardFailed: boolean
-  readonly libraryCount: number
-  readonly projectCount: number
-  readonly scanCount: number
   readonly scanErrors: readonly string[]
 }): WriterScanHealth {
   if (input.scanning) return 'loading'
   if (input.hardFailed) return 'failed'
-  if (
-    input.scanErrors.length > 0
-    && input.libraryCount === 0
-    && input.projectCount === 0
-    && input.scanCount === 0
-  ) return 'failed'
   if (input.scanErrors.length > 0) return 'partial'
   return 'ok'
 }

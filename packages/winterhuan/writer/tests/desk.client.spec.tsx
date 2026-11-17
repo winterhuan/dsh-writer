@@ -347,6 +347,21 @@ it('shows a scan-failed banner with retry when the workspace root is unreadable'
   expect(screen.getByRole('button', { name: zh.retryScan })).toBeTruthy()
 })
 
+it('reports an inaccessible child as a partial scan even when no novels are found', async () => {
+  const failing: ClientRemote = {
+    workspaceFiles: {
+      list: async (_session: string, path: string) => path === cwd
+        ? { ok: true as const, value: { path, entries: [{ name: 'external', type: 'directory' }], truncated: false } }
+        : { ok: false as const, error: { code: 'workspace-file/outside-workspace', message: `"${path}" is outside the workspace` } },
+    },
+  } as ClientRemote
+  render(<WriterDesk sessionId={SessionId('session-external')} cwd={cwd} remote={failing} t={key => zh[key]} visible />)
+  expect(await screen.findByText(zh.scanPartial)).toBeTruthy()
+  expect(screen.queryByText(zh.scanFailed)).toBeNull()
+  expect(screen.getByText(zh.directoryOutsideWorkspace.replace('{path}', 'external'))).toBeTruthy()
+  expect(screen.getByRole('button', { name: zh.retryScan })).toBeTruthy()
+})
+
 it('shows a conflict dialog with keep and reload actions', async () => {
   const fetchMock = vi.fn(async () => new Response(
     JSON.stringify({ error: 'version mismatch' }),

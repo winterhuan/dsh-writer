@@ -93,10 +93,13 @@ async function readDir(
   cwd: string,
   relative: string,
   signal: AbortSignal,
+  t: Copy,
 ): Promise<{ entries: readonly DirEntry[], truncated: boolean }> {
   const path = joinCwd(cwd, relative)
   const result = await remote.workspaceFiles.list(sessionId, path, signal)
-  if (!result.ok) throw new Error(remoteMessage(result.error, 'load'))
+  if (!result.ok) throw new Error(result.error.code === 'workspace-file/outside-workspace'
+    ? t('directoryOutsideWorkspace').replace('{path}', relative || cwd)
+    : remoteMessage(result.error, t('loadError')))
   return {
     entries: result.value.entries,
     truncated: result.value.truncated,
@@ -380,7 +383,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     setScanHardFailed(false)
     void (async () => {
       try {
-        const scan = await scanWriterWorkspace(relative => readDir(remote, sessionId, cwd, relative, signal).then(page => page.entries))
+        const scan = await scanWriterWorkspace(relative => readDir(remote, sessionId, cwd, relative, signal, t).then(page => page.entries))
         if (signal.aborted) return
         setLibraries(scan.libraries.map(rootToDirectoryNode))
         setProjects(scan.projects.map(rootToDirectoryNode))
@@ -394,9 +397,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         setLibraries([])
         setProjects([])
         setScans([])
-        setScanErrors([])
+        setScanErrors([error instanceof Error ? error.message : t('loadError')])
         setScanHardFailed(true)
-        setNotice(error instanceof Error && error.message !== 'load' ? error.message : t('loadError'))
       } finally {
         if (!signal.aborted) setScanning(false)
       }
@@ -426,7 +428,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       const { loadError: _drop, ...rest } = node
       return { ...rest, loading: true }
     })
-    void readDir(remote, sessionId, cwd, path, new AbortController().signal).then((page) => {
+    void readDir(remote, sessionId, cwd, path, new AbortController().signal, t).then((page) => {
       setListings(current => ({ ...current, [path]: { entries: page.entries, truncated: page.truncated } }))
       patchDirectory(path, (node) => {
         const built = buildLoadedChildren(path, page.entries, DIRECTORY_PAGE_SIZE, page.truncated)
@@ -535,7 +537,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       void searchWriterFilenames(
         rootPaths,
         trimmed,
-        relative => readDir(remote, sessionId, cwd, relative === '.' ? '' : relative, controller.signal),
+        relative => readDir(remote, sessionId, cwd, relative === '.' ? '' : relative, controller.signal, t),
         controller.signal,
       ).then((result) => {
         if (sequence !== searchSeq.current || controller.signal.aborted) return
@@ -591,9 +593,6 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   const health = writerScanHealth({
     scanning,
     hardFailed: scanHardFailed,
-    libraryCount: libraries.length,
-    projectCount: projects.length,
-    scanCount: scans.length,
     scanErrors,
   })
   const healthText = healthCopy(health, t)
@@ -777,10 +776,12 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       >
         {health === 'failed' && !showSearch && <div className="writer-scan-banner" role="alert">
           <p>{t('scanFailed')}</p>
+          <p>{scanErrors[0]}</p>
           <button type="button" onClick={rescan}>{t('retryScan')}</button>
         </div>}
         {health === 'partial' && !showSearch && <div className="writer-scan-banner writer-scan-banner-warn" role="status">
           <p>{t('scanPartial')}</p>
+          <p>{scanErrors[0]}</p>
           <button type="button" onClick={rescan}>{t('retryScan')}</button>
         </div>}
         {scanning && !showSearch ? <p className="writer-empty">{t('healthLoading')}</p>

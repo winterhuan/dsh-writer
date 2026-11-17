@@ -38,8 +38,15 @@ export function Workbench({ t, retain, createSession, createBook, openSession, r
     const sessions = writerSessionsInWorkspace(catalog.ids.flatMap(id => catalog.byId[id] ? [catalog.byId[id]] : []), workspace ? { ...workspace, id: workspace.workspaceId } : undefined, workspace?.sessionIds ?? [])
         .filter(session => !session.parentId && !workspaces.archivedSessionIds.includes(session.id))
         .sort((a, b) => b.updatedAt - a.updatedAt);
-    const selected = sessions.find(session => session.id === preferences.sessionId) ?? sessions[0];
     const pending = catalog.phase !== 'ready' || workspaces.phase !== 'ready';
+    const requested = sessions.find(session => session.id === preferences.sessionId);
+    const selectionKey = JSON.stringify([workspace?.workspaceId, preferences.sessionId]);
+    const [initialSession, setInitialSession] = useState();
+    // A background update may reorder the menu, but must not replace the open conversation.
+    if (!pending && (initialSession?.key !== selectionKey || (!initialSession.id && sessions.length))) {
+        setInitialSession({ key: selectionKey, id: (requested ?? sessions[0])?.id });
+    }
+    const selected = requested ?? sessions.find(session => session.id === initialSession?.id);
     const canLeave = () => {
         if (!checkpoint.current()) {
             setError(t('draftCheckpointFailed'));

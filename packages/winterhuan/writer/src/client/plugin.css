@@ -103,6 +103,7 @@
 /* Left rail: tabs → search slot → tree → footnote (Dashboard IA, DSH tokens). */
 .writer-rail {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 34px auto minmax(0, 1fr) 30px;
   box-sizing: border-box;
   width: 100%;
@@ -549,8 +550,9 @@
 
 .writer-scan-banner p {
   margin: 0;
-  flex: 1 1 8rem;
+  flex: 1 1 100%;
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .writer-scan-banner-warn {

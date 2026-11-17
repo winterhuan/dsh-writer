@@ -129,6 +129,7 @@ export declare const zh: {
     healthPartial: string;
     healthFailed: string;
     scanFailed: string;
+    directoryOutsideWorkspace: string;
     retryScan: string;
     collapseRail: string;
     expandRail: string;

@@ -120,6 +120,7 @@ export declare function findProjectRoots(readDir: (path: string) => Promise<read
  * Discover libraries, writing projects, and dated market scans.
  * @param readDir - list one workspace-relative directory.
  * @returns roots by view and soft scan errors.
+ * @throws when the workspace root cannot be listed.
  */
 export declare function scanWriterWorkspace(readDir: (path: string) => Promise<readonly DirEntry[]>): Promise<WriterWorkspaceScan>;
 /**

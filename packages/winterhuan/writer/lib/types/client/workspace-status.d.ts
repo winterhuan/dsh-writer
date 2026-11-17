@@ -8,15 +8,12 @@ export type WriterScanHealth = 'loading' | 'ok' | 'partial' | 'failed';
 export declare function workspaceShortName(cwd: string): string;
 /**
  * Derive listing health from scan progress and soft/hard failures.
- * @param input - scanning flag, hard failure, roots, and soft errors.
+ * @param input - scanning flag, root failure, and child-directory errors.
  * @returns health for the masthead / rail footnote.
  */
 export declare function writerScanHealth(input: {
     readonly scanning: boolean;
     readonly hardFailed: boolean;
-    readonly libraryCount: number;
-    readonly projectCount: number;
-    readonly scanCount: number;
     readonly scanErrors: readonly string[];
 }): WriterScanHealth;
 //# sourceMappingURL=workspace-status.d.ts.map

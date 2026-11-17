@@ -304,30 +304,28 @@ export async function findProjectRoots(
  * Discover libraries, writing projects, and dated market scans.
  * @param readDir - list one workspace-relative directory.
  * @returns roots by view and soft scan errors.
+ * @throws when the workspace root cannot be listed.
  */
 export async function scanWriterWorkspace(
   readDir: (path: string) => Promise<readonly DirEntry[]>,
 ): Promise<WriterWorkspaceScan> {
-  const { roots: libraries, scanErrors } = await listLibraryRoots(readDir)
+  const rootEntries = await readDir('')
+  const list = (path: string): Promise<readonly DirEntry[]> => path === '' ? Promise.resolve(rootEntries) : readDir(path)
+  const { roots: libraries, scanErrors } = await listLibraryRoots(list)
   const scans: WriterWorkspaceRoot[] = []
-  try {
-    const entries = await readDir('')
-    if (entries.some(entry => entry.type === 'directory' && entry.name === '扫榜')) {
-      try {
-        for (const entry of await readDir('扫榜')) {
-          if (entry.type !== 'directory' || !/^\d{8}(?:-[1-9]\d*)?$/u.test(entry.name)) continue
-          scans.push({ path: `扫榜/${entry.name}`, name: entry.name, view: 'scans' })
-        }
-      } catch (error) {
-        scanErrors.push(error instanceof Error ? error.message : 'unreadable:扫榜')
+  if (rootEntries.some(entry => entry.type === 'directory' && entry.name === '扫榜')) {
+    try {
+      for (const entry of await readDir('扫榜')) {
+        if (entry.type !== 'directory' || !/^\d{8}(?:-[1-9]\d*)?$/u.test(entry.name)) continue
+        scans.push({ path: `扫榜/${entry.name}`, name: entry.name, view: 'scans' })
       }
+    } catch (error) {
+      scanErrors.push(error instanceof Error ? error.message : 'unreadable:扫榜')
     }
-  } catch {
-    // Root read failures are reported by library and project discovery.
   }
   scans.sort((left, right) => compareWriterNames(right.name, left.name))
   const libraryPaths = libraries.map(root => root.path)
-  const projects = await findProjectRoots(readDir, libraryPaths, '', 0, [], scanErrors)
+  const projects = await findProjectRoots(list, libraryPaths, '', 0, [], scanErrors)
   projects.sort((left, right) => compareWriterNames(left.path, right.path))
   return { libraries, projects, scans, scanErrors }
 }

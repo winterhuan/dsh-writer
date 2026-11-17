@@ -208,3 +208,7 @@ it('treats missing scan folders as empty and reports unreadable existing ones', 
   expect(unreadable.scans).toEqual([])
   expect(unreadable.scanErrors).toEqual(['missing 扫榜'])
 })
+
+it('rejects a scan when its workspace root cannot be read', async () => {
+  await expect(scanWriterWorkspace(dirTree({}))).rejects.toThrow('missing .')
+})

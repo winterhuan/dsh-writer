@@ -20,11 +20,13 @@ function joinCwd(cwd, relative) {
         return root;
     return `${root}/${relative}`;
 }
-async function readDir(remote, sessionId, cwd, relative, signal) {
+async function readDir(remote, sessionId, cwd, relative, signal, t) {
     const path = joinCwd(cwd, relative);
     const result = await remote.workspaceFiles.list(sessionId, path, signal);
     if (!result.ok)
-        throw new Error(remoteMessage(result.error, 'load'));
+        throw new Error(result.error.code === 'workspace-file/outside-workspace'
+            ? t('directoryOutsideWorkspace').replace('{path}', relative || cwd)
+            : remoteMessage(result.error, t('loadError')));
     return {
         entries: result.value.entries,
         truncated: result.value.truncated,
@@ -205,7 +207,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         setScanHardFailed(false);
         void (async () => {
             try {
-                const scan = await scanWriterWorkspace(relative => readDir(remote, sessionId, cwd, relative, signal).then(page => page.entries));
+                const scan = await scanWriterWorkspace(relative => readDir(remote, sessionId, cwd, relative, signal, t).then(page => page.entries));
                 if (signal.aborted)
                     return;
                 setLibraries(scan.libraries.map(rootToDirectoryNode));
@@ -222,9 +224,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
                 setLibraries([]);
                 setProjects([]);
                 setScans([]);
-                setScanErrors([]);
+                setScanErrors([error instanceof Error ? error.message : t('loadError')]);
                 setScanHardFailed(true);
-                setNotice(error instanceof Error && error.message !== 'load' ? error.message : t('loadError'));
             }
             finally {
                 if (!signal.aborted)
@@ -255,7 +256,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             const { loadError: _drop, ...rest } = node;
             return { ...rest, loading: true };
         });
-        void readDir(remote, sessionId, cwd, path, new AbortController().signal).then((page) => {
+        void readDir(remote, sessionId, cwd, path, new AbortController().signal, t).then((page) => {
             setListings(current => ({ ...current, [path]: { entries: page.entries, truncated: page.truncated } }));
             patchDirectory(path, (node) => {
                 const built = buildLoadedChildren(path, page.entries, DIRECTORY_PAGE_SIZE, page.truncated);
@@ -364,7 +365,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             const rootPaths = rootPathsKey === ''
                 ? []
                 : rootPathsKey.split('\0').map(path => (path === '' ? '.' : path));
-            void searchWriterFilenames(rootPaths, trimmed, relative => readDir(remote, sessionId, cwd, relative === '.' ? '' : relative, controller.signal), controller.signal).then((result) => {
+            void searchWriterFilenames(rootPaths, trimmed, relative => readDir(remote, sessionId, cwd, relative === '.' ? '' : relative, controller.signal, t), controller.signal).then((result) => {
                 if (sequence !== searchSeq.current || controller.signal.aborted)
                     return;
                 setSearchResult(result);
@@ -424,9 +425,6 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const health = writerScanHealth({
         scanning,
         hardFailed: scanHardFailed,
-        libraryCount: libraries.length,
-        projectCount: projects.length,
-        scanCount: scans.length,
         scanErrors,
     });
     const healthText = healthCopy(health, t);
@@ -545,7 +543,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
                                     setSearchResult(undefined);
                                     setSearching(false);
                                 }
-                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined, "aria-label": controlledView === undefined ? undefined : t(view), "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
+                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined, "aria-label": controlledView === undefined ? undefined : t(view), "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
                                 : showSearch ? (searching ? _jsx("p", { className: "writer-empty", children: t('searching').replace('{query}', query) })
                                     : searchResult !== undefined && searchResult.results.length === 0 ? _jsxs(_Fragment, { children: [_jsx("p", { className: "writer-empty", children: (searchResult.truncated ? t('searchIncomplete') : t('searchEmpty')).replace('{query}', query) }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })
                                         : searchResult !== undefined ? _jsxs(_Fragment, { children: [_jsx(SearchHits, { hits: searchResult.results, query: query, selected: active, onSelect: selectFile, t: t }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })

@@ -70,7 +70,6 @@ export function useWriterDocument(remote: ClientRemote, sessionId: SessionId, cw
   const mounted = useRef(true)
   const readController = useRef<AbortController | undefined>(undefined)
   const authorizedSession = useRef(sessionId)
-  const ownerSession = useRef(sessionId)
   const copy = useRef(t)
   copy.current = t
 
@@ -186,12 +185,11 @@ export function useWriterDocument(remote: ClientRemote, sessionId: SessionId, cw
 
   const save = async (): Promise<boolean> => {
     const value = current.current
-    if (value === undefined || ownerSession.current !== sessionId || value.version === undefined || value.status !== 'ready'
+    if (value === undefined || value.version === undefined || value.status !== 'ready'
       || value.conflict || value.busy || authorizedSession.current !== sessionId) return false
     if (value.text === value.baseText) return true
     const { owner, path, text, version, eol } = value
     publish({ ...value, busy: true, notice: undefined })
-    ownerSession.current = sessionId
     return saveWriterFile(sessionId, path, applyEol(text, eol), version, new AbortController().signal).then(async (response) => {
       const payload = await response.json() as WriterSave & { error?: string }
       update(owner, (latest) => {
