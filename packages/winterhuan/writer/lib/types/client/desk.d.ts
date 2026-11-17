@@ -10,8 +10,11 @@ interface DeskProps {
     readonly remote: ClientRemote;
     readonly t: Copy;
     readonly visible: boolean;
-    readonly checkpoint?: () => boolean;
+    readonly checkpoint?: {
+        current: () => boolean;
+    };
     readonly initialView?: WriterWorkspaceView;
+    readonly view?: WriterWorkspaceView;
 }
 /**
  * The writing sidebar body for one session.

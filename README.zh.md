@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-为 DSH 提供可发现已有书稿并关联原生 Writer 会话的小说创作工作台。
+为 DSH 提供写作侧栏及其扩展工作台，直接编辑已有书稿并使用原生 Writer 对话。
 
 [插件说明](packages/winterhuan/writer/README.zh.md) · [发布包](https://github.com/winterhuan/dsh-writer/releases/download/v0.2.1/winterhuan-dsh-writer-0.2.1.tgz)
 

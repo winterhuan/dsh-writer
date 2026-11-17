@@ -1,15 +1,19 @@
-/** Works library, book editor, and the official DSH Conversation surface. */
-import { SessionId } from '@deepseek-ai/dsh-session/types'
+/** Full writing desk using the existing editor and native Writer conversations. */
+import type { SessionId } from '@deepseek-ai/dsh-session/types'
+import type { WorkspaceId } from '@deepseek-ai/dsh-api-workspace-controller/client'
 import type { SessionReference } from '@deepseek-ai/dsh-api-session-controller/client'
-import type { WriterBook, WriterCatalog } from '../workbench-types.ts'
+import type { WriterBook, WriterBookAction } from '../workbench-types.ts'
 import { useEffect, useRef, useState } from 'react'
-import type { PropsLocale, PropsRenderFactories, PropsRenderSlots, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
-import { IconEditOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRenderFactories, PropsRenderSlots, PropsRuntime, PropsStore } from '@deepseek-ai/dsh-client-ui-slots'
+import { IconEditOutlineRegular, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
-import type { zh } from './workbench-locales.ts'
+import { zh } from './workbench-locales.ts'
+import type { zh as deskZh } from './locales.ts'
 import { WriterDesk } from './desk.tsx'
 import { writeWriterSelection } from './draft-storage.ts'
 import { preferredWriterWorkspace, writerSessionsInWorkspace } from './workbench-selection.ts'
+import type { createWriterWorkbenchStore } from './workbench-store.ts'
+import css from './workbench.module.css'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface SlotMap { 'writer.workbench': { kind: 'single'; scope: 'root' } }
@@ -17,26 +21,26 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap { writerWorkbench: keyof typeof zh }
 }
 
-type Props = PropsRuntime<'writer.workbench'> & PropsRenderFactories & PropsRenderSlots<'writer.workbench.conversation'> & PropsLocale<'writerWorkbench'> & {
-  readonly retain: (id: string) => SessionReference
-  readonly action: (value: unknown) => Promise<WriterBook>
-  readonly load: () => Promise<WriterCatalog>
-  readonly openSession: (id: string) => void
-  readonly initializeDraft: (reference: SessionReference, prompt: string) => string
+export interface WorkbenchInjected {
+  readonly retain: (id: SessionId) => SessionReference
+  readonly createSession: (workspaceId: WorkspaceId) => Promise<SessionId>
+  readonly createBook: (input: Extract<WriterBookAction, { action: 'create' }>) => Promise<WriterBook>
+  readonly openSession: (id: SessionId) => void
+  readonly report: (key: 'createdSession' | 'createdBook' | 'operationFailed') => void
   readonly remote: ClientRemote
-  readonly deskT: (key: string) => string
+  readonly deskT: (key: keyof typeof deskZh) => string
 }
+type Props = PropsRuntime<'writer.workbench'> & PropsRenderFactories & PropsRenderSlots<'writer.workbench.conversation'> & PropsLocale<'writerWorkbench'> & PropsStore<ReturnType<typeof createWriterWorkbenchStore>> & InjectFace<WorkbenchInjected>
 
-/** Open the main workbench panel. */
+/** Render the full writing desk in the native main panel. */
 export function Main({ renderSlot }: PropsRuntime<'main'> & PropsRenderSlots<'writer.workbench'>) {
   return renderSlot('writer.workbench', {})
 }
-
-/** Sidebar launcher for the complete writing workbench. */
+/** Sidebar navigation icon for the writing desk. */
 export function Launcher({ size }: PropsRuntime<'sidebar.panellist'>) {
   return <IconEditOutlineRegular size={size} />
 }
-
+/** Render the official Conversation factory under the selected Session provider. */
 export function NativeConversation({ useSession, useConversation, renderFactorySlot }: PropsRuntime<'writer.workbench.conversation'> & PropsRenderFactories) {
   const session = useSession(value => value)
   const conversation = useConversation(value => value)
@@ -44,112 +48,127 @@ export function NativeConversation({ useSession, useConversation, renderFactoryS
   return renderFactorySlot('conversation.content', { variant: 'embedded', phase: settling ? 'settling' : 'active', hero: false })
 }
 
-/** Main works screen and native assistant bindings. */
-export function Workbench({ t, retain, action, load, openSession, initializeDraft, renderSlot, SessionProvider, remote, deskT, useSessions }: Props) {
-  const [catalog, setCatalog] = useState<WriterCatalog>()
-  const [bookId, setBookId] = useState<string>()
-  const [selectedSessionId, setSelectedSessionId] = useState<string>()
-  const [section, setSection] = useState<'works' | 'analysis' | 'market'>('works')
-  const [error, setError] = useState<string>()
+/** Browse workspace files without a separate book-registration step. */
+export function Workbench({ t, retain, createSession, createBook, openSession, report, renderSlot, SessionProvider, remote, deskT, useSessions, useWorkspaces, useStore, actions }: Props) {
+  const catalog = useSessions(state => state)
+  const workspaces = useWorkspaces(state => state)
+  const preferences = useStore(state => state)
   const [busy, setBusy] = useState(false)
-  const [narrow, setNarrow] = useState(false)
-  const [smallView, setSmallView] = useState<'document' | 'assistant'>('document')
-  const [assistantOpen, setAssistantOpen] = useState(true)
-  const [title, setTitle] = useState('')
-  const [path, setPath] = useState('')
-  const [workspaceId, setWorkspaceId] = useState<string | undefined>()
-  const [linkSessionId, setLinkSessionId] = useState('')
-  const [candidatePath, setCandidatePath] = useState<string>()
-  const [form, setForm] = useState<'long' | 'short'>('long')
-  const root = useRef<HTMLElement>(null)
+  const [newBook, setNewBook] = useState(false)
+  const [revision, setRevision] = useState(0)
+  const [error, setError] = useState<string>()
   const checkpoint = useRef<() => boolean>(() => true)
-  const refresh = (): void => { void load().then(setCatalog).catch(() => setError(t('loadFailed'))) }
-  useEffect(() => { refresh() }, [])
-  useEffect(() => {
-    const node = root.current
-    if (!node) return
-    const observer = new ResizeObserver(entries => setNarrow((entries[0]?.contentRect.width ?? 0) < 920))
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-  const books = catalog?.books ?? []
-  const active = books.find(book => book.id === bookId)
-  const sessions = useSessions(state => state.ids.flatMap(id => {
-    const session = state.byId[id]
-    return session ? [session] : []
-  }))
-  const selectedWorkspaceId = workspaceId ?? preferredWriterWorkspace(catalog?.workspaces ?? []) ?? ''
-  const selectedWorkspace = catalog?.workspaces.find(workspace => workspace.id === selectedWorkspaceId)
-  const pathExists = Boolean(path.trim()) && (selectedWorkspace?.candidates.some(candidate => candidate.path === path.trim()) === true
-    || books.some(book => book.workspaceId === selectedWorkspaceId && book.path === path.trim()))
-  const workspaceSessions = writerSessionsInWorkspace(sessions, selectedWorkspace, selectedWorkspace?.sessionIds ?? [])
-  const sessionId = active && selectedSessionId && active.phases.some(phase => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId
-  const librarySession = books.find(book => book.sessionId !== null)
-  const perform = async (input: unknown): Promise<void> => {
-    setBusy(true); setError(undefined)
+  const remembered = workspaces.items.find(item => item.sessionIds.some(id => id === preferences.sessionId))
+  const preferred = preferredWriterWorkspace(workspaces.items.map(item => ({ ...item, id: item.workspaceId })))
+  const workspace = workspaces.items.find(item => item.workspaceId === preferences.workspaceId)
+    ?? remembered ?? workspaces.items.find(item => item.workspaceId === preferred) ?? workspaces.items[0]
+  const sessions = writerSessionsInWorkspace(catalog.ids.flatMap(id => catalog.byId[id] ? [catalog.byId[id]!] : []),
+    workspace ? { ...workspace, id: workspace.workspaceId } : undefined, workspace?.sessionIds ?? [])
+    .filter(session => !session.parentId && !workspaces.archivedSessionIds.includes(session.id))
+    .sort((a, b) => b.updatedAt - a.updatedAt)
+  const selected = sessions.find(session => session.id === preferences.sessionId) ?? sessions[0]
+  const pending = catalog.phase !== 'ready' || workspaces.phase !== 'ready'
+  const canLeave = (): boolean => {
+    if (!checkpoint.current()) { setError(t('draftCheckpointFailed')); return false }
+    setError(undefined)
+    return true
+  }
+  const create = async (): Promise<void> => {
+    if (!workspace || busy || !canLeave()) return
+    setBusy(true)
     try {
-      const book = await action(input)
-      if (input && typeof input === 'object' && 'action' in input && input.action === 'create') writeWriterSelection(book.cwd, `${book.path}/${book.form === 'long' ? '设定/创作意图.md' : '设定.md'}`)
-      setBookId(book.id); setSelectedSessionId(book.sessionId ?? undefined); setSection('works'); refresh()
-    }
-    catch (cause) { setError(t(cause instanceof Error ? cause.message as keyof typeof zh : 'operationFailed')) }
+      const id = await createSession(workspace.workspaceId)
+      actions.selectWorkspace(workspace.workspaceId)
+      actions.selectSession(id)
+      report('createdSession')
+    } catch { report('operationFailed') }
     finally { setBusy(false) }
   }
-  const canLeaveDocument = (): boolean => {
-    if (checkpoint.current()) return true
-    setError(t('draftCheckpointFailed'))
-    return false
-  }
-  const goBack = (): void => { if (active && canLeaveDocument()) { setBookId(undefined); setSelectedSessionId(undefined); setSmallView('document') } }
-  const requestAssistant = (prompt: string): void => {
-    if (!sessionId) return
-    const reference = retain(sessionId)
-    void reference.ready.then(() => { initializeDraft(reference, prompt); openSession(sessionId) }).finally(() => reference.release())
-  }
-  return <main ref={root} className="writer-workbench" data-workbench="writer">
-    <header className="writer-wb-header"><div><h1>{t('title')}</h1>{active && <span>{active.title}</span>}</div>{active && <button type="button" onClick={goBack}>{t('allWorks')}</button>}</header>
-    {!active ? <div className="writer-wb-home">
-      <nav className="writer-wb-nav" aria-label={t('navigation')}>
-        {(['works', 'analysis', 'market'] as const).map(key => <button type="button" key={key} aria-current={section === key ? 'page' : undefined} onClick={() => setSection(key)}>{t(key)}</button>)}
+  return <main className={css.workbench} data-workbench="writer">
+    <div className={css.ambient} aria-hidden="true" />
+    <header className={css.header}>
+      <div className={css.heading}><IconEditOutlineRegular size={20} /><h1>{t('title')}</h1></div>
+      <label className={css.workspace}>{t('workspace')}<select value={workspace?.workspaceId ?? ''} disabled={pending || busy} onChange={event => {
+        const next = workspaces.items.find(item => item.workspaceId === event.target.value)
+        if (next && canLeave()) actions.selectWorkspace(next.workspaceId)
+      }}>{!workspace && <option value="">{t('chooseWorkspace')}</option>}{workspaces.items.map(item => <option key={item.workspaceId} value={item.workspaceId}>{item.title}</option>)}</select></label>
+      <button type="button" className={css.primary} disabled={pending || busy || !workspace} onClick={() => { if (canLeave()) setNewBook(true) }}>{t('createBook')}</button>
+    </header>
+    <div className={css.toolbar}>
+      <nav className={css.nav} aria-label={t('navigation')}>
+        {(['projects', 'libraries', 'scans'] as const).map(view => <button type="button" key={view} aria-current={preferences.view === view ? 'page' : undefined} onClick={() => actions.selectView(view)}>{t(view)}</button>)}
       </nav>
-      {section === 'works' ? <section className="writer-wb-works"><div className="writer-wb-toolbar"><h2>{t('works')}</h2><button type="button" onClick={refresh}>{t('refresh')}</button></div>
-        <form onSubmit={event => { event.preventDefault(); if (selectedWorkspaceId && path.trim() && title.trim()) void perform({ action: 'create', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form }) }}>
-          <select aria-label={t('workspace')} value={selectedWorkspaceId} onChange={event => { setWorkspaceId(event.target.value); setLinkSessionId(''); setCandidatePath(undefined) }}><option value="">{t('chooseWorkspace')}</option>{catalog?.workspaces.map(workspace => <option key={workspace.id} value={workspace.id}>{workspace.title}</option>)}</select>
-          <input aria-label={t('bookTitle')} value={title} onChange={event => { setTitle(event.target.value); setCandidatePath(undefined) }} placeholder={t('bookTitle')} />
-          <input aria-label={t('folder')} value={path} onChange={event => { setPath(event.target.value); setCandidatePath(undefined) }} placeholder={t('folder')} />
-          <select aria-label={t('form')} value={form} onChange={event => setForm(event.target.value as 'long' | 'short')}><option value="long">{t('longForm')}</option><option value="short">{t('shortForm')}</option></select>
-          <button type="submit" disabled={busy || pathExists}>{t('createBook')}</button>
-        </form>
-        <select aria-label={t('writerSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{workspaceSessions.map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select>
-        <button type="button" disabled={busy || !selectedWorkspaceId || !path.trim() || !title.trim() || !linkSessionId} onClick={() => { void perform({ action: 'register', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form, sessionId: linkSessionId }) }}>{t('registerExisting')}</button>
-        {selectedWorkspace && <section className="writer-wb-candidates"><h3>{t('foundBooks')}</h3><ul className="writer-wb-book-list">{selectedWorkspace.candidates.map(candidate => <li key={candidate.path}><span><strong>{candidate.title}</strong>{candidate.path !== candidate.title && <small>{candidate.path}</small>}</span><button type="button" aria-pressed={candidatePath === candidate.path} onClick={() => { setCandidatePath(candidate.path); setPath(candidate.path); setTitle(candidate.title); setForm(candidate.form) }}>{t('selectBook')}</button></li>)}</ul></section>}
-        <ul className="writer-wb-book-list">{books.map(book => <li key={book.id}><button type="button" onClick={() => { if (!canLeaveDocument()) return; setBookId(book.id); setSelectedSessionId(book.sessionId ?? undefined) }}><strong>{book.title}</strong><span>{book.path}</span><small>{book.sessionId ? t('sessionBound') : t('sessionNeeded')}</small></button><button type="button" disabled={busy} onClick={() => { if (canLeaveDocument()) void perform({ action: 'open', id: book.id }) }}>{t('open')}</button></li>)}</ul>
-      </section> : librarySession ? <section className="writer-wb-library"><header><h2>{t(section)}</h2><span>{librarySession.title}</span></header><WriterDesk key={`${librarySession.id}:${section}`} sessionId={SessionId(librarySession.sessionId!)} cwd={librarySession.cwd} remote={remote} t={deskT} visible initialView={section === 'analysis' ? 'libraries' : 'scans'} /></section> : <section className="writer-wb-placeholder"><h2>{t(section)}</h2><p>{section === 'analysis' ? t('analysisEmpty') : t('marketEmpty')}</p></section>}
-    </div> : <div className="writer-wb-book">
-      <nav className="writer-wb-book-nav"><strong>{active.title}</strong><button type="button" onClick={() => requestAssistant(t('planningTask', { title: active.title, path: active.path }))}>{t('startPlanning')}</button>{active.phases.map((phase, index) => <button key={phase.sessionId} type="button" aria-current={phase.sessionId === sessionId ? 'page' : undefined} onClick={() => { if (canLeaveDocument()) setSelectedSessionId(phase.sessionId) }}>{t('phase')} {index + 1}</button>)}<button type="button" disabled={busy} onClick={() => { if (canLeaveDocument()) void perform({ action: 'phase', id: active.id }) }}>{t('newPhase')}</button><select aria-label={t('chooseWriterSession')} value={linkSessionId} onChange={event => setLinkSessionId(event.target.value)}><option value="">{t('chooseWriterSession')}</option>{writerSessionsInWorkspace(sessions, catalog?.workspaces.find(workspace => workspace.id === active.workspaceId), catalog?.workspaces.find(workspace => workspace.id === active.workspaceId)?.sessionIds ?? []).map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select><button type="button" disabled={busy || !linkSessionId} onClick={() => { if (canLeaveDocument()) void perform({ action: 'bind', id: active.id, sessionId: linkSessionId }) }}>{t('linkSession')}</button></nav>
-      <div className="writer-wb-mobile-tabs"><button type="button" aria-pressed={smallView === 'document'} onClick={() => setSmallView('document')}>{t('document')}</button><button type="button" aria-pressed={smallView === 'assistant'} onClick={() => setSmallView('assistant')}>{t('assistant')}</button></div>
-      <div className="writer-wb-columns" data-assistant-open={assistantOpen ? 'true' : 'false'} data-narrow={narrow ? 'true' : undefined} data-small-view={smallView}>
-        <section className="writer-wb-document">{sessionId ? <WriterDesk key={active.id} sessionId={SessionId(sessionId)} cwd={active.cwd} remote={remote} t={deskT} checkpoint={() => checkpoint.current()} visible /> : <p>{t('sessionNeeded')}</p>}</section>
-        <div className="writer-wb-resize" role="separator" aria-orientation="vertical" aria-valuenow={66} />
-        <section className="writer-wb-assistant" aria-label={t('assistant')}><header><h2>{t('assistant')}</h2><button type="button" onClick={() => setAssistantOpen(value => !value)}>{assistantOpen ? t('collapse') : t('expand')}</button></header>
-          {sessionId ? <AssistantPanel key={sessionId} book={{ ...active, sessionId }} retain={retain} renderSlot={renderSlot} SessionProvider={SessionProvider} t={t} /> : <p>{t('sessionNeeded')}</p>}
-        </section>
-      </div>
-    </div>}
-    {error && <p role="alert" className="writer-wb-error">{error}</p>}
+      <button type="button" className={css.assistantToggle} aria-pressed={preferences.assistantOpen} onClick={actions.toggleAssistant}>{t(preferences.assistantOpen ? 'collapse' : 'expand')}</button>
+      <nav className={css.panes} aria-label={t('panels')}>
+        <button type="button" aria-pressed={preferences.pane === 'document'} onClick={() => actions.selectPane('document')}>{t('document')}</button>
+        <button type="button" aria-pressed={preferences.pane === 'assistant'} onClick={() => actions.selectPane('assistant')}>{t('assistant')}</button>
+      </nav>
+    </div>
+    <div className={css.body} data-assistant-open={preferences.assistantOpen} data-pane={preferences.pane}>
+      <section className={`writer-wb-document ${css.document}`} aria-label={t(preferences.view)}>
+        {pending ? <Loading /> : !workspace ? <div className={css.empty}><h2>{t('welcome')}</h2><p>{t('workspaceHelp')}</p></div> : selected
+          ? <WriterDesk key={`${workspace.path}:${revision}`} sessionId={selected.id} cwd={workspace.path} remote={remote} t={deskT} checkpoint={checkpoint} visible view={preferences.view} />
+          : <div className={css.empty}><h2>{t('welcome')}</h2><p>{t('sessionHelp')}</p><button type="button" className={css.primary} disabled={busy} onClick={() => { void create() }}>{t('newSession')}</button></div>}
+        {error && <p role="alert" className={css.error}>{error}</p>}
+      </section>
+      <aside className={css.assistant} aria-label={t('assistant')}>
+        <header><h2>{t('assistant')}</h2><button type="button" disabled={!selected || busy} onClick={() => { if (selected && canLeave()) openSession(selected.id) }}>{t('openConversation')}</button></header>
+        <div className={css.sessionControls}>
+          <select aria-label={t('writerSession')} value={selected?.id ?? ''} disabled={pending || busy || !sessions.length} onChange={event => {
+            const next = sessions.find(session => session.id === event.target.value)
+            if (next && canLeave()) actions.selectSession(next.id)
+          }}>{!selected && <option value="">{t('chooseWriterSession')}</option>}{sessions.map(session => <option key={session.id} value={session.id}>{session.displayTitle}</option>)}</select>
+          <button type="button" disabled={pending || busy || !workspace} onClick={() => { void create() }}>{t('newSession')}</button>
+        </div>
+        <div className={css.conversation}>{selected ? <AssistantPanel key={selected.id} sessionId={selected.id} retain={retain} renderSlot={renderSlot} SessionProvider={SessionProvider} t={t} /> : <div className={css.empty}><p>{t('assistantHelp')}</p></div>}</div>
+      </aside>
+    </div>
+    {newBook && workspace && <NewBook workspaceId={workspace.workspaceId} createBook={createBook} t={t} close={() => setNewBook(false)} onCreated={book => {
+      writeWriterSelection(book.cwd, `${book.path}/${book.form === 'long' ? '设定/创作意图.md' : '设定.md'}`)
+      actions.selectWorkspace(workspace.workspaceId)
+      if (book.sessionId) actions.selectSession(book.sessionId as SessionId)
+      actions.selectView('projects')
+      setRevision(value => value + 1)
+      setNewBook(false)
+      report('createdBook')
+    }} />}
   </main>
 }
-
-function AssistantPanel({ book, retain, renderSlot, SessionProvider, t }: Pick<Props, 'retain' | 'renderSlot' | 'SessionProvider' | 't'> & { book: WriterBook }) {
+function Loading() { return <div className={css.empty} aria-busy="true"><span className={css.spinner} /></div> }
+function AssistantPanel({ sessionId, retain, renderSlot, SessionProvider, t }: Pick<Props, 'retain' | 'renderSlot' | 'SessionProvider' | 't'> & { sessionId: SessionId }) {
   const [reference, setReference] = useState<SessionReference>()
   const [failure, setFailure] = useState(false)
+  const [retry, setRetry] = useState(0)
   useEffect(() => {
-    const current = retain(book.sessionId!)
+    const current = retain(sessionId)
     let alive = true
-    setReference(current)
-    void current.ready.catch(() => { if (alive) setFailure(true) })
+    void current.ready.then(() => { if (alive) setReference(current) }).catch(() => { if (alive) setFailure(true) })
     return () => { alive = false; current.release() }
-  }, [book.sessionId, retain])
-  if (!reference || failure) return <p role={failure ? 'alert' : 'status'}>{t(failure ? 'sessionUnavailable' : 'loading')}</p>
-  return <SessionProvider session={reference}>{renderSlot('writer.workbench.conversation', {})}</SessionProvider>
+  }, [sessionId, retain, retry])
+  if (failure) return <div className={css.empty}><p role="alert">{t('sessionUnavailable')}</p><button type="button" onClick={() => { setReference(undefined); setFailure(false); setRetry(value => value + 1) }}>{t('retry')}</button></div>
+  return reference ? <SessionProvider session={reference}>{renderSlot('writer.workbench.conversation', {})}</SessionProvider> : <Loading />
+}
+function NewBook({ workspaceId, createBook, onCreated, close, t }: Pick<Props, 'createBook' | 't'> & { workspaceId: WorkspaceId; onCreated: (book: WriterBook) => void; close: () => void }) {
+  const [title, setTitle] = useState('')
+  const [path, setPath] = useState<string>()
+  const [form, setForm] = useState<'long' | 'short'>('long')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string>()
+  return <Modal open title={t('createBook')} closeLabel={t('cancel')} onClose={busy ? () => {} : close}>
+    <form className={css.form} onSubmit={event => {
+      event.preventDefault()
+      if (busy || !title.trim() || !(path ?? title).trim()) return
+      setBusy(true); setError(undefined)
+      void createBook({ action: 'create', workspaceId, title: title.trim(), path: (path ?? title).trim(), form }).then(onCreated).catch((cause: unknown) => {
+        const key = cause instanceof Error && cause.message in zh ? cause.message as keyof typeof zh : 'operationFailed'
+        setError(t(key))
+      }).finally(() => setBusy(false))
+    }}>
+      <label>{t('bookTitle')}<input autoFocus required value={title} disabled={busy} onChange={event => setTitle(event.target.value)} /></label>
+      <label>{t('folder')}<input required value={path ?? title} disabled={busy} onChange={event => setPath(event.target.value)} /></label>
+      <label>{t('form')}<select value={form} disabled={busy} onChange={event => setForm(event.target.value === 'short' ? 'short' : 'long')}><option value="long">{t('longForm')}</option><option value="short">{t('shortForm')}</option></select></label>
+      {error && <p role="alert">{error}</p>}
+      <footer><button type="button" disabled={busy} onClick={close}>{t('cancel')}</button><button type="submit" className={css.primary} disabled={busy || !title.trim()}>{t('create')}</button></footer>
+    </form>
+  </Modal>
 }

@@ -2,7 +2,7 @@
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client'
 import type {} from '@deepseek-ai/dsh-api-workspace-files/remote'
 import type { SessionId } from '@deepseek-ai/dsh-session/types'
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import {
   FileTypeIcon, classifyFileType, IconFolderCloseRegular, IconFolderOpenRegular, Modal,
 } from '@deepseek-ai/dsh-client-ui-primitives'
@@ -69,8 +69,9 @@ interface DeskProps {
   readonly remote: ClientRemote
   readonly t: Copy
   readonly visible: boolean
-  readonly checkpoint?: () => boolean
+  readonly checkpoint?: { current: () => boolean }
   readonly initialView?: WriterWorkspaceView
+  readonly view?: WriterWorkspaceView
 }
 
 interface ListingCache {
@@ -135,7 +136,7 @@ function cursorLineCol(content: string, caret: number): { line: number, col: num
 
 function isChatComposerTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false
-  if (target.closest('[data-workbench="writer"]') !== null) return false
+  if (target.closest('.writer-desk') !== null) return false
   const tag = target.tagName
   if (tag !== 'TEXTAREA' && tag !== 'INPUT' && !target.isContentEditable) return false
   return true
@@ -321,10 +322,9 @@ export function WriterDesk(props: DeskProps) {
   return <WriterDeskBody key={props.cwd} {...props} />
 }
 
-function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }: DeskProps) {
-  const checkpointRef = useRef<() => boolean>(() => true)
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }: DeskProps) {
   const writerDocument = useWriterDocument(remote, sessionId, cwd, t)
-  if (checkpoint) checkpointRef.current = writerDocument.checkpoint
+  if (checkpoint) checkpoint.current = writerDocument.checkpoint
   const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument
   const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(initialView)
   const [libraries, setLibraries] = useState<readonly WriterTreeNode[]>([])
@@ -358,7 +358,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   // Keep empty views switchable and prefer scans when they are the only content.
   const preferredView: WriterWorkspaceView = libraries.length > 0 ? 'libraries'
     : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans'
-  const view: WriterWorkspaceView = viewPick ?? preferredView
+  const view: WriterWorkspaceView = controlledView ?? viewPick ?? preferredView
   const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans
   const rootPathsKey = roots.map(node => node.path).join('\0')
   const query = filter.trim()
@@ -557,10 +557,12 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   useEffect(() => {
     if (!visible) return undefined
     const onKey = (event: KeyboardEvent): void => {
+      if (deskRef.current?.closest('.writer-wb-document')?.getClientRects().length === 0) return
       const modifier = event.metaKey || event.ctrlKey
       if (!modifier) return
       const key = event.key.toLocaleLowerCase()
       if (key === 's') {
+        if (isChatComposerTarget(event.target)) return
         event.preventDefault()
         saveRef.current()
         return
@@ -608,11 +610,12 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   const byteLabel = formatBytes(editorByteSize(draft, eol))
   const extLabel = active === undefined ? '' : fileExtensionLabel(active)
   const encodingText = t('statusEncoding').replace('{eol}', eolLabel(eol))
-  const tabPanelId = 'writer-workspace-panel'
-  const librariesTabId = 'writer-tab-libraries'
-  const projectsTabId = 'writer-tab-projects'
-  const scansTabId = 'writer-tab-scans'
-  const railId = 'writer-rail'
+  const deskId = useId()
+  const tabPanelId = `${deskId}-workspace-panel`
+  const librariesTabId = `${deskId}-tab-libraries`
+  const projectsTabId = `${deskId}-tab-projects`
+  const scansTabId = `${deskId}-tab-scans`
+  const railId = `${deskId}-rail`
   useEffect(() => {
     const node = deskRef.current
     if (node === null) return
@@ -708,7 +711,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     style={deskStyle}
   >
     <aside id={railId} className="writer-rail" aria-label={t('tree')} hidden={railCollapsed || undefined}>
-      <nav className="writer-tabs" aria-label={t('workspaceTabs')} role="tablist">
+      {controlledView === undefined && <nav className="writer-tabs" aria-label={t('workspaceTabs')} role="tablist">
         <button
           type="button"
           id={librariesTabId}
@@ -745,7 +748,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
           <span>{t('scans')}</span>
           {scans.length > 0 && <b className="writer-badge">{scans.length}</b>}
         </button>
-      </nav>
+      </nav>}
       <div className="writer-search-slot" role="search">
         <input
           ref={searchRef}
@@ -768,7 +771,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         className="writer-tree-panel"
         id={tabPanelId}
         role="tabpanel"
-        aria-labelledby={view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId}
+        aria-labelledby={controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined}
+        aria-label={controlledView === undefined ? undefined : t(view)}
         aria-busy={scanning || undefined}
       >
         {health === 'failed' && !showSearch && <div className="writer-scan-banner" role="alert">

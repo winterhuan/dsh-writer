@@ -1,124 +1,126 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-/** Works library, book editor, and the official DSH Conversation surface. */
-import { SessionId } from '@deepseek-ai/dsh-session/types';
 import { useEffect, useRef, useState } from 'react';
-import { IconEditOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives';
+import { IconEditOutlineRegular, Modal } from '@deepseek-ai/dsh-client-ui-primitives';
+import { zh } from "./workbench-locales.js";
 import { WriterDesk } from "./desk.js";
 import { writeWriterSelection } from "./draft-storage.js";
 import { preferredWriterWorkspace, writerSessionsInWorkspace } from "./workbench-selection.js";
-/** Open the main workbench panel. */
+import css from './workbench.module.css';
+/** Render the full writing desk in the native main panel. */
 export function Main({ renderSlot }) {
     return renderSlot('writer.workbench', {});
 }
-/** Sidebar launcher for the complete writing workbench. */
+/** Sidebar navigation icon for the writing desk. */
 export function Launcher({ size }) {
     return _jsx(IconEditOutlineRegular, { size: size });
 }
+/** Render the official Conversation factory under the selected Session provider. */
 export function NativeConversation({ useSession, useConversation, renderFactorySlot }) {
     const session = useSession(value => value);
     const conversation = useConversation(value => value);
     const settling = session.openState === 'loading' && conversation.activeTargets.size === 0;
     return renderFactorySlot('conversation.content', { variant: 'embedded', phase: settling ? 'settling' : 'active', hero: false });
 }
-/** Main works screen and native assistant bindings. */
-export function Workbench({ t, retain, action, load, openSession, initializeDraft, renderSlot, SessionProvider, remote, deskT, useSessions }) {
-    const [catalog, setCatalog] = useState();
-    const [bookId, setBookId] = useState();
-    const [selectedSessionId, setSelectedSessionId] = useState();
-    const [section, setSection] = useState('works');
-    const [error, setError] = useState();
+/** Browse workspace files without a separate book-registration step. */
+export function Workbench({ t, retain, createSession, createBook, openSession, report, renderSlot, SessionProvider, remote, deskT, useSessions, useWorkspaces, useStore, actions }) {
+    const catalog = useSessions(state => state);
+    const workspaces = useWorkspaces(state => state);
+    const preferences = useStore(state => state);
     const [busy, setBusy] = useState(false);
-    const [narrow, setNarrow] = useState(false);
-    const [smallView, setSmallView] = useState('document');
-    const [assistantOpen, setAssistantOpen] = useState(true);
-    const [title, setTitle] = useState('');
-    const [path, setPath] = useState('');
-    const [workspaceId, setWorkspaceId] = useState();
-    const [linkSessionId, setLinkSessionId] = useState('');
-    const [candidatePath, setCandidatePath] = useState();
-    const [form, setForm] = useState('long');
-    const root = useRef(null);
+    const [newBook, setNewBook] = useState(false);
+    const [revision, setRevision] = useState(0);
+    const [error, setError] = useState();
     const checkpoint = useRef(() => true);
-    const refresh = () => { void load().then(setCatalog).catch(() => setError(t('loadFailed'))); };
-    useEffect(() => { refresh(); }, []);
-    useEffect(() => {
-        const node = root.current;
-        if (!node)
-            return;
-        const observer = new ResizeObserver(entries => setNarrow((entries[0]?.contentRect.width ?? 0) < 920));
-        observer.observe(node);
-        return () => observer.disconnect();
-    }, []);
-    const books = catalog?.books ?? [];
-    const active = books.find(book => book.id === bookId);
-    const sessions = useSessions(state => state.ids.flatMap(id => {
-        const session = state.byId[id];
-        return session ? [session] : [];
-    }));
-    const selectedWorkspaceId = workspaceId ?? preferredWriterWorkspace(catalog?.workspaces ?? []) ?? '';
-    const selectedWorkspace = catalog?.workspaces.find(workspace => workspace.id === selectedWorkspaceId);
-    const pathExists = Boolean(path.trim()) && (selectedWorkspace?.candidates.some(candidate => candidate.path === path.trim()) === true
-        || books.some(book => book.workspaceId === selectedWorkspaceId && book.path === path.trim()));
-    const workspaceSessions = writerSessionsInWorkspace(sessions, selectedWorkspace, selectedWorkspace?.sessionIds ?? []);
-    const sessionId = active && selectedSessionId && active.phases.some(phase => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId;
-    const librarySession = books.find(book => book.sessionId !== null);
-    const perform = async (input) => {
-        setBusy(true);
-        setError(undefined);
-        try {
-            const book = await action(input);
-            if (input && typeof input === 'object' && 'action' in input && input.action === 'create')
-                writeWriterSelection(book.cwd, `${book.path}/${book.form === 'long' ? '设定/创作意图.md' : '设定.md'}`);
-            setBookId(book.id);
-            setSelectedSessionId(book.sessionId ?? undefined);
-            setSection('works');
-            refresh();
+    const remembered = workspaces.items.find(item => item.sessionIds.some(id => id === preferences.sessionId));
+    const preferred = preferredWriterWorkspace(workspaces.items.map(item => ({ ...item, id: item.workspaceId })));
+    const workspace = workspaces.items.find(item => item.workspaceId === preferences.workspaceId)
+        ?? remembered ?? workspaces.items.find(item => item.workspaceId === preferred) ?? workspaces.items[0];
+    const sessions = writerSessionsInWorkspace(catalog.ids.flatMap(id => catalog.byId[id] ? [catalog.byId[id]] : []), workspace ? { ...workspace, id: workspace.workspaceId } : undefined, workspace?.sessionIds ?? [])
+        .filter(session => !session.parentId && !workspaces.archivedSessionIds.includes(session.id))
+        .sort((a, b) => b.updatedAt - a.updatedAt);
+    const selected = sessions.find(session => session.id === preferences.sessionId) ?? sessions[0];
+    const pending = catalog.phase !== 'ready' || workspaces.phase !== 'ready';
+    const canLeave = () => {
+        if (!checkpoint.current()) {
+            setError(t('draftCheckpointFailed'));
+            return false;
         }
-        catch (cause) {
-            setError(t(cause instanceof Error ? cause.message : 'operationFailed'));
+        setError(undefined);
+        return true;
+    };
+    const create = async () => {
+        if (!workspace || busy || !canLeave())
+            return;
+        setBusy(true);
+        try {
+            const id = await createSession(workspace.workspaceId);
+            actions.selectWorkspace(workspace.workspaceId);
+            actions.selectSession(id);
+            report('createdSession');
+        }
+        catch {
+            report('operationFailed');
         }
         finally {
             setBusy(false);
         }
     };
-    const canLeaveDocument = () => {
-        if (checkpoint.current())
-            return true;
-        setError(t('draftCheckpointFailed'));
-        return false;
-    };
-    const goBack = () => { if (active && canLeaveDocument()) {
-        setBookId(undefined);
-        setSelectedSessionId(undefined);
-        setSmallView('document');
-    } };
-    const requestAssistant = (prompt) => {
-        if (!sessionId)
-            return;
-        const reference = retain(sessionId);
-        void reference.ready.then(() => { initializeDraft(reference, prompt); openSession(sessionId); }).finally(() => reference.release());
-    };
-    return _jsxs("main", { ref: root, className: "writer-workbench", "data-workbench": "writer", children: [_jsxs("header", { className: "writer-wb-header", children: [_jsxs("div", { children: [_jsx("h1", { children: t('title') }), active && _jsx("span", { children: active.title })] }), active && _jsx("button", { type: "button", onClick: goBack, children: t('allWorks') })] }), !active ? _jsxs("div", { className: "writer-wb-home", children: [_jsx("nav", { className: "writer-wb-nav", "aria-label": t('navigation'), children: ['works', 'analysis', 'market'].map(key => _jsx("button", { type: "button", "aria-current": section === key ? 'page' : undefined, onClick: () => setSection(key), children: t(key) }, key)) }), section === 'works' ? _jsxs("section", { className: "writer-wb-works", children: [_jsxs("div", { className: "writer-wb-toolbar", children: [_jsx("h2", { children: t('works') }), _jsx("button", { type: "button", onClick: refresh, children: t('refresh') })] }), _jsxs("form", { onSubmit: event => { event.preventDefault(); if (selectedWorkspaceId && path.trim() && title.trim())
-                                    void perform({ action: 'create', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form }); }, children: [_jsxs("select", { "aria-label": t('workspace'), value: selectedWorkspaceId, onChange: event => { setWorkspaceId(event.target.value); setLinkSessionId(''); setCandidatePath(undefined); }, children: [_jsx("option", { value: "", children: t('chooseWorkspace') }), catalog?.workspaces.map(workspace => _jsx("option", { value: workspace.id, children: workspace.title }, workspace.id))] }), _jsx("input", { "aria-label": t('bookTitle'), value: title, onChange: event => { setTitle(event.target.value); setCandidatePath(undefined); }, placeholder: t('bookTitle') }), _jsx("input", { "aria-label": t('folder'), value: path, onChange: event => { setPath(event.target.value); setCandidatePath(undefined); }, placeholder: t('folder') }), _jsxs("select", { "aria-label": t('form'), value: form, onChange: event => setForm(event.target.value), children: [_jsx("option", { value: "long", children: t('longForm') }), _jsx("option", { value: "short", children: t('shortForm') })] }), _jsx("button", { type: "submit", disabled: busy || pathExists, children: t('createBook') })] }), _jsxs("select", { "aria-label": t('writerSession'), value: linkSessionId, onChange: event => setLinkSessionId(event.target.value), children: [_jsx("option", { value: "", children: t('chooseWriterSession') }), workspaceSessions.map(session => _jsx("option", { value: session.id, children: session.displayTitle }, session.id))] }), _jsx("button", { type: "button", disabled: busy || !selectedWorkspaceId || !path.trim() || !title.trim() || !linkSessionId, onClick: () => { void perform({ action: 'register', workspaceId: selectedWorkspaceId, path: path.trim(), title: title.trim(), form, sessionId: linkSessionId }); }, children: t('registerExisting') }), selectedWorkspace && _jsxs("section", { className: "writer-wb-candidates", children: [_jsx("h3", { children: t('foundBooks') }), _jsx("ul", { className: "writer-wb-book-list", children: selectedWorkspace.candidates.map(candidate => _jsxs("li", { children: [_jsxs("span", { children: [_jsx("strong", { children: candidate.title }), candidate.path !== candidate.title && _jsx("small", { children: candidate.path })] }), _jsx("button", { type: "button", "aria-pressed": candidatePath === candidate.path, onClick: () => { setCandidatePath(candidate.path); setPath(candidate.path); setTitle(candidate.title); setForm(candidate.form); }, children: t('selectBook') })] }, candidate.path)) })] }), _jsx("ul", { className: "writer-wb-book-list", children: books.map(book => _jsxs("li", { children: [_jsxs("button", { type: "button", onClick: () => { if (!canLeaveDocument())
-                                                return; setBookId(book.id); setSelectedSessionId(book.sessionId ?? undefined); }, children: [_jsx("strong", { children: book.title }), _jsx("span", { children: book.path }), _jsx("small", { children: book.sessionId ? t('sessionBound') : t('sessionNeeded') })] }), _jsx("button", { type: "button", disabled: busy, onClick: () => { if (canLeaveDocument())
-                                                void perform({ action: 'open', id: book.id }); }, children: t('open') })] }, book.id)) })] }) : librarySession ? _jsxs("section", { className: "writer-wb-library", children: [_jsxs("header", { children: [_jsx("h2", { children: t(section) }), _jsx("span", { children: librarySession.title })] }), _jsx(WriterDesk, { sessionId: SessionId(librarySession.sessionId), cwd: librarySession.cwd, remote: remote, t: deskT, visible: true, initialView: section === 'analysis' ? 'libraries' : 'scans' }, `${librarySession.id}:${section}`)] }) : _jsxs("section", { className: "writer-wb-placeholder", children: [_jsx("h2", { children: t(section) }), _jsx("p", { children: section === 'analysis' ? t('analysisEmpty') : t('marketEmpty') })] })] }) : _jsxs("div", { className: "writer-wb-book", children: [_jsxs("nav", { className: "writer-wb-book-nav", children: [_jsx("strong", { children: active.title }), _jsx("button", { type: "button", onClick: () => requestAssistant(t('planningTask', { title: active.title, path: active.path })), children: t('startPlanning') }), active.phases.map((phase, index) => _jsxs("button", { type: "button", "aria-current": phase.sessionId === sessionId ? 'page' : undefined, onClick: () => { if (canLeaveDocument())
-                                    setSelectedSessionId(phase.sessionId); }, children: [t('phase'), " ", index + 1] }, phase.sessionId)), _jsx("button", { type: "button", disabled: busy, onClick: () => { if (canLeaveDocument())
-                                    void perform({ action: 'phase', id: active.id }); }, children: t('newPhase') }), _jsxs("select", { "aria-label": t('chooseWriterSession'), value: linkSessionId, onChange: event => setLinkSessionId(event.target.value), children: [_jsx("option", { value: "", children: t('chooseWriterSession') }), writerSessionsInWorkspace(sessions, catalog?.workspaces.find(workspace => workspace.id === active.workspaceId), catalog?.workspaces.find(workspace => workspace.id === active.workspaceId)?.sessionIds ?? []).map(session => _jsx("option", { value: session.id, children: session.displayTitle }, session.id))] }), _jsx("button", { type: "button", disabled: busy || !linkSessionId, onClick: () => { if (canLeaveDocument())
-                                    void perform({ action: 'bind', id: active.id, sessionId: linkSessionId }); }, children: t('linkSession') })] }), _jsxs("div", { className: "writer-wb-mobile-tabs", children: [_jsx("button", { type: "button", "aria-pressed": smallView === 'document', onClick: () => setSmallView('document'), children: t('document') }), _jsx("button", { type: "button", "aria-pressed": smallView === 'assistant', onClick: () => setSmallView('assistant'), children: t('assistant') })] }), _jsxs("div", { className: "writer-wb-columns", "data-assistant-open": assistantOpen ? 'true' : 'false', "data-narrow": narrow ? 'true' : undefined, "data-small-view": smallView, children: [_jsx("section", { className: "writer-wb-document", children: sessionId ? _jsx(WriterDesk, { sessionId: SessionId(sessionId), cwd: active.cwd, remote: remote, t: deskT, checkpoint: () => checkpoint.current(), visible: true }, active.id) : _jsx("p", { children: t('sessionNeeded') }) }), _jsx("div", { className: "writer-wb-resize", role: "separator", "aria-orientation": "vertical", "aria-valuenow": 66 }), _jsxs("section", { className: "writer-wb-assistant", "aria-label": t('assistant'), children: [_jsxs("header", { children: [_jsx("h2", { children: t('assistant') }), _jsx("button", { type: "button", onClick: () => setAssistantOpen(value => !value), children: assistantOpen ? t('collapse') : t('expand') })] }), sessionId ? _jsx(AssistantPanel, { book: { ...active, sessionId }, retain: retain, renderSlot: renderSlot, SessionProvider: SessionProvider, t: t }, sessionId) : _jsx("p", { children: t('sessionNeeded') })] })] })] }), error && _jsx("p", { role: "alert", className: "writer-wb-error", children: error })] });
+    return _jsxs("main", { className: css.workbench, "data-workbench": "writer", children: [_jsx("div", { className: css.ambient, "aria-hidden": "true" }), _jsxs("header", { className: css.header, children: [_jsxs("div", { className: css.heading, children: [_jsx(IconEditOutlineRegular, { size: 20 }), _jsx("h1", { children: t('title') })] }), _jsxs("label", { className: css.workspace, children: [t('workspace'), _jsxs("select", { value: workspace?.workspaceId ?? '', disabled: pending || busy, onChange: event => {
+                                    const next = workspaces.items.find(item => item.workspaceId === event.target.value);
+                                    if (next && canLeave())
+                                        actions.selectWorkspace(next.workspaceId);
+                                }, children: [!workspace && _jsx("option", { value: "", children: t('chooseWorkspace') }), workspaces.items.map(item => _jsx("option", { value: item.workspaceId, children: item.title }, item.workspaceId))] })] }), _jsx("button", { type: "button", className: css.primary, disabled: pending || busy || !workspace, onClick: () => { if (canLeave())
+                            setNewBook(true); }, children: t('createBook') })] }), _jsxs("div", { className: css.toolbar, children: [_jsx("nav", { className: css.nav, "aria-label": t('navigation'), children: ['projects', 'libraries', 'scans'].map(view => _jsx("button", { type: "button", "aria-current": preferences.view === view ? 'page' : undefined, onClick: () => actions.selectView(view), children: t(view) }, view)) }), _jsx("button", { type: "button", className: css.assistantToggle, "aria-pressed": preferences.assistantOpen, onClick: actions.toggleAssistant, children: t(preferences.assistantOpen ? 'collapse' : 'expand') }), _jsxs("nav", { className: css.panes, "aria-label": t('panels'), children: [_jsx("button", { type: "button", "aria-pressed": preferences.pane === 'document', onClick: () => actions.selectPane('document'), children: t('document') }), _jsx("button", { type: "button", "aria-pressed": preferences.pane === 'assistant', onClick: () => actions.selectPane('assistant'), children: t('assistant') })] })] }), _jsxs("div", { className: css.body, "data-assistant-open": preferences.assistantOpen, "data-pane": preferences.pane, children: [_jsxs("section", { className: `writer-wb-document ${css.document}`, "aria-label": t(preferences.view), children: [pending ? _jsx(Loading, {}) : !workspace ? _jsxs("div", { className: css.empty, children: [_jsx("h2", { children: t('welcome') }), _jsx("p", { children: t('workspaceHelp') })] }) : selected
+                                ? _jsx(WriterDesk, { sessionId: selected.id, cwd: workspace.path, remote: remote, t: deskT, checkpoint: checkpoint, visible: true, view: preferences.view }, `${workspace.path}:${revision}`)
+                                : _jsxs("div", { className: css.empty, children: [_jsx("h2", { children: t('welcome') }), _jsx("p", { children: t('sessionHelp') }), _jsx("button", { type: "button", className: css.primary, disabled: busy, onClick: () => { void create(); }, children: t('newSession') })] }), error && _jsx("p", { role: "alert", className: css.error, children: error })] }), _jsxs("aside", { className: css.assistant, "aria-label": t('assistant'), children: [_jsxs("header", { children: [_jsx("h2", { children: t('assistant') }), _jsx("button", { type: "button", disabled: !selected || busy, onClick: () => { if (selected && canLeave())
+                                            openSession(selected.id); }, children: t('openConversation') })] }), _jsxs("div", { className: css.sessionControls, children: [_jsxs("select", { "aria-label": t('writerSession'), value: selected?.id ?? '', disabled: pending || busy || !sessions.length, onChange: event => {
+                                            const next = sessions.find(session => session.id === event.target.value);
+                                            if (next && canLeave())
+                                                actions.selectSession(next.id);
+                                        }, children: [!selected && _jsx("option", { value: "", children: t('chooseWriterSession') }), sessions.map(session => _jsx("option", { value: session.id, children: session.displayTitle }, session.id))] }), _jsx("button", { type: "button", disabled: pending || busy || !workspace, onClick: () => { void create(); }, children: t('newSession') })] }), _jsx("div", { className: css.conversation, children: selected ? _jsx(AssistantPanel, { sessionId: selected.id, retain: retain, renderSlot: renderSlot, SessionProvider: SessionProvider, t: t }, selected.id) : _jsx("div", { className: css.empty, children: _jsx("p", { children: t('assistantHelp') }) }) })] })] }), newBook && workspace && _jsx(NewBook, { workspaceId: workspace.workspaceId, createBook: createBook, t: t, close: () => setNewBook(false), onCreated: book => {
+                    writeWriterSelection(book.cwd, `${book.path}/${book.form === 'long' ? '设定/创作意图.md' : '设定.md'}`);
+                    actions.selectWorkspace(workspace.workspaceId);
+                    if (book.sessionId)
+                        actions.selectSession(book.sessionId);
+                    actions.selectView('projects');
+                    setRevision(value => value + 1);
+                    setNewBook(false);
+                    report('createdBook');
+                } })] });
 }
-function AssistantPanel({ book, retain, renderSlot, SessionProvider, t }) {
+function Loading() { return _jsx("div", { className: css.empty, "aria-busy": "true", children: _jsx("span", { className: css.spinner }) }); }
+function AssistantPanel({ sessionId, retain, renderSlot, SessionProvider, t }) {
     const [reference, setReference] = useState();
     const [failure, setFailure] = useState(false);
+    const [retry, setRetry] = useState(0);
     useEffect(() => {
-        const current = retain(book.sessionId);
+        const current = retain(sessionId);
         let alive = true;
-        setReference(current);
-        void current.ready.catch(() => { if (alive)
+        void current.ready.then(() => { if (alive)
+            setReference(current); }).catch(() => { if (alive)
             setFailure(true); });
         return () => { alive = false; current.release(); };
-    }, [book.sessionId, retain]);
-    if (!reference || failure)
-        return _jsx("p", { role: failure ? 'alert' : 'status', children: t(failure ? 'sessionUnavailable' : 'loading') });
-    return _jsx(SessionProvider, { session: reference, children: renderSlot('writer.workbench.conversation', {}) });
+    }, [sessionId, retain, retry]);
+    if (failure)
+        return _jsxs("div", { className: css.empty, children: [_jsx("p", { role: "alert", children: t('sessionUnavailable') }), _jsx("button", { type: "button", onClick: () => { setReference(undefined); setFailure(false); setRetry(value => value + 1); }, children: t('retry') })] });
+    return reference ? _jsx(SessionProvider, { session: reference, children: renderSlot('writer.workbench.conversation', {}) }) : _jsx(Loading, {});
+}
+function NewBook({ workspaceId, createBook, onCreated, close, t }) {
+    const [title, setTitle] = useState('');
+    const [path, setPath] = useState();
+    const [form, setForm] = useState('long');
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState();
+    return _jsx(Modal, { open: true, title: t('createBook'), closeLabel: t('cancel'), onClose: busy ? () => { } : close, children: _jsxs("form", { className: css.form, onSubmit: event => {
+                event.preventDefault();
+                if (busy || !title.trim() || !(path ?? title).trim())
+                    return;
+                setBusy(true);
+                setError(undefined);
+                void createBook({ action: 'create', workspaceId, title: title.trim(), path: (path ?? title).trim(), form }).then(onCreated).catch((cause) => {
+                    const key = cause instanceof Error && cause.message in zh ? cause.message : 'operationFailed';
+                    setError(t(key));
+                }).finally(() => setBusy(false));
+            }, children: [_jsxs("label", { children: [t('bookTitle'), _jsx("input", { autoFocus: true, required: true, value: title, disabled: busy, onChange: event => setTitle(event.target.value) })] }), _jsxs("label", { children: [t('folder'), _jsx("input", { required: true, value: path ?? title, disabled: busy, onChange: event => setPath(event.target.value) })] }), _jsxs("label", { children: [t('form'), _jsxs("select", { value: form, disabled: busy, onChange: event => setForm(event.target.value === 'short' ? 'short' : 'long'), children: [_jsx("option", { value: "long", children: t('longForm') }), _jsx("option", { value: "short", children: t('shortForm') })] })] }), error && _jsx("p", { role: "alert", children: error }), _jsxs("footer", { children: [_jsx("button", { type: "button", disabled: busy, onClick: close, children: t('cancel') }), _jsx("button", { type: "submit", className: css.primary, disabled: busy || !title.trim(), children: t('create') })] })] }) });
 }
 //# sourceMappingURL=workbench.js.map

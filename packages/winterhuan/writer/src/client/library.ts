@@ -62,8 +62,7 @@ export const DIRECTORY_PAGE_SIZE = 200
 export const MAX_EDITABLE_FILE_BYTES = 2 * 1024 * 1024
 
 const LONG_PROJECT_DIRECTORY_MARKERS = new Set(['正文', '大纲', '设定', '追踪'])
-const SHORT_PROJECT_BODY_FILE = '正文.md'
-const SHORT_PROJECT_COMPANION_FILES = new Set(['小节大纲.md', '设定.md'])
+const SHORT_PROJECT_FILE_MARKERS = new Set(['正文.md', '设定.md'])
 
 /** Directories Dashboard hides from the tree and discovery walks. */
 export const IGNORED_DIRECTORIES = new Set([
@@ -278,8 +277,7 @@ export async function findProjectRoots(
     entries.filter(entry => entry.type === 'file').map(entry => entry.name),
   )
   const isLongProject = [...LONG_PROJECT_DIRECTORY_MARKERS].some(marker => childDirectoryNames.has(marker))
-  const isShortProject = childFileNames.has(SHORT_PROJECT_BODY_FILE)
-    && [...SHORT_PROJECT_COMPANION_FILES].some(marker => childFileNames.has(marker))
+  const isShortProject = [...SHORT_PROJECT_FILE_MARKERS].some(marker => childFileNames.has(marker))
   if (isLongProject || isShortProject) {
     const path = currentPath
     const name = path === '' ? '.' : (path.split('/').pop() ?? path)

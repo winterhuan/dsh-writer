@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-This bundle adds a novel-writing workbench, the Writer preset, and oh-story skills to DSH. The workbench discovers existing manuscripts in native workspaces, links selected books to their existing Writer Sessions, navigates long- and short-fiction files, edits manuscripts, and recovers browser drafts. Its assistant uses the official DSH Conversation and opens expanded by default. Book files and native Session histories are not mirrored. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
+This bundle adds a writing workbench, writing sidebar, Writer preset, and oh-story skills to DSH. The workbench extends the sidebar's file navigation, manuscript editor, chapter checks, and browser draft recovery. Works, analysis, and market research sit beside the native DSH writing conversation. Existing manuscripts open directly from the selected workspace without book registration. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
 
 ## Table of Contents
 
@@ -78,7 +78,7 @@ These packaged skills are author-triggered. They do not block chapter writing.
 
 ### Open existing novels
 
-Open the Writer workbench and select a native workspace. The `novels` workspace is selected by default when present. The workbench lists folders that match the existing long- or short-fiction structure. Selecting a folder fills its title, relative path, and form; it does not register the book. Choose a Writer Session that belongs to the same workspace, then select Register existing folder. The Host verifies the folder and Session membership again before saving the association. Manuscripts and Session histories stay in their existing locations.
+Open the writing workbench and select a workspace; the first visit prefers `novels`. Select a Writer conversation on the right, or select New conversation when none exists. Works, Analysis library, and Market research display existing folders and materials directly. Expand a folder to edit its manuscript without separate registration or binding. The sidebar and workbench use the existing editor; Open workbench carries the sidebar's current conversation. Collapse the assistant or switch between manuscript and assistant in narrow windows; both retain manuscript drafts and unsent input. Create book separately collects a title, folder name, and form, and refuses an existing target directory. Manuscripts and Session histories stay in their existing locations.
 
 ### Use the sidebar
 

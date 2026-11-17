@@ -101,6 +101,24 @@ it('finds long and short writing projects and skips library paths', async () => 
   expect(onlyLibraries.map(root => root.path).sort()).toEqual(['nested/deep/book', 'novel', 'short'].sort())
 })
 
+it('shows short projects during planning and writing without requiring companion files', async () => {
+  const scan = await scanWriterWorkspace(dirTree({
+    '': [
+      { name: 'planning', type: 'directory' },
+      { name: 'writing', type: 'directory' },
+      { name: 'notes', type: 'directory' },
+      { name: '拆文库', type: 'directory' },
+    ],
+    planning: [{ name: '设定.md', type: 'file' }],
+    writing: [{ name: '正文.md', type: 'file' }],
+    notes: [{ name: '小节大纲.md', type: 'file' }],
+    拆文库: [{ name: 'sample', type: 'directory' }],
+    '拆文库/sample': [{ name: '设定.md', type: 'file' }],
+  }))
+  expect(scan.projects.map(root => root.path)).toEqual(['planning', 'writing'])
+  expect(scan.libraries.map(root => root.path)).toEqual(['拆文库/sample'])
+})
+
 it('ignores dashboard-hidden directories and pages listings at 200', () => {
   expect(shouldIgnoreDirectory('.git')).toBe(true)
   expect(shouldIgnoreDirectory('.agents')).toBe(true)

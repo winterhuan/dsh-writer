@@ -1,9 +1,10 @@
 /** Writing-mode browser entry: sidebar workbench and Writing settings card (Zhuque + cover). */
 import type { Context } from '@deepseek-ai/cordis'
 import './plugin.css'
-import { name } from './sidebar.tsx'
+import { apply as applySidebar, inject as sidebarInject, name } from './sidebar.tsx'
 import { applyZhuqueSettings, zhuqueInject } from './zhuque-settings.ts'
 import { apply as applyWorkbench, inject as workbenchInject } from './workbench-entry.tsx'
+import { createWriterWorkbenchStore } from './workbench-store.ts'
 
 export { name }
 export type {
@@ -16,6 +17,7 @@ export { WRITER_SETTINGS_NS, WriterZhuqueCardController, ZHUQUE_NS } from './zhu
 export const inject = [
   ...zhuqueInject,
   ...workbenchInject,
+  ...sidebarInject,
 ]
 
 /**
@@ -23,6 +25,8 @@ export const inject = [
  * @param context - browser services.
  */
 export function apply(context: Context): void {
-  applyWorkbench(context)
+  const workbenchStore = createWriterWorkbenchStore()
+  applySidebar(context, workbenchStore)
+  applyWorkbench(context, workbenchStore)
   applyZhuqueSettings(context)
 }

@@ -4,21 +4,22 @@ window.__ModuleLoader__.load({
 		var module = { exports: {} };
 		var exports = module.exports;
 		Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+		let react_jsx_runtime = require("react/jsx-runtime");
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 		let react = require("react");
-		let react_jsx_runtime = require("react/jsx-runtime");
+		let _deepseek_ai_dsh_client_store = require("@deepseek-ai/dsh-client-store");
 		//#region \0dsh-global-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
-		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-workbench{min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex}.writer-wb-header,.writer-wb-toolbar,.writer-wb-book-nav,.writer-wb-assistant>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:12px;min-height:48px;padding:0 16px;display:flex}:global([data-platform=\"darwin\"]) .writer-wb-header{padding-top:calc(var(--dsh-frame-top-clearance,0px) + 8px)}.writer-wb-header>div{align-items:baseline;gap:12px;min-width:0;display:flex}.writer-wb-header h1,.writer-wb-toolbar h2,.writer-wb-assistant h2{margin:0;font-size:16px;font-weight:500}.writer-wb-header>button,.writer-workbench button,.writer-wb-nav button,.writer-wb-book-nav button{color:inherit;border:1px solid var(--dsw-alias-border-l2);cursor:pointer;font:inherit;background:0 0;border-radius:4px;padding:6px 10px}.writer-wb-header>button{margin-left:auto}.writer-wb-home{flex:1;grid-template-columns:190px minmax(0,1fr);min-height:0;display:grid}.writer-wb-nav{border-right:1px solid var(--dsw-alias-border-l2);flex-direction:column;align-items:stretch;gap:4px;padding:12px;display:flex}.writer-wb-nav button{text-align:left;border-color:#0000}.writer-wb-nav button[aria-current=page]{background:var(--dsw-alias-bg-raised);border-color:var(--dsw-alias-border-l2)}.writer-wb-works,.writer-wb-placeholder{min-width:0;padding:16px 20px;overflow:auto}.writer-wb-library{flex-direction:column;flex:1;min-width:0;min-height:0;display:flex}.writer-wb-library>header{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:baseline;gap:12px;padding:12px 16px;display:flex}.writer-wb-library>header h2{margin:0;font-size:16px;font-weight:500}.writer-wb-library>.writer-desk{flex:1;min-height:0}.writer-wb-toolbar{margin:-16px -20px 16px}.writer-wb-toolbar button{margin-left:auto}.writer-wb-works form{border-bottom:1px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:8px;padding-bottom:16px;display:flex}.writer-wb-works input,.writer-wb-works select{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);min-width:120px;max-width:220px;color:inherit;font:inherit;border-radius:4px;padding:7px 9px}.writer-wb-book-list{margin:0;padding:0;list-style:none}.writer-wb-book-list li{border-bottom:1px solid var(--dsw-alias-border-l2);align-items:center;gap:8px;padding:10px 0;display:flex}.writer-wb-book-list li>button:first-child{text-align:left;border:0;flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr) auto;gap:12px;display:grid}.writer-wb-book-list span,.writer-wb-book-list small{text-overflow:ellipsis;white-space:nowrap;color:var(--dsw-alias-label-secondary);overflow:hidden}.writer-wb-candidates{margin-top:16px}.writer-wb-candidates h3{margin:0;font-size:14px;font-weight:500}.writer-wb-candidates .writer-wb-book-list li>span{flex:1;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr);gap:12px;min-width:0;display:grid}.writer-wb-candidates .writer-wb-book-list li>span>strong:only-child{grid-column:1/-1}.writer-wb-candidates .writer-wb-book-list li>button[aria-pressed=true]{background:var(--dsw-alias-bg-raised)}.writer-wb-book{flex-direction:column;flex:1;min-height:0;display:flex}.writer-wb-book-nav{flex-wrap:wrap}.writer-wb-book-nav strong{margin-right:auto}.writer-wb-columns{--writer-wb-split:64%;grid-template-columns:minmax(0, var(--writer-wb-split)) 6px minmax(300px, 1fr);flex:1;min-height:0;display:grid}.writer-wb-document{min-width:0;min-height:0;overflow:hidden}.writer-wb-document>.writer-desk{height:100%}.writer-wb-resize{cursor:col-resize;background:var(--dsw-alias-border-l2)}.writer-wb-assistant{flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]){grid-template-columns:minmax(0,1fr) 6px 0}.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-assistant,.writer-wb-columns[data-assistant-open=false]:not([data-narrow=true]) .writer-wb-resize{display:none}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-assistant>header{flex:none;justify-content:space-between}.writer-wb-assistant>[data-slot],.writer-wb-assistant>div{flex:1;min-height:0;overflow:auto}.writer-wb-mobile-tabs{display:none}.writer-wb-error{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);max-width:420px;padding:8px 12px;position:absolute;bottom:16px;right:16px}@media (width<=760px){.writer-wb-home{grid-template-columns:1fr}.writer-wb-nav{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2);flex-direction:row;overflow:auto}.writer-wb-columns[data-narrow=true]{display:block}.writer-wb-columns[data-narrow=true] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-assistant{height:100%}.writer-wb-columns[data-narrow=true][data-small-view=document] .writer-wb-assistant,.writer-wb-columns[data-narrow=true][data-small-view=assistant] .writer-wb-document,.writer-wb-columns[data-narrow=true] .writer-wb-resize{display:none}.writer-wb-mobile-tabs{border-bottom:1px solid var(--dsw-alias-border-l2);gap:8px;padding:6px 12px;display:flex}.writer-wb-book-list li>button:first-child{grid-template-columns:1fr;gap:2px}}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
-		const tagId = "@winterhuan/dsh-writer/plugin.css";
-		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
+		const css$1 = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-sidebar{flex-direction:column;height:100%;min-height:0;display:flex}.writer-sidebar-heading{border-bottom:.5px solid var(--dsw-alias-border-l2);justify-content:flex-end;padding:6px 12px;display:flex}.writer-sidebar-heading button{font:13px/1.5 var(--dsw-font-family);color:var(--dsw-alias-link);cursor:pointer;background:0 0;border:0;padding:4px 8px}.writer-sidebar>.writer-desk{flex:1;min-height:0}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{flex:8rem;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
+		const tagId$1 = "@winterhuan/dsh-writer/plugin.css";
+		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
 			tag.dataset.plugin = "@winterhuan/dsh-writer";
-			tag.dataset.pluginCss = tagId;
-			tag.textContent = css;
+			tag.dataset.pluginCss = tagId$1;
+			tag.textContent = css$1;
 			document.head.appendChild(tag);
 		}
 		//#endregion
-		//#region src/client/locales.ts
+		//#region lib/types/client/locales.js
 		const NS = "writerDesk";
 		/** Standard line-ending names shown unchanged in either locale. */
 		const EOL_NAMES = {
@@ -285,480 +286,47 @@ window.__ModuleLoader__.load({
 			resizeRail: "Drag to resize the file tree"
 		};
 		//#endregion
-		//#region src/client/sidebar.tsx
-		const name = "writer";
-		//#endregion
-		//#region src/client/zhuque-locales.ts
-		/** English copy. */
-		const en$1 = {
-			title: "Writing",
-			description: "Zhuque detection and cover image API keys for author-triggered skills.",
-			keySet: "A key is configured.",
-			keyUnset: "No key is configured.",
-			makersKeyLabel: "EdgeOne Makers API key (Zhuque detection)",
-			makersKeyHint: "Used by story-zhuque when you ask for a Zhuque check. Stored outside the settings file. Leave blank to keep the current key; a MAKERS_API_KEY exported in the shell that starts dsh also works.",
-			makersKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
-			coverKeyLabel: "GPT Image API key (cover generation)",
-			coverKeyHint: "Used by story-cover when you ask for a generated cover image. Prompt-only delivery needs no key. Stored outside the settings file. Leave blank to keep the current key; a GPT_IMAGE_API_KEY exported in the shell that starts dsh also works.",
-			coverKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
-			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
-			gptImageBaseUrlLabel: "GPT Image API base URL",
-			gptImageBaseUrlHint: "Base URL of an OpenAI-compatible endpoint for cover generation. Saved into the settings file; the host injects it as GPT_IMAGE_BASE_URL. Leave blank to use a shell-exported value or the default.",
-			overridden: "Overrides the default.",
-			reset: "Reset",
-			invalidText: "This value is not accepted.",
-			readOnly: "This setting is read-only.",
-			unavailable: "Writing settings are not available.",
-			save: "Save",
-			saving: "Saving…",
-			discard: "Discard",
-			saveFailed: "Could not save. Try again."
-		};
-		/** Simplified Chinese copy. */
-		const zh$1 = {
-			title: "写作",
-			description: "明确要求朱雀检测或封面生图时使用的密钥。",
-			keySet: "已配置密钥。",
-			keyUnset: "未配置密钥。",
-			makersKeyLabel: "EdgeOne Makers API Key（朱雀检测）",
-			makersKeyHint: "供 story-zhuque 在你明确要求朱雀检测时使用。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 MAKERS_API_KEY 同样有效。",
-			makersKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
-			coverKeyLabel: "GPT Image API Key（封面生图）",
-			coverKeyHint: "供 story-cover 在你明确要求生成封面图时使用。仅提示词交付不需要密钥。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 GPT_IMAGE_API_KEY 同样有效。",
-			coverKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
-			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
-			gptImageBaseUrlLabel: "GPT Image API Base URL",
-			gptImageBaseUrlHint: "封面生图兼容端点的 Base URL，保存在设置文件里，Host 会注入为 GPT_IMAGE_BASE_URL。留空表示使用 shell 导出的值或默认值。",
-			overridden: "覆盖默认值。",
-			reset: "重置",
-			invalidText: "此值不被接受。",
-			readOnly: "此设置只读。",
-			unavailable: "写作设置不可用。",
-			save: "保存",
-			saving: "正在保存…",
-			discard: "放弃",
-			saveFailed: "未能保存。请再试一次。"
-		};
+		//#region lib/types/client/mode.js
 		/**
-		* Labels the shared settings form reads from this page's dictionary.
-		* @param t - the bound translator.
-		* @returns the form chrome labels.
+		* Whether the on-screen session uses the writing preset.
+		* @param context - browser session services.
+		* @param sessionId - session to inspect.
+		* @returns true when the projection says `writer`.
 		*/
-		function formLabels(t) {
-			return {
-				unavailable: t("unavailable"),
-				readOnly: t("readOnly"),
-				saveFailed: t("saveFailed"),
-				save: t("save"),
-				saving: t("saving")
-			};
+		function isWriterSession(context, sessionId) {
+			return sessionId !== void 0 && context.sessions.list.getSnapshot().byId[sessionId]?.projectionValues?.agentPreset === "writer";
 		}
-		//#endregion
-		//#region src/client/ZhuqueSettingsCard.tsx
 		/**
-		* Render the Writer settings page, or its one-liner when the Plugins page asks for a summary.
-		* @param props - the view asked for, locale copy, the page snapshot, and its form actions.
-		* @returns the one-liner, or the form.
+		* Register the tab type, and show its guide entry only for a writing session.
+		* @param context - browser session and sidebar services.
+		* @param definition - tab type including its guide entry.
+		* @returns a disposer for the subscriptions and the current registration.
 		*/
-		function ZhuqueSettingsCard(props) {
-			const { t } = props;
-			const state = props.useWriterZhuqueCard((snapshot) => snapshot);
-			if (props.view === "summary") return t("description");
-			const control = state.key;
-			const cover = state.coverKey;
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
-				labels: formLabels(t),
-				state,
-				onSave: props.save,
-				onDiscard: props.discard,
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
-						id: "plugin-config-writer-makers-key",
-						label: t("makersKeyLabel"),
-						hint: t(control.writable ? "makersKeyHint" : "makersKeyReadOnlyHint"),
-						stateLabel: control.configured ? t("keySet") : t("keyUnset"),
-						onEdit: (text) => {
-							props.edit("makersApiKey", text);
-						},
-						disabled: !control.writable,
-						text: control.draft.text,
-						configured: control.configured
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
-						id: "plugin-config-writer-cover-key",
-						label: t("coverKeyLabel"),
-						hint: t(cover.writable ? "coverKeyHint" : "coverKeyReadOnlyHint"),
-						stateLabel: cover.configured ? t("keySet") : t("keyUnset"),
-						onEdit: (text) => {
-							props.edit("gptImageApiKey", text);
-						},
-						disabled: !cover.writable,
-						text: cover.draft.text,
-						configured: cover.configured
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
-						id: "plugin-config-writer-cover-base-url",
-						label: t("gptImageBaseUrlLabel"),
-						hint: t("gptImageBaseUrlHint"),
-						overriddenLabel: t("overridden"),
-						resetLabel: t("reset"),
-						invalidLabel: t("invalidText"),
-						placeholder: t("gptImageBaseUrlPlaceholder"),
-						disabled: !state.writable,
-						...state.gptImageBaseUrl,
-						onEdit: (text) => {
-							props.edit("gptImageBaseUrl", text);
-						},
-						onReset: () => {
-							props.resetField("gptImageBaseUrl");
-						}
-					})
-				]
-			});
-		}
-		//#endregion
-		//#region src/client/zhuque-settings-controller.ts
-		/** Namespace of the writer plugin. Spelled here so the client half does not import Host values. */
-		const WRITER_SETTINGS_NS = "writer";
-		const FALLBACK_MAKERS_REF = "MAKERS_API_KEY";
-		const FALLBACK_COVER_REF = "GPT_IMAGE_API_KEY";
-		/** Bridges the `writer` scope and the credentials domain onto Zhuque and cover keys. */
-		var WriterZhuqueCardController = class {
-			scope;
-			ctx;
-			form;
-			store;
-			makersState = {
-				ref: "",
-				configured: false,
-				writable: true
-			};
-			coverState = {
-				ref: "",
-				configured: false,
-				writable: true
-			};
-			/**
-			* @param scope - the shared configuration form for the `writer` namespace.
-			* @param ctx - the page plugin's context.
-			*/
-			constructor(scope, ctx) {
-				this.scope = scope;
-				this.ctx = ctx;
-				this.form = new _deepseek_ai_dsh_client_ui_primitives.SettingsFormModel(scope, [(0, _deepseek_ai_dsh_client_ui_primitives.settingsTextField)("gptImageBaseUrl")], [{
-					field: "makersApiKey",
-					write: (text) => this.writeKey("makers", text)
-				}, {
-					field: "gptImageApiKey",
-					write: (text) => this.writeKey("cover", text)
-				}]);
-				this.store = this.form.bind(() => this.projection());
-				scope.subscribe(() => {
-					this.readCredentials();
+		function registerWriterTab(context, definition) {
+			const current = context.uiSession.adapter.current;
+			let visible;
+			let release;
+			const sync = () => {
+				const next = isWriterSession(context, current.getSnapshot().key);
+				if (next === visible) return;
+				visible = next;
+				release?.();
+				release = context.sidebarRightTabs.register({
+					...definition,
+					guide: next ? definition.guide ?? [] : []
 				});
-				this.readCredentials();
-			}
-			projection() {
-				return {
-					...this.form.shell(),
-					key: {
-						draft: this.form.field("makersApiKey"),
-						configured: this.makersState.configured,
-						writable: this.makersState.writable
-					},
-					coverKey: {
-						draft: this.form.field("gptImageApiKey"),
-						configured: this.coverState.configured,
-						writable: this.coverState.writable
-					},
-					gptImageBaseUrl: this.form.field("gptImageBaseUrl")
-				};
-			}
-			/** Ask the credentials domain about both references the section names. */
-			async readCredentials() {
-				const snapshot = this.scope.getSnapshot();
-				const makersRef = makersRefOf(snapshot);
-				const coverRef = coverRefOf(snapshot);
-				let projected = false;
-				if (makersRef !== this.makersState.ref) {
-					this.makersState = {
-						ref: makersRef,
-						configured: false,
-						writable: true
-					};
-					projected = true;
-				}
-				if (coverRef !== this.coverState.ref) {
-					this.coverState = {
-						ref: coverRef,
-						configured: false,
-						writable: true
-					};
-					projected = true;
-				}
-				if (projected) this.store.set(this.projection());
-				const response = await this.ctx.remote.credentials.describe([makersRef, coverRef]);
-				if (!response.ok) return;
-				const latest = this.scope.getSnapshot();
-				if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest)) return;
-				const makersView = response.value[makersRef];
-				const coverView = response.value[coverRef];
-				const nextMakers = {
-					ref: makersRef,
-					configured: makersView?.configured ?? false,
-					writable: makersView?.writable ?? true
-				};
-				const nextCover = {
-					ref: coverRef,
-					configured: coverView?.configured ?? false,
-					writable: coverView?.writable ?? true
-				};
-				const makersSame = nextMakers.configured === this.makersState.configured && nextMakers.writable === this.makersState.writable && nextMakers.ref === this.makersState.ref;
-				const coverSame = nextCover.configured === this.coverState.configured && nextCover.writable === this.coverState.writable && nextCover.ref === this.coverState.ref;
-				if (makersSame && coverSame) return;
-				this.makersState = nextMakers;
-				this.coverState = nextCover;
-				this.store.set(this.projection());
-			}
-			/**
-			* Re-read after the Host reports a change to a watched reference.
-			* @param ref - the reference the Host reports as changed.
-			*/
-			refreshCredential(ref) {
-				if (this.makersState.ref !== ref && this.coverState.ref !== ref) return;
-				this.readCredentials();
-			}
-			/**
-			* Build the face the page's slot registration injects.
-			* @returns the page snapshot and its form actions.
-			*/
-			inject() {
-				return {
-					hooks: { writerZhuqueCard: this.store },
-					...this.form.actions()
-				};
-			}
-			/**
-			* Write a staged key, then re-read whether the Host now holds one.
-			* @param which - Zhuque or cover.
-			* @param value - the staged credential literal.
-			* @returns whether the Host reports a configured credential afterwards.
-			*/
-			async writeKey(which, value) {
-				const snapshot = this.scope.getSnapshot();
-				const ref = which === "makers" ? makersRefOf(snapshot) : coverRefOf(snapshot);
-				if (!(await this.ctx.remote.credentials.set(ref, value)).ok) return false;
-				await this.readCredentials();
-				return which === "makers" ? this.makersState.configured : this.coverState.configured;
-			}
-			/** Release configuration subscriptions. */
-			dispose() {
-				this.form.dispose();
-			}
-		};
-		/**
-		* The Zhuque credential reference the section names, or MAKERS_API_KEY.
-		* @param snapshot - the current scope snapshot.
-		* @returns the reference to address.
-		*/
-		function makersRefOf(snapshot) {
-			const declared = snapshot.value?.makersApiKeyEnv;
-			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_MAKERS_REF;
-		}
-		/**
-		* The cover credential reference the section names, or GPT_IMAGE_API_KEY.
-		* @param snapshot - the current scope snapshot.
-		* @returns the reference to address.
-		*/
-		function coverRefOf(snapshot) {
-			const declared = snapshot.value?.gptImageApiKeyEnv;
-			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_COVER_REF;
+			};
+			const stopCurrent = current.subscribe(sync);
+			const stopSessions = context.sessions.list.subscribe(sync);
+			sync();
+			return () => {
+				stopCurrent();
+				stopSessions();
+				release?.();
+			};
 		}
 		//#endregion
-		//#region src/client/zhuque-settings.ts
-		/** Dictionary namespace owned by the Writing settings page. */
-		const ZHUQUE_NS = "settings.writer";
-		/** Cordis services the Writing settings page needs beyond the sidebar. */
-		const zhuqueInject = ["remote.credentials", "configForms"];
-		/**
-		* Mount the Writing settings page while the Host serves the writer namespace.
-		* @param ctx - the browser plugin context.
-		*/
-		function applyZhuqueSettings(ctx) {
-			const t = ctx.locale.bind(ZHUQUE_NS);
-			ctx.effect(() => ctx.locale.register(ZHUQUE_NS, {
-				zh: zh$1,
-				en: en$1
-			}), "writer: zhuque dictionaries");
-			const card = new WriterZhuqueCardController(ctx.configForms.get(WRITER_SETTINGS_NS), ctx);
-			ctx.effect(() => () => {
-				card.dispose();
-			}, "writer: zhuque form subscription");
-			ctx.effect(() => ctx.remote.$on("credentials/reference-updated", (ref) => {
-				card.refreshCredential(ref);
-			}), "writer: zhuque credential invalidations");
-			ctx.effect(() => ctx.configForms.whileServed([WRITER_SETTINGS_NS], () => ctx.slots.inject("plugins.item", () => ctx.slots.register({
-				name: "plugins.item",
-				id: "writer",
-				order: 40,
-				label: () => t("title"),
-				locale: ZHUQUE_NS,
-				inject: () => card.inject()
-			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
-		}
-		//#endregion
-		//#region src/client/workbench-locales.ts
-		const en = {
-			title: "Writer",
-			allWorks: "All works",
-			navigation: "Workbench sections",
-			works: "Works",
-			analysis: "Analysis library",
-			market: "Market research",
-			writerSession: "Writer session",
-			chooseWriterSession: "Select a Writer session",
-			registerExisting: "Register existing folder",
-			linkSession: "Link session",
-			refresh: "Refresh",
-			workspace: "Workspace",
-			chooseWorkspace: "Choose a workspace",
-			bookTitle: "Book title",
-			folder: "Book folder",
-			form: "Form",
-			foundBooks: "Existing books",
-			selectBook: "Use folder",
-			longForm: "Long fiction",
-			shortForm: "Short fiction",
-			createBook: "Create book",
-			open: "Open",
-			sessionBound: "Session linked",
-			sessionNeeded: "Create or link a writer session",
-			startPlanning: "Plan this book",
-			planningTask: "Plan the next useful step for book {title} at {path}. Read its existing files before proposing changes. Do not modify files until asked.",
-			phase: "Phase",
-			newPhase: "New phase",
-			document: "Manuscript",
-			assistant: "Assistant",
-			collapse: "Collapse assistant",
-			expand: "Expand assistant",
-			analysisEmpty: "No analysis materials are registered yet",
-			marketEmpty: "No market research is attached to this book yet",
-			draftCheckpointFailed: "The unsaved draft could not be protected. Keep this book open and save the manuscript before switching.",
-			loadFailed: "The workbench could not load",
-			operationFailed: "The operation could not be completed",
-			create: "Create",
-			loading: "Loading session",
-			sessionUnavailable: "This native session is unavailable",
-			invalidBookPath: "Choose a valid book folder",
-			workspaceMissing: "This workspace is unavailable",
-			bookMissing: "This book folder is unavailable",
-			bookExists: "This folder is already registered",
-			sessionMissing: "This native session is unavailable",
-			sessionMismatch: "This session belongs to another workspace",
-			writerRequired: "Choose a session using the Writer preset",
-			sessionInUse: "This session is linked to another book",
-			sessionBusy: "Stop the running session before starting a new phase",
-			bindingNeedsRepair: "The session link needs repair",
-			invalidBookTitle: "Enter a book title",
-			filesUnavailable: "File access is unavailable",
-			untrustedRequest: "The request was not trusted",
-			requestTooLarge: "The request is too large",
-			invalidRequest: "The request is invalid",
-			workbenchFailed: "The workbench operation failed"
-		};
-		const zh = {
-			title: "小说创作工作台",
-			allWorks: "全部作品",
-			navigation: "工作台分区",
-			works: "作品",
-			analysis: "分析资料",
-			market: "市场调研",
-			writerSession: "Writer 会话",
-			chooseWriterSession: "选择 Writer 会话",
-			registerExisting: "登记已有目录",
-			linkSession: "关联会话",
-			refresh: "刷新",
-			workspace: "工作区",
-			chooseWorkspace: "选择工作区",
-			bookTitle: "书名",
-			folder: "书籍目录",
-			form: "篇幅",
-			foundBooks: "发现的作品目录",
-			selectBook: "使用此目录",
-			longForm: "长篇小说",
-			shortForm: "短篇小说",
-			createBook: "创建作品",
-			open: "打开",
-			sessionBound: "已关联会话",
-			sessionNeeded: "创建或关联 Writer 会话",
-			startPlanning: "规划本书",
-			planningTask: "为《{title}》（目录 {path}）规划下一步。先阅读现有文件再提出建议，未经要求不要修改文件。",
-			phase: "阶段",
-			newPhase: "新建阶段会话",
-			document: "正文",
-			assistant: "助手",
-			collapse: "收起助手",
-			expand: "展开助手",
-			analysisEmpty: "尚未登记分析资料",
-			marketEmpty: "本书尚未关联市场调研资料",
-			draftCheckpointFailed: "未能保护当前草稿，请留在本书并先保存文稿",
-			loadFailed: "工作台加载失败",
-			operationFailed: "操作未能完成",
-			create: "创建",
-			loading: "正在加载会话",
-			sessionUnavailable: "原生会话不可用",
-			invalidBookPath: "请选择有效的书籍目录",
-			workspaceMissing: "工作区不可用",
-			bookMissing: "书籍目录不可用",
-			bookExists: "该目录已登记",
-			sessionMissing: "原生会话不可用",
-			sessionMismatch: "该会话不属于此工作区",
-			writerRequired: "请选择使用 Writer 预设的会话",
-			sessionInUse: "该会话已关联其他作品",
-			sessionBusy: "请先停止运行中的会话，再创建新阶段",
-			bindingNeedsRepair: "会话关联需要修复",
-			invalidBookTitle: "请输入书名",
-			filesUnavailable: "文件访问不可用",
-			untrustedRequest: "请求未通过信任校验",
-			requestTooLarge: "请求内容过大",
-			invalidRequest: "请求无效",
-			workbenchFailed: "工作台操作失败"
-		};
-		//#endregion
-		//#region ../../../node_modules/.pnpm/@deepseek-ai+dsh-brand@0.2.2-rc.1_@deepseek-ai+cordis@4.1.0/node_modules/@deepseek-ai/dsh-brand/lib/index.js
-		/**
-		* Duplicate-install-safe nominal primitive helpers.
-		*
-		* A brand makes structurally identical strings or numbers non-interchangeable
-		* at the type level: a `SessionId` cannot be passed where a `ToolCallId` is
-		* expected, and an event sequence cannot be passed as a log offset. Comparison,
-		* logging, and serialization retain the underlying primitive behavior.
-		*
-		* This package owns no concrete domain value and keeps no runtime identity or mutable
-		* state, so independently installed copies produce interchangeable values.
-		*
-		* @module @deepseek-ai/dsh-brand
-		*/
-		/**
-		* Apply a compile-time string brand without changing the value.
-		* @param value - string admitted by the domain that owns the target brand.
-		* @returns the same string with the requested compile-time brand.
-		*/
-		function brandString(value) {
-			return value;
-		}
-		//#endregion
-		//#region ../../../node_modules/.pnpm/@deepseek-ai+dsh-session@0.2.2-rc.1_@deepseek-ai+cordis@4.1.0_@deepseek-ai+dsh-scope@0._2c1eb9e8f9f716fa5ffcff871cbb2b70/node_modules/@deepseek-ai/dsh-session/lib/types/types.js
-		/**
-		* Brand a string as a {@link SessionId}.
-		* @param id - the raw session id string.
-		* @returns the same string with the session-id brand.
-		*/
-		function SessionId(id) {
-			return brandString(id);
-		}
-		//#endregion
-		//#region src/editable.ts
+		//#region lib/types/editable.js
 		/** Workspace-relative paths the writing sidebar may save. */
 		/** File extensions Dashboard and the sidebar treat as editable. */
 		const EDITABLE_EXTENSIONS = /* @__PURE__ */ new Set([
@@ -805,7 +373,7 @@ window.__ModuleLoader__.load({
 			return path.split("/").every((segment) => segment !== "" && segment !== "." && segment !== "..");
 		}
 		//#endregion
-		//#region src/client/eol.ts
+		//#region lib/types/client/eol.js
 		/** EOL helpers so textarea stays LF while disk keeps its style. */
 		/**
 		* Detect the dominant line ending in file text.
@@ -855,7 +423,7 @@ window.__ModuleLoader__.load({
 			return EOL_NAMES.lf;
 		}
 		//#endregion
-		//#region src/client/editor-shell.ts
+		//#region lib/types/client/editor-shell.js
 		/**
 		* Format a byte length the way Dashboard `formatBytes` does.
 		* @param bytes - non-negative size.
@@ -923,7 +491,7 @@ window.__ModuleLoader__.load({
 			return loaded.replace("{n}", String(count));
 		}
 		//#endregion
-		//#region src/client/LineNumbers.tsx
+		//#region lib/types/client/LineNumbers.js
 		/** Toggleable line-number gutter synced to the prose textarea (Dashboard-aligned). */
 		/**
 		* Render a scroll-synced gutter with wrap-aware row heights and an active line.
@@ -1033,7 +601,7 @@ window.__ModuleLoader__.load({
 				mirrorRef.current = null;
 			}, []);
 			if (!show) return null;
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+			return (0, react_jsx_runtime.jsx)("div", {
 				ref: gutterRef,
 				className: "writer-line-gutter",
 				"aria-hidden": "true",
@@ -1049,8 +617,7 @@ window.__ModuleLoader__.load({
 			"设定",
 			"追踪"
 		]);
-		const SHORT_PROJECT_BODY_FILE = "正文.md";
-		const SHORT_PROJECT_COMPANION_FILES = /* @__PURE__ */ new Set(["小节大纲.md", "设定.md"]);
+		const SHORT_PROJECT_FILE_MARKERS = /* @__PURE__ */ new Set(["正文.md", "设定.md"]);
 		/** Directories Dashboard hides from the tree and discovery walks. */
 		const IGNORED_DIRECTORIES = /* @__PURE__ */ new Set([
 			".git",
@@ -1226,7 +793,7 @@ window.__ModuleLoader__.load({
 			const childDirectoryNames = new Set(entries.filter((entry) => entry.type === "directory").map((entry) => entry.name));
 			const childFileNames = new Set(entries.filter((entry) => entry.type === "file").map((entry) => entry.name));
 			const isLongProject = [...LONG_PROJECT_DIRECTORY_MARKERS].some((marker) => childDirectoryNames.has(marker));
-			const isShortProject = childFileNames.has(SHORT_PROJECT_BODY_FILE) && [...SHORT_PROJECT_COMPANION_FILES].some((marker) => childFileNames.has(marker));
+			const isShortProject = [...SHORT_PROJECT_FILE_MARKERS].some((marker) => childFileNames.has(marker));
 			if (isLongProject || isShortProject) {
 				const path = currentPath;
 				const name = path === "" ? "." : path.split("/").pop() ?? path;
@@ -1321,7 +888,7 @@ window.__ModuleLoader__.load({
 			return selected === path || selected.startsWith(`${path}/`);
 		}
 		//#endregion
-		//#region src/client/markdown.ts
+		//#region lib/types/client/markdown.js
 		/** Safe Markdown → HTML for the writing preview (Dashboard-aligned, no deps). */
 		function escapeHtml(value) {
 			return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#039;");
@@ -1394,7 +961,7 @@ window.__ModuleLoader__.load({
 			return output.join("");
 		}
 		//#endregion
-		//#region src/client/read.ts
+		//#region lib/types/client/read.js
 		/**
 		* Failure text from a Remote result.
 		* @param error - the failed result's error.
@@ -1428,7 +995,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region src/client/draft-storage.ts
+		//#region lib/types/client/draft-storage.js
 		function draftKey(cwd, path) {
 			return `dsh.writer.draft.v1:${JSON.stringify([cwd, path])}`;
 		}
@@ -1520,7 +1087,7 @@ window.__ModuleLoader__.load({
 			}
 		}
 		//#endregion
-		//#region src/client/save.ts
+		//#region lib/types/client/save.js
 		/**
 		* Build the save URL. The host accepts PUT only.
 		* @param sessionId - session that owns the workspace.
@@ -1554,7 +1121,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/use-writer-document.ts
+		//#region lib/types/client/use-writer-document.js
 		/**
 		* Keep an editor alive while its sidebar is hidden. Mount separately per session/workspace.
 		* @param remote - workspace file reader.
@@ -1794,7 +1361,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region src/client/book-status.ts
+		//#region lib/types/client/book-status.js
 		/** Read chapter progress from the book's authoritative files and versioned reports. */
 		function object(value) {
 			if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error("invalid record");
@@ -1958,7 +1525,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region src/client/RevisionDiff.tsx
+		//#region lib/types/client/RevisionDiff.js
 		/** Reuse DSH's bounded diff renderer for draft and review-version comparisons. */
 		/**
 		* Render an explicit comparison without changing either version.
@@ -1975,11 +1542,11 @@ window.__ModuleLoader__.load({
 				before,
 				after
 			]);
-			if (before === after) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+			if (before === after) return (0, react_jsx_runtime.jsx)("p", {
 				className: "writer-muted",
 				children: t("diffUnchanged")
 			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
+			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
 				diffs,
 				labels: {
 					codeLabel: t("diffTitle"),
@@ -1995,7 +1562,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/BookPanel.tsx
+		//#region lib/types/client/BookPanel.js
 		/** On-demand chapter progress and cited reviews inside the existing writing sidebar. */
 		function missing(error) {
 			return error.code === "workspace-file/not-found";
@@ -2103,38 +1670,38 @@ window.__ModuleLoader__.load({
 			const review = status?.review;
 			const reviewDraft = review !== void 0 && withinBook === review.bodyPath ? draft : void 0;
 			const staleReview = review?.stale === true || review !== void 0 && reviewDraft !== void 0 && normalizeEol(review.bodyText) !== reviewDraft;
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", {
+			return (0, react_jsx_runtime.jsxs)("details", {
 				className: "writer-book-panel",
 				open,
 				onToggle: (event) => {
 					setOpen(event.currentTarget.open);
 				},
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("bookPanelTitle") }), open && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookPanelTitle") }), open && (0, react_jsx_runtime.jsxs)("div", {
 					className: "writer-book-content",
-					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					children: [(0, react_jsx_runtime.jsxs)("div", {
 						className: "writer-book-controls",
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: [
+							(0, react_jsx_runtime.jsxs)("label", { children: [
 								t("bookPanelBook"),
 								" ",
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+								(0, react_jsx_runtime.jsxs)("select", {
 									value: book ?? "__choose__",
 									onChange: (event) => {
 										setBookPick(event.target.value);
 									},
-									children: [book === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									children: [book === void 0 && (0, react_jsx_runtime.jsx)("option", {
 										value: "__choose__",
 										children: t("bookChoose")
-									}), projects.map((project) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									}), projects.map((project) => (0, react_jsx_runtime.jsx)("option", {
 										value: project.path,
 										children: project.name || t("workspaceBook")
 									}, project.path))]
 								})
 							] }),
-							book !== void 0 && chapter !== null && status?.chapter !== null && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: [
+							book !== void 0 && chapter !== null && status?.chapter !== null && (0, react_jsx_runtime.jsxs)("label", { children: [
 								t("bookPanelChapter"),
 								" ",
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								(0, react_jsx_runtime.jsx)("input", {
 									type: "number",
 									min: 1,
 									value: chapterInput ?? chapterPick ?? status?.chapter ?? 1,
@@ -2151,7 +1718,7 @@ window.__ModuleLoader__.load({
 									}
 								})
 							] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							(0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: loading,
 								onClick: () => {
@@ -2160,29 +1727,29 @@ window.__ModuleLoader__.load({
 								children: t("bookRefresh")
 							})
 						]
-					}), book === void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookChoose") }) : loading ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+					}), book === void 0 ? (0, react_jsx_runtime.jsx)("p", { children: t("bookChoose") }) : loading ? (0, react_jsx_runtime.jsx)("p", {
 						role: "status",
 						children: t("loading")
-					}) : error !== void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+					}) : error !== void 0 ? (0, react_jsx_runtime.jsx)("p", {
 						role: "alert",
 						children: t("bookRecordError").replace("{path}", error)
-					}) : status !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("p", { children: [
+					}) : status !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+						(0, react_jsx_runtime.jsxs)("p", { children: [
 							status.title || projects.find((project) => project.path === book)?.name,
 							" · ",
 							status.lastChapter === void 0 ? t("bookNoTracking") : t("bookCommitted").replace("{n}", String(status.lastChapter))
 						] }),
-						status.lastChapter !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookNext").replace("{n}", String(status.lastChapter + 1)) }),
-						status.commitments.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("bookCommitments") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: status.commitments.map((item, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: item }, index)) })] }),
-						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						status.lastChapter !== void 0 && (0, react_jsx_runtime.jsx)("p", { children: t("bookNext").replace("{n}", String(status.lastChapter + 1)) }),
+						status.commitments.length > 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("bookCommitments") }), (0, react_jsx_runtime.jsx)("ul", { children: status.commitments.map((item, index) => (0, react_jsx_runtime.jsx)("li", { children: item }, index)) })] }),
+						(0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookMechanical") }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: check === void 0 ? t("bookUnchecked") : check.stale || draftAffectsChapter ? t("bookStale") : t(checkLabels[check.status] ?? "checkUnavailable") }),
-								check !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookWordcount").replace("{actual}", String(check.actual)).replace("{target}", String(check.target)) }),
-									check.findings.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: check.findings.map((finding, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: finding }, index)) }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookMechanical") }),
+								(0, react_jsx_runtime.jsx)("p", { children: check === void 0 ? t("bookUnchecked") : check.stale || draftAffectsChapter ? t("bookStale") : t(checkLabels[check.status] ?? "checkUnavailable") }),
+								check !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									(0, react_jsx_runtime.jsx)("p", { children: t("bookWordcount").replace("{actual}", String(check.actual)).replace("{target}", String(check.target)) }),
+									check.findings.length > 0 && (0, react_jsx_runtime.jsx)("ul", { children: check.findings.map((finding, index) => (0, react_jsx_runtime.jsx)("li", { children: finding }, index)) }),
+									(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											onOpen(joinBook(check.path));
@@ -2190,56 +1757,56 @@ window.__ModuleLoader__.load({
 										children: t("bookOpenCheck")
 									})
 								] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+								(0, react_jsx_runtime.jsx)("p", {
 									className: "writer-muted",
 									children: t("bookCheckHelp")
 								})
 							]
 						}),
-						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						(0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookSemantic") }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: review === void 0 ? t("bookUnreviewed") : staleReview ? t("bookStaleReview") : t("bookReviewCurrent") }),
-								review !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: review.summary }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: review.findings.map((finding) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookSemantic") }),
+								(0, react_jsx_runtime.jsx)("p", { children: review === void 0 ? t("bookUnreviewed") : staleReview ? t("bookStaleReview") : t("bookReviewCurrent") }),
+								review !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									(0, react_jsx_runtime.jsx)("p", { children: review.summary }),
+									(0, react_jsx_runtime.jsx)("ul", { children: review.findings.map((finding) => (0, react_jsx_runtime.jsxs)("li", { children: [
+										(0, react_jsx_runtime.jsxs)("span", { children: [
 											t(finding.severity === "must" ? "reviewMust" : finding.severity === "suggestion" ? "reviewSuggestion" : "reviewOptional"),
 											" · ",
 											t("reviewLine").replace("{n}", String(finding.line))
 										] }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("blockquote", { children: finding.quote }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: finding.explanation }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: finding.suggestion }),
-										!staleReview && finding.resolution !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t(finding.resolution === "accepted" ? "reviewAccepted" : "reviewResolved") })
+										(0, react_jsx_runtime.jsx)("blockquote", { children: finding.quote }),
+										(0, react_jsx_runtime.jsx)("p", { children: finding.explanation }),
+										(0, react_jsx_runtime.jsx)("p", { children: finding.suggestion }),
+										!staleReview && finding.resolution !== void 0 && (0, react_jsx_runtime.jsx)("span", { children: t(finding.resolution === "accepted" ? "reviewAccepted" : "reviewResolved") })
 									] }, finding.id)) }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("summary", { children: t("reviewChanges") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RevisionDiff, {
+									(0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsx)("summary", { children: t("reviewChanges") }), (0, react_jsx_runtime.jsx)(RevisionDiff, {
 										path: review.bodyPath,
 										before: normalizeEol(review.bodyText),
 										after: reviewDraft ?? normalizeEol(review.currentText),
 										t
 									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											onOpen(joinBook(review.path));
 										},
 										children: t("bookOpenReview")
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									(0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										children: t("reviewResolveHelp")
 									})
 								] })
 							]
 						}),
-						status.workFiles.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						status.workFiles.length > 0 && (0, react_jsx_runtime.jsxs)("div", {
 							className: "writer-book-report",
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: t("bookUnfinished") }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("bookResumeHelp") }),
-								status.workFiles.filter(isEditableWriterPath).map((path) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								(0, react_jsx_runtime.jsx)("strong", { children: t("bookUnfinished") }),
+								(0, react_jsx_runtime.jsx)("p", { children: t("bookResumeHelp") }),
+								status.workFiles.filter(isEditableWriterPath).map((path) => (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									onClick: () => {
 										onOpen(joinBook(path));
@@ -2399,7 +1966,7 @@ window.__ModuleLoader__.load({
 			return messages.join("；");
 		}
 		//#endregion
-		//#region src/client/rail-chrome.ts
+		//#region lib/types/client/rail-chrome.js
 		/** Chrome prefs for the writing left rail: width and collapsed (localStorage only). */
 		const WRITER_RAIL_STORAGE_KEY = "writer.rail.chrome";
 		/**
@@ -2510,7 +2077,8 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region src/client/workspace-status.ts
+		//#region lib/types/client/workspace-status.js
+		/** Workspace masthead helpers: short cwd name and scan health. */
 		/**
 		* Last path segment of a workspace cwd for the masthead.
 		* @param cwd - absolute or relative workspace root.
@@ -2536,7 +2104,7 @@ window.__ModuleLoader__.load({
 			return "ok";
 		}
 		//#endregion
-		//#region src/client/desk.tsx
+		//#region lib/types/client/desk.js
 		function joinCwd(cwd, relative) {
 			const root = cwd.replace(/[/\\]+$/u, "");
 			if (relative === "" || relative === ".") return root;
@@ -2586,7 +2154,7 @@ window.__ModuleLoader__.load({
 		}
 		function isChatComposerTarget(target) {
 			if (!(target instanceof HTMLElement)) return false;
-			if (target.closest("[data-workbench=\"writer\"]") !== null) return false;
+			if (target.closest(".writer-desk") !== null) return false;
 			const tag = target.tagName;
 			if (tag !== "TEXTAREA" && tag !== "INPUT" && !target.isContentEditable) return false;
 			return true;
@@ -2608,9 +2176,9 @@ window.__ModuleLoader__.load({
 			if (needle === "") return stem;
 			const at = stem.toLowerCase().indexOf(needle);
 			if (at < 0) return stem;
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+			return (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 				stem.slice(0, at),
-				/* @__PURE__ */ (0, react_jsx_runtime.jsx)("mark", { children: stem.slice(at, at + needle.length) }),
+				(0, react_jsx_runtime.jsx)("mark", { children: stem.slice(at, at + needle.length) }),
 				stem.slice(at + needle.length)
 			] });
 		}
@@ -2629,7 +2197,7 @@ window.__ModuleLoader__.load({
 				const childIndent = { "--writer-indent": `${String((depth + 1) * 12)}px` };
 				if (node.kind === "file") {
 					const { stem, ext } = fileStemAndExt(node.name);
-					return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+					return (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: node.editable ? "writer-tree-file" : "writer-tree-file writer-tree-file-disabled",
 						style: indent,
@@ -2641,17 +2209,17 @@ window.__ModuleLoader__.load({
 							if (node.editable) onSelect(node.path);
 						},
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
+							(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
 								kind: (0, _deepseek_ai_dsh_client_ui_primitives.classifyFileType)(node.name),
 								size: 16,
 								className: "writer-tree-kind"
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-label",
 								"aria-hidden": "true",
 								children: stem || node.name
 							}),
-							ext !== "" && ext !== "md" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							ext !== "" && ext !== "md" && (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-ext",
 								"aria-hidden": "true",
 								children: ext
@@ -2666,9 +2234,9 @@ window.__ModuleLoader__.load({
 				const hasMore = listing !== void 0 && node.shown < total;
 				const apiTruncated = (listing?.truncated ?? node.truncated) && node.shown >= total && total > 0;
 				const folderName = node.name === "" || node.name === "." ? t("workspaceBook") : node.name;
-				return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", {
+				return (0, react_jsx_runtime.jsxs)("li", {
 					className: "writer-tree-folder",
-					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+					children: [(0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: "writer-tree-toggle",
 						style: indent,
@@ -2677,23 +2245,23 @@ window.__ModuleLoader__.load({
 						onClick: () => {
 							onToggle(key, !open);
 						},
-						children: [open ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpenRegular, {
+						children: [open ? (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpenRegular, {
 							className: "writer-tree-kind",
 							"aria-hidden": "true"
-						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderCloseRegular, {
+						}) : (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderCloseRegular, {
 							className: "writer-tree-kind",
 							"aria-hidden": "true"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+						}), (0, react_jsx_runtime.jsx)("span", {
 							className: "writer-tree-label",
 							children: folderName
 						})]
-					}), open && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("ul", { children: [
-						node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
+					}), open && (0, react_jsx_runtime.jsxs)("ul", { children: [
+						node.loading && (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("loading")
 						}),
-						node.loadError !== void 0 && !node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+						node.loadError !== void 0 && !node.loading && (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							className: "writer-tree-status-action",
 							style: childIndent,
@@ -2702,7 +2270,7 @@ window.__ModuleLoader__.load({
 							},
 							children: t("loadDirError")
 						}) }),
-						node.loaded && !node.loading && node.children.length === 0 && node.loadError === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
+						node.loaded && !node.loading && node.children.length === 0 && node.loadError === void 0 && (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("emptyDir")
@@ -2719,7 +2287,7 @@ window.__ModuleLoader__.load({
 							onRetry,
 							t
 						}),
-						hasMore && !node.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+						hasMore && !node.loading && (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							className: "writer-tree-status-action",
 							style: childIndent,
@@ -2728,7 +2296,7 @@ window.__ModuleLoader__.load({
 							},
 							children: t("loadMore")
 						}) }),
-						apiTruncated && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", {
+						apiTruncated && (0, react_jsx_runtime.jsx)("li", {
 							className: "writer-tree-status",
 							style: childIndent,
 							children: t("truncated")
@@ -2738,12 +2306,12 @@ window.__ModuleLoader__.load({
 			});
 		}
 		function SearchHits({ hits, query, selected, onSelect, t }) {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
+			return (0, react_jsx_runtime.jsx)("ul", {
 				className: "writer-tree writer-search-hits",
 				children: hits.map((hit) => {
 					const { stem, ext } = fileStemAndExt(hit.name);
 					const dir = searchHitDir(hit.path);
-					return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+					return (0, react_jsx_runtime.jsx)("li", { children: (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						className: hit.editable ? "writer-tree-file" : "writer-tree-file writer-tree-file-disabled",
 						title: hit.editable ? hit.path : t("notEditable").replace("{path}", hit.path),
@@ -2754,22 +2322,22 @@ window.__ModuleLoader__.load({
 							if (hit.editable) onSelect(hit.path);
 						},
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
+							(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.FileTypeIcon, {
 								kind: (0, _deepseek_ai_dsh_client_ui_primitives.classifyFileType)(hit.name),
 								size: 16,
 								className: "writer-tree-kind"
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-label",
 								"aria-hidden": "true",
 								children: highlightStem(stem || hit.name, query)
 							}),
-							ext !== "" && ext !== "md" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							ext !== "" && ext !== "md" && (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-tree-ext",
 								"aria-hidden": "true",
 								children: ext
 							}),
-							dir !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							dir !== "" && (0, react_jsx_runtime.jsx)("span", {
 								className: "writer-search-dir",
 								"aria-hidden": "true",
 								children: dir
@@ -2785,12 +2353,11 @@ window.__ModuleLoader__.load({
 		* @returns the desk.
 		*/
 		function WriterDesk(props) {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
+			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
 		}
-		function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }) {
-			const checkpointRef = (0, react.useRef)(() => true);
+		function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }) {
 			const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
-			if (checkpoint) checkpointRef.current = writerDocument.checkpoint;
+			if (checkpoint) checkpoint.current = writerDocument.checkpoint;
 			const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
 			const [viewPick, setViewPick] = (0, react.useState)(initialView);
 			const [libraries, setLibraries] = (0, react.useState)([]);
@@ -2821,7 +2388,7 @@ window.__ModuleLoader__.load({
 			const deskRef = (0, react.useRef)(null);
 			const railDrag = (0, react.useRef)(void 0);
 			const preferredView = libraries.length > 0 ? "libraries" : projects.length > 0 || scans.length === 0 ? "projects" : "scans";
-			const view = viewPick ?? preferredView;
+			const view = controlledView ?? viewPick ?? preferredView;
 			const roots = view === "libraries" ? libraries : view === "projects" ? projects : scans;
 			const rootPathsKey = roots.map((node) => node.path).join("\0");
 			const query = filter.trim();
@@ -3050,9 +2617,11 @@ window.__ModuleLoader__.load({
 			(0, react.useEffect)(() => {
 				if (!visible) return void 0;
 				const onKey = (event) => {
+					if (deskRef.current?.closest(".writer-wb-document")?.getClientRects().length === 0) return;
 					if (!(event.metaKey || event.ctrlKey)) return;
 					const key = event.key.toLocaleLowerCase();
 					if (key === "s") {
+						if (isChatComposerTarget(event.target)) return;
 						event.preventDefault();
 						saveRef.current();
 						return;
@@ -3094,11 +2663,12 @@ window.__ModuleLoader__.load({
 			const byteLabel = formatBytes(editorByteSize(draft, eol));
 			const extLabel = active === void 0 ? "" : fileExtensionLabel(active);
 			const encodingText = t("statusEncoding").replace("{eol}", eolLabel(eol));
-			const tabPanelId = "writer-workspace-panel";
-			const librariesTabId = "writer-tab-libraries";
-			const projectsTabId = "writer-tab-projects";
-			const scansTabId = "writer-tab-scans";
-			const railId = "writer-rail";
+			const deskId = (0, react.useId)();
+			const tabPanelId = `${deskId}-workspace-panel`;
+			const librariesTabId = `${deskId}-tab-libraries`;
+			const projectsTabId = `${deskId}-tab-projects`;
+			const scansTabId = `${deskId}-tab-scans`;
+			const railId = `${deskId}-rail`;
 			(0, react.useEffect)(() => {
 				const node = deskRef.current;
 				if (node === null) return;
@@ -3175,25 +2745,25 @@ window.__ModuleLoader__.load({
 				}
 			};
 			const deskStyle = { ["--writer-rail-width"]: `${String(fittedRailWidth)}px` };
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+			return (0, react_jsx_runtime.jsxs)("div", {
 				ref: deskRef,
 				className: "writer-desk",
 				"data-workbench": "writer",
 				"data-rail-collapsed": railCollapsed ? "true" : void 0,
 				style: deskStyle,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("aside", {
+					(0, react_jsx_runtime.jsxs)("aside", {
 						id: railId,
 						className: "writer-rail",
 						"aria-label": t("tree"),
 						hidden: railCollapsed || void 0,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("nav", {
+							controlledView === void 0 && (0, react_jsx_runtime.jsxs)("nav", {
 								className: "writer-tabs",
 								"aria-label": t("workspaceTabs"),
 								role: "tablist",
 								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+									(0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: librariesTabId,
 										role: "tab",
@@ -3203,12 +2773,12 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("libraries");
 										},
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("libraries") }), libraries.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
+										children: [(0, react_jsx_runtime.jsx)("span", { children: t("libraries") }), libraries.length > 0 && (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: libraries.length
 										})]
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+									(0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: projectsTabId,
 										role: "tab",
@@ -3218,12 +2788,12 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("projects");
 										},
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("projects") }), projects.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
+										children: [(0, react_jsx_runtime.jsx)("span", { children: t("projects") }), projects.length > 0 && (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: projects.length
 										})]
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+									(0, react_jsx_runtime.jsxs)("button", {
 										type: "button",
 										id: scansTabId,
 										role: "tab",
@@ -3233,17 +2803,17 @@ window.__ModuleLoader__.load({
 										onClick: () => {
 											pickView("scans");
 										},
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("scans") }), scans.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", {
+										children: [(0, react_jsx_runtime.jsx)("span", { children: t("scans") }), scans.length > 0 && (0, react_jsx_runtime.jsx)("b", {
 											className: "writer-badge",
 											children: scans.length
 										})]
 									})
 								]
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							(0, react_jsx_runtime.jsx)("div", {
 								className: "writer-search-slot",
 								role: "search",
-								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								children: (0, react_jsx_runtime.jsx)("input", {
 									ref: searchRef,
 									type: "search",
 									value: filter,
@@ -3263,60 +2833,61 @@ window.__ModuleLoader__.load({
 									}
 								})
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							(0, react_jsx_runtime.jsxs)("div", {
 								className: "writer-tree-panel",
 								id: tabPanelId,
 								role: "tabpanel",
-								"aria-labelledby": view === "libraries" ? librariesTabId : view === "projects" ? projectsTabId : scansTabId,
+								"aria-labelledby": controlledView === void 0 ? view === "libraries" ? librariesTabId : view === "projects" ? projectsTabId : scansTabId : void 0,
+								"aria-label": controlledView === void 0 ? void 0 : t(view),
 								"aria-busy": scanning || void 0,
 								children: [
-									health === "failed" && !showSearch && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									health === "failed" && !showSearch && (0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-scan-banner",
 										role: "alert",
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("scanFailed") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										children: [(0, react_jsx_runtime.jsx)("p", { children: t("scanFailed") }), (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: rescan,
 											children: t("retryScan")
 										})]
 									}),
-									health === "partial" && !showSearch && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									health === "partial" && !showSearch && (0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-scan-banner writer-scan-banner-warn",
 										role: "status",
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("scanPartial") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										children: [(0, react_jsx_runtime.jsx)("p", { children: t("scanPartial") }), (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: rescan,
 											children: t("retryScan")
 										})]
 									}),
-									scanning && !showSearch ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									scanning && !showSearch ? (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("healthLoading")
-									}) : showSearch ? searching ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									}) : showSearch ? searching ? (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("searching").replace("{query}", query)
-									}) : searchResult !== void 0 && searchResult.results.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									}) : searchResult !== void 0 && searchResult.results.length === 0 ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: (searchResult.truncated ? t("searchIncomplete") : t("searchEmpty")).replace("{query}", query)
-									}), truncationText !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									}), truncationText !== "" && (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										role: "status",
 										children: truncationText
-									})] }) : searchResult !== void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SearchHits, {
+									})] }) : searchResult !== void 0 ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)(SearchHits, {
 										hits: searchResult.results,
 										query,
 										selected: active,
 										onSelect: selectFile,
 										t
-									}), truncationText !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									}), truncationText !== "" && (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-muted",
 										role: "status",
 										children: truncationText
-									})] }) : null : health === "failed" ? null : roots.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									})] }) : null : health === "failed" ? null : roots.length === 0 ? (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: view === "libraries" ? t("emptyLibraries") : view === "projects" ? t("emptyProjects") : t("emptyScans")
-									}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
+									}) : (0, react_jsx_runtime.jsx)("nav", {
 										"aria-label": t("tree"),
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
+										children: (0, react_jsx_runtime.jsx)("ul", {
 											className: "writer-tree",
 											children: TreeNodes({
 												nodes: roots,
@@ -3336,20 +2907,20 @@ window.__ModuleLoader__.load({
 									})
 								]
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("footer", {
+							(0, react_jsx_runtime.jsxs)("footer", {
 								className: "writer-rail-note",
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+								children: [(0, react_jsx_runtime.jsx)("span", {
 									className: "writer-rail-dot",
 									"data-health": health,
 									"aria-hidden": "true"
-								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+								}), (0, react_jsx_runtime.jsx)("p", {
 									title: `${cwd} · ${t("localWorkspace")}`,
 									children: health === "ok" || health === "loading" ? t("localWorkspace") : `${healthText} · ${t("localWorkspace")}`
 								})]
 							})
 						]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					(0, react_jsx_runtime.jsx)("div", {
 						className: "writer-rail-resize",
 						role: "separator",
 						tabIndex: railCollapsed ? -1 : 0,
@@ -3370,13 +2941,13 @@ window.__ModuleLoader__.load({
 						},
 						onKeyDown: onRailResizeKeyDown
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+					(0, react_jsx_runtime.jsxs)("section", {
 						className: "writer-stage",
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+							(0, react_jsx_runtime.jsxs)("header", {
 								className: "writer-stage-heading",
 								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										className: "writer-rail-toggle",
 										"aria-expanded": !railCollapsed,
@@ -3386,83 +2957,83 @@ window.__ModuleLoader__.load({
 										onClick: toggleRail,
 										children: railCollapsed ? "›" : "‹"
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									(0, react_jsx_runtime.jsxs)("div", {
 										className: "writer-masthead",
 										"aria-label": t("masthead"),
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+										children: [(0, react_jsx_runtime.jsx)("span", {
 											className: "writer-workspace",
 											title: cwd,
 											children: shortName
-										}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+										}), (0, react_jsx_runtime.jsxs)("div", {
 											className: "writer-masthead-actions",
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+											children: [(0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-counts",
 												title: t("filesCountHint"),
 												"aria-label": countsAria,
 												children: [
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+													(0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
+															(0, react_jsx_runtime.jsx)("b", { children: libraries.length }),
 															" ",
 															t("countLibraries")
 														]
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+													(0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: projects.length }),
+															(0, react_jsx_runtime.jsx)("b", { children: projects.length }),
 															" ",
 															t("countProjects")
 														]
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+													(0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: scans.length }),
+															(0, react_jsx_runtime.jsx)("b", { children: scans.length }),
 															" ",
 															t("countScans")
 														]
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+													(0, react_jsx_runtime.jsxs)("span", {
 														className: "writer-count",
 														children: [
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("b", { children: filesText }),
+															(0, react_jsx_runtime.jsx)("b", { children: filesText }),
 															" ",
 															t("countFiles")
 														]
 													})
 												]
-											}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+											}), (0, react_jsx_runtime.jsxs)("span", {
 												className: "writer-connection",
 												"data-health": health,
 												role: "status",
 												title: connectionTitle,
-												children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												children: [(0, react_jsx_runtime.jsx)("span", {
 													className: "writer-status-dot",
 													"aria-hidden": "true"
-												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												}), (0, react_jsx_runtime.jsx)("span", {
 													className: "writer-connection-label",
 													children: connectionLabel
 												})]
 											})]
 										})]
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										className: "writer-reload",
 										title: t("reload"),
 										"aria-label": t("reload"),
 										onClick: rescan,
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+										children: (0, react_jsx_runtime.jsxs)("svg", {
 											viewBox: "0 0 24 24",
 											"aria-hidden": "true",
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
+											children: [(0, react_jsx_runtime.jsx)("path", { d: "M20 6v5h-5" }), (0, react_jsx_runtime.jsx)("path", { d: "M18.2 15.7A7 7 0 1 1 19 9.3L20 11" })]
 										})
 									})
 								]
 							}),
-							view === "projects" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(BookPanel, {
+							view === "projects" && (0, react_jsx_runtime.jsx)(BookPanel, {
 								sessionId,
 								cwd,
 								remote,
@@ -3475,31 +3046,31 @@ window.__ModuleLoader__.load({
 								onOpen: selectFile,
 								t
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("main", {
+							(0, react_jsx_runtime.jsxs)("main", {
 								className: "writer-editor",
 								children: [
-									active === void 0 && documentNotice === void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									active === void 0 && documentNotice === void 0 && (0, react_jsx_runtime.jsx)("p", {
 										className: "writer-empty",
 										children: t("emptyHelp")
 									}),
-									writerDocument.storageError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									writerDocument.storageError !== void 0 && (0, react_jsx_runtime.jsx)("p", {
 										role: "alert",
 										className: "writer-alert",
 										children: t(writerDocument.storageError === "changed" ? "draftStorageConflict" : "draftStorageError")
 									}),
-									documentNotice !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+									documentNotice !== void 0 && (0, react_jsx_runtime.jsx)("p", {
 										role: "alert",
 										className: "writer-alert",
 										children: documentNotice
 									}),
-									active !== void 0 && !writerDocument.ready && !writerDocument.loading && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									active !== void 0 && !writerDocument.ready && !writerDocument.loading && (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											writerDocument.reload();
 										},
 										children: t("retryDocument")
 									}),
-									conflictOpen && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
+									conflictOpen && (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
 										open: true,
 										onClose: () => {
 											setConflictOpen(false);
@@ -3507,13 +3078,13 @@ window.__ModuleLoader__.load({
 										title: t("conflictTitle"),
 										description: t("conflictBody"),
 										closeLabel: t("conflictClose"),
-										footer: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										footer: (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: () => {
 												setConflictOpen(false);
 											},
 											children: t("conflictKeep")
-										}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										}), (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											className: "writer-conflict-reload",
 											onClick: () => {
@@ -3523,32 +3094,32 @@ window.__ModuleLoader__.load({
 											children: t("conflictReload")
 										})] })
 									}),
-									active !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+									active !== void 0 && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+										(0, react_jsx_runtime.jsxs)("header", {
 											className: "writer-editor-toolbar",
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+											children: [(0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-document-identity",
-												children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
+												children: [(0, react_jsx_runtime.jsx)("nav", {
 													className: "writer-breadcrumbs",
 													"aria-label": t("breadcrumbs"),
-													children: crumbs.map((part, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("i", {
+													children: crumbs.map((part, index) => (0, react_jsx_runtime.jsxs)("span", { children: [index > 0 && (0, react_jsx_runtime.jsx)("i", {
 														"aria-hidden": "true",
 														children: " / "
-													}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
-												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", {
+													}), (0, react_jsx_runtime.jsx)("span", { children: part })] }, `${String(index)}-${part}`))
+												}), (0, react_jsx_runtime.jsx)("h2", {
 													className: "writer-document-title",
 													title: active,
 													children: crumbs[crumbs.length - 1] ?? active
 												})]
-											}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+											}), (0, react_jsx_runtime.jsxs)("div", {
 												className: "writer-editor-actions",
 												children: [
-													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+													(0, react_jsx_runtime.jsx)("span", {
 														className: "writer-dirty",
 														"data-state": dirtyState,
 														children: dirtyText
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+													(0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														className: "writer-line-numbers-toggle",
 														title: t("toggleLineNumbers"),
@@ -3559,12 +3130,12 @@ window.__ModuleLoader__.load({
 														},
 														children: "#"
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+													(0, react_jsx_runtime.jsxs)("div", {
 														className: "writer-mode-switch",
 														role: "group",
 														"aria-label": t("editor"),
 														children: [
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+															(0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "edit",
 																onClick: () => {
@@ -3572,7 +3143,7 @@ window.__ModuleLoader__.load({
 																},
 																children: t("modeEdit")
 															}),
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+															(0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "preview",
 																onClick: () => {
@@ -3580,7 +3151,7 @@ window.__ModuleLoader__.load({
 																},
 																children: t("modePreview")
 															}),
-															/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+															(0, react_jsx_runtime.jsx)("button", {
 																type: "button",
 																"aria-pressed": mode === "diff",
 																onClick: () => {
@@ -3590,13 +3161,13 @@ window.__ModuleLoader__.load({
 															})
 														]
 													}),
-													conflict ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+													conflict ? (0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														onClick: () => {
 															setConflictOpen(true);
 														},
 														children: t("conflictReview")
-													}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+													}) : (0, react_jsx_runtime.jsx)("button", {
 														type: "button",
 														disabled: !writerDocument.ready || busy || version === void 0 || draft === saved,
 														onClick: save,
@@ -3605,14 +3176,14 @@ window.__ModuleLoader__.load({
 												]
 											})]
 										}),
-										mode === "edit" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+										mode === "edit" ? (0, react_jsx_runtime.jsxs)("div", {
 											className: showLineNumbers ? "writer-editor-body show-line-numbers" : "writer-editor-body",
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterLineNumbers, {
+											children: [(0, react_jsx_runtime.jsx)(WriterLineNumbers, {
 												text: draft,
 												caret,
 												show: showLineNumbers,
 												textareaRef: editorRef
-											}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+											}), (0, react_jsx_runtime.jsx)("textarea", {
 												ref: editorRef,
 												"aria-label": active,
 												value: draft,
@@ -3633,45 +3204,45 @@ window.__ModuleLoader__.load({
 													setCaret(event.currentTarget.selectionStart);
 												}
 											})]
-										}) : mode === "diff" ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+										}) : mode === "diff" ? (0, react_jsx_runtime.jsx)("div", {
 											className: "writer-preview",
-											children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RevisionDiff, {
+											children: (0, react_jsx_runtime.jsx)(RevisionDiff, {
 												path: active,
 												before: saved,
 												after: draft,
 												t
 											})
-										}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("article", {
+										}) : (0, react_jsx_runtime.jsx)("article", {
 											className: "writer-preview",
 											"aria-label": `${active} ${t("modePreview")}`,
 											dangerouslySetInnerHTML: { __html: markdownToSafeHtml(draft) }
 										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("footer", {
+										(0, react_jsx_runtime.jsxs)("footer", {
 											className: "writer-status",
 											children: [
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												(0, react_jsx_runtime.jsx)("span", { children: t("statusCursor").replace("{line}", String(line)).replace("{col}", String(col)) }),
+												(0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												(0, react_jsx_runtime.jsx)("span", {
 													className: "writer-document-meta",
 													children: byteLabel
 												}),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												(0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
-												extLabel !== "" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												(0, react_jsx_runtime.jsx)("span", { children: t("statusChars").replace("{n}", String(countCharacters(draft))) }),
+												extLabel !== "" && (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
-												}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+												}), (0, react_jsx_runtime.jsx)("span", { children: extLabel })] }),
+												(0, react_jsx_runtime.jsx)("span", {
 													"aria-hidden": "true",
 													children: "·"
 												}),
-												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: encodingText })
+												(0, react_jsx_runtime.jsx)("span", { children: encodingText })
 											]
 										})
 									] })
@@ -3683,7 +3254,533 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/workbench-selection.ts
+		//#region lib/types/client/sidebar.js
+		const name = "writer";
+		const inject$2 = [
+			"slots",
+			"sessions",
+			"uiSession",
+			"locale",
+			"sidebarRightTabs",
+			"layout",
+			"remote",
+			"remote.workspaceFiles"
+		];
+		const TAB_ID = "@winterhuan/dsh-writer";
+		function WorkbenchLauncher({ sessionId, t, actions, openWorkbench }) {
+			return (0, react_jsx_runtime.jsx)("header", {
+				className: "writer-sidebar-heading",
+				children: (0, react_jsx_runtime.jsx)("button", {
+					type: "button",
+					onClick: () => {
+						actions.openFromSidebar(sessionId);
+						openWorkbench();
+					},
+					children: t("openWorkbench")
+				})
+			});
+		}
+		function Sidebar({ sessionId, useTabInfo, useSessions, t, remote, renderSlot }) {
+			const preset = useSessions((state) => state.byId[sessionId]?.projectionValues?.agentPreset);
+			const cwd = useSessions((state) => state.byId[sessionId]?.cwd);
+			const { tab } = useTabInfo();
+			(0, react.useEffect)(() => {
+				if (typeof preset === "string" && preset !== "writer") tab.actions.close();
+			}, [preset, tab.actions]);
+			if (preset !== "writer") return null;
+			return (0, react_jsx_runtime.jsxs)("div", {
+				className: "writer-sidebar",
+				children: [renderSlot("writer.sidebar.launcher", { sessionId }), cwd === void 0 ? (0, react_jsx_runtime.jsx)("p", {
+					className: "writer-empty",
+					children: t("noWorkspace")
+				}) : (0, react_jsx_runtime.jsx)(WriterDesk, {
+					sessionId,
+					cwd,
+					remote,
+					t,
+					visible: tab.visible
+				})]
+			});
+		}
+		/**
+		* Register the writing tab and its body. The guide entry follows the selected preset.
+		* @param context - browser services.
+		* @param store - viewing preferences shared with the full workbench.
+		*/
+		function apply$2(context, store) {
+			context.effect(() => context.locale.register(NS, {
+				zh: zh$2,
+				en: en$2
+			}), "writer: dictionaries");
+			const t = context.locale.bind(NS);
+			context.effect(() => registerWriterTab(context, {
+				id: TAB_ID,
+				kind: "writer",
+				title: () => t("title"),
+				guide: [{
+					id: "writer",
+					order: 22,
+					title: () => t("title"),
+					description: () => t("description"),
+					icon: _deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular
+				}]
+			}), "writer: sidebar type");
+			context.effect(() => context.slots.inject("sidebar.right.pane.tab", () => context.slots.register({
+				name: "sidebar.right.pane.tab",
+				key: TAB_ID,
+				locale: NS,
+				children: { "writer.sidebar.launcher": {
+					kind: "single",
+					scope: "root"
+				} },
+				inject: () => ({ remote: context.remote })
+			}, Sidebar)), "writer: sidebar body");
+			context.effect(() => context.slots.inject("writer.sidebar.launcher", () => context.slots.register({
+				name: "writer.sidebar.launcher",
+				locale: NS,
+				store,
+				inject: () => ({ openWorkbench: () => context.layout.selectPanel("writer-workbench") })
+			}, WorkbenchLauncher)), "writer: sidebar workbench launcher");
+		}
+		//#endregion
+		//#region lib/types/client/zhuque-locales.js
+		/** Locale bundles for the Writer settings page (Zhuque + cover keys). */
+		/** English copy. */
+		const en$1 = {
+			title: "Writing",
+			description: "Zhuque detection and cover image API keys for author-triggered skills.",
+			keySet: "A key is configured.",
+			keyUnset: "No key is configured.",
+			makersKeyLabel: "EdgeOne Makers API key (Zhuque detection)",
+			makersKeyHint: "Used by story-zhuque when you ask for a Zhuque check. Stored outside the settings file. Leave blank to keep the current key; a MAKERS_API_KEY exported in the shell that starts dsh also works.",
+			makersKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
+			coverKeyLabel: "GPT Image API key (cover generation)",
+			coverKeyHint: "Used by story-cover when you ask for a generated cover image. Prompt-only delivery needs no key. Stored outside the settings file. Leave blank to keep the current key; a GPT_IMAGE_API_KEY exported in the shell that starts dsh also works.",
+			coverKeyReadOnlyHint: "The startup environment supplies this key, so it cannot be edited here. Remove the key environment variable from the shell that starts dsh and restart, then save the key here.",
+			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
+			gptImageBaseUrlLabel: "GPT Image API base URL",
+			gptImageBaseUrlHint: "Base URL of an OpenAI-compatible endpoint for cover generation. Saved into the settings file; the host injects it as GPT_IMAGE_BASE_URL. Leave blank to use a shell-exported value or the default.",
+			overridden: "Overrides the default.",
+			reset: "Reset",
+			invalidText: "This value is not accepted.",
+			readOnly: "This setting is read-only.",
+			unavailable: "Writing settings are not available.",
+			save: "Save",
+			saving: "Saving…",
+			discard: "Discard",
+			saveFailed: "Could not save. Try again."
+		};
+		/** Simplified Chinese copy. */
+		const zh$1 = {
+			title: "写作",
+			description: "明确要求朱雀检测或封面生图时使用的密钥。",
+			keySet: "已配置密钥。",
+			keyUnset: "未配置密钥。",
+			makersKeyLabel: "EdgeOne Makers API Key（朱雀检测）",
+			makersKeyHint: "供 story-zhuque 在你明确要求朱雀检测时使用。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 MAKERS_API_KEY 同样有效。",
+			makersKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
+			coverKeyLabel: "GPT Image API Key（封面生图）",
+			coverKeyHint: "供 story-cover 在你明确要求生成封面图时使用。仅提示词交付不需要密钥。不写入设置文件。留空表示保持当前密钥；在启动 dsh 的 shell 里 export 的 GPT_IMAGE_API_KEY 同样有效。",
+			coverKeyReadOnlyHint: "当前密钥由启动环境提供，无法在网页修改。请在启动 dsh 的 shell 中取消该密钥环境变量后重启，再在此保存密钥",
+			gptImageBaseUrlPlaceholder: "https://api.openai.com/v1",
+			gptImageBaseUrlLabel: "GPT Image API Base URL",
+			gptImageBaseUrlHint: "封面生图兼容端点的 Base URL，保存在设置文件里，Host 会注入为 GPT_IMAGE_BASE_URL。留空表示使用 shell 导出的值或默认值。",
+			overridden: "覆盖默认值。",
+			reset: "重置",
+			invalidText: "此值不被接受。",
+			readOnly: "此设置只读。",
+			unavailable: "写作设置不可用。",
+			save: "保存",
+			saving: "正在保存…",
+			discard: "放弃",
+			saveFailed: "未能保存。请再试一次。"
+		};
+		/**
+		* Labels the shared settings form reads from this page's dictionary.
+		* @param t - the bound translator.
+		* @returns the form chrome labels.
+		*/
+		function formLabels(t) {
+			return {
+				unavailable: t("unavailable"),
+				readOnly: t("readOnly"),
+				saveFailed: t("saveFailed"),
+				save: t("save"),
+				saving: t("saving")
+			};
+		}
+		//#endregion
+		//#region lib/types/client/ZhuqueSettingsCard.js
+		/**
+		* Render the Writer settings page, or its one-liner when the Plugins page asks for a summary.
+		* @param props - the view asked for, locale copy, the page snapshot, and its form actions.
+		* @returns the one-liner, or the form.
+		*/
+		function ZhuqueSettingsCard(props) {
+			const { t } = props;
+			const state = props.useWriterZhuqueCard((snapshot) => snapshot);
+			if (props.view === "summary") return t("description");
+			const control = state.key;
+			const cover = state.coverKey;
+			return (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.SettingsForm, {
+				labels: formLabels(t),
+				state,
+				onSave: props.save,
+				onDiscard: props.discard,
+				children: [
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+						id: "plugin-config-writer-makers-key",
+						label: t("makersKeyLabel"),
+						hint: t(control.writable ? "makersKeyHint" : "makersKeyReadOnlyHint"),
+						stateLabel: control.configured ? t("keySet") : t("keyUnset"),
+						onEdit: (text) => {
+							props.edit("makersApiKey", text);
+						},
+						disabled: !control.writable,
+						text: control.draft.text,
+						configured: control.configured
+					}),
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSecretField, {
+						id: "plugin-config-writer-cover-key",
+						label: t("coverKeyLabel"),
+						hint: t(cover.writable ? "coverKeyHint" : "coverKeyReadOnlyHint"),
+						stateLabel: cover.configured ? t("keySet") : t("keyUnset"),
+						onEdit: (text) => {
+							props.edit("gptImageApiKey", text);
+						},
+						disabled: !cover.writable,
+						text: cover.draft.text,
+						configured: cover.configured
+					}),
+					(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsValueField, {
+						id: "plugin-config-writer-cover-base-url",
+						label: t("gptImageBaseUrlLabel"),
+						hint: t("gptImageBaseUrlHint"),
+						overriddenLabel: t("overridden"),
+						resetLabel: t("reset"),
+						invalidLabel: t("invalidText"),
+						placeholder: t("gptImageBaseUrlPlaceholder"),
+						disabled: !state.writable,
+						...state.gptImageBaseUrl,
+						onEdit: (text) => {
+							props.edit("gptImageBaseUrl", text);
+						},
+						onReset: () => {
+							props.resetField("gptImageBaseUrl");
+						}
+					})
+				]
+			});
+		}
+		//#endregion
+		//#region lib/types/client/zhuque-settings-controller.js
+		/**
+		* The Writer settings page's staged form over the `writer` namespace.
+		* Key literals never ride a response: they write through the credentials
+		* domain under the references `makersApiKeyEnv` and `gptImageApiKeyEnv` name.
+		*/
+		/** Namespace of the writer plugin. Spelled here so the client half does not import Host values. */
+		const WRITER_SETTINGS_NS = "writer";
+		const FALLBACK_MAKERS_REF = "MAKERS_API_KEY";
+		const FALLBACK_COVER_REF = "GPT_IMAGE_API_KEY";
+		/** Bridges the `writer` scope and the credentials domain onto Zhuque and cover keys. */
+		var WriterZhuqueCardController = class {
+			scope;
+			ctx;
+			form;
+			store;
+			makersState = {
+				ref: "",
+				configured: false,
+				writable: true
+			};
+			coverState = {
+				ref: "",
+				configured: false,
+				writable: true
+			};
+			/**
+			* @param scope - the shared configuration form for the `writer` namespace.
+			* @param ctx - the page plugin's context.
+			*/
+			constructor(scope, ctx) {
+				this.scope = scope;
+				this.ctx = ctx;
+				this.form = new _deepseek_ai_dsh_client_ui_primitives.SettingsFormModel(scope, [(0, _deepseek_ai_dsh_client_ui_primitives.settingsTextField)("gptImageBaseUrl")], [{
+					field: "makersApiKey",
+					write: (text) => this.writeKey("makers", text)
+				}, {
+					field: "gptImageApiKey",
+					write: (text) => this.writeKey("cover", text)
+				}]);
+				this.store = this.form.bind(() => this.projection());
+				scope.subscribe(() => {
+					this.readCredentials();
+				});
+				this.readCredentials();
+			}
+			projection() {
+				return {
+					...this.form.shell(),
+					key: {
+						draft: this.form.field("makersApiKey"),
+						configured: this.makersState.configured,
+						writable: this.makersState.writable
+					},
+					coverKey: {
+						draft: this.form.field("gptImageApiKey"),
+						configured: this.coverState.configured,
+						writable: this.coverState.writable
+					},
+					gptImageBaseUrl: this.form.field("gptImageBaseUrl")
+				};
+			}
+			/** Ask the credentials domain about both references the section names. */
+			async readCredentials() {
+				const snapshot = this.scope.getSnapshot();
+				const makersRef = makersRefOf(snapshot);
+				const coverRef = coverRefOf(snapshot);
+				let projected = false;
+				if (makersRef !== this.makersState.ref) {
+					this.makersState = {
+						ref: makersRef,
+						configured: false,
+						writable: true
+					};
+					projected = true;
+				}
+				if (coverRef !== this.coverState.ref) {
+					this.coverState = {
+						ref: coverRef,
+						configured: false,
+						writable: true
+					};
+					projected = true;
+				}
+				if (projected) this.store.set(this.projection());
+				const response = await this.ctx.remote.credentials.describe([makersRef, coverRef]);
+				if (!response.ok) return;
+				const latest = this.scope.getSnapshot();
+				if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest)) return;
+				const makersView = response.value[makersRef];
+				const coverView = response.value[coverRef];
+				const nextMakers = {
+					ref: makersRef,
+					configured: makersView?.configured ?? false,
+					writable: makersView?.writable ?? true
+				};
+				const nextCover = {
+					ref: coverRef,
+					configured: coverView?.configured ?? false,
+					writable: coverView?.writable ?? true
+				};
+				const makersSame = nextMakers.configured === this.makersState.configured && nextMakers.writable === this.makersState.writable && nextMakers.ref === this.makersState.ref;
+				const coverSame = nextCover.configured === this.coverState.configured && nextCover.writable === this.coverState.writable && nextCover.ref === this.coverState.ref;
+				if (makersSame && coverSame) return;
+				this.makersState = nextMakers;
+				this.coverState = nextCover;
+				this.store.set(this.projection());
+			}
+			/**
+			* Re-read after the Host reports a change to a watched reference.
+			* @param ref - the reference the Host reports as changed.
+			*/
+			refreshCredential(ref) {
+				if (this.makersState.ref !== ref && this.coverState.ref !== ref) return;
+				this.readCredentials();
+			}
+			/**
+			* Build the face the page's slot registration injects.
+			* @returns the page snapshot and its form actions.
+			*/
+			inject() {
+				return {
+					hooks: { writerZhuqueCard: this.store },
+					...this.form.actions()
+				};
+			}
+			/**
+			* Write a staged key, then re-read whether the Host now holds one.
+			* @param which - Zhuque or cover.
+			* @param value - the staged credential literal.
+			* @returns whether the Host reports a configured credential afterwards.
+			*/
+			async writeKey(which, value) {
+				const snapshot = this.scope.getSnapshot();
+				const ref = which === "makers" ? makersRefOf(snapshot) : coverRefOf(snapshot);
+				if (!(await this.ctx.remote.credentials.set(ref, value)).ok) return false;
+				await this.readCredentials();
+				return which === "makers" ? this.makersState.configured : this.coverState.configured;
+			}
+			/** Release configuration subscriptions. */
+			dispose() {
+				this.form.dispose();
+			}
+		};
+		/**
+		* The Zhuque credential reference the section names, or MAKERS_API_KEY.
+		* @param snapshot - the current scope snapshot.
+		* @returns the reference to address.
+		*/
+		function makersRefOf(snapshot) {
+			const declared = snapshot.value?.makersApiKeyEnv;
+			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_MAKERS_REF;
+		}
+		/**
+		* The cover credential reference the section names, or GPT_IMAGE_API_KEY.
+		* @param snapshot - the current scope snapshot.
+		* @returns the reference to address.
+		*/
+		function coverRefOf(snapshot) {
+			const declared = snapshot.value?.gptImageApiKeyEnv;
+			return declared !== void 0 && declared.length > 0 ? declared : FALLBACK_COVER_REF;
+		}
+		//#endregion
+		//#region lib/types/client/zhuque-settings.js
+		/**
+		* Writer settings page (Zhuque + cover keys), browser half. Registers into the
+		* Plugins page's `plugins.item` slot while the Host serves the `writer` namespace.
+		*/
+		/** Dictionary namespace owned by the Writing settings page. */
+		const ZHUQUE_NS = "settings.writer";
+		/** Cordis services the Writing settings page needs beyond the sidebar. */
+		const zhuqueInject = ["remote.credentials", "configForms"];
+		/**
+		* Mount the Writing settings page while the Host serves the writer namespace.
+		* @param ctx - the browser plugin context.
+		*/
+		function applyZhuqueSettings(ctx) {
+			const t = ctx.locale.bind(ZHUQUE_NS);
+			ctx.effect(() => ctx.locale.register(ZHUQUE_NS, {
+				zh: zh$1,
+				en: en$1
+			}), "writer: zhuque dictionaries");
+			const card = new WriterZhuqueCardController(ctx.configForms.get(WRITER_SETTINGS_NS), ctx);
+			ctx.effect(() => () => {
+				card.dispose();
+			}, "writer: zhuque form subscription");
+			ctx.effect(() => ctx.remote.$on("credentials/reference-updated", (ref) => {
+				card.refreshCredential(ref);
+			}), "writer: zhuque credential invalidations");
+			ctx.effect(() => ctx.configForms.whileServed([WRITER_SETTINGS_NS], () => ctx.slots.inject("plugins.item", () => ctx.slots.register({
+				name: "plugins.item",
+				id: "writer",
+				order: 40,
+				label: () => t("title"),
+				locale: ZHUQUE_NS,
+				inject: () => card.inject()
+			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
+		}
+		//#endregion
+		//#region lib/types/client/workbench-locales.js
+		const en = {
+			projects: "Works",
+			libraries: "Analysis library",
+			scans: "Market research",
+			panels: "Workbench panels",
+			welcome: "Your writing desk",
+			workspaceHelp: "Open a folder in the DSH workspace list to view your writing materials.",
+			sessionHelp: "Start a Writer conversation in this workspace to browse and edit its existing manuscripts, analysis, and research.",
+			assistantHelp: "Discuss your story, analyze a sample, or research the market in a Writer conversation.",
+			newSession: "New conversation",
+			openConversation: "Open conversation",
+			retry: "Retry",
+			cancel: "Cancel",
+			createdSession: "Writer conversation created",
+			createdBook: "Book created",
+			title: "Writer",
+			navigation: "Workbench sections",
+			writerSession: "Writer session",
+			chooseWriterSession: "Select a Writer session",
+			workspace: "Workspace",
+			chooseWorkspace: "Choose a workspace",
+			bookTitle: "Book title",
+			folder: "Book folder",
+			form: "Form",
+			longForm: "Long fiction",
+			shortForm: "Short fiction",
+			createBook: "Create book",
+			document: "Manuscript",
+			assistant: "Assistant",
+			collapse: "Collapse assistant",
+			expand: "Expand assistant",
+			draftCheckpointFailed: "The unsaved draft could not be protected. Keep this book open and save the manuscript before switching.",
+			loadFailed: "The workbench could not load",
+			operationFailed: "The operation could not be completed",
+			create: "Create",
+			sessionUnavailable: "This native session is unavailable",
+			invalidBookPath: "Choose a valid book folder",
+			workspaceMissing: "This workspace is unavailable",
+			bookMissing: "This book folder is unavailable",
+			bookExists: "This folder is already registered",
+			sessionMissing: "This native session is unavailable",
+			sessionMismatch: "This session belongs to another workspace",
+			writerRequired: "Choose a session using the Writer preset",
+			sessionInUse: "This session is linked to another book",
+			sessionBusy: "Stop the running session before starting a new phase",
+			bindingNeedsRepair: "The session link needs repair",
+			invalidBookTitle: "Enter a book title",
+			filesUnavailable: "File access is unavailable",
+			untrustedRequest: "The request was not trusted",
+			requestTooLarge: "The request is too large",
+			invalidRequest: "The request is invalid",
+			workbenchFailed: "The workbench operation failed"
+		};
+		const zh = {
+			projects: "作品",
+			libraries: "拆文库",
+			scans: "扫榜",
+			panels: "工作台面板",
+			welcome: "开始创作",
+			workspaceHelp: "在 DSH 工作区列表中打开小说目录，即可查看写作资料",
+			sessionHelp: "在当前工作区开启写作对话，即可浏览和编辑已有书稿、拆文资料与扫榜记录",
+			assistantHelp: "在写作对话中讨论故事、拆解样文或调研市场",
+			newSession: "新建对话",
+			openConversation: "打开对话",
+			retry: "重试",
+			cancel: "取消",
+			createdSession: "已创建写作对话",
+			createdBook: "已创建作品",
+			title: "小说创作工作台",
+			navigation: "工作台分区",
+			writerSession: "写作对话",
+			chooseWriterSession: "选择写作对话",
+			workspace: "工作区",
+			chooseWorkspace: "选择工作区",
+			bookTitle: "书名",
+			folder: "书籍目录",
+			form: "篇幅",
+			longForm: "长篇小说",
+			shortForm: "短篇小说",
+			createBook: "创建作品",
+			document: "正文",
+			assistant: "助手",
+			collapse: "收起助手",
+			expand: "展开助手",
+			draftCheckpointFailed: "未能保护当前草稿，请先保存文稿再切换",
+			loadFailed: "工作台加载失败",
+			operationFailed: "操作未能完成",
+			create: "创建",
+			sessionUnavailable: "原生会话不可用",
+			invalidBookPath: "请选择有效的书籍目录",
+			workspaceMissing: "工作区不可用",
+			bookMissing: "书籍目录不可用",
+			bookExists: "该目录已登记",
+			sessionMissing: "原生会话不可用",
+			sessionMismatch: "该会话不属于此工作区",
+			writerRequired: "请选择使用 Writer 预设的会话",
+			sessionInUse: "该会话已关联其他作品",
+			sessionBusy: "请先停止运行中的会话，再创建新阶段",
+			bindingNeedsRepair: "会话关联需要修复",
+			invalidBookTitle: "请输入书名",
+			filesUnavailable: "文件访问不可用",
+			untrustedRequest: "请求未通过信任校验",
+			requestTooLarge: "请求内容过大",
+			invalidRequest: "请求无效",
+			workbenchFailed: "工作台操作失败"
+		};
+		//#endregion
+		//#region lib/types/client/workbench-selection.js
 		function preferredWriterWorkspace(workspaces) {
 			return workspaces.find((workspace) => /(?:^|[\\/])novels$/iu.test(workspace.path))?.id ?? workspaces.find((workspace) => /novels|小说/iu.test(workspace.title))?.id;
 		}
@@ -3693,16 +3790,50 @@ window.__ModuleLoader__.load({
 			return sessions.filter((session) => members.has(session.id) && session.cwd === workspace.path && session.origin !== "subagent" && session.projectionValues?.agentPreset === "writer");
 		}
 		//#endregion
-		//#region src/client/workbench.tsx
-		/** Works library, book editor, and the official DSH Conversation surface. */
-		/** Open the main workbench panel. */
+		//#region \0dsh-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/workbench.module.css.mjs
+		const css = ".HjefiG_workbench{background:var(--dsw-alias-bg-base);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex;position:relative;overflow:hidden;container:HjefiG_writer-workbench/inline-size}.HjefiG_ambient{pointer-events:none;background:radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--dsw-alias-brand-primary) 6%, transparent), transparent 60%);position:absolute;inset:0}.HjefiG_header,.HjefiG_toolbar{flex:none;align-items:center;gap:12px;padding:14px 18px;display:flex;position:relative}[data-platform=darwin] .HjefiG_header{padding-top:calc(14px + var(--dsh-frame-top-clearance,0px))}.HjefiG_heading{align-items:center;gap:10px;min-width:0;margin-right:auto;display:flex}.HjefiG_heading h1{margin:0;font-size:16px;font-weight:500;line-height:24px}.HjefiG_workspace{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;display:flex}.HjefiG_workspace select{max-width:200px}.HjefiG_toolbar{justify-content:space-between;padding-top:0;padding-bottom:12px}.HjefiG_nav,.HjefiG_panes{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-layer-2);box-shadow:var(--dsw-elevation-soft);align-items:center;gap:2px;padding:4px;display:flex}.HjefiG_workbench :is(.HjefiG_header,.HjefiG_toolbar,.HjefiG_nav,.HjefiG_panes,.HjefiG_sessionControls,.HjefiG_empty,.HjefiG_form)>button,.HjefiG_assistant>header>button{font:inherit;color:inherit;border-radius:var(--dsw-radius-md);cursor:pointer;white-space:nowrap;background:0 0;border:0;padding:7px 12px}.HjefiG_workbench :is(.HjefiG_header,.HjefiG_toolbar,.HjefiG_sessionControls,.HjefiG_empty)>button:disabled,.HjefiG_assistant>header>button:disabled,.HjefiG_form button:disabled{opacity:.5;cursor:default}.HjefiG_workbench button.HjefiG_primary,.HjefiG_nav button[aria-current=page],.HjefiG_panes button[aria-pressed=true]{background:var(--dsw-alias-button-primary-fill);color:var(--dsw-alias-label-primary-inverted)}.HjefiG_workbench :is(.HjefiG_workspace,.HjefiG_sessionControls) select,.HjefiG_form :is(input,select){border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-sm);background:var(--dsw-alias-bg-layer-2);min-width:0;color:var(--dsw-alias-label-primary);font:inherit;padding:7px 10px}.HjefiG_workbench :focus-visible,.HjefiG_form :focus-visible{outline:2px solid var(--dsw-alias-link);outline-offset:2px}.HjefiG_body{flex:1;gap:16px;min-height:0;padding:0 18px 18px;display:flex;position:relative}.HjefiG_document{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-base);min-width:0;min-height:0;box-shadow:var(--dsw-elevation-soft);flex:1;position:relative;overflow:hidden}.HjefiG_document>.writer-desk{height:100%}.HjefiG_assistant{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-layer-2);min-width:0;min-height:0;box-shadow:var(--dsw-elevation-soft);flex-direction:column;flex:0 0 336px;display:flex;overflow:hidden}.HjefiG_assistant>header{justify-content:space-between;align-items:center;gap:8px;padding:12px 14px 4px;display:flex}.HjefiG_assistant h2{margin:0;font-size:13px;font-weight:500;line-height:20px}.HjefiG_sessionControls{border-bottom:.5px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:6px;padding:8px 14px 12px;display:flex}.HjefiG_sessionControls select{flex:1;width:100%}.HjefiG_conversation{flex-direction:column;flex:1;min-height:0;display:flex;overflow:hidden}.HjefiG_conversation>div{flex:1;min-height:0}.HjefiG_body[data-assistant-open=false] .HjefiG_assistant{display:none}.HjefiG_empty{box-sizing:border-box;text-align:center;flex-direction:column;flex:1;justify-content:center;align-items:center;gap:12px;height:100%;padding:24px;display:flex}.HjefiG_empty h2{margin:0;font-size:16px;font-weight:500;line-height:24px}.HjefiG_empty p{max-width:360px;color:var(--dsw-alias-label-secondary);margin:0}.HjefiG_error{z-index:2;background:var(--dsw-alias-bg-layer-2);border-radius:var(--dsw-radius-sm);box-shadow:var(--dsw-elevation-soft);margin:0;padding:8px 12px;position:absolute;bottom:12px;left:12px;right:12px}.HjefiG_spinner{border:2px solid var(--dsw-alias-border-l2);border-top-color:var(--dsw-alias-brand-primary);corner-shape:round;border-radius:50%;width:20px;height:20px;animation:.8s linear infinite HjefiG_spin}@keyframes HjefiG_spin{to{transform:rotate(360deg)}}.HjefiG_panes{display:none}.HjefiG_form{font:13px/1.5 var(--dsw-font-family);flex-direction:column;gap:16px;padding:16px 20px;display:flex}.HjefiG_form label{flex-direction:column;gap:6px;display:flex}.HjefiG_form footer{justify-content:flex-end;gap:8px;display:flex}.HjefiG_form footer button{font:inherit;border-radius:var(--dsw-radius-md);color:inherit;background:var(--dsw-alias-interactive-bg-hover);cursor:pointer;border:0;padding:8px 14px}.HjefiG_form footer button.HjefiG_primary{color:var(--dsw-alias-label-primary-inverted);background:var(--dsw-alias-button-primary-fill)}@media (hover:hover){.HjefiG_nav button:not([aria-current=page]):hover,.HjefiG_assistantToggle:hover,.HjefiG_assistant>header>button:hover{background:var(--dsw-alias-interactive-bg-hover)}}@media (prefers-reduced-motion:reduce){.HjefiG_spinner{animation:none}}@container HjefiG_writer-workbench (width<=920px){.HjefiG_assistantToggle{display:none}.HjefiG_panes{display:flex}.HjefiG_body .HjefiG_assistant{display:none}.HjefiG_body[data-pane=assistant] .HjefiG_assistant{flex:1;display:flex}.HjefiG_body[data-pane=assistant] .HjefiG_document{display:none}}@container HjefiG_writer-workbench (width<=640px){.HjefiG_header{flex-wrap:wrap;gap:8px;padding-left:12px;padding-right:12px}.HjefiG_heading{flex-basis:100%}.HjefiG_workspace{flex:1}.HjefiG_workspace select{flex:1;max-width:160px}.HjefiG_toolbar{flex-wrap:wrap;gap:8px;padding-left:12px;padding-right:12px}.HjefiG_body{padding-bottom:12px;padding-left:12px;padding-right:12px}}";
+		const tagId = "@winterhuan/dsh-writer/workbench.module.css";
+		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
+			const tag = document.createElement("style");
+			tag.dataset.plugin = "@winterhuan/dsh-writer";
+			tag.dataset.pluginCss = tagId;
+			tag.textContent = css;
+			document.head.appendChild(tag);
+		}
+		var workbench_module_css_default = {
+			"ambient": "HjefiG_ambient",
+			"assistant": "HjefiG_assistant",
+			"assistantToggle": "HjefiG_assistantToggle",
+			"body": "HjefiG_body",
+			"conversation": "HjefiG_conversation",
+			"document": "HjefiG_document",
+			"empty": "HjefiG_empty",
+			"error": "HjefiG_error",
+			"form": "HjefiG_form",
+			"header": "HjefiG_header",
+			"heading": "HjefiG_heading",
+			"nav": "HjefiG_nav",
+			"panes": "HjefiG_panes",
+			"primary": "HjefiG_primary",
+			"sessionControls": "HjefiG_sessionControls",
+			"spin": "HjefiG_spin",
+			"spinner": "HjefiG_spinner",
+			"toolbar": "HjefiG_toolbar",
+			"workbench": "HjefiG_workbench",
+			"workspace": "HjefiG_workspace",
+			"writer-workbench": "HjefiG_writer-workbench"
+		};
+		//#endregion
+		//#region lib/types/client/workbench.js
+		/** Render the full writing desk in the native main panel. */
 		function Main({ renderSlot }) {
 			return renderSlot("writer.workbench", {});
 		}
-		/** Sidebar launcher for the complete writing workbench. */
+		/** Sidebar navigation icon for the writing desk. */
 		function Launcher({ size }) {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
+			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
 		}
+		/** Render the official Conversation factory under the selected Session provider. */
 		function NativeConversation({ useSession, useConversation, renderFactorySlot }) {
 			const session = useSession((value) => value);
 			const conversation = useConversation((value) => value);
@@ -3712,432 +3843,369 @@ window.__ModuleLoader__.load({
 				hero: false
 			});
 		}
-		/** Main works screen and native assistant bindings. */
-		function Workbench({ t, retain, action, load, openSession, initializeDraft, renderSlot, SessionProvider, remote, deskT, useSessions }) {
-			const [catalog, setCatalog] = (0, react.useState)();
-			const [bookId, setBookId] = (0, react.useState)();
-			const [selectedSessionId, setSelectedSessionId] = (0, react.useState)();
-			const [section, setSection] = (0, react.useState)("works");
-			const [error, setError] = (0, react.useState)();
+		/** Browse workspace files without a separate book-registration step. */
+		function Workbench({ t, retain, createSession, createBook, openSession, report, renderSlot, SessionProvider, remote, deskT, useSessions, useWorkspaces, useStore, actions }) {
+			const catalog = useSessions((state) => state);
+			const workspaces = useWorkspaces((state) => state);
+			const preferences = useStore((state) => state);
 			const [busy, setBusy] = (0, react.useState)(false);
-			const [narrow, setNarrow] = (0, react.useState)(false);
-			const [smallView, setSmallView] = (0, react.useState)("document");
-			const [assistantOpen, setAssistantOpen] = (0, react.useState)(true);
-			const [title, setTitle] = (0, react.useState)("");
-			const [path, setPath] = (0, react.useState)("");
-			const [workspaceId, setWorkspaceId] = (0, react.useState)();
-			const [linkSessionId, setLinkSessionId] = (0, react.useState)("");
-			const [candidatePath, setCandidatePath] = (0, react.useState)();
-			const [form, setForm] = (0, react.useState)("long");
-			const root = (0, react.useRef)(null);
+			const [newBook, setNewBook] = (0, react.useState)(false);
+			const [revision, setRevision] = (0, react.useState)(0);
+			const [error, setError] = (0, react.useState)();
 			const checkpoint = (0, react.useRef)(() => true);
-			const refresh = () => {
-				load().then(setCatalog).catch(() => setError(t("loadFailed")));
-			};
-			(0, react.useEffect)(() => {
-				refresh();
-			}, []);
-			(0, react.useEffect)(() => {
-				const node = root.current;
-				if (!node) return;
-				const observer = new ResizeObserver((entries) => setNarrow((entries[0]?.contentRect.width ?? 0) < 920));
-				observer.observe(node);
-				return () => observer.disconnect();
-			}, []);
-			const books = catalog?.books ?? [];
-			const active = books.find((book) => book.id === bookId);
-			const sessions = useSessions((state) => state.ids.flatMap((id) => {
-				const session = state.byId[id];
-				return session ? [session] : [];
-			}));
-			const selectedWorkspaceId = workspaceId ?? preferredWriterWorkspace(catalog?.workspaces ?? []) ?? "";
-			const selectedWorkspace = catalog?.workspaces.find((workspace) => workspace.id === selectedWorkspaceId);
-			const pathExists = Boolean(path.trim()) && (selectedWorkspace?.candidates.some((candidate) => candidate.path === path.trim()) === true || books.some((book) => book.workspaceId === selectedWorkspaceId && book.path === path.trim()));
-			const workspaceSessions = writerSessionsInWorkspace(sessions, selectedWorkspace, selectedWorkspace?.sessionIds ?? []);
-			const sessionId = active && selectedSessionId && active.phases.some((phase) => phase.sessionId === selectedSessionId) ? selectedSessionId : active?.sessionId;
-			const librarySession = books.find((book) => book.sessionId !== null);
-			const perform = async (input) => {
-				setBusy(true);
+			const remembered = workspaces.items.find((item) => item.sessionIds.some((id) => id === preferences.sessionId));
+			const preferred = preferredWriterWorkspace(workspaces.items.map((item) => ({
+				...item,
+				id: item.workspaceId
+			})));
+			const workspace = workspaces.items.find((item) => item.workspaceId === preferences.workspaceId) ?? remembered ?? workspaces.items.find((item) => item.workspaceId === preferred) ?? workspaces.items[0];
+			const sessions = writerSessionsInWorkspace(catalog.ids.flatMap((id) => catalog.byId[id] ? [catalog.byId[id]] : []), workspace ? {
+				...workspace,
+				id: workspace.workspaceId
+			} : void 0, workspace?.sessionIds ?? []).filter((session) => !session.parentId && !workspaces.archivedSessionIds.includes(session.id)).sort((a, b) => b.updatedAt - a.updatedAt);
+			const selected = sessions.find((session) => session.id === preferences.sessionId) ?? sessions[0];
+			const pending = catalog.phase !== "ready" || workspaces.phase !== "ready";
+			const canLeave = () => {
+				if (!checkpoint.current()) {
+					setError(t("draftCheckpointFailed"));
+					return false;
+				}
 				setError(void 0);
+				return true;
+			};
+			const create = async () => {
+				if (!workspace || busy || !canLeave()) return;
+				setBusy(true);
 				try {
-					const book = await action(input);
-					if (input && typeof input === "object" && "action" in input && input.action === "create") writeWriterSelection(book.cwd, `${book.path}/${book.form === "long" ? "设定/创作意图.md" : "设定.md"}`);
-					setBookId(book.id);
-					setSelectedSessionId(book.sessionId ?? void 0);
-					setSection("works");
-					refresh();
-				} catch (cause) {
-					setError(t(cause instanceof Error ? cause.message : "operationFailed"));
+					const id = await createSession(workspace.workspaceId);
+					actions.selectWorkspace(workspace.workspaceId);
+					actions.selectSession(id);
+					report("createdSession");
+				} catch {
+					report("operationFailed");
 				} finally {
 					setBusy(false);
 				}
 			};
-			const canLeaveDocument = () => {
-				if (checkpoint.current()) return true;
-				setError(t("draftCheckpointFailed"));
-				return false;
-			};
-			const goBack = () => {
-				if (active && canLeaveDocument()) {
-					setBookId(void 0);
-					setSelectedSessionId(void 0);
-					setSmallView("document");
-				}
-			};
-			const requestAssistant = (prompt) => {
-				if (!sessionId) return;
-				const reference = retain(sessionId);
-				reference.ready.then(() => {
-					initializeDraft(reference, prompt);
-					openSession(sessionId);
-				}).finally(() => reference.release());
-			};
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("main", {
-				ref: root,
-				className: "writer-workbench",
+			return (0, react_jsx_runtime.jsxs)("main", {
+				className: workbench_module_css_default.workbench,
 				"data-workbench": "writer",
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
-						className: "writer-wb-header",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h1", { children: t("title") }), active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: active.title })] }), active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: goBack,
-							children: t("allWorks")
-						})]
+					(0, react_jsx_runtime.jsx)("div", {
+						className: workbench_module_css_default.ambient,
+						"aria-hidden": "true"
 					}),
-					!active ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-						className: "writer-wb-home",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
-							className: "writer-wb-nav",
-							"aria-label": t("navigation"),
-							children: [
-								"works",
-								"analysis",
-								"market"
-							].map((key) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								"aria-current": section === key ? "page" : void 0,
-								onClick: () => setSection(key),
-								children: t(key)
-							}, key))
-						}), section === "works" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-							className: "writer-wb-works",
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-									className: "writer-wb-toolbar",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t("works") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										onClick: refresh,
-										children: t("refresh")
-									})]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("form", {
-									onSubmit: (event) => {
-										event.preventDefault();
-										if (selectedWorkspaceId && path.trim() && title.trim()) perform({
-											action: "create",
-											workspaceId: selectedWorkspaceId,
-											path: path.trim(),
-											title: title.trim(),
-											form
-										});
-									},
-									children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-											"aria-label": t("workspace"),
-											value: selectedWorkspaceId,
-											onChange: (event) => {
-												setWorkspaceId(event.target.value);
-												setLinkSessionId("");
-												setCandidatePath(void 0);
-											},
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-												value: "",
-												children: t("chooseWorkspace")
-											}), catalog?.workspaces.map((workspace) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-												value: workspace.id,
-												children: workspace.title
-											}, workspace.id))]
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-											"aria-label": t("bookTitle"),
-											value: title,
-											onChange: (event) => {
-												setTitle(event.target.value);
-												setCandidatePath(void 0);
-											},
-											placeholder: t("bookTitle")
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-											"aria-label": t("folder"),
-											value: path,
-											onChange: (event) => {
-												setPath(event.target.value);
-												setCandidatePath(void 0);
-											},
-											placeholder: t("folder")
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-											"aria-label": t("form"),
-											value: form,
-											onChange: (event) => setForm(event.target.value),
-											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-												value: "long",
-												children: t("longForm")
-											}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-												value: "short",
-												children: t("shortForm")
-											})]
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-											type: "submit",
-											disabled: busy || pathExists,
-											children: t("createBook")
-										})
-									]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-									"aria-label": t("writerSession"),
-									value: linkSessionId,
-									onChange: (event) => setLinkSessionId(event.target.value),
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-										value: "",
-										children: t("chooseWriterSession")
-									}), workspaceSessions.map((session) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-										value: session.id,
-										children: session.displayTitle
-									}, session.id))]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									disabled: busy || !selectedWorkspaceId || !path.trim() || !title.trim() || !linkSessionId,
-									onClick: () => {
-										perform({
-											action: "register",
-											workspaceId: selectedWorkspaceId,
-											path: path.trim(),
-											title: title.trim(),
-											form,
-											sessionId: linkSessionId
-										});
-									},
-									children: t("registerExisting")
-								}),
-								selectedWorkspace && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-									className: "writer-wb-candidates",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: t("foundBooks") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
-										className: "writer-wb-book-list",
-										children: selectedWorkspace.candidates.map((candidate) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: candidate.title }), candidate.path !== candidate.title && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: candidate.path })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-											type: "button",
-											"aria-pressed": candidatePath === candidate.path,
-											onClick: () => {
-												setCandidatePath(candidate.path);
-												setPath(candidate.path);
-												setTitle(candidate.title);
-												setForm(candidate.form);
-											},
-											children: t("selectBook")
-										})] }, candidate.path))
-									})]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
-									className: "writer-wb-book-list",
-									children: books.map((book) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-										type: "button",
-										onClick: () => {
-											if (!canLeaveDocument()) return;
-											setBookId(book.id);
-											setSelectedSessionId(book.sessionId ?? void 0);
-										},
-										children: [
-											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: book.title }),
-											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: book.path }),
-											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: book.sessionId ? t("sessionBound") : t("sessionNeeded") })
-										]
-									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										disabled: busy,
-										onClick: () => {
-											if (canLeaveDocument()) perform({
-												action: "open",
-												id: book.id
-											});
-										},
-										children: t("open")
-									})] }, book.id))
-								})
-							]
-						}) : librarySession ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-							className: "writer-wb-library",
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t(section) }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: librarySession.title })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDesk, {
-								sessionId: SessionId(librarySession.sessionId),
-								cwd: librarySession.cwd,
-								remote,
-								t: deskT,
-								visible: true,
-								initialView: section === "analysis" ? "libraries" : "scans"
-							}, `${librarySession.id}:${section}`)]
-						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-							className: "writer-wb-placeholder",
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t(section) }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: section === "analysis" ? t("analysisEmpty") : t("marketEmpty") })]
-						})]
-					}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-						className: "writer-wb-book",
+					(0, react_jsx_runtime.jsxs)("header", {
+						className: workbench_module_css_default.header,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("nav", {
-								className: "writer-wb-book-nav",
-								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: active.title }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										onClick: () => requestAssistant(t("planningTask", {
-											title: active.title,
-											path: active.path
-										})),
-										children: t("startPlanning")
-									}),
-									active.phases.map((phase, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-										type: "button",
-										"aria-current": phase.sessionId === sessionId ? "page" : void 0,
-										onClick: () => {
-											if (canLeaveDocument()) setSelectedSessionId(phase.sessionId);
-										},
-										children: [
-											t("phase"),
-											" ",
-											index + 1
-										]
-									}, phase.sessionId)),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										disabled: busy,
-										onClick: () => {
-											if (canLeaveDocument()) perform({
-												action: "phase",
-												id: active.id
-											});
-										},
-										children: t("newPhase")
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-										"aria-label": t("chooseWriterSession"),
-										value: linkSessionId,
-										onChange: (event) => setLinkSessionId(event.target.value),
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-											value: "",
-											children: t("chooseWriterSession")
-										}), writerSessionsInWorkspace(sessions, catalog?.workspaces.find((workspace) => workspace.id === active.workspaceId), catalog?.workspaces.find((workspace) => workspace.id === active.workspaceId)?.sessionIds ?? []).map((session) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-											value: session.id,
-											children: session.displayTitle
-										}, session.id))]
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										disabled: busy || !linkSessionId,
-										onClick: () => {
-											if (canLeaveDocument()) perform({
-												action: "bind",
-												id: active.id,
-												sessionId: linkSessionId
-											});
-										},
-										children: t("linkSession")
-									})
-								]
+							(0, react_jsx_runtime.jsxs)("div", {
+								className: workbench_module_css_default.heading,
+								children: [(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size: 20 }), (0, react_jsx_runtime.jsx)("h1", { children: t("title") })]
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "writer-wb-mobile-tabs",
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									"aria-pressed": smallView === "document",
-									onClick: () => setSmallView("document"),
-									children: t("document")
-								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									"aria-pressed": smallView === "assistant",
-									onClick: () => setSmallView("assistant"),
-									children: t("assistant")
+							(0, react_jsx_runtime.jsxs)("label", {
+								className: workbench_module_css_default.workspace,
+								children: [t("workspace"), (0, react_jsx_runtime.jsxs)("select", {
+									value: workspace?.workspaceId ?? "",
+									disabled: pending || busy,
+									onChange: (event) => {
+										const next = workspaces.items.find((item) => item.workspaceId === event.target.value);
+										if (next && canLeave()) actions.selectWorkspace(next.workspaceId);
+									},
+									children: [!workspace && (0, react_jsx_runtime.jsx)("option", {
+										value: "",
+										children: t("chooseWorkspace")
+									}), workspaces.items.map((item) => (0, react_jsx_runtime.jsx)("option", {
+										value: item.workspaceId,
+										children: item.title
+									}, item.workspaceId))]
 								})]
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "writer-wb-columns",
-								"data-assistant-open": assistantOpen ? "true" : "false",
-								"data-narrow": narrow ? "true" : void 0,
-								"data-small-view": smallView,
-								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("section", {
-										className: "writer-wb-document",
-										children: sessionId ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(WriterDesk, {
-											sessionId: SessionId(sessionId),
-											cwd: active.cwd,
-											remote,
-											t: deskT,
-											checkpoint: () => checkpoint.current(),
-											visible: true
-										}, active.id) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-										className: "writer-wb-resize",
-										role: "separator",
-										"aria-orientation": "vertical",
-										"aria-valuenow": 66
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-										className: "writer-wb-assistant",
-										"aria-label": t("assistant"),
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-											type: "button",
-											onClick: () => setAssistantOpen((value) => !value),
-											children: assistantOpen ? t("collapse") : t("expand")
-										})] }), sessionId ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(AssistantPanel, {
-											book: {
-												...active,
-												sessionId
-											},
-											retain,
-											renderSlot,
-											SessionProvider,
-											t
-										}, sessionId) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: t("sessionNeeded") })]
-									})
-								]
+							(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								className: workbench_module_css_default.primary,
+								disabled: pending || busy || !workspace,
+								onClick: () => {
+									if (canLeave()) setNewBook(true);
+								},
+								children: t("createBook")
 							})
 						]
 					}),
-					error && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
-						role: "alert",
-						className: "writer-wb-error",
-						children: error
+					(0, react_jsx_runtime.jsxs)("div", {
+						className: workbench_module_css_default.toolbar,
+						children: [
+							(0, react_jsx_runtime.jsx)("nav", {
+								className: workbench_module_css_default.nav,
+								"aria-label": t("navigation"),
+								children: [
+									"projects",
+									"libraries",
+									"scans"
+								].map((view) => (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									"aria-current": preferences.view === view ? "page" : void 0,
+									onClick: () => actions.selectView(view),
+									children: t(view)
+								}, view))
+							}),
+							(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								className: workbench_module_css_default.assistantToggle,
+								"aria-pressed": preferences.assistantOpen,
+								onClick: actions.toggleAssistant,
+								children: t(preferences.assistantOpen ? "collapse" : "expand")
+							}),
+							(0, react_jsx_runtime.jsxs)("nav", {
+								className: workbench_module_css_default.panes,
+								"aria-label": t("panels"),
+								children: [(0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									"aria-pressed": preferences.pane === "document",
+									onClick: () => actions.selectPane("document"),
+									children: t("document")
+								}), (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									"aria-pressed": preferences.pane === "assistant",
+									onClick: () => actions.selectPane("assistant"),
+									children: t("assistant")
+								})]
+							})
+						]
+					}),
+					(0, react_jsx_runtime.jsxs)("div", {
+						className: workbench_module_css_default.body,
+						"data-assistant-open": preferences.assistantOpen,
+						"data-pane": preferences.pane,
+						children: [(0, react_jsx_runtime.jsxs)("section", {
+							className: `writer-wb-document ${workbench_module_css_default.document}`,
+							"aria-label": t(preferences.view),
+							children: [pending ? (0, react_jsx_runtime.jsx)(Loading, {}) : !workspace ? (0, react_jsx_runtime.jsxs)("div", {
+								className: workbench_module_css_default.empty,
+								children: [(0, react_jsx_runtime.jsx)("h2", { children: t("welcome") }), (0, react_jsx_runtime.jsx)("p", { children: t("workspaceHelp") })]
+							}) : selected ? (0, react_jsx_runtime.jsx)(WriterDesk, {
+								sessionId: selected.id,
+								cwd: workspace.path,
+								remote,
+								t: deskT,
+								checkpoint,
+								visible: true,
+								view: preferences.view
+							}, `${workspace.path}:${revision}`) : (0, react_jsx_runtime.jsxs)("div", {
+								className: workbench_module_css_default.empty,
+								children: [
+									(0, react_jsx_runtime.jsx)("h2", { children: t("welcome") }),
+									(0, react_jsx_runtime.jsx)("p", { children: t("sessionHelp") }),
+									(0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										className: workbench_module_css_default.primary,
+										disabled: busy,
+										onClick: () => {
+											create();
+										},
+										children: t("newSession")
+									})
+								]
+							}), error && (0, react_jsx_runtime.jsx)("p", {
+								role: "alert",
+								className: workbench_module_css_default.error,
+								children: error
+							})]
+						}), (0, react_jsx_runtime.jsxs)("aside", {
+							className: workbench_module_css_default.assistant,
+							"aria-label": t("assistant"),
+							children: [
+								(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									disabled: !selected || busy,
+									onClick: () => {
+										if (selected && canLeave()) openSession(selected.id);
+									},
+									children: t("openConversation")
+								})] }),
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: workbench_module_css_default.sessionControls,
+									children: [(0, react_jsx_runtime.jsxs)("select", {
+										"aria-label": t("writerSession"),
+										value: selected?.id ?? "",
+										disabled: pending || busy || !sessions.length,
+										onChange: (event) => {
+											const next = sessions.find((session) => session.id === event.target.value);
+											if (next && canLeave()) actions.selectSession(next.id);
+										},
+										children: [!selected && (0, react_jsx_runtime.jsx)("option", {
+											value: "",
+											children: t("chooseWriterSession")
+										}), sessions.map((session) => (0, react_jsx_runtime.jsx)("option", {
+											value: session.id,
+											children: session.displayTitle
+										}, session.id))]
+									}), (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										disabled: pending || busy || !workspace,
+										onClick: () => {
+											create();
+										},
+										children: t("newSession")
+									})]
+								}),
+								(0, react_jsx_runtime.jsx)("div", {
+									className: workbench_module_css_default.conversation,
+									children: selected ? (0, react_jsx_runtime.jsx)(AssistantPanel, {
+										sessionId: selected.id,
+										retain,
+										renderSlot,
+										SessionProvider,
+										t
+									}, selected.id) : (0, react_jsx_runtime.jsx)("div", {
+										className: workbench_module_css_default.empty,
+										children: (0, react_jsx_runtime.jsx)("p", { children: t("assistantHelp") })
+									})
+								})
+							]
+						})]
+					}),
+					newBook && workspace && (0, react_jsx_runtime.jsx)(NewBook, {
+						workspaceId: workspace.workspaceId,
+						createBook,
+						t,
+						close: () => setNewBook(false),
+						onCreated: (book) => {
+							writeWriterSelection(book.cwd, `${book.path}/${book.form === "long" ? "设定/创作意图.md" : "设定.md"}`);
+							actions.selectWorkspace(workspace.workspaceId);
+							if (book.sessionId) actions.selectSession(book.sessionId);
+							actions.selectView("projects");
+							setRevision((value) => value + 1);
+							setNewBook(false);
+							report("createdBook");
+						}
 					})
 				]
 			});
 		}
-		function AssistantPanel({ book, retain, renderSlot, SessionProvider, t }) {
+		function Loading() {
+			return (0, react_jsx_runtime.jsx)("div", {
+				className: workbench_module_css_default.empty,
+				"aria-busy": "true",
+				children: (0, react_jsx_runtime.jsx)("span", { className: workbench_module_css_default.spinner })
+			});
+		}
+		function AssistantPanel({ sessionId, retain, renderSlot, SessionProvider, t }) {
 			const [reference, setReference] = (0, react.useState)();
 			const [failure, setFailure] = (0, react.useState)(false);
+			const [retry, setRetry] = (0, react.useState)(0);
 			(0, react.useEffect)(() => {
-				const current = retain(book.sessionId);
+				const current = retain(sessionId);
 				let alive = true;
-				setReference(current);
-				current.ready.catch(() => {
+				current.ready.then(() => {
+					if (alive) setReference(current);
+				}).catch(() => {
 					if (alive) setFailure(true);
 				});
 				return () => {
 					alive = false;
 					current.release();
 				};
-			}, [book.sessionId, retain]);
-			if (!reference || failure) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
-				role: failure ? "alert" : "status",
-				children: t(failure ? "sessionUnavailable" : "loading")
+			}, [
+				sessionId,
+				retain,
+				retry
+			]);
+			if (failure) return (0, react_jsx_runtime.jsxs)("div", {
+				className: workbench_module_css_default.empty,
+				children: [(0, react_jsx_runtime.jsx)("p", {
+					role: "alert",
+					children: t("sessionUnavailable")
+				}), (0, react_jsx_runtime.jsx)("button", {
+					type: "button",
+					onClick: () => {
+						setReference(void 0);
+						setFailure(false);
+						setRetry((value) => value + 1);
+					},
+					children: t("retry")
+				})]
 			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SessionProvider, {
+			return reference ? (0, react_jsx_runtime.jsx)(SessionProvider, {
 				session: reference,
 				children: renderSlot("writer.workbench.conversation", {})
+			}) : (0, react_jsx_runtime.jsx)(Loading, {});
+		}
+		function NewBook({ workspaceId, createBook, onCreated, close, t }) {
+			const [title, setTitle] = (0, react.useState)("");
+			const [path, setPath] = (0, react.useState)();
+			const [form, setForm] = (0, react.useState)("long");
+			const [busy, setBusy] = (0, react.useState)(false);
+			const [error, setError] = (0, react.useState)();
+			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
+				open: true,
+				title: t("createBook"),
+				closeLabel: t("cancel"),
+				onClose: busy ? () => {} : close,
+				children: (0, react_jsx_runtime.jsxs)("form", {
+					className: workbench_module_css_default.form,
+					onSubmit: (event) => {
+						event.preventDefault();
+						if (busy || !title.trim() || !(path ?? title).trim()) return;
+						setBusy(true);
+						setError(void 0);
+						createBook({
+							action: "create",
+							workspaceId,
+							title: title.trim(),
+							path: (path ?? title).trim(),
+							form
+						}).then(onCreated).catch((cause) => {
+							const key = cause instanceof Error && cause.message in zh ? cause.message : "operationFailed";
+							setError(t(key));
+						}).finally(() => setBusy(false));
+					},
+					children: [
+						(0, react_jsx_runtime.jsxs)("label", { children: [t("bookTitle"), (0, react_jsx_runtime.jsx)("input", {
+							autoFocus: true,
+							required: true,
+							value: title,
+							disabled: busy,
+							onChange: (event) => setTitle(event.target.value)
+						})] }),
+						(0, react_jsx_runtime.jsxs)("label", { children: [t("folder"), (0, react_jsx_runtime.jsx)("input", {
+							required: true,
+							value: path ?? title,
+							disabled: busy,
+							onChange: (event) => setPath(event.target.value)
+						})] }),
+						(0, react_jsx_runtime.jsxs)("label", { children: [t("form"), (0, react_jsx_runtime.jsxs)("select", {
+							value: form,
+							disabled: busy,
+							onChange: (event) => setForm(event.target.value === "short" ? "short" : "long"),
+							children: [(0, react_jsx_runtime.jsx)("option", {
+								value: "long",
+								children: t("longForm")
+							}), (0, react_jsx_runtime.jsx)("option", {
+								value: "short",
+								children: t("shortForm")
+							})]
+						})] }),
+						error && (0, react_jsx_runtime.jsx)("p", {
+							role: "alert",
+							children: error
+						}),
+						(0, react_jsx_runtime.jsxs)("footer", { children: [(0, react_jsx_runtime.jsx)("button", {
+							type: "button",
+							disabled: busy,
+							onClick: close,
+							children: t("cancel")
+						}), (0, react_jsx_runtime.jsx)("button", {
+							type: "submit",
+							className: workbench_module_css_default.primary,
+							disabled: busy || !title.trim(),
+							children: t("create")
+						})] })
+					]
+				})
 			});
 		}
 		//#endregion
-		//#region src/client/workbench-entry.tsx
+		//#region lib/types/client/workbench-entry.js
 		const inject$1 = [
 			"slots",
 			"locale",
@@ -4149,18 +4217,24 @@ window.__ModuleLoader__.load({
 			"remote",
 			"remote.workspaceFiles"
 		];
-		/** @param ctx - native Client services for panel selection, Sessions, and input drafts. */
-		function apply$1(ctx) {
+		function WorkbenchNotice({ useNotice, dismiss, t }) {
+			const notice = useNotice((value) => value);
+			return notice ? (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Toast, {
+				text: t(notice.key),
+				...notice.key !== "operationFailed" ? { tone: "success" } : {},
+				onDone: dismiss
+			}, notice.sequence) : null;
+		}
+		/** @param ctx - native Client services. @param store - preferences shared with the sidebar. */
+		function apply$1(ctx, store) {
 			ctx.effect(() => ctx.locale.register("writerWorkbench", {
 				en,
 				zh
 			}), "writer: workbench locale");
-			ctx.effect(() => ctx.locale.register(NS, {
-				en: en$2,
-				zh: zh$2
-			}), "writer: document locale");
 			const t = ctx.locale.bind("writerWorkbench");
 			const deskT = ctx.locale.bind(NS);
+			const notice = (0, _deepseek_ai_dsh_client_store.createSnapshotStore)(null);
+			let sequence = 0;
 			ctx.effect(() => ctx.slots.inject("main", function* () {
 				yield ctx.slots.register({
 					name: "main",
@@ -4173,21 +4247,27 @@ window.__ModuleLoader__.load({
 				yield ctx.slots.register({
 					name: "writer.workbench",
 					locale: "writerWorkbench",
+					store,
 					children: { "writer.workbench.conversation": {
 						kind: "single",
 						scope: "session"
 					} },
 					inject: () => ({
 						retain: (id) => ctx.sessions.retain(id, { source: "mainView" }),
-						action: async (value) => await request("/writer-workbench", value),
-						load: async () => validateCatalog(await request("/writer-workbench")),
+						createSession: (workspaceId) => ctx.sessions.create({
+							workspaceId,
+							agentPreset: "writer"
+						}),
+						createBook: async (input) => await request(input),
 						openSession: (id) => {
 							ctx.uiWorkspace.openSession(id);
 						},
-						initializeDraft: (reference, prompt) => ctx.conversation.input.requestDraftInitialization(reference.binding, {
-							prompt,
-							whenDraftExists: "append"
-						}),
+						report: (key) => {
+							notice.set({
+								key,
+								sequence: ++sequence
+							});
+						},
 						remote: ctx.remote,
 						deskT: (key) => deskT(key)
 					})
@@ -4201,9 +4281,20 @@ window.__ModuleLoader__.load({
 				label: () => t("title"),
 				locale: "writerWorkbench"
 			}, Launcher)), "writer: workbench launcher");
+			ctx.effect(() => ctx.slots.inject("shell.overlay", () => ctx.slots.register({
+				name: "shell.overlay",
+				id: "writer.workbench.notice",
+				locale: "writerWorkbench",
+				inject: () => ({
+					hooks: { notice },
+					dismiss: () => {
+						notice.set(null);
+					}
+				})
+			}, WorkbenchNotice)), "writer: workbench feedback");
 		}
-		async function request(path, value) {
-			const response = await fetch(path, value === void 0 ? { cache: "no-store" } : {
+		async function request(value) {
+			const response = await fetch("/writer-workbench", {
 				method: "POST",
 				headers: { "content-type": "application/json" },
 				body: JSON.stringify(value)
@@ -4212,20 +4303,63 @@ window.__ModuleLoader__.load({
 			if (!response.ok) throw new Error(result && typeof result === "object" && "error" in result && typeof result.error === "string" ? result.error : "workbenchFailed");
 			return result;
 		}
-		function validateCatalog(value) {
-			if (!value || typeof value !== "object" || !Array.isArray(value.books) || !Array.isArray(value.workspaces)) throw new Error("loadFailed");
-			return value;
+		//#endregion
+		//#region lib/types/client/workbench-store.js
+		/** Viewing preferences shared by the writing sidebar and the full workbench. */
+		/** @returns registration-owned preferences; manuscripts remain in the existing editor. */
+		function createWriterWorkbenchStore() {
+			return (0, _deepseek_ai_dsh_client_store.defineStore)({
+				init: () => ({
+					workspaceId: "",
+					sessionId: "",
+					view: "projects",
+					assistantOpen: true,
+					pane: "document"
+				}),
+				persist: "dsh.writer.workbench.v2",
+				actions: {
+					selectWorkspace: (draft, id) => {
+						draft.workspaceId = id;
+						draft.sessionId = "";
+					},
+					selectSession: (draft, id) => {
+						draft.sessionId = id;
+					},
+					openFromSidebar: (draft, id) => {
+						draft.workspaceId = "";
+						draft.sessionId = id;
+						draft.pane = "document";
+					},
+					selectView: (draft, view) => {
+						draft.view = view;
+						draft.pane = "document";
+					},
+					toggleAssistant: (draft) => {
+						draft.assistantOpen = !draft.assistantOpen;
+					},
+					selectPane: (draft, pane) => {
+						draft.pane = pane;
+						if (pane === "assistant") draft.assistantOpen = true;
+					}
+				}
+			});
 		}
 		//#endregion
-		//#region src/client/index.ts
+		//#region lib/types/client/index.js
 		/** Services required by the sidebar and the Writing settings page. */
-		const inject = [...zhuqueInject, ...inject$1];
+		const inject = [
+			...zhuqueInject,
+			...inject$1,
+			...inject$2
+		];
 		/**
 		* Register the writing sidebar and the Plugins-page Writing credential entry.
 		* @param context - browser services.
 		*/
 		function apply(context) {
-			apply$1(context);
+			const workbenchStore = createWriterWorkbenchStore();
+			apply$2(context, workbenchStore);
+			apply$1(context, workbenchStore);
 			applyZhuqueSettings(context);
 		}
 		//#endregion

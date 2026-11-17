@@ -1,5 +1,5 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { FileTypeIcon, classifyFileType, IconFolderCloseRegular, IconFolderOpenRegular, Modal, } from '@deepseek-ai/dsh-client-ui-primitives';
 import { writerExtension } from "../editable.js";
 import { breadcrumbSegments, countLoadedFiles, editorByteSize, fileExtensionLabel, formatBytes, loadedFilesLabel, } from "./editor-shell.js";
@@ -60,7 +60,7 @@ function cursorLineCol(content, caret) {
 function isChatComposerTarget(target) {
     if (!(target instanceof HTMLElement))
         return false;
-    if (target.closest('[data-workbench="writer"]') !== null)
+    if (target.closest('.writer-desk') !== null)
         return false;
     const tag = target.tagName;
     if (tag !== 'TEXTAREA' && tag !== 'INPUT' && !target.isContentEditable)
@@ -148,11 +148,10 @@ function SearchHits({ hits, query, selected, onSelect, t, }) {
 export function WriterDesk(props) {
     return _jsx(WriterDeskBody, { ...props }, props.cwd);
 }
-function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView }) {
-    const checkpointRef = useRef(() => true);
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }) {
     const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
     if (checkpoint)
-        checkpointRef.current = writerDocument.checkpoint;
+        checkpoint.current = writerDocument.checkpoint;
     const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
     const [viewPick, setViewPick] = useState(initialView);
     const [libraries, setLibraries] = useState([]);
@@ -185,7 +184,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     // Keep empty views switchable and prefer scans when they are the only content.
     const preferredView = libraries.length > 0 ? 'libraries'
         : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans';
-    const view = viewPick ?? preferredView;
+    const view = controlledView ?? viewPick ?? preferredView;
     const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans;
     const rootPathsKey = roots.map(node => node.path).join('\0');
     const query = filter.trim();
@@ -387,11 +386,15 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         if (!visible)
             return undefined;
         const onKey = (event) => {
+            if (deskRef.current?.closest('.writer-wb-document')?.getClientRects().length === 0)
+                return;
             const modifier = event.metaKey || event.ctrlKey;
             if (!modifier)
                 return;
             const key = event.key.toLocaleLowerCase();
             if (key === 's') {
+                if (isChatComposerTarget(event.target))
+                    return;
                 event.preventDefault();
                 saveRef.current();
                 return;
@@ -440,11 +443,12 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const byteLabel = formatBytes(editorByteSize(draft, eol));
     const extLabel = active === undefined ? '' : fileExtensionLabel(active);
     const encodingText = t('statusEncoding').replace('{eol}', eolLabel(eol));
-    const tabPanelId = 'writer-workspace-panel';
-    const librariesTabId = 'writer-tab-libraries';
-    const projectsTabId = 'writer-tab-projects';
-    const scansTabId = 'writer-tab-scans';
-    const railId = 'writer-rail';
+    const deskId = useId();
+    const tabPanelId = `${deskId}-workspace-panel`;
+    const librariesTabId = `${deskId}-tab-libraries`;
+    const projectsTabId = `${deskId}-tab-projects`;
+    const scansTabId = `${deskId}-tab-scans`;
+    const railId = `${deskId}-rail`;
     useEffect(() => {
         const node = deskRef.current;
         if (node === null)
@@ -534,14 +538,14 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const deskStyle = {
         ['--writer-rail-width']: `${String(fittedRailWidth)}px`,
     };
-    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [_jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { pickView('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { pickView('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] }), _jsxs("button", { type: "button", id: scansTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'scans', "aria-controls": tabPanelId, onClick: () => { pickView('scans'); }, children: [_jsx("span", { children: t('scans') }), scans.length > 0 && _jsx("b", { className: "writer-badge", children: scans.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
+    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [controlledView === undefined && _jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { pickView('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { pickView('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] }), _jsxs("button", { type: "button", id: scansTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'scans', "aria-controls": tabPanelId, onClick: () => { pickView('scans'); }, children: [_jsx("span", { children: t('scans') }), scans.length > 0 && _jsx("b", { className: "writer-badge", children: scans.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
                                 if (event.key === 'Escape') {
                                     event.preventDefault();
                                     setFilter('');
                                     setSearchResult(undefined);
                                     setSearching(false);
                                 }
-                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId, "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
+                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined, "aria-label": controlledView === undefined ? undefined : t(view), "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
                                 : showSearch ? (searching ? _jsx("p", { className: "writer-empty", children: t('searching').replace('{query}', query) })
                                     : searchResult !== undefined && searchResult.results.length === 0 ? _jsxs(_Fragment, { children: [_jsx("p", { className: "writer-empty", children: (searchResult.truncated ? t('searchIncomplete') : t('searchEmpty')).replace('{query}', query) }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })
                                         : searchResult !== undefined ? _jsxs(_Fragment, { children: [_jsx(SearchHits, { hits: searchResult.results, query: query, selected: active, onSelect: selectFile, t: t }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })

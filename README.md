@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-Novel-writing workbench for DSH that discovers existing manuscripts and links them to native Writer conversations.
+A writing sidebar and expanded workbench for DSH, with direct manuscript editing and native Writer conversations.
 
 [Plugin documentation](packages/winterhuan/writer/README.md) · [Release package](https://github.com/winterhuan/dsh-writer/releases/download/v0.2.1/winterhuan-dsh-writer-0.2.1.tgz)
 

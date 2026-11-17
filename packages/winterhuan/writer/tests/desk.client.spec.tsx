@@ -131,9 +131,9 @@ it('uses left-rail shell, collapsed roots, lazy-loads, and saves', async () => {
   expect(librariesTab.textContent).toContain('1')
   expect(projectsTab.textContent).toContain('1')
   expect(librariesTab.getAttribute('aria-selected')).toBe('true')
-  expect(librariesTab.getAttribute('aria-controls')).toBe('writer-workspace-panel')
+  expect(librariesTab.getAttribute('aria-controls')).toBe(screen.getByRole('tabpanel').id)
   expect(librariesTab.classList.contains('writer-tab')).toBe(true)
-  expect(container.querySelector('#writer-workspace-panel')?.getAttribute('role')).toBe('tabpanel')
+  expect(screen.getByRole('tabpanel').getAttribute('aria-labelledby')).toBe(librariesTab.id)
 
   // Roots start collapsed; expanding one lazy-loads its children.
   const sample = await screen.findByRole('button', { name: /样本/ })
@@ -434,7 +434,7 @@ it('defaults the left rail width and persists collapse / resize chrome', async (
 
   const toggle = screen.getByRole('button', { name: zh.collapseRail })
   expect(toggle.getAttribute('aria-expanded')).toBe('true')
-  expect(toggle.getAttribute('aria-controls')).toBe('writer-rail')
+  expect(toggle.getAttribute('aria-controls')).toBe(rail.id)
   fireEvent.click(toggle)
   expect(desk.getAttribute('data-rail-collapsed')).toBe('true')
   expect(rail.hidden).toBe(true)
