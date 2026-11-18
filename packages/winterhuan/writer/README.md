@@ -28,7 +28,7 @@ This bundle adds a writing sidebar, Writer preset, and oh-story skills to DSH. T
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.4&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.5&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.

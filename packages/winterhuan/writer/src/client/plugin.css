@@ -999,6 +999,41 @@
   color: var(--dsw-alias-label-secondary);
 }
 
+.writer-preview-table {
+  max-width: 100%;
+  margin: 0.8em 0;
+  overflow-x: auto;
+  border: 1px solid var(--writer-border);
+  border-radius: 6px;
+}
+
+.writer-preview-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.writer-preview-table th,
+.writer-preview-table td {
+  min-width: 5em;
+  padding: 6px 9px;
+  border-right: 1px solid var(--writer-border);
+  border-bottom: 1px solid var(--writer-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.writer-preview-table th {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.writer-preview-table tr > :last-child {
+  border-right: 0;
+}
+
+.writer-preview-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
 .writer-status {
   display: flex;
   flex-wrap: wrap;

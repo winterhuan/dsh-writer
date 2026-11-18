@@ -17,9 +17,56 @@ function inlineMarkdown(value: string): string {
     .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/gu, '<em>$1</em>')
 }
 
+function tableCells(line: string): string[] {
+  const trimmed = line.trim()
+  const row = trimmed.startsWith('|') ? trimmed.slice(1) : trimmed
+  const content = row.endsWith('|') && !row.endsWith('\\|') ? row.slice(0, -1) : row
+  const cells: string[] = ['']
+  let codeFenceLength = 0
+
+  for (let i = 0; i < content.length; i += 1) {
+    const character = content[i] ?? ''
+    if (character === '`') {
+      let fenceLength = 1
+      while (content[i + fenceLength] === '`') fenceLength += 1
+      if (codeFenceLength === 0) codeFenceLength = fenceLength
+      else if (codeFenceLength === fenceLength) codeFenceLength = 0
+      cells[cells.length - 1] += '`'.repeat(fenceLength)
+      i += fenceLength - 1
+    } else if (character === '\\' && content[i + 1] === '|') {
+      cells[cells.length - 1] += '|'
+      i += 1
+    } else if (character === '|' && codeFenceLength === 0) {
+      cells.push('')
+    } else {
+      cells[cells.length - 1] += character
+    }
+  }
+
+  return cells.map(cell => cell.trim())
+}
+
+function hasTablePipe(line: string): boolean {
+  return tableCells(line).length > 1 || line.trim().startsWith('|') || line.trim().endsWith('|')
+}
+
+function tableAlignments(line: string): Array<'left' | 'center' | 'right' | undefined> | null {
+  if (!hasTablePipe(line)) return null
+  const cells = tableCells(line)
+  const alignments: Array<'left' | 'center' | 'right' | undefined> = []
+
+  for (const cell of cells) {
+    const separator = /^(:)?(-{3,})(:)?$/u.exec(cell)
+    if (separator === null) return null
+    alignments.push(separator[1] && separator[3] ? 'center' : separator[1] ? 'left' : separator[3] ? 'right' : undefined)
+  }
+
+  return alignments
+}
+
 /**
  * Convert Markdown to escaped HTML suitable for `dangerouslySetInnerHTML`.
- * Mirrors oh-story Dashboard `markdownToSafeHtml` (headings, lists, code, hr, quote).
+ * Supports headings, lists, GFM tables, code, horizontal rules, and quotes.
  * @param markdown - editor text (LF).
  * @returns HTML string with no unescaped user markup.
  */
@@ -52,6 +99,33 @@ export function markdownToSafeHtml(markdown: string): string {
     }
     if (inCode) {
       codeLines.push(line)
+      continue
+    }
+
+    const alignments = lines[i + 1] === undefined ? null : tableAlignments(lines[i + 1] ?? '')
+    if (alignments !== null && hasTablePipe(line)) {
+      closeList()
+      const header = tableCells(line)
+      const renderCell = (cell: string, index: number, tag: 'th' | 'td'): string => {
+        const alignment = alignments[index]
+        const align = alignment === undefined ? '' : ` style="text-align:${alignment}"`
+        const scope = tag === 'th' ? ' scope="col"' : ''
+        return `<${tag}${scope}${align}>${inlineMarkdown(cell)}</${tag}>`
+      }
+      output.push(
+        `<div class="writer-preview-table" data-line="${String(lineNum)}" tabindex="0"><table><thead><tr data-line="${String(lineNum)}">${alignments.map((_, index) => renderCell(header[index] ?? '', index, 'th')).join('')}</tr></thead><tbody>`,
+      )
+
+      let rowIndex = i + 2
+      while (rowIndex < lines.length && (lines[rowIndex] ?? '').trim() !== '' && hasTablePipe(lines[rowIndex] ?? '')) {
+        const cells = tableCells(lines[rowIndex] ?? '')
+        output.push(
+          `<tr data-line="${String(rowIndex + 1)}">${alignments.map((_, index) => renderCell(cells[index] ?? '', index, 'td')).join('')}</tr>`,
+        )
+        rowIndex += 1
+      }
+      output.push('</tbody></table></div>')
+      i = rowIndex - 1
       continue
     }
 
