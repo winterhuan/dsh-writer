@@ -150,12 +150,10 @@ function SearchHits({ hits, query, selected, onSelect, t, }) {
 export function WriterDesk(props) {
     return _jsx(WriterDeskBody, { ...props }, props.cwd);
 }
-function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }) {
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, running = false }) {
     const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
-    if (checkpoint)
-        checkpoint.current = writerDocument.checkpoint;
     const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
-    const [viewPick, setViewPick] = useState(initialView);
+    const [viewPick, setViewPick] = useState(undefined);
     const [libraries, setLibraries] = useState([]);
     const [projects, setProjects] = useState([]);
     const [scans, setScans] = useState([]);
@@ -178,6 +176,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const saveRef = useRef(() => { });
     const searchSeq = useRef(0);
     const selectionSeq = useRef(0);
+    const scanController = useRef();
+    const previousTurn = useRef({ sessionId, running });
     const selectFileRef = useRef(() => { });
     const [railChrome, setRailChrome] = useState(() => readRailChrome());
     const [deskWidth, setDeskWidth] = useState(0);
@@ -186,9 +186,9 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     // Keep empty views switchable and prefer scans when they are the only content.
     const preferredView = libraries.length > 0 ? 'libraries'
         : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans';
-    const view = controlledView ?? viewPick ?? preferredView;
+    const view = viewPick ?? preferredView;
     const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans;
-    const rootPathsKey = roots.map(node => node.path).join('\0');
+    const rootPathsKey = roots.map(node => node.path || '.').join('\0');
     const query = filter.trim();
     const showSearch = query !== '';
     const patchDirectory = (path, update) => {
@@ -201,6 +201,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         if (!visible)
             return undefined;
         const controller = new AbortController();
+        scanController.current = controller;
         const signal = controller.signal;
         setNotice(undefined);
         setScanning(true);
@@ -216,7 +217,6 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
                 setScanErrors(scan.scanErrors);
                 setScanHardFailed(false);
                 setListings({});
-                setExpanded({});
             }
             catch (error) {
                 if (signal.aborted)
@@ -235,6 +235,9 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         return () => { controller.abort(); selectionSeq.current += 1; };
     }, [visible, sessionId, cwd, remote, reloadKey, t]);
     const loadDirectory = (path, force = false, onLoaded) => {
+        const signal = scanController.current?.signal;
+        if (!signal || signal.aborted)
+            return;
         const cached = force ? undefined : listings[path];
         if (cached !== undefined) {
             patchDirectory(path, (node) => {
@@ -256,7 +259,9 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             const { loadError: _drop, ...rest } = node;
             return { ...rest, loading: true };
         });
-        void readDir(remote, sessionId, cwd, path, new AbortController().signal, t).then((page) => {
+        void readDir(remote, sessionId, cwd, path, signal, t).then((page) => {
+            if (signal.aborted)
+                return;
             setListings(current => ({ ...current, [path]: { entries: page.entries, truncated: page.truncated } }));
             patchDirectory(path, (node) => {
                 const built = buildLoadedChildren(path, page.entries, DIRECTORY_PAGE_SIZE, page.truncated);
@@ -265,6 +270,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             });
             onLoaded?.(page.entries);
         }).catch((error) => {
+            if (signal.aborted)
+                return;
             patchDirectory(path, node => ({
                 ...node,
                 loading: false,
@@ -272,21 +279,25 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             }));
         });
     };
-    // Only the chain holding the open file auto-opens and lazy-loads; respect explicit collapse.
+    // Reload visible branches after discovery replaces the directory nodes.
     useEffect(() => {
-        if (!visible || showSearch)
+        if (!visible || scanning || showSearch)
             return;
-        for (const root of roots) {
-            if (root.kind !== 'directory')
+        const pending = [...roots];
+        for (const node of pending) {
+            if (node.kind !== 'directory')
                 continue;
-            const key = root.path;
+            const key = node.path;
             const open = key in expanded ? expanded[key] === true : defaultWriterTreeExpanded(key, active);
-            if (!open || root.loaded || root.loading || root.loadError !== undefined)
+            if (!open)
                 continue;
-            loadDirectory(key);
+            if (node.loaded)
+                pending.push(...node.children);
+            else if (!node.loading && node.loadError === undefined)
+                loadDirectory(key);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional narrow deps for root lazy-open
-    }, [visible, roots, expanded, active, listings, showSearch]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- loadDirectory uses this render's listings
+    }, [visible, scanning, roots, expanded, active, listings, showSearch]);
     const onToggle = (path, open) => {
         const sequence = ++selectionSeq.current;
         setExpanded(current => ({ ...current, [path]: open }));
@@ -330,12 +341,16 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     };
     selectFileRef.current = selectFile;
     const rescan = () => {
-        if (!confirmDiscard())
-            return;
         selectionSeq.current += 1;
-        writerDocument.close();
+        writerDocument.reload();
         setReloadKey(value => value + 1);
     };
+    useEffect(() => {
+        const previous = previousTurn.current;
+        previousTurn.current = { sessionId, running };
+        if (previous.sessionId === sessionId && previous.running && !running)
+            rescan();
+    }, [sessionId, running]);
     useEffect(() => { setConflictOpen(conflict); }, [conflict]);
     useEffect(() => { setCaret(0); }, [active]);
     const save = writerDocument.save;
@@ -362,9 +377,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         const sequence = ++searchSeq.current;
         const controller = new AbortController();
         const timer = window.setTimeout(() => {
-            const rootPaths = rootPathsKey === ''
-                ? []
-                : rootPathsKey.split('\0').map(path => (path === '' ? '.' : path));
+            const rootPaths = rootPathsKey === '' ? [] : rootPathsKey.split('\0');
             void searchWriterFilenames(rootPaths, trimmed, relative => readDir(remote, sessionId, cwd, relative === '.' ? '' : relative, controller.signal, t), controller.signal).then((result) => {
                 if (sequence !== searchSeq.current || controller.signal.aborted)
                     return;
@@ -382,13 +395,11 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
             window.clearTimeout(timer);
             controller.abort();
         };
-    }, [visible, filter, view, rootPathsKey, remote, sessionId, cwd, t]);
+    }, [visible, filter, view, rootPathsKey, reloadKey, remote, sessionId, cwd, t]);
     useEffect(() => {
         if (!visible)
             return undefined;
         const onKey = (event) => {
-            if (deskRef.current?.closest('.writer-wb-document')?.getClientRects().length === 0)
-                return;
             const modifier = event.metaKey || event.ctrlKey;
             if (!modifier)
                 return;
@@ -536,14 +547,14 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const deskStyle = {
         ['--writer-rail-width']: `${String(fittedRailWidth)}px`,
     };
-    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [controlledView === undefined && _jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { pickView('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { pickView('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] }), _jsxs("button", { type: "button", id: scansTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'scans', "aria-controls": tabPanelId, onClick: () => { pickView('scans'); }, children: [_jsx("span", { children: t('scans') }), scans.length > 0 && _jsx("b", { className: "writer-badge", children: scans.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
+    return _jsxs("div", { ref: deskRef, className: "writer-desk", "data-workbench": "writer", "data-rail-collapsed": railCollapsed ? 'true' : undefined, style: deskStyle, children: [_jsxs("aside", { id: railId, className: "writer-rail", "aria-label": t('tree'), hidden: railCollapsed || undefined, children: [_jsxs("nav", { className: "writer-tabs", "aria-label": t('workspaceTabs'), role: "tablist", children: [_jsxs("button", { type: "button", id: librariesTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'libraries', "aria-controls": tabPanelId, onClick: () => { pickView('libraries'); }, children: [_jsx("span", { children: t('libraries') }), libraries.length > 0 && _jsx("b", { className: "writer-badge", children: libraries.length })] }), _jsxs("button", { type: "button", id: projectsTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'projects', "aria-controls": tabPanelId, onClick: () => { pickView('projects'); }, children: [_jsx("span", { children: t('projects') }), projects.length > 0 && _jsx("b", { className: "writer-badge", children: projects.length })] }), _jsxs("button", { type: "button", id: scansTabId, role: "tab", className: "writer-tab", "aria-selected": view === 'scans', "aria-controls": tabPanelId, onClick: () => { pickView('scans'); }, children: [_jsx("span", { children: t('scans') }), scans.length > 0 && _jsx("b", { className: "writer-badge", children: scans.length })] })] }), _jsx("div", { className: "writer-search-slot", role: "search", children: _jsx("input", { ref: searchRef, type: "search", value: filter, placeholder: t('search'), "aria-label": t('searchLabel'), onChange: event => { setFilter(event.target.value); setNotice(undefined); }, onKeyDown: (event) => {
                                 if (event.key === 'Escape') {
                                     event.preventDefault();
                                     setFilter('');
                                     setSearchResult(undefined);
                                     setSearching(false);
                                 }
-                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined, "aria-label": controlledView === undefined ? undefined : t(view), "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
+                            } }) }), _jsxs("div", { className: "writer-tree-panel", id: tabPanelId, role: "tabpanel", "aria-labelledby": view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId, "aria-busy": scanning || undefined, children: [health === 'failed' && !showSearch && _jsxs("div", { className: "writer-scan-banner", role: "alert", children: [_jsx("p", { children: t('scanFailed') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), health === 'partial' && !showSearch && _jsxs("div", { className: "writer-scan-banner writer-scan-banner-warn", role: "status", children: [_jsx("p", { children: t('scanPartial') }), _jsx("p", { children: scanErrors[0] }), _jsx("button", { type: "button", onClick: rescan, children: t('retryScan') })] }), scanning && !showSearch ? _jsx("p", { className: "writer-empty", children: t('healthLoading') })
                                 : showSearch ? (searching ? _jsx("p", { className: "writer-empty", children: t('searching').replace('{query}', query) })
                                     : searchResult !== undefined && searchResult.results.length === 0 ? _jsxs(_Fragment, { children: [_jsx("p", { className: "writer-empty", children: (searchResult.truncated ? t('searchIncomplete') : t('searchEmpty')).replace('{query}', query) }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })
                                         : searchResult !== undefined ? _jsxs(_Fragment, { children: [_jsx(SearchHits, { hits: searchResult.results, query: query, selected: active, onSelect: selectFile, t: t }), truncationText !== '' && _jsx("p", { className: "writer-muted", role: "status", children: truncationText })] })

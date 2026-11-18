@@ -1,7 +1,6 @@
 /** Workspace views, filename search, and the prose editor shell. */
 import type { ClientRemote } from '@deepseek-ai/dsh-api-gateway/client';
 import type { SessionId } from '@deepseek-ai/dsh-session/types';
-import { type WriterWorkspaceView } from './library.ts';
 import type { zh } from './locales.ts';
 type Copy = (key: keyof typeof zh) => string;
 interface DeskProps {
@@ -10,11 +9,7 @@ interface DeskProps {
     readonly remote: ClientRemote;
     readonly t: Copy;
     readonly visible: boolean;
-    readonly checkpoint?: {
-        current: () => boolean;
-    };
-    readonly initialView?: WriterWorkspaceView;
-    readonly view?: WriterWorkspaceView;
+    readonly running?: boolean;
 }
 /**
  * The writing sidebar body for one session.

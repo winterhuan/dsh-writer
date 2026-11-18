@@ -194,20 +194,6 @@ it('rebinds reads and saves to a new phase Session without remounting the select
   expect(readWriterDraft('/ws', a).draft).toBeUndefined()
 })
 
-it('checkpoints a dirty document before navigation and refuses when browser storage is unavailable', async () => {
-  const { remote } = reader()
-  const { result } = renderHook(() => useWriterDocument(remote, sessionId, '/ws', copy))
-  act(() => { result.current.open(a) })
-  await waitFor(() => { expect(result.current.ready).toBe(true) })
-  act(() => { result.current.edit('需保留的草稿') })
-  expect(result.current.checkpoint()).toBe(true)
-  expect(readWriterDraft('/ws', a).draft?.text).toBe('需保留的草稿')
-  const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new DOMException('quota', 'QuotaExceededError') })
-  act(() => { result.current.edit('只能留在内存的草稿') })
-  expect(result.current.checkpoint()).toBe(false)
-  expect(setItem).toHaveBeenCalled()
-})
-
 it('keeps a draft unsaved until the new Session can read its baseline', async () => {
   const { remote, readBytes } = reader()
   const fetch = vi.fn(async (_url: string, _init: RequestInit) => new Response(JSON.stringify({ path: a, bytes: 12, version: 'a2' })))

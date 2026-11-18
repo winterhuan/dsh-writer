@@ -8,7 +8,6 @@ import { resolveWriterSyncPreset } from "./sync-gate.js";
 import { restoreWriterSkills, syncWriterSkills, unsyncWriterSkills } from "./sync-skills.js";
 import { formatWriterSkillsStatus, inspectWriterSkills } from "./skills-status.js";
 import { registerWriterRoute } from "./write-route.js";
-import { registerWriterWorkbench } from "./workbench.js";
 export { packageSkillsDir } from "./skills-dir.js";
 export { skillFilesystemRowDisabled, writerSkillMount } from "./mount.js";
 export { resolveWriterSyncPreset } from "./sync-gate.js";
@@ -131,9 +130,6 @@ export function apply(context, config = {}) {
     });
     context.inject(['webServer', 'typert'], ctx => {
         registerWriterRoute(ctx, { maxBytes, trustedHosts });
-    });
-    context.inject(['webServer', 'sessionController', 'workspaceRegistry', 'agentPresets', 'sessions'], ctx => {
-        registerWriterWorkbench(ctx, trustedHosts);
     });
     context.inject(['commands'], ctx => {
         ctx.effect(() => ctx.commands.register({

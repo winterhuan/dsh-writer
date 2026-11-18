@@ -18,9 +18,8 @@
   font: 13px/1.5 var(--dsw-font-family);
 }
 
+.writer-sidebar { container: writer-document / inline-size; }
 .writer-sidebar { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-.writer-sidebar-heading { display: flex; justify-content: flex-end; padding: 6px 12px; border-bottom: .5px solid var(--dsw-alias-border-l2); }
-.writer-sidebar-heading button { font: 13px/1.5 var(--dsw-font-family); color: var(--dsw-alias-link); background: transparent; border: 0; padding: 4px 8px; cursor: pointer; }
 .writer-sidebar > .writer-desk { flex: 1; min-height: 0; }
 
 .writer-book-panel {
@@ -102,9 +101,8 @@
 
 /* Left rail: tabs → search slot → tree → footnote (Dashboard IA, DSH tokens). */
 .writer-rail {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 34px auto minmax(0, 1fr) 30px;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -183,6 +181,7 @@
 
 .writer-tabs {
   display: grid;
+  flex: 0 0 34px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   padding: 0 6px;
   border-bottom: 1px solid var(--writer-border);
@@ -306,6 +305,7 @@
 }
 
 .writer-tree-panel {
+  flex: 1;
   min-width: 0;
   min-height: 0;
   overflow: auto;
@@ -314,6 +314,7 @@
 }
 
 .writer-rail-note {
+  flex: 0 0 30px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -436,7 +437,7 @@
 }
 /* When the stage is squeezed (wide rail), the three counts drop first —
    the rail tabs already carry the library/project counts. */
-@container (max-width: 399px) {
+@container (max-width: 600px) {
   .writer-counts {
     display: none;
   }
@@ -1009,15 +1010,33 @@
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 420px) {
-  /* Do not override rail track to minmax(0, …) here — that reintroduces mid-glyph
-     clipping under zoom/narrow host. JS fitRailWidth caps --writer-rail-width to the desk. */
-  .writer-counts {
-    display: none;
+@container writer-document (max-width: 600px) {
+  .writer-desk:not([data-rail-collapsed]) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 28%) minmax(0, 1fr);
   }
+  .writer-rail { border-right: 0; border-bottom: 1px solid var(--writer-border); }
+  .writer-rail-resize, .writer-rail-note { display: none; }
 }
 
-@media (max-width: 320px) {
+@container (max-width: 480px) {
+  .writer-editor-toolbar, .writer-editor-actions { flex-wrap: wrap; }
+  .writer-document-identity { flex-basis: 100%; }
+  .writer-editor-actions { flex: 0 1 auto; }
+}
+
+article.writer-preview {
+  font-size: 16px;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+  padding: 1em clamp(12px, 4%, 32px);
+}
+
+article.writer-preview > * {
+  max-width: 38em;
+  margin-inline: auto;
+}
+@container (max-width: 320px) {
   .writer-connection-label {
     display: none;
   }

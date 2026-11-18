@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/winterhuan/writer/README.md
 /:
-  en: 38e6b7bfd5c75f43
-  zh: f557458b7983bad3
+  en: 1c249239c0898a9c
+  zh: c4ce06b4d5361a50
 /winterhuan-dsh-writer:
   en: e11eafc303f9cd37
   zh: b7beed1748b08ea2
 /winterhuan-dsh-writer/summary:
-  en: 4b50991ace3ded79
-  zh: 2afaec4d173a5c43
+  en: 012b99405c1bd3ba
+  zh: cede673902a7e0b7
 /winterhuan-dsh-writer/table-of-contents:
   en: d152484eb41ac6b4
   zh: 82bbd1ae631975a1
@@ -26,12 +26,9 @@
 /winterhuan-dsh-writer/use-this-package/scan-analyze-and-cover-skills:
   en: edd205ddc24968b4
   zh: f78dadfeebc18992
-/winterhuan-dsh-writer/use-this-package/open-existing-novels:
-  en: ecc5f4f3f8c33253
-  zh: 530c64e3c681b66c
 /winterhuan-dsh-writer/use-this-package/use-the-sidebar:
-  en: acef7dff7095ed79
-  zh: 7820ef5be8622d0b
+  en: bede5c690481e443
+  zh: 0dd0dd6207500eb1
 /winterhuan-dsh-writer/use-this-package/chapter-progress-and-reviews:
   en: b966e826e37d9144
   zh: 9cddb8af44061ea0
@@ -60,8 +57,8 @@
   en: 5fc173f711662265
   zh: 532a90f736e3bd5f
 /winterhuan-dsh-writer/known-limitations-and-deferred-work:
-  en: 3a966baea4a14f0d
-  zh: 2ac4e39a78a4f170
+  en: 6f14409007667a6d
+  zh: 788cc1f95b0597a8
 /winterhuan-dsh-writer/known-limitations-and-deferred-work/dev-note:
   en: d2a525302f330d92
   zh: a65c77d2e94d18e5

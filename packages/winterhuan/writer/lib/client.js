@@ -7,15 +7,14 @@ window.__ModuleLoader__.load({
 		let react_jsx_runtime = require("react/jsx-runtime");
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 		let react = require("react");
-		let _deepseek_ai_dsh_client_store = require("@deepseek-ai/dsh-client-store");
-		//#region \0dsh-global-css:/home/maiscrm/projects/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
-		const css$1 = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-sidebar{flex-direction:column;height:100%;min-height:0;display:flex}.writer-sidebar-heading{border-bottom:.5px solid var(--dsw-alias-border-l2);justify-content:flex-end;padding:6px 12px;display:flex}.writer-sidebar-heading button{font:13px/1.5 var(--dsw-font-family);color:var(--dsw-alias-link);cursor:pointer;background:0 0;border:0;padding:4px 8px}.writer-sidebar>.writer-desk{flex:1;min-height:0}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);grid-template-rows:34px auto minmax(0,1fr) 30px;grid-template-columns:minmax(0,1fr);width:100%;min-width:0;max-width:100%;min-height:0;display:grid;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=399px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{overflow-wrap:anywhere;flex:100%;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@media (width<=420px){.writer-counts{display:none}}@media (width<=320px){.writer-connection-label{display:none}}";
-		const tagId$1 = "@winterhuan/dsh-writer/plugin.css";
-		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
+		//#region \0dsh-global-css:/Users/winter/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/plugin.css.mjs
+		const css = ".writer-desk{--writer-border:var(--dsw-alias-border-l2);--writer-accent:var(--dsw-alias-brand-primary);--writer-rail-width:220px;grid-template-columns:var(--writer-rail-width) 5px minmax(0, 1fr);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);font:13px/1.5 var(--dsw-font-family);grid-template-rows:minmax(0,1fr);display:grid;overflow:hidden}.writer-sidebar{flex-direction:column;height:100%;min-height:0;display:flex;container:writer-document/inline-size}.writer-sidebar>.writer-desk{flex:1;min-height:0}.writer-book-panel{border-bottom:1px solid var(--writer-border);font:inherit;padding:8px 12px}.writer-book-panel summary{cursor:pointer;font-weight:500}.writer-book-content{overflow-wrap:anywhere;max-height:40vh;padding:8px 4px;overflow:auto}.writer-book-controls{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-book-controls input{width:64px}.writer-book-controls select{max-width:160px}.writer-book-panel button,.writer-book-panel select,.writer-book-panel input{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);font:inherit;border-radius:6px;padding:4px 8px}.writer-book-report{border-top:1px solid var(--writer-border);margin-top:12px;padding-top:8px}.writer-book-report strong{font-weight:500}.writer-book-report p{margin:6px 0}.writer-book-report blockquote{border-left:2px solid var(--writer-border);margin:8px 0;padding-left:8px}.writer-desk>*{min-width:0}.writer-desk[data-rail-collapsed=true]{grid-template-columns:minmax(0,1fr)}.writer-desk[data-rail-collapsed=true]>.writer-rail,.writer-desk[data-rail-collapsed=true]>.writer-rail-resize{display:none}.writer-rail{box-sizing:border-box;border-right:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);flex-direction:column;width:100%;min-width:0;max-width:100%;min-height:0;display:flex;overflow:hidden}.writer-rail[hidden],.writer-rail-resize[hidden]{display:none}.writer-rail-resize{z-index:2;cursor:col-resize;touch-action:none;user-select:none;background:0 0;border:0;border-left:1px solid #0000;width:5px;margin:0;padding:0;position:relative}.writer-rail-resize:after{content:\"\";background:0 0;border-radius:2px;width:3px;position:absolute;top:0;bottom:0;left:1px}.writer-rail-resize:hover:after,.writer-rail-resize:focus-visible:after{background:var(--writer-accent);opacity:.55}.writer-rail-resize:focus-visible{outline:none}.writer-rail-toggle{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);width:24px;height:24px;color:var(--dsw-alias-label-secondary);font:14px/1 var(--dsw-font-family);cursor:pointer;border-radius:6px;flex:none;margin:0;padding:0}.writer-rail-toggle:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-rail-toggle:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-tabs{border-bottom:1px solid var(--writer-border);flex:0 0 34px;grid-template-columns:repeat(3,minmax(0,1fr));min-width:0;padding:0 6px;display:grid}.writer-tab{box-sizing:border-box;min-width:0;height:100%;color:var(--dsw-alias-label-secondary);font:inherit;cursor:pointer;background:0 0;border:0;border-radius:0;justify-content:center;align-items:center;gap:4px;padding:0 4px;font-weight:500;display:flex;position:relative}.writer-tab>span{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.writer-tab:after{content:\"\";background:0 0;border-radius:2px;height:2px;position:absolute;bottom:-1px;left:8px;right:8px}.writer-tab:hover,.writer-tab[aria-selected=true]{color:var(--dsw-alias-label-primary)}.writer-tab[aria-selected=true]:after{background:var(--writer-accent)}.writer-badge{font-variant-numeric:tabular-nums;background:var(--dsw-alias-interactive-bg-hover);color:var(--dsw-alias-label-secondary);border-radius:999px;flex:none;padding:0 5px;font-size:11px;font-weight:600;line-height:1.6;display:inline-block}.writer-search-slot{box-sizing:border-box;align-items:center;min-width:0;margin:6px 8px 2px;display:flex;overflow:hidden}.writer-search-slot input{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-layer-1,var(--dsw-alias-bg-base));width:0;min-width:0;max-width:100%;height:28px;color:var(--dsw-alias-label-primary);font:inherit;-webkit-appearance:none;appearance:none;border-radius:6px;flex:1;padding:0 8px}.writer-search-slot input::placeholder{color:var(--dsw-alias-label-secondary)}.writer-search-dir{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-secondary);flex:0 auto;font-size:11px;overflow:hidden}.writer-tree-panel .writer-search-hits mark{color:var(--dsw-alias-link,var(--writer-accent));background:0 0;font-weight:500}.writer-search-hits>li+li{margin-top:2px}.writer-tree-panel{flex:1;min-width:0;min-height:0;padding:2px 6px 6px 4px;overflow:auto}.writer-rail-note{border-top:1px solid var(--writer-border);color:var(--dsw-alias-label-secondary);flex:0 0 30px;align-items:center;gap:8px;margin:0;padding:0 12px;font-size:12px;display:flex}.writer-rail-note p{text-overflow:ellipsis;white-space:nowrap;margin:0;overflow:hidden}.writer-rail-dot{background:var(--writer-accent);opacity:.7;border-radius:50%;flex:none;width:6px;height:6px}.writer-rail-dot[data-health=loading]{opacity:.4}.writer-rail-dot[data-health=partial]{background:var(--dsw-alias-warning-label,var(--writer-accent));opacity:.9}.writer-rail-dot[data-health=failed]{background:var(--dsw-alias-danger-label,var(--writer-accent));opacity:1}.writer-stage{background:var(--dsw-alias-bg-base);flex-direction:column;min-width:0;min-height:0;display:flex;overflow:hidden;container-type:inline-size}.writer-stage-heading{border-bottom:1px solid var(--writer-border);flex-wrap:nowrap;align-items:center;gap:8px;min-height:36px;padding:6px 10px;display:flex}.writer-masthead{flex-wrap:nowrap;flex:auto;align-items:center;gap:10px;min-width:0;display:flex;overflow:hidden}.writer-workspace{text-overflow:ellipsis;white-space:nowrap;max-width:min(40%,18rem);color:var(--dsw-alias-label-primary);flex:0 auto;font-size:13px;font-weight:650;overflow:hidden}.writer-masthead-actions{flex-wrap:nowrap;flex:0 auto;align-items:center;gap:10px;min-width:0;margin-left:auto;display:flex;overflow:hidden}.writer-counts{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;flex:0 auto;align-items:center;gap:12px;font-size:12px;display:flex;overflow:hidden}.writer-count{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;overflow:hidden}.writer-count b{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;font-weight:650}@container (width<=600px){.writer-counts{display:none}}.writer-connection{height:24px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;align-items:center;gap:6px;padding:0 8px;font-size:12px;font-weight:550;display:inline-flex}.writer-status-dot{border:1.5px solid var(--writer-border);background:0 0;border-radius:50%;flex:none;width:7px;height:7px}.writer-connection[data-health=ok] .writer-status-dot{background:var(--dsw-alias-success-label,#2f9e44);border-color:var(--dsw-alias-success-label,#2f9e44)}.writer-connection[data-health=partial]{color:var(--dsw-alias-warning-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=partial] .writer-status-dot{background:var(--dsw-alias-warning-label,#d97706);border-color:var(--dsw-alias-warning-label,#d97706)}.writer-connection[data-health=failed]{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))}.writer-connection[data-health=failed] .writer-status-dot{background:var(--dsw-alias-danger-label,var(--writer-accent));border-color:var(--dsw-alias-danger-label,var(--writer-accent))}.writer-connection[data-health=loading]{opacity:.75}.writer-connection-label{text-overflow:ellipsis;max-width:9em;overflow:hidden}.writer-reload{box-sizing:border-box;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-bg-base);border:1px solid var(--writer-border);cursor:pointer;border-radius:8px;flex:none;place-items:center;margin-left:0;padding:0;display:grid}.writer-reload:hover{color:var(--dsw-alias-label-primary);border-color:var(--writer-accent)}.writer-reload:focus-visible{outline:2px solid var(--writer-accent);outline-offset:1px}.writer-reload svg{fill:none;stroke:currentColor;stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;width:14px;height:14px}.writer-scan-banner{border:1px solid var(--writer-border);background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 8px;padding:8px 10px;display:flex}.writer-scan-banner p{overflow-wrap:anywhere;flex:100%;min-width:0;margin:0}.writer-scan-banner-warn{color:var(--dsw-alias-label-secondary)}.writer-stage-heading button,.writer-editor button,.writer-alert button,.writer-scan-banner button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);cursor:pointer;border-radius:6px;padding:2px 8px}.writer-stage-heading .writer-reload{color:var(--dsw-alias-label-secondary);border-radius:8px;padding:0}.writer-tree-panel button{box-sizing:border-box;font:inherit;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:0;border-radius:4px;padding:0}.writer-tree-panel ul,.writer-tree{margin:0;padding:0;list-style:none}.writer-tree-panel li+li{margin-top:1px}.writer-tree-file,.writer-tree-toggle{text-align:left;background:0 0;border-radius:4px;align-items:center;gap:6px;width:100%;min-height:26px;display:flex;padding:2px 6px 2px calc(4px + var(--writer-indent,0px))!important;border:0!important}.writer-tree-file:hover:not(:disabled),.writer-tree-toggle:hover{background:var(--dsw-alias-interactive-bg-hover)}.writer-tree-file[aria-current=true]{background:var(--dsw-alias-interactive-bg-hover);box-shadow:inset 2px 0 0 var(--writer-accent);font-weight:600}.writer-tree-kind{flex:none}.writer-tree-toggle .writer-tree-kind{color:var(--dsw-alias-label-tertiary)}.writer-tree-label{text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;overflow:hidden}.writer-tree-ext{text-transform:lowercase;color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);border-radius:4px;flex:none;margin-left:auto;padding:0 5px;font-size:10px;line-height:1.6}.writer-tree-folder>ul{background:0 0;border:0;margin:0;padding:0}.writer-editor{flex-direction:column;flex:1;gap:6px;min-width:0;min-height:0;padding:6px 10px 8px;display:flex;overflow:auto}.writer-editor header{align-items:center;gap:6px;display:flex}.writer-document-identity{flex:auto;align-content:center;gap:3px;min-width:0;display:grid}.writer-breadcrumbs{min-width:0;color:var(--dsw-alias-label-secondary);white-space:nowrap;flex-wrap:nowrap;align-items:center;gap:0;font-size:11px;line-height:1.3;display:flex;overflow:hidden}.writer-breadcrumbs>span{flex:0 auto;align-items:center;min-width:0;max-width:28%;display:inline-flex}.writer-breadcrumbs>span:last-child{flex:0 auto;min-width:4ch;max-width:42%}.writer-breadcrumbs>span>span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-breadcrumbs i{white-space:pre;color:var(--writer-border);flex:none;margin:0;font-style:normal}.writer-document-title{text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--dsw-alias-label-primary);letter-spacing:.01em;margin:0;font-size:15px;font-weight:700;line-height:1.3;overflow:hidden}.writer-editor-actions{flex-wrap:nowrap;flex:none;align-items:center;gap:6px;display:flex}.writer-line-numbers-toggle{flex:none}.writer-line-numbers-toggle[aria-pressed=true]{color:var(--writer-accent);background:var(--dsw-alias-interactive-bg-hover)}.writer-editor-body{border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);border-radius:6px;flex:1;min-width:0;min-height:160px;display:flex;overflow:hidden}.writer-line-gutter{user-select:none;box-sizing:border-box;border-right:1px solid var(--writer-border);width:48px;height:100%;color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;text-align:right;flex:0 0 48px;margin:0;padding:8px 0;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:hidden}.writer-editor-body:not(.show-line-numbers) .writer-line-gutter{display:none}.writer-gutter-line{box-sizing:border-box;white-space:nowrap;padding-left:4px;padding-right:8px;overflow:hidden}.writer-gutter-line.active{color:var(--writer-accent);font-weight:600}.writer-line-mirror{visibility:hidden;pointer-events:none;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:break-word;box-sizing:content-box;border:0;margin:0;padding:0;position:absolute;top:0;left:-99999px}.writer-editor-body textarea{resize:none;box-sizing:border-box;width:0;min-width:0;height:100%;min-height:160px;color:var(--dsw-alias-label-primary);font:13px/1.6 var(--dsw-font-family);background:0 0;border:0;border-radius:0;flex:1;padding:8px}.writer-document-meta{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.writer-conflict-reload{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary))!important}.writer-empty,.writer-muted,.writer-alert{margin:0}.writer-muted{color:var(--dsw-alias-label-secondary)}.writer-alert{color:var(--dsw-alias-danger-label,var(--dsw-alias-label-primary));flex-wrap:wrap;align-items:center;gap:8px;display:flex}.writer-editor button:disabled{cursor:default;opacity:.55}.writer-tree-file-disabled{opacity:.45;cursor:default}.writer-tree-status,.writer-tree-status-action{color:var(--dsw-alias-label-secondary);min-height:24px;padding:2px 6px 2px calc(4px + var(--writer-indent,0px));align-items:center;font-size:12px;display:flex}.writer-tree-status-action{text-align:left;background:0 0;border-radius:4px;width:100%;border:1px dashed var(--writer-border)!important}.writer-editor-toolbar{flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:2px 0 4px;display:flex}.writer-editor-toolbar>button,.writer-editor-actions>button{white-space:nowrap;flex:none}.writer-dirty{color:var(--dsw-alias-label-secondary);background:var(--dsw-alias-interactive-bg-hover);white-space:nowrap;border-radius:999px;flex:none;padding:0 7px;font-size:11px;line-height:1.7}.writer-dirty[data-state=dirty]{color:var(--dsw-alias-label-primary)}.writer-dirty[data-state=saving]{color:var(--writer-accent)}.writer-mode-switch{background:var(--dsw-alias-interactive-bg-hover);border:0;border-radius:9px;flex:none;gap:2px;padding:2px;display:inline-flex;overflow:hidden}.writer-mode-switch button{height:26px;color:var(--dsw-alias-label-secondary);background:0 0;padding:0 10px;font-size:12px;font-weight:550;border:0!important;border-radius:7px!important}.writer-mode-switch button[aria-pressed=true]{color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);box-shadow:0 0 0 1px var(--writer-border);font-weight:650}.writer-preview{box-sizing:border-box;border:1px solid var(--writer-border);background:var(--dsw-alias-bg-base);min-height:160px;color:var(--dsw-alias-label-primary);border-radius:6px;flex:1;padding:12px 14px;line-height:1.65;overflow:auto}.writer-preview>:first-child{margin-top:0}.writer-preview>:last-child{margin-bottom:0}.writer-preview h1,.writer-preview h2,.writer-preview h3,.writer-preview h4{line-height:1.3}.writer-preview-code,.writer-preview pre{background:var(--dsw-alias-interactive-bg-hover);border-radius:6px;padding:8px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;overflow:auto}.writer-preview blockquote{border-left:3px solid var(--writer-border);color:var(--dsw-alias-label-secondary);margin:.6em 0;padding-left:12px}.writer-status{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex-wrap:wrap;align-items:center;gap:6px;margin:0;font-size:12px;display:flex}@container writer-document (width<=600px){.writer-desk:not([data-rail-collapsed]){grid-template-rows:minmax(0,28%) minmax(0,1fr);grid-template-columns:minmax(0,1fr)}.writer-rail{border-right:0;border-bottom:1px solid var(--writer-border)}.writer-rail-resize,.writer-rail-note{display:none}}@container (width<=480px){.writer-editor-toolbar,.writer-editor-actions{flex-wrap:wrap}.writer-document-identity{flex-basis:100%}.writer-editor-actions{flex:0 auto}}article.writer-preview{overflow-wrap:anywhere;padding:1em clamp(12px,4%,32px);font-size:16px;line-height:1.85}article.writer-preview>*{max-width:38em;margin-inline:auto}@container (width<=320px){.writer-connection-label{display:none}}";
+		const tagId = "@winterhuan/dsh-writer/plugin.css";
+		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
 			tag.dataset.plugin = "@winterhuan/dsh-writer";
-			tag.dataset.pluginCss = tagId$1;
-			tag.textContent = css$1;
+			tag.dataset.pluginCss = tagId;
+			tag.textContent = css;
 			document.head.appendChild(tag);
 		}
 		//#endregion
@@ -27,7 +26,7 @@ window.__ModuleLoader__.load({
 			crlf: "CRLF",
 			cr: "CR"
 		};
-		const zh$2 = {
+		const zh$1 = {
 			draftRecovered: "已恢复此浏览器中的未保存草稿",
 			draftStorageError: "无法保存浏览器草稿，请及时保存文件并保持此页面打开",
 			draftStorageConflict: "此文件有另一个会话更新的浏览器草稿，当前编辑仍保留在页面中",
@@ -79,8 +78,6 @@ window.__ModuleLoader__.load({
 			bookResumeHelp: "打开材料核对进度，然后在对话中要求继续该章；临时材料存在不代表正文已提交",
 			title: "写作",
 			description: "拆文库、写作项目与扫榜记录",
-			openWorkbench: "打开创作工作台",
-			openWorkbenchDescription: "在统一工作台中管理作品、文稿与助手",
 			setting: "设定",
 			outline: "大纲",
 			chapters: "章节",
@@ -157,7 +154,7 @@ window.__ModuleLoader__.load({
 			expandRail: "显示文件树",
 			resizeRail: "拖动调整文件树宽度"
 		};
-		const en$2 = {
+		const en$1 = {
 			draftRecovered: "Recovered this browser’s unsaved draft",
 			draftStorageError: "Browser draft recovery is unavailable. Save the file and keep this page open.",
 			draftStorageConflict: "Another session updated this file’s browser draft. Your edits remain open here.",
@@ -209,8 +206,6 @@ window.__ModuleLoader__.load({
 			bookResumeHelp: "Open the materials, then ask to continue this chapter in the chat. Scratch files do not mean the chapter was committed.",
 			title: "Writing",
 			description: "Libraries, writing projects, and market scans",
-			openWorkbench: "Open writing workbench",
-			openWorkbenchDescription: "Manage works, manuscripts, and the assistant in one workspace",
 			setting: "Setting",
 			outline: "Outline",
 			chapters: "Chapters",
@@ -1347,15 +1342,6 @@ window.__ModuleLoader__.load({
 						notice: void 0
 					}));
 				},
-				checkpoint: () => {
-					const value = current.current;
-					if (!value) return true;
-					if (value.busy) return false;
-					const next = persist(value);
-					publish(next);
-					const result = readWriterDraft(cwd, value.path);
-					return !result.error && (value.text === value.baseText || result.draft?.text === value.text);
-				},
 				save
 			};
 		}
@@ -2353,11 +2339,10 @@ window.__ModuleLoader__.load({
 		function WriterDesk(props) {
 			return (0, react_jsx_runtime.jsx)(WriterDeskBody, { ...props }, props.cwd);
 		}
-		function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }) {
+		function WriterDeskBody({ sessionId, cwd, remote, t, visible, running = false }) {
 			const writerDocument = useWriterDocument(remote, sessionId, cwd, t);
-			if (checkpoint) checkpoint.current = writerDocument.checkpoint;
 			const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument;
-			const [viewPick, setViewPick] = (0, react.useState)(initialView);
+			const [viewPick, setViewPick] = (0, react.useState)(void 0);
 			const [libraries, setLibraries] = (0, react.useState)([]);
 			const [projects, setProjects] = (0, react.useState)([]);
 			const [scans, setScans] = (0, react.useState)([]);
@@ -2380,15 +2365,20 @@ window.__ModuleLoader__.load({
 			const saveRef = (0, react.useRef)(() => {});
 			const searchSeq = (0, react.useRef)(0);
 			const selectionSeq = (0, react.useRef)(0);
+			const scanController = (0, react.useRef)();
+			const previousTurn = (0, react.useRef)({
+				sessionId,
+				running
+			});
 			const selectFileRef = (0, react.useRef)(() => {});
 			const [railChrome, setRailChrome] = (0, react.useState)(() => readRailChrome());
 			const [deskWidth, setDeskWidth] = (0, react.useState)(0);
 			const deskRef = (0, react.useRef)(null);
 			const railDrag = (0, react.useRef)(void 0);
 			const preferredView = libraries.length > 0 ? "libraries" : projects.length > 0 || scans.length === 0 ? "projects" : "scans";
-			const view = controlledView ?? viewPick ?? preferredView;
+			const view = viewPick ?? preferredView;
 			const roots = view === "libraries" ? libraries : view === "projects" ? projects : scans;
-			const rootPathsKey = roots.map((node) => node.path).join("\0");
+			const rootPathsKey = roots.map((node) => node.path || ".").join("\0");
 			const query = filter.trim();
 			const showSearch = query !== "";
 			const patchDirectory = (path, update) => {
@@ -2400,6 +2390,7 @@ window.__ModuleLoader__.load({
 				selectionSeq.current += 1;
 				if (!visible) return void 0;
 				const controller = new AbortController();
+				scanController.current = controller;
 				const signal = controller.signal;
 				setNotice(void 0);
 				setScanning(true);
@@ -2414,7 +2405,6 @@ window.__ModuleLoader__.load({
 						setScanErrors(scan.scanErrors);
 						setScanHardFailed(false);
 						setListings({});
-						setExpanded({});
 					} catch (error) {
 						if (signal.aborted) return;
 						setLibraries([]);
@@ -2439,6 +2429,8 @@ window.__ModuleLoader__.load({
 				t
 			]);
 			const loadDirectory = (path, force = false, onLoaded) => {
+				const signal = scanController.current?.signal;
+				if (!signal || signal.aborted) return;
 				const cached = force ? void 0 : listings[path];
 				if (cached !== void 0) {
 					patchDirectory(path, (node) => {
@@ -2466,7 +2458,8 @@ window.__ModuleLoader__.load({
 						loading: true
 					};
 				});
-				readDir(remote, sessionId, cwd, path, new AbortController().signal, t).then((page) => {
+				readDir(remote, sessionId, cwd, path, signal, t).then((page) => {
+					if (signal.aborted) return;
 					setListings((current) => ({
 						...current,
 						[path]: {
@@ -2486,6 +2479,7 @@ window.__ModuleLoader__.load({
 					});
 					onLoaded?.(page.entries);
 				}).catch((error) => {
+					if (signal.aborted) return;
 					patchDirectory(path, (node) => ({
 						...node,
 						loading: false,
@@ -2494,15 +2488,18 @@ window.__ModuleLoader__.load({
 				});
 			};
 			(0, react.useEffect)(() => {
-				if (!visible || showSearch) return;
-				for (const root of roots) {
-					if (root.kind !== "directory") continue;
-					const key = root.path;
-					if (!(key in expanded ? expanded[key] === true : defaultWriterTreeExpanded(key, active)) || root.loaded || root.loading || root.loadError !== void 0) continue;
-					loadDirectory(key);
+				if (!visible || scanning || showSearch) return;
+				const pending = [...roots];
+				for (const node of pending) {
+					if (node.kind !== "directory") continue;
+					const key = node.path;
+					if (!(key in expanded ? expanded[key] === true : defaultWriterTreeExpanded(key, active))) continue;
+					if (node.loaded) pending.push(...node.children);
+					else if (!node.loading && node.loadError === void 0) loadDirectory(key);
 				}
 			}, [
 				visible,
+				scanning,
 				roots,
 				expanded,
 				active,
@@ -2553,11 +2550,18 @@ window.__ModuleLoader__.load({
 			};
 			selectFileRef.current = selectFile;
 			const rescan = () => {
-				if (!confirmDiscard()) return;
 				selectionSeq.current += 1;
-				writerDocument.close();
+				writerDocument.reload();
 				setReloadKey((value) => value + 1);
 			};
+			(0, react.useEffect)(() => {
+				const previous = previousTurn.current;
+				previousTurn.current = {
+					sessionId,
+					running
+				};
+				if (previous.sessionId === sessionId && previous.running && !running) rescan();
+			}, [sessionId, running]);
 			(0, react.useEffect)(() => {
 				setConflictOpen(conflict);
 			}, [conflict]);
@@ -2586,7 +2590,7 @@ window.__ModuleLoader__.load({
 				const sequence = ++searchSeq.current;
 				const controller = new AbortController();
 				const timer = window.setTimeout(() => {
-					searchWriterFilenames(rootPathsKey === "" ? [] : rootPathsKey.split("\0").map((path) => path === "" ? "." : path), trimmed, (relative) => readDir(remote, sessionId, cwd, relative === "." ? "" : relative, controller.signal, t), controller.signal).then((result) => {
+					searchWriterFilenames(rootPathsKey === "" ? [] : rootPathsKey.split("\0"), trimmed, (relative) => readDir(remote, sessionId, cwd, relative === "." ? "" : relative, controller.signal, t), controller.signal).then((result) => {
 						if (sequence !== searchSeq.current || controller.signal.aborted) return;
 						setSearchResult(result);
 						setSearching(false);
@@ -2606,6 +2610,7 @@ window.__ModuleLoader__.load({
 				filter,
 				view,
 				rootPathsKey,
+				reloadKey,
 				remote,
 				sessionId,
 				cwd,
@@ -2614,7 +2619,6 @@ window.__ModuleLoader__.load({
 			(0, react.useEffect)(() => {
 				if (!visible) return void 0;
 				const onKey = (event) => {
-					if (deskRef.current?.closest(".writer-wb-document")?.getClientRects().length === 0) return;
 					if (!(event.metaKey || event.ctrlKey)) return;
 					const key = event.key.toLocaleLowerCase();
 					if (key === "s") {
@@ -2752,7 +2756,7 @@ window.__ModuleLoader__.load({
 						"aria-label": t("tree"),
 						hidden: railCollapsed || void 0,
 						children: [
-							controlledView === void 0 && (0, react_jsx_runtime.jsxs)("nav", {
+							(0, react_jsx_runtime.jsxs)("nav", {
 								className: "writer-tabs",
 								"aria-label": t("workspaceTabs"),
 								role: "tablist",
@@ -2831,8 +2835,7 @@ window.__ModuleLoader__.load({
 								className: "writer-tree-panel",
 								id: tabPanelId,
 								role: "tabpanel",
-								"aria-labelledby": controlledView === void 0 ? view === "libraries" ? librariesTabId : view === "projects" ? projectsTabId : scansTabId : void 0,
-								"aria-label": controlledView === void 0 ? void 0 : t(view),
+								"aria-labelledby": view === "libraries" ? librariesTabId : view === "projects" ? projectsTabId : scansTabId,
 								"aria-busy": scanning || void 0,
 								children: [
 									health === "failed" && !showSearch && (0, react_jsx_runtime.jsxs)("div", {
@@ -3258,61 +3261,48 @@ window.__ModuleLoader__.load({
 		//#endregion
 		//#region lib/types/client/sidebar.js
 		const name = "writer";
-		const inject$2 = [
+		const inject$1 = [
 			"slots",
 			"sessions",
 			"uiSession",
 			"locale",
 			"sidebarRightTabs",
-			"layout",
 			"remote",
 			"remote.workspaceFiles"
 		];
 		const TAB_ID = "@winterhuan/dsh-writer";
-		function WorkbenchLauncher({ sessionId, t, actions, openWorkbench }) {
-			return (0, react_jsx_runtime.jsx)("header", {
-				className: "writer-sidebar-heading",
-				children: (0, react_jsx_runtime.jsx)("button", {
-					type: "button",
-					onClick: () => {
-						actions.openFromSidebar(sessionId);
-						openWorkbench();
-					},
-					children: t("openWorkbench")
-				})
-			});
-		}
-		function Sidebar({ sessionId, useTabInfo, useSessions, t, remote, renderSlot }) {
+		function Sidebar({ sessionId, useTabInfo, useSessions, t, remote }) {
 			const preset = useSessions((state) => state.byId[sessionId]?.projectionValues?.agentPreset);
 			const cwd = useSessions((state) => state.byId[sessionId]?.cwd);
+			const running = useSessions((state) => state.byId[sessionId]?.running ?? false);
 			const { tab } = useTabInfo();
 			(0, react.useEffect)(() => {
 				if (typeof preset === "string" && preset !== "writer") tab.actions.close();
 			}, [preset, tab.actions]);
 			if (preset !== "writer") return null;
-			return (0, react_jsx_runtime.jsxs)("div", {
+			return (0, react_jsx_runtime.jsx)("div", {
 				className: "writer-sidebar",
-				children: [renderSlot("writer.sidebar.launcher", { sessionId }), cwd === void 0 ? (0, react_jsx_runtime.jsx)("p", {
+				children: cwd === void 0 ? (0, react_jsx_runtime.jsx)("p", {
 					className: "writer-empty",
 					children: t("noWorkspace")
 				}) : (0, react_jsx_runtime.jsx)(WriterDesk, {
 					sessionId,
 					cwd,
+					running,
 					remote,
 					t,
 					visible: tab.visible
-				})]
+				})
 			});
 		}
 		/**
 		* Register the writing tab and its body. The guide entry follows the selected preset.
 		* @param context - browser services.
-		* @param store - viewing preferences shared with the full workbench.
 		*/
-		function apply$2(context, store) {
+		function apply$1(context) {
 			context.effect(() => context.locale.register(NS, {
-				zh: zh$2,
-				en: en$2
+				zh: zh$1,
+				en: en$1
 			}), "writer: dictionaries");
 			const t = context.locale.bind(NS);
 			context.effect(() => registerWriterTab(context, {
@@ -3331,24 +3321,14 @@ window.__ModuleLoader__.load({
 				name: "sidebar.right.pane.tab",
 				key: TAB_ID,
 				locale: NS,
-				children: { "writer.sidebar.launcher": {
-					kind: "single",
-					scope: "root"
-				} },
 				inject: () => ({ remote: context.remote })
 			}, Sidebar)), "writer: sidebar body");
-			context.effect(() => context.slots.inject("writer.sidebar.launcher", () => context.slots.register({
-				name: "writer.sidebar.launcher",
-				locale: NS,
-				store,
-				inject: () => ({ openWorkbench: () => context.layout.selectPanel("writer-workbench") })
-			}, WorkbenchLauncher)), "writer: sidebar workbench launcher");
 		}
 		//#endregion
 		//#region lib/types/client/zhuque-locales.js
 		/** Locale bundles for the Writer settings page (Zhuque + cover keys). */
 		/** English copy. */
-		const en$1 = {
+		const en = {
 			title: "Writing",
 			description: "Zhuque detection and cover image API keys for author-triggered skills.",
 			keySet: "A key is configured.",
@@ -3373,7 +3353,7 @@ window.__ModuleLoader__.load({
 			saveFailed: "Could not save. Try again."
 		};
 		/** Simplified Chinese copy. */
-		const zh$1 = {
+		const zh = {
 			title: "写作",
 			description: "明确要求朱雀检测或封面生图时使用的密钥。",
 			keySet: "已配置密钥。",
@@ -3654,8 +3634,8 @@ window.__ModuleLoader__.load({
 		function applyZhuqueSettings(ctx) {
 			const t = ctx.locale.bind(ZHUQUE_NS);
 			ctx.effect(() => ctx.locale.register(ZHUQUE_NS, {
-				zh: zh$1,
-				en: en$1
+				zh,
+				en
 			}), "writer: zhuque dictionaries");
 			const card = new WriterZhuqueCardController(ctx.configForms.get(WRITER_SETTINGS_NS), ctx);
 			ctx.effect(() => () => {
@@ -3674,701 +3654,15 @@ window.__ModuleLoader__.load({
 			}, ZhuqueSettingsCard))), "writer: zhuque settings page");
 		}
 		//#endregion
-		//#region lib/types/client/workbench-locales.js
-		const en = {
-			projects: "Works",
-			libraries: "Analysis library",
-			scans: "Market research",
-			panels: "Workbench panels",
-			welcome: "Your writing desk",
-			workspaceHelp: "Open a folder in the DSH workspace list to view your writing materials.",
-			sessionHelp: "Start a Writer conversation in this workspace to browse and edit its existing manuscripts, analysis, and research.",
-			assistantHelp: "Discuss your story, analyze a sample, or research the market in a Writer conversation.",
-			newSession: "New conversation",
-			openConversation: "Open conversation",
-			retry: "Retry",
-			cancel: "Cancel",
-			createdSession: "Writer conversation created",
-			createdBook: "Book created",
-			title: "Writer",
-			navigation: "Workbench sections",
-			writerSession: "Writer session",
-			chooseWriterSession: "Select a Writer session",
-			workspace: "Workspace",
-			chooseWorkspace: "Choose a workspace",
-			bookTitle: "Book title",
-			folder: "Book folder",
-			form: "Form",
-			longForm: "Long fiction",
-			shortForm: "Short fiction",
-			createBook: "Create book",
-			document: "Manuscript",
-			assistant: "Assistant",
-			collapse: "Collapse assistant",
-			expand: "Expand assistant",
-			draftCheckpointFailed: "The unsaved draft could not be protected. Keep this book open and save the manuscript before switching.",
-			loadFailed: "The workbench could not load",
-			operationFailed: "The operation could not be completed",
-			create: "Create",
-			sessionUnavailable: "This native session is unavailable",
-			invalidBookPath: "Choose a valid book folder",
-			workspaceMissing: "This workspace is unavailable",
-			bookMissing: "This book folder is unavailable",
-			bookExists: "This folder is already registered",
-			sessionMissing: "This native session is unavailable",
-			sessionMismatch: "This session belongs to another workspace",
-			writerRequired: "Choose a session using the Writer preset",
-			sessionInUse: "This session is linked to another book",
-			sessionBusy: "Stop the running session before starting a new phase",
-			bindingNeedsRepair: "The session link needs repair",
-			invalidBookTitle: "Enter a book title",
-			filesUnavailable: "File access is unavailable",
-			untrustedRequest: "The request was not trusted",
-			requestTooLarge: "The request is too large",
-			invalidRequest: "The request is invalid",
-			workbenchFailed: "The workbench operation failed"
-		};
-		const zh = {
-			projects: "作品",
-			libraries: "拆文库",
-			scans: "扫榜",
-			panels: "工作台面板",
-			welcome: "开始创作",
-			workspaceHelp: "在 DSH 工作区列表中打开小说目录，即可查看写作资料",
-			sessionHelp: "在当前工作区开启写作对话，即可浏览和编辑已有书稿、拆文资料与扫榜记录",
-			assistantHelp: "在写作对话中讨论故事、拆解样文或调研市场",
-			newSession: "新建对话",
-			openConversation: "打开对话",
-			retry: "重试",
-			cancel: "取消",
-			createdSession: "已创建写作对话",
-			createdBook: "已创建作品",
-			title: "小说创作工作台",
-			navigation: "工作台分区",
-			writerSession: "写作对话",
-			chooseWriterSession: "选择写作对话",
-			workspace: "工作区",
-			chooseWorkspace: "选择工作区",
-			bookTitle: "书名",
-			folder: "书籍目录",
-			form: "篇幅",
-			longForm: "长篇小说",
-			shortForm: "短篇小说",
-			createBook: "创建作品",
-			document: "正文",
-			assistant: "助手",
-			collapse: "收起助手",
-			expand: "展开助手",
-			draftCheckpointFailed: "未能保护当前草稿，请先保存文稿再切换",
-			loadFailed: "工作台加载失败",
-			operationFailed: "操作未能完成",
-			create: "创建",
-			sessionUnavailable: "原生会话不可用",
-			invalidBookPath: "请选择有效的书籍目录",
-			workspaceMissing: "工作区不可用",
-			bookMissing: "书籍目录不可用",
-			bookExists: "该目录已登记",
-			sessionMissing: "原生会话不可用",
-			sessionMismatch: "该会话不属于此工作区",
-			writerRequired: "请选择使用 Writer 预设的会话",
-			sessionInUse: "该会话已关联其他作品",
-			sessionBusy: "请先停止运行中的会话，再创建新阶段",
-			bindingNeedsRepair: "会话关联需要修复",
-			invalidBookTitle: "请输入书名",
-			filesUnavailable: "文件访问不可用",
-			untrustedRequest: "请求未通过信任校验",
-			requestTooLarge: "请求内容过大",
-			invalidRequest: "请求无效",
-			workbenchFailed: "工作台操作失败"
-		};
-		//#endregion
-		//#region lib/types/client/workbench-selection.js
-		function preferredWriterWorkspace(workspaces) {
-			return workspaces.find((workspace) => /(?:^|[\\/])novels$/iu.test(workspace.path))?.id ?? workspaces.find((workspace) => /novels|小说/iu.test(workspace.title))?.id;
-		}
-		function writerSessionsInWorkspace(sessions, workspace, memberIds) {
-			if (!workspace) return [];
-			const members = new Set(memberIds);
-			return sessions.filter((session) => members.has(session.id) && session.cwd === workspace.path && session.origin !== "subagent" && session.projectionValues?.agentPreset === "writer");
-		}
-		//#endregion
-		//#region \0dsh-css:/home/maiscrm/projects/dsh-creative/plugins/dsh-writer/packages/winterhuan/writer/src/client/workbench.module.css.mjs
-		const css = "._0iMQCW_workbench{background:var(--dsw-alias-bg-base);min-width:0;height:100%;min-height:0;color:var(--dsw-alias-label-primary);font:13px/1.5 var(--dsw-font-family);flex-direction:column;display:flex;position:relative;overflow:hidden;container:_0iMQCW_writer-workbench/inline-size}._0iMQCW_ambient{pointer-events:none;background:radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--dsw-alias-brand-primary) 6%, transparent), transparent 60%);position:absolute;inset:0}._0iMQCW_header,._0iMQCW_toolbar{flex:none;align-items:center;gap:12px;padding:14px 18px;display:flex;position:relative}[data-platform=darwin] ._0iMQCW_header{padding-top:calc(14px + var(--dsh-frame-top-clearance,0px))}._0iMQCW_heading{align-items:center;gap:10px;min-width:0;margin-right:auto;display:flex}._0iMQCW_heading h1{margin:0;font-size:16px;font-weight:500;line-height:24px}._0iMQCW_workspace{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;display:flex}._0iMQCW_workspace select{max-width:200px}._0iMQCW_toolbar{justify-content:space-between;padding-top:0;padding-bottom:12px}._0iMQCW_nav,._0iMQCW_panes{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-layer-2);box-shadow:var(--dsw-elevation-soft);align-items:center;gap:2px;padding:4px;display:flex}._0iMQCW_workbench :is(._0iMQCW_header,._0iMQCW_toolbar,._0iMQCW_nav,._0iMQCW_panes,._0iMQCW_sessionControls,._0iMQCW_empty,._0iMQCW_form)>button,._0iMQCW_assistant>header>button{font:inherit;color:inherit;border-radius:var(--dsw-radius-md);cursor:pointer;white-space:nowrap;background:0 0;border:0;padding:7px 12px}._0iMQCW_workbench :is(._0iMQCW_header,._0iMQCW_toolbar,._0iMQCW_sessionControls,._0iMQCW_empty)>button:disabled,._0iMQCW_assistant>header>button:disabled,._0iMQCW_form button:disabled{opacity:.5;cursor:default}._0iMQCW_workbench button._0iMQCW_primary,._0iMQCW_nav button[aria-current=page],._0iMQCW_panes button[aria-pressed=true]{background:var(--dsw-alias-button-primary-fill);color:var(--dsw-alias-label-primary-inverted)}._0iMQCW_workbench :is(._0iMQCW_workspace,._0iMQCW_sessionControls) select,._0iMQCW_form :is(input,select){border:.5px solid var(--dsw-alias-border-l2);border-radius:var(--dsw-radius-sm);background:var(--dsw-alias-bg-layer-2);min-width:0;color:var(--dsw-alias-label-primary);font:inherit;padding:7px 10px}._0iMQCW_workbench :focus-visible,._0iMQCW_form :focus-visible{outline:2px solid var(--dsw-alias-link);outline-offset:2px}._0iMQCW_body{flex:1;gap:16px;min-height:0;padding:0 18px 18px;display:flex;position:relative}._0iMQCW_document{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-base);min-width:0;min-height:0;box-shadow:var(--dsw-elevation-soft);flex:1;position:relative;overflow:hidden}._0iMQCW_document>.writer-desk{height:100%}._0iMQCW_assistant{border-radius:var(--dsw-radius-lg);background:var(--dsw-alias-bg-layer-2);min-width:0;min-height:0;box-shadow:var(--dsw-elevation-soft);flex-direction:column;flex:0 0 336px;display:flex;overflow:hidden}._0iMQCW_assistant>header{justify-content:space-between;align-items:center;gap:8px;padding:12px 14px 4px;display:flex}._0iMQCW_assistant h2{margin:0;font-size:13px;font-weight:500;line-height:20px}._0iMQCW_sessionControls{border-bottom:.5px solid var(--dsw-alias-border-l2);flex-wrap:wrap;gap:6px;padding:8px 14px 12px;display:flex}._0iMQCW_sessionControls select{flex:1;width:100%}._0iMQCW_conversation{flex-direction:column;flex:1;min-height:0;display:flex;overflow:hidden}._0iMQCW_conversation>div{flex:1;min-height:0}._0iMQCW_body[data-assistant-open=false] ._0iMQCW_assistant{display:none}._0iMQCW_empty{box-sizing:border-box;text-align:center;flex-direction:column;flex:1;justify-content:center;align-items:center;gap:12px;height:100%;padding:24px;display:flex}._0iMQCW_empty h2{margin:0;font-size:16px;font-weight:500;line-height:24px}._0iMQCW_empty p{max-width:360px;color:var(--dsw-alias-label-secondary);margin:0}._0iMQCW_error{z-index:2;background:var(--dsw-alias-bg-layer-2);border-radius:var(--dsw-radius-sm);box-shadow:var(--dsw-elevation-soft);margin:0;padding:8px 12px;position:absolute;bottom:12px;left:12px;right:12px}._0iMQCW_spinner{border:2px solid var(--dsw-alias-border-l2);border-top-color:var(--dsw-alias-brand-primary);corner-shape:round;border-radius:50%;width:20px;height:20px;animation:.8s linear infinite _0iMQCW_spin}@keyframes _0iMQCW_spin{to{transform:rotate(360deg)}}._0iMQCW_panes{display:none}._0iMQCW_form{font:13px/1.5 var(--dsw-font-family);flex-direction:column;gap:16px;padding:16px 20px;display:flex}._0iMQCW_form label{flex-direction:column;gap:6px;display:flex}._0iMQCW_form footer{justify-content:flex-end;gap:8px;display:flex}._0iMQCW_form footer button{font:inherit;border-radius:var(--dsw-radius-md);color:inherit;background:var(--dsw-alias-interactive-bg-hover);cursor:pointer;border:0;padding:8px 14px}._0iMQCW_form footer button._0iMQCW_primary{color:var(--dsw-alias-label-primary-inverted);background:var(--dsw-alias-button-primary-fill)}@media (hover:hover){._0iMQCW_nav button:not([aria-current=page]):hover,._0iMQCW_assistantToggle:hover,._0iMQCW_assistant>header>button:hover{background:var(--dsw-alias-interactive-bg-hover)}}@media (prefers-reduced-motion:reduce){._0iMQCW_spinner{animation:none}}@container _0iMQCW_writer-workbench (width<=920px){._0iMQCW_assistantToggle{display:none}._0iMQCW_panes{display:flex}._0iMQCW_body ._0iMQCW_assistant{display:none}._0iMQCW_body[data-pane=assistant] ._0iMQCW_assistant{flex:1;display:flex}._0iMQCW_body[data-pane=assistant] ._0iMQCW_document{display:none}}@container _0iMQCW_writer-workbench (width<=640px){._0iMQCW_header{flex-wrap:wrap;gap:8px;padding-left:12px;padding-right:12px}._0iMQCW_heading{flex-basis:100%}._0iMQCW_workspace{flex:1}._0iMQCW_workspace select{flex:1;max-width:160px}._0iMQCW_toolbar{flex-wrap:wrap;gap:8px;padding-left:12px;padding-right:12px}._0iMQCW_body{padding-bottom:12px;padding-left:12px;padding-right:12px}}";
-		const tagId = "@winterhuan/dsh-writer/workbench.module.css";
-		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
-			const tag = document.createElement("style");
-			tag.dataset.plugin = "@winterhuan/dsh-writer";
-			tag.dataset.pluginCss = tagId;
-			tag.textContent = css;
-			document.head.appendChild(tag);
-		}
-		var workbench_module_css_default = {
-			"ambient": "_0iMQCW_ambient",
-			"assistant": "_0iMQCW_assistant",
-			"assistantToggle": "_0iMQCW_assistantToggle",
-			"body": "_0iMQCW_body",
-			"conversation": "_0iMQCW_conversation",
-			"document": "_0iMQCW_document",
-			"empty": "_0iMQCW_empty",
-			"error": "_0iMQCW_error",
-			"form": "_0iMQCW_form",
-			"header": "_0iMQCW_header",
-			"heading": "_0iMQCW_heading",
-			"nav": "_0iMQCW_nav",
-			"panes": "_0iMQCW_panes",
-			"primary": "_0iMQCW_primary",
-			"sessionControls": "_0iMQCW_sessionControls",
-			"spin": "_0iMQCW_spin",
-			"spinner": "_0iMQCW_spinner",
-			"toolbar": "_0iMQCW_toolbar",
-			"workbench": "_0iMQCW_workbench",
-			"workspace": "_0iMQCW_workspace",
-			"writer-workbench": "_0iMQCW_writer-workbench"
-		};
-		//#endregion
-		//#region lib/types/client/workbench.js
-		/** Render the full writing desk in the native main panel. */
-		function Main({ renderSlot }) {
-			return renderSlot("writer.workbench", {});
-		}
-		/** Sidebar navigation icon for the writing desk. */
-		function Launcher({ size }) {
-			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size });
-		}
-		/** Render the official Conversation factory under the selected Session provider. */
-		function NativeConversation({ useSession, useConversation, renderFactorySlot }) {
-			const session = useSession((value) => value);
-			const conversation = useConversation((value) => value);
-			return renderFactorySlot("conversation.content", {
-				variant: "embedded",
-				phase: session.openState === "loading" && conversation.activeTargets.size === 0 ? "settling" : "active",
-				hero: false
-			});
-		}
-		/** Browse workspace files without a separate book-registration step. */
-		function Workbench({ t, retain, createSession, createBook, openSession, report, renderSlot, SessionProvider, remote, deskT, useSessions, useWorkspaces, useStore, actions }) {
-			const catalog = useSessions((state) => state);
-			const workspaces = useWorkspaces((state) => state);
-			const preferences = useStore((state) => state);
-			const [busy, setBusy] = (0, react.useState)(false);
-			const [newBook, setNewBook] = (0, react.useState)(false);
-			const [revision, setRevision] = (0, react.useState)(0);
-			const [error, setError] = (0, react.useState)();
-			const checkpoint = (0, react.useRef)(() => true);
-			const remembered = workspaces.items.find((item) => item.sessionIds.some((id) => id === preferences.sessionId));
-			const preferred = preferredWriterWorkspace(workspaces.items.map((item) => ({
-				...item,
-				id: item.workspaceId
-			})));
-			const workspace = workspaces.items.find((item) => item.workspaceId === preferences.workspaceId) ?? remembered ?? workspaces.items.find((item) => item.workspaceId === preferred) ?? workspaces.items[0];
-			const sessions = writerSessionsInWorkspace(catalog.ids.flatMap((id) => catalog.byId[id] ? [catalog.byId[id]] : []), workspace ? {
-				...workspace,
-				id: workspace.workspaceId
-			} : void 0, workspace?.sessionIds ?? []).filter((session) => !session.parentId && !workspaces.archivedSessionIds.includes(session.id)).sort((a, b) => b.updatedAt - a.updatedAt);
-			const pending = catalog.phase !== "ready" || workspaces.phase !== "ready";
-			const requested = sessions.find((session) => session.id === preferences.sessionId);
-			const selectionKey = JSON.stringify([workspace?.workspaceId, preferences.sessionId]);
-			const [initialSession, setInitialSession] = (0, react.useState)();
-			if (!pending && (initialSession?.key !== selectionKey || !initialSession.id && sessions.length)) setInitialSession({
-				key: selectionKey,
-				id: (requested ?? sessions[0])?.id
-			});
-			const selected = requested ?? sessions.find((session) => session.id === initialSession?.id);
-			const canLeave = () => {
-				if (!checkpoint.current()) {
-					setError(t("draftCheckpointFailed"));
-					return false;
-				}
-				setError(void 0);
-				return true;
-			};
-			const create = async () => {
-				if (!workspace || busy || !canLeave()) return;
-				setBusy(true);
-				try {
-					const id = await createSession(workspace.workspaceId);
-					actions.selectWorkspace(workspace.workspaceId);
-					actions.selectSession(id);
-					report("createdSession");
-				} catch {
-					report("operationFailed");
-				} finally {
-					setBusy(false);
-				}
-			};
-			return (0, react_jsx_runtime.jsxs)("main", {
-				className: workbench_module_css_default.workbench,
-				"data-workbench": "writer",
-				children: [
-					(0, react_jsx_runtime.jsx)("div", {
-						className: workbench_module_css_default.ambient,
-						"aria-hidden": "true"
-					}),
-					(0, react_jsx_runtime.jsxs)("header", {
-						className: workbench_module_css_default.header,
-						children: [
-							(0, react_jsx_runtime.jsxs)("div", {
-								className: workbench_module_css_default.heading,
-								children: [(0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutlineRegular, { size: 20 }), (0, react_jsx_runtime.jsx)("h1", { children: t("title") })]
-							}),
-							(0, react_jsx_runtime.jsxs)("label", {
-								className: workbench_module_css_default.workspace,
-								children: [t("workspace"), (0, react_jsx_runtime.jsxs)("select", {
-									value: workspace?.workspaceId ?? "",
-									disabled: pending || busy,
-									onChange: (event) => {
-										const next = workspaces.items.find((item) => item.workspaceId === event.target.value);
-										if (next && canLeave()) actions.selectWorkspace(next.workspaceId);
-									},
-									children: [!workspace && (0, react_jsx_runtime.jsx)("option", {
-										value: "",
-										children: t("chooseWorkspace")
-									}), workspaces.items.map((item) => (0, react_jsx_runtime.jsx)("option", {
-										value: item.workspaceId,
-										children: item.title
-									}, item.workspaceId))]
-								})]
-							}),
-							(0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								className: workbench_module_css_default.primary,
-								disabled: pending || busy || !workspace,
-								onClick: () => {
-									if (canLeave()) setNewBook(true);
-								},
-								children: t("createBook")
-							})
-						]
-					}),
-					(0, react_jsx_runtime.jsxs)("div", {
-						className: workbench_module_css_default.toolbar,
-						children: [
-							(0, react_jsx_runtime.jsx)("nav", {
-								className: workbench_module_css_default.nav,
-								"aria-label": t("navigation"),
-								children: [
-									"projects",
-									"libraries",
-									"scans"
-								].map((view) => (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									"aria-current": preferences.view === view ? "page" : void 0,
-									onClick: () => actions.selectView(view),
-									children: t(view)
-								}, view))
-							}),
-							(0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								className: workbench_module_css_default.assistantToggle,
-								"aria-pressed": preferences.assistantOpen,
-								onClick: actions.toggleAssistant,
-								children: t(preferences.assistantOpen ? "collapse" : "expand")
-							}),
-							(0, react_jsx_runtime.jsxs)("nav", {
-								className: workbench_module_css_default.panes,
-								"aria-label": t("panels"),
-								children: [(0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									"aria-pressed": preferences.pane === "document",
-									onClick: () => actions.selectPane("document"),
-									children: t("document")
-								}), (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									"aria-pressed": preferences.pane === "assistant",
-									onClick: () => actions.selectPane("assistant"),
-									children: t("assistant")
-								})]
-							})
-						]
-					}),
-					(0, react_jsx_runtime.jsxs)("div", {
-						className: workbench_module_css_default.body,
-						"data-assistant-open": preferences.assistantOpen,
-						"data-pane": preferences.pane,
-						children: [(0, react_jsx_runtime.jsxs)("section", {
-							className: `writer-wb-document ${workbench_module_css_default.document}`,
-							"aria-label": t(preferences.view),
-							children: [pending ? (0, react_jsx_runtime.jsx)(Loading, {}) : !workspace ? (0, react_jsx_runtime.jsxs)("div", {
-								className: workbench_module_css_default.empty,
-								children: [(0, react_jsx_runtime.jsx)("h2", { children: t("welcome") }), (0, react_jsx_runtime.jsx)("p", { children: t("workspaceHelp") })]
-							}) : selected ? (0, react_jsx_runtime.jsx)(WriterDesk, {
-								sessionId: selected.id,
-								cwd: workspace.path,
-								remote,
-								t: deskT,
-								checkpoint,
-								visible: true,
-								view: preferences.view
-							}, `${workspace.path}:${revision}`) : (0, react_jsx_runtime.jsxs)("div", {
-								className: workbench_module_css_default.empty,
-								children: [
-									(0, react_jsx_runtime.jsx)("h2", { children: t("welcome") }),
-									(0, react_jsx_runtime.jsx)("p", { children: t("sessionHelp") }),
-									(0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: workbench_module_css_default.primary,
-										disabled: busy,
-										onClick: () => {
-											create();
-										},
-										children: t("newSession")
-									})
-								]
-							}), error && (0, react_jsx_runtime.jsx)("p", {
-								role: "alert",
-								className: workbench_module_css_default.error,
-								children: error
-							})]
-						}), (0, react_jsx_runtime.jsxs)("aside", {
-							className: workbench_module_css_default.assistant,
-							"aria-label": t("assistant"),
-							children: [
-								(0, react_jsx_runtime.jsxs)("header", { children: [(0, react_jsx_runtime.jsx)("h2", { children: t("assistant") }), (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									disabled: !selected || busy,
-									onClick: () => {
-										if (selected && canLeave()) openSession(selected.id);
-									},
-									children: t("openConversation")
-								})] }),
-								(0, react_jsx_runtime.jsxs)("div", {
-									className: workbench_module_css_default.sessionControls,
-									children: [(0, react_jsx_runtime.jsxs)("select", {
-										"aria-label": t("writerSession"),
-										value: selected?.id ?? "",
-										disabled: pending || busy || !sessions.length,
-										onChange: (event) => {
-											const next = sessions.find((session) => session.id === event.target.value);
-											if (next && canLeave()) actions.selectSession(next.id);
-										},
-										children: [!selected && (0, react_jsx_runtime.jsx)("option", {
-											value: "",
-											children: t("chooseWriterSession")
-										}), sessions.map((session) => (0, react_jsx_runtime.jsx)("option", {
-											value: session.id,
-											children: session.displayTitle
-										}, session.id))]
-									}), (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										disabled: pending || busy || !workspace,
-										onClick: () => {
-											create();
-										},
-										children: t("newSession")
-									})]
-								}),
-								(0, react_jsx_runtime.jsx)("div", {
-									className: workbench_module_css_default.conversation,
-									children: selected ? (0, react_jsx_runtime.jsx)(AssistantPanel, {
-										sessionId: selected.id,
-										retain,
-										renderSlot,
-										SessionProvider,
-										t
-									}, selected.id) : (0, react_jsx_runtime.jsx)("div", {
-										className: workbench_module_css_default.empty,
-										children: (0, react_jsx_runtime.jsx)("p", { children: t("assistantHelp") })
-									})
-								})
-							]
-						})]
-					}),
-					newBook && workspace && (0, react_jsx_runtime.jsx)(NewBook, {
-						workspaceId: workspace.workspaceId,
-						createBook,
-						t,
-						close: () => setNewBook(false),
-						onCreated: (book) => {
-							writeWriterSelection(book.cwd, `${book.path}/${book.form === "long" ? "设定/创作意图.md" : "设定.md"}`);
-							actions.selectWorkspace(workspace.workspaceId);
-							if (book.sessionId) actions.selectSession(book.sessionId);
-							actions.selectView("projects");
-							setRevision((value) => value + 1);
-							setNewBook(false);
-							report("createdBook");
-						}
-					})
-				]
-			});
-		}
-		function Loading() {
-			return (0, react_jsx_runtime.jsx)("div", {
-				className: workbench_module_css_default.empty,
-				"aria-busy": "true",
-				children: (0, react_jsx_runtime.jsx)("span", { className: workbench_module_css_default.spinner })
-			});
-		}
-		function AssistantPanel({ sessionId, retain, renderSlot, SessionProvider, t }) {
-			const [reference, setReference] = (0, react.useState)();
-			const [failure, setFailure] = (0, react.useState)(false);
-			const [retry, setRetry] = (0, react.useState)(0);
-			(0, react.useEffect)(() => {
-				const current = retain(sessionId);
-				let alive = true;
-				current.ready.then(() => {
-					if (alive) setReference(current);
-				}).catch(() => {
-					if (alive) setFailure(true);
-				});
-				return () => {
-					alive = false;
-					current.release();
-				};
-			}, [
-				sessionId,
-				retain,
-				retry
-			]);
-			if (failure) return (0, react_jsx_runtime.jsxs)("div", {
-				className: workbench_module_css_default.empty,
-				children: [(0, react_jsx_runtime.jsx)("p", {
-					role: "alert",
-					children: t("sessionUnavailable")
-				}), (0, react_jsx_runtime.jsx)("button", {
-					type: "button",
-					onClick: () => {
-						setReference(void 0);
-						setFailure(false);
-						setRetry((value) => value + 1);
-					},
-					children: t("retry")
-				})]
-			});
-			return reference ? (0, react_jsx_runtime.jsx)(SessionProvider, {
-				session: reference,
-				children: renderSlot("writer.workbench.conversation", {})
-			}) : (0, react_jsx_runtime.jsx)(Loading, {});
-		}
-		function NewBook({ workspaceId, createBook, onCreated, close, t }) {
-			const [title, setTitle] = (0, react.useState)("");
-			const [path, setPath] = (0, react.useState)();
-			const [form, setForm] = (0, react.useState)("long");
-			const [busy, setBusy] = (0, react.useState)(false);
-			const [error, setError] = (0, react.useState)();
-			return (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
-				open: true,
-				title: t("createBook"),
-				closeLabel: t("cancel"),
-				onClose: busy ? () => {} : close,
-				children: (0, react_jsx_runtime.jsxs)("form", {
-					className: workbench_module_css_default.form,
-					onSubmit: (event) => {
-						event.preventDefault();
-						if (busy || !title.trim() || !(path ?? title).trim()) return;
-						setBusy(true);
-						setError(void 0);
-						createBook({
-							action: "create",
-							workspaceId,
-							title: title.trim(),
-							path: (path ?? title).trim(),
-							form
-						}).then(onCreated).catch((cause) => {
-							const key = cause instanceof Error && cause.message in zh ? cause.message : "operationFailed";
-							setError(t(key));
-						}).finally(() => setBusy(false));
-					},
-					children: [
-						(0, react_jsx_runtime.jsxs)("label", { children: [t("bookTitle"), (0, react_jsx_runtime.jsx)("input", {
-							autoFocus: true,
-							required: true,
-							value: title,
-							disabled: busy,
-							onChange: (event) => setTitle(event.target.value)
-						})] }),
-						(0, react_jsx_runtime.jsxs)("label", { children: [t("folder"), (0, react_jsx_runtime.jsx)("input", {
-							required: true,
-							value: path ?? title,
-							disabled: busy,
-							onChange: (event) => setPath(event.target.value)
-						})] }),
-						(0, react_jsx_runtime.jsxs)("label", { children: [t("form"), (0, react_jsx_runtime.jsxs)("select", {
-							value: form,
-							disabled: busy,
-							onChange: (event) => setForm(event.target.value === "short" ? "short" : "long"),
-							children: [(0, react_jsx_runtime.jsx)("option", {
-								value: "long",
-								children: t("longForm")
-							}), (0, react_jsx_runtime.jsx)("option", {
-								value: "short",
-								children: t("shortForm")
-							})]
-						})] }),
-						error && (0, react_jsx_runtime.jsx)("p", {
-							role: "alert",
-							children: error
-						}),
-						(0, react_jsx_runtime.jsxs)("footer", { children: [(0, react_jsx_runtime.jsx)("button", {
-							type: "button",
-							disabled: busy,
-							onClick: close,
-							children: t("cancel")
-						}), (0, react_jsx_runtime.jsx)("button", {
-							type: "submit",
-							className: workbench_module_css_default.primary,
-							disabled: busy || !title.trim(),
-							children: t("create")
-						})] })
-					]
-				})
-			});
-		}
-		//#endregion
-		//#region lib/types/client/workbench-entry.js
-		const inject$1 = [
-			"slots",
-			"locale",
-			"layout",
-			"sessions",
-			"uiSession",
-			"uiWorkspace",
-			"conversation",
-			"remote",
-			"remote.workspaceFiles"
-		];
-		function WorkbenchNotice({ useNotice, dismiss, t }) {
-			const notice = useNotice((value) => value);
-			return notice ? (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Toast, {
-				text: t(notice.key),
-				...notice.key !== "operationFailed" ? { tone: "success" } : {},
-				onDone: dismiss
-			}, notice.sequence) : null;
-		}
-		/** @param ctx - native Client services. @param store - preferences shared with the sidebar. */
-		function apply$1(ctx, store) {
-			ctx.effect(() => ctx.locale.register("writerWorkbench", {
-				en,
-				zh
-			}), "writer: workbench locale");
-			const t = ctx.locale.bind("writerWorkbench");
-			const deskT = ctx.locale.bind(NS);
-			const notice = (0, _deepseek_ai_dsh_client_store.createSnapshotStore)(null);
-			let sequence = 0;
-			ctx.effect(() => ctx.slots.inject("main", function* () {
-				yield ctx.slots.register({
-					name: "main",
-					key: "writer-workbench",
-					children: { "writer.workbench": {
-						kind: "single",
-						scope: "root"
-					} }
-				}, Main);
-				yield ctx.slots.register({
-					name: "writer.workbench",
-					locale: "writerWorkbench",
-					store,
-					children: { "writer.workbench.conversation": {
-						kind: "single",
-						scope: "session"
-					} },
-					inject: () => ({
-						retain: (id) => ctx.sessions.retain(id, { source: "mainView" }),
-						createSession: (workspaceId) => ctx.sessions.create({
-							workspaceId,
-							agentPreset: "writer"
-						}),
-						createBook: async (input) => await request(input),
-						openSession: (id) => {
-							ctx.uiWorkspace.openSession(id);
-						},
-						report: (key) => {
-							notice.set({
-								key,
-								sequence: ++sequence
-							});
-						},
-						remote: ctx.remote,
-						deskT: (key) => deskT(key)
-					})
-				}, Workbench);
-			}), "writer: workbench panel");
-			ctx.effect(() => ctx.slots.inject("writer.workbench.conversation", () => ctx.slots.register({ name: "writer.workbench.conversation" }, NativeConversation)), "writer: native conversation");
-			ctx.effect(() => ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({
-				name: "sidebar.panellist",
-				id: "writer-workbench",
-				order: 26,
-				label: () => t("title"),
-				locale: "writerWorkbench"
-			}, Launcher)), "writer: workbench launcher");
-			ctx.effect(() => ctx.slots.inject("shell.overlay", () => ctx.slots.register({
-				name: "shell.overlay",
-				id: "writer.workbench.notice",
-				locale: "writerWorkbench",
-				inject: () => ({
-					hooks: { notice },
-					dismiss: () => {
-						notice.set(null);
-					}
-				})
-			}, WorkbenchNotice)), "writer: workbench feedback");
-		}
-		async function request(value) {
-			const response = await fetch("/writer-workbench", {
-				method: "POST",
-				headers: { "content-type": "application/json" },
-				body: JSON.stringify(value)
-			});
-			const result = await response.json();
-			if (!response.ok) throw new Error(result && typeof result === "object" && "error" in result && typeof result.error === "string" ? result.error : "workbenchFailed");
-			return result;
-		}
-		//#endregion
-		//#region lib/types/client/workbench-store.js
-		/** Viewing preferences shared by the writing sidebar and the full workbench. */
-		/** @returns registration-owned preferences; manuscripts remain in the existing editor. */
-		function createWriterWorkbenchStore() {
-			return (0, _deepseek_ai_dsh_client_store.defineStore)({
-				init: () => ({
-					workspaceId: "",
-					sessionId: "",
-					view: "projects",
-					assistantOpen: true,
-					pane: "document"
-				}),
-				persist: "dsh.writer.workbench.v2",
-				actions: {
-					selectWorkspace: (draft, id) => {
-						draft.workspaceId = id;
-						draft.sessionId = "";
-					},
-					selectSession: (draft, id) => {
-						draft.sessionId = id;
-					},
-					openFromSidebar: (draft, id) => {
-						draft.workspaceId = "";
-						draft.sessionId = id;
-						draft.pane = "document";
-					},
-					selectView: (draft, view) => {
-						draft.view = view;
-						draft.pane = "document";
-					},
-					toggleAssistant: (draft) => {
-						draft.assistantOpen = !draft.assistantOpen;
-					},
-					selectPane: (draft, pane) => {
-						draft.pane = pane;
-						if (pane === "assistant") draft.assistantOpen = true;
-					}
-				}
-			});
-		}
-		//#endregion
 		//#region lib/types/client/index.js
 		/** Services required by the sidebar and the Writing settings page. */
-		const inject = [
-			...zhuqueInject,
-			...inject$1,
-			...inject$2
-		];
+		const inject = [...zhuqueInject, ...inject$1];
 		/**
 		* Register the writing sidebar and the Plugins-page Writing credential entry.
 		* @param context - browser services.
 		*/
 		function apply(context) {
-			const workbenchStore = createWriterWorkbenchStore();
-			apply$2(context, workbenchStore);
-			apply$1(context, workbenchStore);
+			apply$1(context);
 			applyZhuqueSettings(context);
 		}
 		//#endregion

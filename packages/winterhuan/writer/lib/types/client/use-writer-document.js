@@ -196,17 +196,6 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
                 return;
             publish(persist({ ...value, text, notice: undefined }));
         },
-        checkpoint: () => {
-            const value = current.current;
-            if (!value)
-                return true;
-            if (value.busy)
-                return false;
-            const next = persist(value);
-            publish(next);
-            const result = readWriterDraft(cwd, value.path);
-            return !result.error && (value.text === value.baseText || result.draft?.text === value.text);
-        },
         save,
     };
 }

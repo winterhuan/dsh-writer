@@ -1,7 +1,7 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.2.3",
-  "description": "Novel-writing workbench for DSH with native Writer conversations and oh-story skills",
+  "version": "0.2.4",
+  "description": "Writing sidebar for DSH with native Writer conversations and oh-story skills",
   "type": "module",
   "license": "MIT",
   "publishConfig": {
@@ -47,11 +47,7 @@
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-settings",
         "@deepseek-ai/dsh-client-ui-plugin-manager",
-        "@deepseek-ai/dsh-api-remotes",
-        "@deepseek-ai/dsh-client-ui-workspace",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-sidebar"
+        "@deepseek-ai/dsh-api-remotes"
       ]
     }
   },
@@ -88,8 +84,7 @@
     "@deepseek-ai/dsh-tool-workflow": "0.2.2-rc.1",
     "@deepseek-ai/dsh-workflow-ptc": "0.2.2-rc.1",
     "@deepseek-ai/schemastery": "~3.19.0",
-    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-atomic-write": "0.2.2-rc.1"
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "~4.1.0",
@@ -123,13 +118,7 @@
     "@deepseek-ai/dsh-subagent": "0.2.2-rc.1",
     "@deepseek-ai/dsh-subagent-spawn-in-process": "0.2.2-rc.1",
     "@deepseek-ai/dsh-session-persistence-jsonl": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-session-query": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-api-workspace-controller": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-workspace": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-workspace": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-layout": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-sidebar": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-conversation": "0.2.2-rc.1"
+    "@deepseek-ai/dsh-session-query": "0.2.2-rc.1"
   },
   "scripts": {
     "build": "tsc -b tsconfig.host.json tsconfig.client.json && tsdown --config-loader native",

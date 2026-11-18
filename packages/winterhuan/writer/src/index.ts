@@ -17,7 +17,6 @@ import { resolveWriterSyncPreset } from './sync-gate.ts'
 import { restoreWriterSkills, syncWriterSkills, unsyncWriterSkills, type SyncResult, type UnsyncResult } from './sync-skills.ts'
 import { formatWriterSkillsStatus, inspectWriterSkills } from './skills-status.ts'
 import { registerWriterRoute } from './write-route.ts'
-import { registerWriterWorkbench } from './workbench.ts'
 
 export { packageSkillsDir } from './skills-dir.ts'
 export { skillFilesystemRowDisabled, writerSkillMount } from './mount.ts'
@@ -167,9 +166,6 @@ export function apply(context: Context, config: Config = {}): void {
   })
   context.inject(['webServer', 'typert'], ctx => {
     registerWriterRoute(ctx, { maxBytes, trustedHosts })
-  })
-  context.inject(['webServer', 'sessionController', 'workspaceRegistry', 'agentPresets', 'sessions'], ctx => {
-    registerWriterWorkbench(ctx, trustedHosts)
   })
   context.inject(['commands'], ctx => {
     ctx.effect(() => ctx.commands.register({

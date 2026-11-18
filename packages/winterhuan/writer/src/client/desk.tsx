@@ -69,9 +69,7 @@ interface DeskProps {
   readonly remote: ClientRemote
   readonly t: Copy
   readonly visible: boolean
-  readonly checkpoint?: { current: () => boolean }
-  readonly initialView?: WriterWorkspaceView
-  readonly view?: WriterWorkspaceView
+  readonly running?: boolean
 }
 
 interface ListingCache {
@@ -325,11 +323,10 @@ export function WriterDesk(props: DeskProps) {
   return <WriterDeskBody key={props.cwd} {...props} />
 }
 
-function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initialView, view: controlledView }: DeskProps) {
+function WriterDeskBody({ sessionId, cwd, remote, t, visible, running = false }: DeskProps) {
   const writerDocument = useWriterDocument(remote, sessionId, cwd, t)
-  if (checkpoint) checkpoint.current = writerDocument.checkpoint
   const { active, draft, saved, version, eol, busy, dirty, conflict } = writerDocument
-  const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(initialView)
+  const [viewPick, setViewPick] = useState<WriterWorkspaceView | undefined>(undefined)
   const [libraries, setLibraries] = useState<readonly WriterTreeNode[]>([])
   const [projects, setProjects] = useState<readonly WriterTreeNode[]>([])
   const [scans, setScans] = useState<readonly WriterTreeNode[]>([])
@@ -352,6 +349,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   const saveRef = useRef<() => void>(() => {})
   const searchSeq = useRef(0)
   const selectionSeq = useRef(0)
+  const scanController = useRef<AbortController>()
+  const previousTurn = useRef({ sessionId, running })
   const selectFileRef = useRef<(path: string, preview?: boolean) => void>(() => {})
   const [railChrome, setRailChrome] = useState<WriterRailChrome>(() => readRailChrome())
   const [deskWidth, setDeskWidth] = useState(0)
@@ -361,9 +360,9 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   // Keep empty views switchable and prefer scans when they are the only content.
   const preferredView: WriterWorkspaceView = libraries.length > 0 ? 'libraries'
     : projects.length > 0 || scans.length === 0 ? 'projects' : 'scans'
-  const view: WriterWorkspaceView = controlledView ?? viewPick ?? preferredView
+  const view: WriterWorkspaceView = viewPick ?? preferredView
   const roots = view === 'libraries' ? libraries : view === 'projects' ? projects : scans
-  const rootPathsKey = roots.map(node => node.path).join('\0')
+  const rootPathsKey = roots.map(node => node.path || '.').join('\0')
   const query = filter.trim()
   const showSearch = query !== ''
 
@@ -377,6 +376,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     selectionSeq.current += 1
     if (!visible) return undefined
     const controller = new AbortController()
+    scanController.current = controller
     const signal = controller.signal
     setNotice(undefined)
     setScanning(true)
@@ -391,7 +391,6 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         setScanErrors(scan.scanErrors)
         setScanHardFailed(false)
         setListings({})
-        setExpanded({})
       } catch (error) {
         if (signal.aborted) return
         setLibraries([])
@@ -407,6 +406,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   }, [visible, sessionId, cwd, remote, reloadKey, t])
 
   const loadDirectory = (path: string, force = false, onLoaded?: (entries: readonly DirEntry[]) => void): void => {
+    const signal = scanController.current?.signal
+    if (!signal || signal.aborted) return
     const cached = force ? undefined : listings[path]
     if (cached !== undefined) {
       patchDirectory(path, (node) => {
@@ -428,7 +429,8 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       const { loadError: _drop, ...rest } = node
       return { ...rest, loading: true }
     })
-    void readDir(remote, sessionId, cwd, path, new AbortController().signal, t).then((page) => {
+    void readDir(remote, sessionId, cwd, path, signal, t).then((page) => {
+      if (signal.aborted) return
       setListings(current => ({ ...current, [path]: { entries: page.entries, truncated: page.truncated } }))
       patchDirectory(path, (node) => {
         const built = buildLoadedChildren(path, page.entries, DIRECTORY_PAGE_SIZE, page.truncated)
@@ -437,6 +439,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       })
       onLoaded?.(page.entries)
     }).catch((error: unknown) => {
+      if (signal.aborted) return
       patchDirectory(path, node => ({
         ...node,
         loading: false,
@@ -445,18 +448,20 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     })
   }
 
-  // Only the chain holding the open file auto-opens and lazy-loads; respect explicit collapse.
+  // Reload visible branches after discovery replaces the directory nodes.
   useEffect(() => {
-    if (!visible || showSearch) return
-    for (const root of roots) {
-      if (root.kind !== 'directory') continue
-      const key = root.path
+    if (!visible || scanning || showSearch) return
+    const pending = [...roots]
+    for (const node of pending) {
+      if (node.kind !== 'directory') continue
+      const key = node.path
       const open = key in expanded ? expanded[key] === true : defaultWriterTreeExpanded(key, active)
-      if (!open || root.loaded || root.loading || root.loadError !== undefined) continue
-      loadDirectory(key)
+      if (!open) continue
+      if (node.loaded) pending.push(...node.children)
+      else if (!node.loading && node.loadError === undefined) loadDirectory(key)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional narrow deps for root lazy-open
-  }, [visible, roots, expanded, active, listings, showSearch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadDirectory uses this render's listings
+  }, [visible, scanning, roots, expanded, active, listings, showSearch])
 
   const onToggle = (path: string, open: boolean): void => {
     const sequence = ++selectionSeq.current
@@ -499,11 +504,16 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
   selectFileRef.current = selectFile
 
   const rescan = (): void => {
-    if (!confirmDiscard()) return
     selectionSeq.current += 1
-    writerDocument.close()
+    writerDocument.reload()
     setReloadKey(value => value + 1)
   }
+
+  useEffect(() => {
+    const previous = previousTurn.current
+    previousTurn.current = { sessionId, running }
+    if (previous.sessionId === sessionId && previous.running && !running) rescan()
+  }, [sessionId, running])
 
   useEffect(() => { setConflictOpen(conflict) }, [conflict])
   useEffect(() => { setCaret(0) }, [active])
@@ -531,9 +541,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     const sequence = ++searchSeq.current
     const controller = new AbortController()
     const timer = window.setTimeout(() => {
-      const rootPaths = rootPathsKey === ''
-        ? []
-        : rootPathsKey.split('\0').map(path => (path === '' ? '.' : path))
+      const rootPaths = rootPathsKey === '' ? [] : rootPathsKey.split('\0')
       void searchWriterFilenames(
         rootPaths,
         trimmed,
@@ -554,12 +562,11 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [visible, filter, view, rootPathsKey, remote, sessionId, cwd, t])
+  }, [visible, filter, view, rootPathsKey, reloadKey, remote, sessionId, cwd, t])
 
   useEffect(() => {
     if (!visible) return undefined
     const onKey = (event: KeyboardEvent): void => {
-      if (deskRef.current?.closest('.writer-wb-document')?.getClientRects().length === 0) return
       const modifier = event.metaKey || event.ctrlKey
       if (!modifier) return
       const key = event.key.toLocaleLowerCase()
@@ -710,7 +717,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
     style={deskStyle}
   >
     <aside id={railId} className="writer-rail" aria-label={t('tree')} hidden={railCollapsed || undefined}>
-      {controlledView === undefined && <nav className="writer-tabs" aria-label={t('workspaceTabs')} role="tablist">
+      <nav className="writer-tabs" aria-label={t('workspaceTabs')} role="tablist">
         <button
           type="button"
           id={librariesTabId}
@@ -747,7 +754,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
           <span>{t('scans')}</span>
           {scans.length > 0 && <b className="writer-badge">{scans.length}</b>}
         </button>
-      </nav>}
+      </nav>
       <div className="writer-search-slot" role="search">
         <input
           ref={searchRef}
@@ -770,8 +777,7 @@ function WriterDeskBody({ sessionId, cwd, remote, t, visible, checkpoint, initia
         className="writer-tree-panel"
         id={tabPanelId}
         role="tabpanel"
-        aria-labelledby={controlledView === undefined ? view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId : undefined}
-        aria-label={controlledView === undefined ? undefined : t(view)}
+        aria-labelledby={view === 'libraries' ? librariesTabId : view === 'projects' ? projectsTabId : scansTabId}
         aria-busy={scanning || undefined}
       >
         {health === 'failed' && !showSearch && <div className="writer-scan-banner" role="alert">

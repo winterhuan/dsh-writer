@@ -1,5 +1,5 @@
 ---
-description: "Add a novel-writing workbench with native Writer conversations and oh-story skills."
+description: "Add a writing sidebar with native Writer conversations and oh-story skills."
 kind: "package-bundle"
 ---
 
@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-This bundle adds a writing workbench, writing sidebar, Writer preset, and oh-story skills to DSH. The workbench extends the sidebar's file navigation, manuscript editor, chapter checks, and browser draft recovery. Works, analysis, and market research sit beside the native DSH writing conversation. Existing manuscripts open directly from the selected workspace without book registration. Skills use the package directory by default; project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
+This bundle adds a writing sidebar, Writer preset, and oh-story skills to DSH. The sidebar provides Analysis library, Projects, and Market research views with file navigation, manuscript editing, chapter checks, and browser draft recovery beside the native DSH writing conversation. Existing manuscripts open from the current conversation's workspace. Skills use the package directory by default, and project copies take precedence. Sync and unsync preserve replaced copies in recoverable backups.
 
 ## Table of Contents
 
@@ -28,7 +28,7 @@ This bundle adds a writing workbench, writing sidebar, Writer preset, and oh-sto
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.3&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.4&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -76,13 +76,11 @@ These packaged skills are author-triggered. They do not block chapter writing.
 | `story-cover` | `/story-cover` | Prompt-only needs no key. Generating an image on DSH uses the GPT Image credential above. Codex hosts may still use `$imagegen`. |
 | `browser-cdp` | `/browser-cdp` | Browser entry: Box by default, optional Ego, login/CAPTCHA handoff and collector recovery. |
 
-### Open existing novels
-
-Open the writing workbench and select a workspace; the first visit prefers `novels`. Select a Writer conversation on the right, or select New conversation when none exists. Updates to other conversations do not replace the open assistant. Switching conversations keeps the manuscript draft and rechecks file access and the disk version before saving through the new conversation. Works, Analysis library, and Market research display existing folders and materials directly. Expand a folder to edit its manuscript without separate registration or binding. The sidebar and workbench use the existing editor; Open workbench carries the sidebar's current conversation. Collapse the assistant or switch between manuscript and assistant in narrow windows; both retain manuscript drafts and unsent input. Create book separately collects a title, folder name, and form, and refuses an existing target directory. Manuscripts and Session histories stay in their existing locations.
-
 ### Use the sidebar
 
-Open the writing sidebar in a `writer` session. Libraries, projects, and dated market scans have separate tabs, lazy directory trees, and filename search. The editor supports `.md`, `.txt`, `.json`, `.yaml`, `.yml`, and `.toml`, Markdown preview, line numbers, original line endings, and a comparison with the loaded version. Cmd/Ctrl+S saves; Cmd/Ctrl+K focuses filename search when the chat composer is not focused. Only folders matching the existing writing-project markers appear. Unmatched or unreadable candidate folders are skipped without a scan warning. An unreadable workspace root still fails the scan, and loading errors inside recognized content remain visible.
+Open a native conversation in the manuscript workspace, select Writing mode, then open Writing in the right sidebar. The sidebar follows the current Writer conversation. Libraries, projects, and dated market scans have separate tabs, lazy directory trees, and filename search. The editor supports `.md`, `.txt`, `.json`, `.yaml`, `.yml`, and `.toml`, Markdown preview, line numbers, original line endings, and a comparison with the loaded version. Cmd/Ctrl+S saves; Cmd/Ctrl+K focuses filename search when the chat composer is not focused. Only folders matching the existing writing-project markers appear. Unmatched or unreadable candidate folders are skipped without a scan warning. An unreadable workspace root still fails the scan, and loading errors inside recognized content remain visible.
+
+When the current assistant finishes a turn, the sidebar refreshes the directory and open manuscript. Manual refresh also updates the current filename search results and preserves expanded folders and unsaved drafts.
 
 Unsaved text and its disk baseline are stored in this browser under the workspace and file path. Hiding the sidebar preserves the editor; reopening the page restores the last document and its draft. Failed reads or saves retain the draft. Storage failures stay visible, and leaving the page with unsaved changes triggers the browser warning. Concurrent recovery-copy changes are reported rather than overwritten. Recovery is local to this browser origin and may be unavailable when storage is disabled or full; it is not a manuscript backup.
 
@@ -145,7 +143,7 @@ The persona is stable for the life of the preset revision. With the default `bun
 ## Known Limitations and Deferred Work
 <a id="known-limitations-and-deferred-work"></a>
 
-- File deletion and automatic manuscript merging are not provided. Browser drafts are not shared across devices or origins. Reports refresh when opened, after an editor save, or on explicit refresh; external file edits require refresh. Mechanical checks and version fingerprints do not certify literary quality or reviewer independence. Workspace copies still override bundled skills until updated or removed. Zhuque and cover generation remain explicit author requests with their own configured credentials.
+- File deletion and automatic manuscript merging are not provided. Browser drafts are not shared across devices or origins. Chapter reports refresh when opened, after an editor save, or on explicit refresh. External file changes outside assistant turns need a manual refresh. Mechanical checks and version fingerprints do not certify literary quality or reviewer independence. Workspace copies still override bundled skills until updated or removed. Zhuque and cover generation remain explicit author requests with their own configured credentials.
 
 <a id="dev-note"></a>
 ### Dev Note

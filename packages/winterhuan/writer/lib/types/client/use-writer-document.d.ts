@@ -29,8 +29,6 @@ export interface WriterDocumentController {
     readonly edit: (text: string) => void;
     /** Save the current document using its own disk version. */
     readonly save: () => Promise<boolean>;
-    /** Preserve recovery before changing the visible book. */
-    readonly checkpoint: () => boolean;
 }
 /**
  * Keep an editor alive while its sidebar is hidden. Mount separately per session/workspace.

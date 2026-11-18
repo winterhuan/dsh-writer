@@ -94,6 +94,45 @@ function remote(entriesByPath = tree): ClientRemote {
   } as ClientRemote
 }
 
+it('refreshes expanded folders after the assistant finishes and keeps the open draft', async () => {
+  const entries = { ...tree, '/ws/novel/正文': [...tree['/ws/novel/正文']!] }
+  const props = { sessionId: SessionId('refresh-turn'), cwd, remote: remote(entries), t: (key: keyof typeof zh) => zh[key], visible: true }
+  const view = render(<WriterDesk {...props} running={false} />)
+  fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.projects) }))
+  fireEvent.click(await screen.findByRole('button', { name: 'novel' }))
+  fireEvent.click(await screen.findByRole('button', { name: '正文' }))
+  fireEvent.click(await screen.findByRole('button', { name: '第001章.md' }))
+  const editor = await screen.findByRole('textbox', { name: 'novel/正文/第001章.md' })
+  await waitFor(() => expect(editor).toHaveProperty('value', '旧稿'))
+  fireEvent.change(editor, { target: { value: '我的未保存正文' } })
+  view.rerender(<WriterDesk {...props} running />)
+  entries['/ws/novel/正文'].push({ name: '第003章.md', type: 'file' })
+  expect(screen.queryByRole('button', { name: '第003章.md' })).toBeNull()
+  view.rerender(<WriterDesk {...props} running={false} />)
+  expect(await screen.findByRole('button', { name: '第003章.md' })).toBeTruthy()
+  expect(screen.getByRole('textbox', { name: 'novel/正文/第001章.md' })).toBe(editor)
+  expect(editor).toHaveProperty('value', '我的未保存正文')
+})
+
+it('refreshes the current filename search on rescan without closing the manuscript', async () => {
+  const entries = { ...tree, '/ws/novel/正文': [...tree['/ws/novel/正文']!] }
+  render(<WriterDesk sessionId={SessionId('refresh-search')} cwd={cwd} remote={remote(entries)} t={key => zh[key]} visible />)
+  fireEvent.click(await screen.findByRole('tab', { name: new RegExp(zh.projects) }))
+  fireEvent.click(await screen.findByRole('button', { name: 'novel' }))
+  fireEvent.click(await screen.findByRole('button', { name: '正文' }))
+  fireEvent.click(await screen.findByRole('button', { name: '第001章.md' }))
+  const editor = await screen.findByRole('textbox', { name: 'novel/正文/第001章.md' })
+  await waitFor(() => expect(editor).toHaveProperty('value', '旧稿'))
+  fireEvent.change(editor, { target: { value: '保留这段新写的文字' } })
+  fireEvent.change(screen.getByPlaceholderText(zh.search), { target: { value: '章.md' } })
+  await waitFor(() => expect(screen.getByRole('button', { name: '第001章.md' }).closest('.writer-search-hits')).toBeTruthy())
+  entries['/ws/novel/正文'].push({ name: '第003章.md', type: 'file' })
+  fireEvent.click(screen.getByRole('button', { name: zh.reload }))
+  expect(await screen.findByRole('button', { name: '第003章.md' })).toBeTruthy()
+  expect(screen.getByRole('textbox', { name: 'novel/正文/第001章.md' })).toBe(editor)
+  expect(editor).toHaveProperty('value', '保留这段新写的文字')
+})
+
 it('uses left-rail shell, collapsed roots, lazy-loads, and saves', async () => {
   const fetchMock = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => new Response(
     JSON.stringify({ path: 'novel/正文/第001章.md', bytes: 6, version: 'v2' }),
@@ -193,6 +232,18 @@ it('uses left-rail shell, collapsed roots, lazy-loads, and saves', async () => {
   const [url, init] = fetchMock.mock.calls[0] ?? []
   expect(String(url)).toContain('/writer/file')
   expect(JSON.parse(String(init?.body))).toEqual({ content: '新稿', baseVersion: 'v1' })
+})
+
+it('searches a manuscript when the book is the workspace root', async () => {
+  render(<WriterDesk sessionId={SessionId('root-book')} cwd={cwd} remote={remote({
+    '/ws': [{ name: '正文.md', type: 'file' }],
+  })} t={key => zh[key]} visible />)
+  await screen.findByRole('button', { name: zh.workspaceBook })
+  fireEvent.change(screen.getByPlaceholderText(zh.search), { target: { value: '正文' } })
+  const match = await screen.findByRole('button', { name: '正文.md' })
+  expect(match.closest('.writer-search-hits')).toBeTruthy()
+  fireEvent.click(match)
+  expect(await screen.findByRole('textbox', { name: '正文.md' })).toBeTruthy()
 })
 
 it('asks before switching files when the draft is dirty', async () => {

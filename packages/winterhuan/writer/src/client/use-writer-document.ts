@@ -51,8 +51,6 @@ export interface WriterDocumentController {
   readonly edit: (text: string) => void
   /** Save the current document using its own disk version. */
   readonly save: () => Promise<boolean>
-  /** Preserve recovery before changing the visible book. */
-  readonly checkpoint: () => boolean
 }
 
 /**
@@ -235,15 +233,6 @@ export function useWriterDocument(remote: ClientRemote, sessionId: SessionId, cw
       const value = current.current
       if (value?.status !== 'ready') return
       publish(persist({ ...value, text, notice: undefined }))
-    },
-    checkpoint: () => {
-      const value = current.current
-      if (!value) return true
-      if (value.busy) return false
-      const next = persist(value)
-      publish(next)
-      const result = readWriterDraft(cwd, value.path)
-      return !result.error && (value.text === value.baseText || result.draft?.text === value.text)
     },
     save,
   }
