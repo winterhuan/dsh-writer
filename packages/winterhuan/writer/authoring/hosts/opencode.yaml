@@ -1,0 +1,194 @@
+output: opencode/agents
+format: markdown
+referenceRules: reference-rules.md
+variables:
+  METHOD_ROOT: story-setup/references/agent-references/
+  HOST: |
+    OpenCode
+  REFERENCE_ROOT: |
+    skills/story-setup/references/agent-references/
+  SETUP_COMMAND: |
+    /story-setup
+  CALL: |
+    `Agent(subagent_type: "{{WRITER_ROLE}}")`
+headers:
+  chapter-extractor: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: deny
+      - action: shell
+        resource: "*"
+        effect: deny
+      - action: edit
+        resource: "_analysis_cache/输入-RAW-*.md"
+        effect: allow
+      - action: edit
+        resource: "*/_analysis_cache/输入-RAW-*.md"
+        effect: allow
+      - action: edit
+        resource: "_analysis_cache/输入-REUSE-*.md"
+        effect: allow
+      - action: edit
+        resource: "*/_analysis_cache/输入-REUSE-*.md"
+        effect: allow
+    steps: 20
+  character-designer: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: allow
+      - action: shell
+        resource: "*"
+        effect: deny
+    steps: 25
+  consistency-checker: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: deny
+      - action: shell
+        resource: "*"
+        effect: deny
+    steps: 15
+  narrative-writer: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: allow
+      - action: shell
+        resource: "*"
+        effect: allow
+    steps: 30
+  story-architect: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: allow
+      - action: shell
+        resource: "*"
+        effect: deny
+    steps: 30
+  story-explorer: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: deny
+      - action: shell
+        resource: "*"
+        effect: deny
+    steps: 15
+  story-researcher: |
+    description: |
+    {{WRITER_DESCRIPTION}}
+    mode: subagent
+    permissions:
+      - action: "*"
+        resource: "*"
+        effect: deny
+      - action: read
+        resource: "*"
+        effect: allow
+      - action: glob
+        resource: "*"
+        effect: allow
+      - action: grep
+        resource: "*"
+        effect: allow
+      - action: edit
+        resource: "*"
+        effect: allow
+      - action: shell
+        resource: "*"
+        effect: allow
+    steps: 20

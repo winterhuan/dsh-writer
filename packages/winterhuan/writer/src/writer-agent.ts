@@ -57,7 +57,7 @@ export function apply(ctx: Context): void {
       if (setupDir === undefined) throw new Error('Writer roles require a filesystem story-setup skill.')
       const bundled = resolve(setupDir) === join(packageSkillsDir(), 'story-setup')
       const prompt = await buildDshAgentPrompt({
-        setupDir, role: args.role, projectDir, task: args.prompt,
+        setupDir, format: bundled ? 'dsh' : 'legacy-project', role: args.role, projectDir, task: args.prompt,
         read: async path => {
           if (!bundled) {
             const fs = agent.ctx.get('fs')

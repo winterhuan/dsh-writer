@@ -184,6 +184,9 @@ importers:
       simple-icons:
         specifier: 16.31.0
         version: 16.31.0
+      smol-toml:
+        specifier: ^1.9.1
+        version: 1.9.1
       tsdown:
         specifier: ^0.22.2
         version: 0.22.14(tsx@4.23.15)(typescript@6.0.3)
@@ -3662,6 +3665,11 @@ packages:
       integrity: sha512-dDEqvQrmxL7ZnqQtGHGjCNW6CfiwzAif+83Hol9JXAnAB6wh2zsZD7Sc1kWT0O/RRAKt7xfG8W6UZhYBPD+GAA==
     engines:
       node: '>=0.12.18'
+  smol-toml@1.9.1:
+    resolution:
+      integrity: sha512-j7WyPdf0CJoutMzMoPLF/bVXHtKZIT9Rb4eGeEbWw8X2t5oirjPgpL+OpaENZrILYaXqYwnVH+qgUwVbl+pUJQ==
+    engines:
+      node: '>= 18'
   source-map-js@1.2.2:
     resolution:
       integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==
@@ -6385,6 +6393,7 @@ snapshots:
   siginfo@2.0.0: {}
   signal-exit@4.1.0: {}
   simple-icons@16.31.0: {}
+  smol-toml@1.9.1: {}
   source-map-js@1.2.2: {}
   space-separated-tokens@2.0.2: {}
   stackback@0.0.2: {}

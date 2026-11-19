@@ -1,0 +1,265 @@
+# Paths are relative to skills/. Each destination is a generated, standalone file.
+- source: story-deslop/references/banned-words.md
+  targets:
+    - story-long-write/references/banned-words.md
+    - story-review/references/banned-words.md
+    - story-setup/references/agent-references/banned-words.md
+    - story-short-write/references/banned-words.md
+- source: story-deslop/references/deslop-gates.md
+  targets:
+    - story-setup/references/agent-references/deslop-gates.md
+    - story-short-write/references/deslop-gates.md
+- source: story-deslop/references/expression.md
+  targets:
+    - story-review/references/expression.md
+    - story-setup/references/agent-references/expression.md
+    - story-short-write/references/expression.md
+- source: story-deslop/references/narrative-focus.md
+  targets:
+    - story-review/references/narrative-focus.md
+    - story-setup/references/agent-references/narrative-focus.md
+    - story-short-write/references/narrative-focus.md
+- source: story-deslop/references/story-logic.md
+  targets:
+    - story-review/references/story-logic.md
+    - story-setup/references/agent-references/story-logic.md
+    - story-short-write/references/story-logic.md
+- source: story-deslop/references/style-resolution.md
+  targets:
+    - story-long-write/references/style-resolution.md
+    - story-review/references/style-resolution.md
+    - story-setup/references/agent-references/style-resolution.md
+    - story-short-write/references/style-resolution.md
+- source: story-deslop/scripts/check-ai-patterns.js
+  targets:
+    - story-long-write/scripts/check-ai-patterns.js
+    - story-review/scripts/check-ai-patterns.js
+    - story-short-write/scripts/check-ai-patterns.js
+- source: story-deslop/scripts/check-degeneration.js
+  targets:
+    - story-long-write/scripts/check-degeneration.js
+    - story-review/scripts/check-degeneration.js
+    - story-short-write/scripts/check-degeneration.js
+- source: story-deslop/scripts/normalize-punctuation.js
+  targets:
+    - story-long-write/scripts/normalize-punctuation.js
+    - story-review/scripts/normalize-punctuation.js
+    - story-short-write/scripts/normalize-punctuation.js
+- source: story-deslop/scripts/package.json
+  targets:
+    - story-import/scripts/package.json
+    - story-long-write/scripts/package.json
+    - story-review/scripts/package.json
+    - story-short-write/scripts/package.json
+- source: story-deslop/scripts/style-whitelist.js
+  targets:
+    - story-long-write/scripts/style-whitelist.js
+    - story-review/scripts/style-whitelist.js
+    - story-short-write/scripts/style-whitelist.js
+- source: story-long-scan/scripts/aggregate-rank.js
+  targets:
+    - story-short-scan/scripts/aggregate-rank.js
+- source: story-long-scan/scripts/package.json
+  targets:
+    - story-short-scan/scripts/package.json
+- source: story-long-write/references/author-memory-maintenance.md
+  targets:
+    - story-short-write/references/author-memory-maintenance.md
+- source: story-long-write/references/author-memory.md
+  targets:
+    - story-short-write/references/author-memory.md
+- source: story-long-write/references/character-basics.md
+  targets:
+    - story-setup/references/agent-references/character-basics.md
+- source: story-long-write/references/character-relations.md
+  targets:
+    - story-setup/references/agent-references/character-relations.md
+- source: story-long-write/references/dialogue-mastery.md
+  targets:
+    - story-setup/references/agent-references/dialogue-mastery.md
+    - story-short-write/references/dialogue-mastery.md
+- source: story-long-write/references/emotion-on-page.md
+  targets:
+    - story-setup/references/agent-references/emotion-on-page.md
+- source: story-long-write/references/emotional-arc-design.md
+  targets:
+    - story-setup/references/agent-references/emotional-arc-design.md
+- source: story-long-write/references/female-audience-writing.md
+  targets:
+    - story-setup/references/agent-references/female-audience-writing.md
+- source: story-long-write/references/genre-prose-cards.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards.md
+- source: story-long-write/references/genre-prose-cards/东方仙侠.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/东方仙侠.md
+- source: story-long-write/references/genre-prose-cards/传统玄幻.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/传统玄幻.md
+- source: story-long-write/references/genre-prose-cards/历史古代.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/历史古代.md
+- source: story-long-write/references/genre-prose-cards/历史脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/历史脑洞.md
+- source: story-long-write/references/genre-prose-cards/双男主.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/双男主.md
+- source: story-long-write/references/genre-prose-cards/古言脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/古言脑洞.md
+- source: story-long-write/references/genre-prose-cards/古风世情.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/古风世情.md
+- source: story-long-write/references/genre-prose-cards/女频悬疑.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/女频悬疑.md
+- source: story-long-write/references/genre-prose-cards/女频种田.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/女频种田.md
+- source: story-long-write/references/genre-prose-cards/宫斗宅斗.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/宫斗宅斗.md
+- source: story-long-write/references/genre-prose-cards/年代.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/年代.md
+- source: story-long-write/references/genre-prose-cards/快穿.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/快穿.md
+- source: story-long-write/references/genre-prose-cards/悬疑灵异.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/悬疑灵异.md
+- source: story-long-write/references/genre-prose-cards/悬疑脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/悬疑脑洞.md
+- source: story-long-write/references/genre-prose-cards/战神赘婿.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/战神赘婿.md
+- source: story-long-write/references/genre-prose-cards/抗战谍战.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/抗战谍战.md
+- source: story-long-write/references/genre-prose-cards/星光璀璨.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/星光璀璨.md
+- source: story-long-write/references/genre-prose-cards/民国言情.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/民国言情.md
+- source: story-long-write/references/genre-prose-cards/游戏体育.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/游戏体育.md
+- source: story-long-write/references/genre-prose-cards/玄幻脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/玄幻脑洞.md
+- source: story-long-write/references/genre-prose-cards/玄幻言情.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/玄幻言情.md
+- source: story-long-write/references/genre-prose-cards/现言脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/现言脑洞.md
+- source: story-long-write/references/genre-prose-cards/科幻末世.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/科幻末世.md
+- source: story-long-write/references/genre-prose-cards/职场婚恋.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/职场婚恋.md
+- source: story-long-write/references/genre-prose-cards/西方奇幻.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/西方奇幻.md
+- source: story-long-write/references/genre-prose-cards/豪门总裁.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/豪门总裁.md
+- source: story-long-write/references/genre-prose-cards/都市修真.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/都市修真.md
+- source: story-long-write/references/genre-prose-cards/都市日常.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/都市日常.md
+- source: story-long-write/references/genre-prose-cards/都市种田.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/都市种田.md
+- source: story-long-write/references/genre-prose-cards/都市脑洞.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/都市脑洞.md
+- source: story-long-write/references/genre-prose-cards/都市高武.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/都市高武.md
+- source: story-long-write/references/genre-prose-cards/青春甜宠.md
+  targets:
+    - story-setup/references/agent-references/genre-prose-cards/青春甜宠.md
+- source: story-long-write/references/long-chapter-hooks.md
+  targets:
+    - story-setup/references/agent-references/long-chapter-hooks.md
+- source: story-long-write/references/long-genre-catalog.md
+  targets:
+    - story-setup/references/agent-references/long-genre-catalog.md
+- source: story-long-write/references/long-genre-mechanics.md
+  targets:
+    - story-setup/references/agent-references/long-genre-mechanics.md
+- source: story-long-write/references/long-reversal.md
+  targets:
+    - story-setup/references/agent-references/long-reversal.md
+- source: story-long-write/references/long-suspense.md
+  targets:
+    - story-setup/references/agent-references/long-suspense.md
+- source: story-long-write/references/opening-design.md
+  targets:
+    - story-setup/references/agent-references/opening-design.md
+- source: story-long-write/references/outline-methods.md
+  targets:
+    - story-setup/references/agent-references/outline-methods.md
+- source: story-long-write/references/plot-core-methods.md
+  targets:
+    - story-setup/references/agent-references/plot-core-methods.md
+- source: story-long-write/references/style-combat-face.md
+  targets:
+    - story-setup/references/agent-references/style-combat-face.md
+- source: story-long-write/references/style-genre-modules.md
+  targets:
+    - story-setup/references/agent-references/style-genre-modules.md
+- source: story-long-write/references/tracking-initialization.md
+  targets:
+    - story-import/references/tracking-initialization.md
+    - story-review/references/tracking-initialization.md
+- source: story-long-write/references/tracking-transaction.md
+  targets:
+    - story-review/references/tracking-transaction.md
+- source: story-long-write/references/writing-craft.md
+  targets:
+    - story-setup/references/agent-references/writing-craft.md
+- source: story-long-write/scripts/author_memory_commit.py
+  targets:
+    - story-short-write/scripts/author_memory_commit.py
+- source: story-long-write/scripts/check-outline-contract.js
+  targets:
+    - story-import/scripts/check-outline-contract.js
+- source: story-long-write/scripts/check-outline-copy.js
+  targets:
+    - story-short-write/scripts/check-outline-copy.js
+- source: story-long-write/scripts/outline_view.py
+  targets:
+    - story-import/scripts/outline_view.py
+- source: story-long-write/scripts/tracking_commit.py
+  targets:
+    - story-import/scripts/tracking_commit.py
+    - story-review/scripts/tracking_commit.py
+- source: story-long-write/scripts/wordcount_core.py
+  targets:
+    - story-import/scripts/wordcount_core.py
+    - story-review/scripts/wordcount_core.py
+- source: story-setup/references/templates/hooks/story_hook_core.js
+  targets:
+    - story-setup/references/antigravity/hooks/story_hook_core.js
+    - story-setup/references/opencode/story_hook_core.js
+    - story-setup/references/zcode/hooks/story_hook_core.js
+- source: story-short-write/references/emotional-methods.md
+  targets:
+    - story-setup/references/agent-references/short-emotional-methods.md
+- source: story-short-write/references/genre-writing-formulas.md
+  targets:
+    - story-setup/references/agent-references/short-genre-formulas.md
+- source: story-short-write/references/hooks-chapter.md
+  targets:
+    - story-setup/references/agent-references/short-chapter-hooks.md
+- source: story-short-write/references/short-reversal.md
+  targets:
+    - story-setup/references/agent-references/short-reversal.md

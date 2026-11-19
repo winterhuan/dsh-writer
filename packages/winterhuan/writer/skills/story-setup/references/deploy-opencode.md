@@ -28,7 +28,7 @@
 ## 部署步骤
 
 1. **先缓存已有模型配置**：执行下方「配置 Agent 模型」的「保留已有模型配置」，再做第 2 步的 replace。先覆盖会丢失用户已配模型。
-2. 复制 `references/opencode/agents/` 到 `.opencode/agents/`。Agent 正文以 Claude Code Markdown 为真源，这里是仓库里预生成的产物，部署只做复制。
+2. 复制 `references/opencode/agents/` 到 `.opencode/agents/`。这些文件由维护仓库的共享角色源文和 OpenCode 配置预生成，部署只做复制，不需要开发生成器。
 3. 复制 `plugin.ts` 到 `.opencode/plugins/story-hooks.ts`，`story_hook_core.js` 到 `.opencode/plugins/lib/`，`commands/` 到 `.opencode/commands/`，`pre-commit.sh` 按清单行合并进 `.git/hooks/pre-commit`。
 4. 复制 agent references 到 `skills/story-setup/references/agent-references/`。OpenCode 只使用当前规范前缀 `skills/`，不在运行时遍历历史备选路径。
 5. 将 `references/opencode/AGENTS.md.tmpl` 按 [公共项目指令合并规则](deploy-other-hosts.md#项目指令合并claudemd--agentsmd) 写入根 `AGENTS.md`（`--host opencode`）。

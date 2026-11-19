@@ -1,6 +1,6 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Writing sidebar for DSH with native Writer conversations and oh-story skills",
   "type": "module",
   "license": "MIT",
@@ -121,9 +121,9 @@
     "@deepseek-ai/dsh-session-query": "0.2.2-rc.1"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.host.json tsconfig.client.json && tsdown --config-loader native",
+    "build": "pnpm -C ../../.. run skills:check && tsc -b tsconfig.host.json tsconfig.client.json && tsdown --config-loader native",
     "typecheck": "tsc -b tsconfig.host.json tsconfig.client.json",
-    "test": "vitest run --root ../../.. --config vitest.config.ts packages/winterhuan/writer/tests"
+    "test": "pnpm -C ../../.. run skills:check && vitest run --root ../../.. --config vitest.config.ts packages/winterhuan/writer/tests"
   },
   "engines": {
     "node": "^22.19.0 || >=24.0.0",

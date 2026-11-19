@@ -28,7 +28,7 @@ This bundle adds a writing sidebar, Writer preset, and oh-story skills to DSH. T
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.7&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.8&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -98,7 +98,7 @@ Ask the assistant to accept a finding or recheck a revision. The review recorder
 
 ### DSH writing roles
 
-`story-setup` routes DSH setup and diagnostics directly to the DSH instructions. Other hosts' deployment and role checks load only on their own paths; DSH does not require their deployment marker or agent version. Check mode diagnoses effective skill sources. The model supplies a role, task, and book directory to `writer_agent`. The plugin loads the role from the session's effective `story-setup` and delegates through native `subagent`; project skill copies retain precedence. Each call creates a new instance and returns its native child session ID. The main agent manages this ID for the task. Follow-ups within the same task use `send_message`; independent tasks and reviews requiring fresh context create new instances. Discovery and interruption use `list_agents` and `interrupt_agent`. Roles share the Writer Preset and inherit native child model defaults; explicit model selection remains subject to DSH policy. Missing roles, tools, or failed starts are reported for the main session to handle under the skill workflow. Read-only role instructions constrain the prompt without creating a separate sandbox or loading another host's model, tool, or hook configuration.
+`story-setup` routes DSH setup and diagnostics directly to the DSH instructions. Other hosts' deployment and role checks load only on their own paths; DSH does not require their deployment marker or agent version. Check mode diagnoses effective skill sources. The model supplies a role, task, and book directory to `writer_agent`. The plugin loads the role from the session's effective `story-setup` and delegates through native `subagent`; project skill copies retain precedence. Bundled skills use generated DSH roles. Project copies keep their existing role-template path, including in workspace mount mode. Each call creates a new instance and returns its native child session ID. The main agent manages this ID for the task. Follow-ups within the same task use `send_message`; independent tasks and reviews requiring fresh context create new instances. Discovery and interruption use `list_agents` and `interrupt_agent`. Roles share the Writer Preset and inherit native child model defaults; explicit model selection remains subject to DSH policy. Missing roles, tools, or failed starts are reported for the main session to handle under the skill workflow. Read-only role instructions constrain the prompt without creating a separate sandbox or loading another host's model, tool, or hook configuration.
 
 -----
 
@@ -109,6 +109,26 @@ Ask the assistant to accept a finding or recheck a revision. The review recorder
 <summary>Implementation internals — click to expand</summary>
 
 The patch in [cordis.patch.yml](cordis.patch.yml) inserts the host and the preset. The preset carries persona, instructions, time, shell, filesystem, search, jobs, skills, compaction, delegation, ask-user, todo, and web. It does not load an `agent` entry or a skill provider. [src/index.ts](src/index.ts) mounts skills, registers `/writer-sync-skills` and `/writer-unsync-skills`, and mounts `PUT /writer/file`. [src/client/sidebar.tsx](src/client/sidebar.tsx) registers the sidebar tab and its body slot, and shows them only when the session preset is `writer`.
+
+<a id="maintain-skill-sources"></a>
+### Maintain skill sources
+
+Edit the seven role descriptions and bodies in [authoring/roles/](authoring/roles/). Host metadata, reference roots, dispatch syntax and conditional notes belong in [authoring/hosts/](authoring/hosts/). The renderer replaces only reserved `{{WRITER_*}}` placeholders; story placeholders such as `{书名}` remain literal. Claude, Codex, OpenCode and ZCode definitions are committed under their existing `skills/story-setup/references/` paths; generated DSH roles are in `references/dsh/agents/`. Shared reference-path instructions live in host fragments, while role bodies retain task-specific reading conditions. Antigravity keeps its standalone deployment generator, which is also exercised by the authoring check. When the effective skill is bundled, DSH reads its `references/dsh/agents/<role>.md`, checks `writerRoleFormat: dsh-v1`, and binds only explicit resource-directory placeholders. It does not rewrite another host's prose. When a project skill wins discovery, DSH reads that skill's existing `references/templates/agents/<role>.md` and adapts its legacy paths. A copied DSH role does not supersede edits to this project template. Missing or malformed roles fail in the selected source without switching to the bundled skill.
+
+[authoring/copies.yaml](authoring/copies.yaml) explicitly maps each shared reference or script source to its generated copies, using paths relative to `skills/`. Edit the listed source, then generate; update the mapping only when the files share the same maintained meaning. Identical names do not imply shared ownership. Long/short workflows and role-only references stay independent unless registered. Generated files are regular files; copied skills keep their own references, sibling helpers and CommonJS package markers.
+
+Run these commands from the repository root:
+
+```sh
+pnpm run skills:generate
+pnpm run skills:check
+mkdir -p .artifacts
+pnpm run pack:writer --pack-destination "$PWD/.artifacts"
+```
+
+Generation renders and validates all registered outputs before updating changed files. Check mode rejects missing or stale outputs without writing; build, test and the release packing command run it. Reference validation covers Markdown target files, explicit role-resource pointers and sibling helper imports in their destination contexts. Invalid source files, unknown reserved placeholders, destination collisions and paths outside the package stop generation. Generated text uses LF; copied scripts retain their executable bits on POSIX. Only registered outputs are replaced; unregistered files and project skill copies are untouched. Review and commit the authoritative sources together with generated outputs.
+
+Keep reading conditions beside their pointers: discovery exposes skill metadata; selecting a skill loads its entrypoint; task conditions select workflow sections and references. Generation copies resources into independently deployable directories and never inlines their methods into entrypoints or roles. It does not preload all references into model context. The authoring directory and development scripts are excluded from the published package, and no install or prepack lifecycle hook requires them. Direct package-manager packing bypasses the maintainer check; use `pack:writer` for releases. Static checks cover generated consistency and paths; they do not establish a model's reading choices or third-party runtime permission enforcement.
 
 </details>
 

@@ -6,7 +6,7 @@
 
 1. 按本流程选择 `role`：`story-architect`、`character-designer`、`narrative-writer`、`consistency-checker`、`story-explorer`、`story-researcher` 或 `chapter-extractor`。角色是否可用由工具检查；不检查其他宿主的角色目录或 `.story-deployed.agents_version`。
 2. 把完整任务要求传给 `prompt`，包括书目录、授权文件范围、参考路径、必要背景和交付格式；`description` 写简短任务名，`cwd` 指向书目录。写作仍需按章节组装流程填写完整骨架，不能用一句概括代替。审稿必须带正文读取范围、文风裁决、rubric 摘要、统一 Findings Schema 和「只读，不改任何文件」。任务文件可以继续保存在 `.story/work/`。
-3. 调用 `writer_agent`。插件从当前会话生效的 `story-setup` 加载角色，保留项目技能覆盖，将角色正文和任务一起交给 DSH 原生 `subagent`。主会话不用运行角色组装脚本，也不用转抄角色正文。其他宿主的模型、工具和 hooks 配置不用于 DSH；只读要求是任务约束，不代表新增的只读沙箱。
+3. 调用 `writer_agent`。插件从当前会话生效的 `story-setup` 加载角色：包内来源读取生成的 `references/dsh/agents/`，项目来源保留 `references/templates/agents/` 的定制模板。将角色正文和任务一起交给 DSH 原生 `subagent`；缺失或格式错误时报告当前来源，不改用包内角色。主会话不用运行角色组装脚本，也不用转抄角色正文。其他宿主的模型、工具和 hooks 配置不用于 DSH；只读要求是任务约束，不代表新增的只读沙箱。
 4. 默认沿用原生子会话的模型配置。作者已明确指定其他模型时，按实际工具 schema 传 `provider`、`model` 和可选 `reasoning_effort`；DSH 的模型选择策略仍会检查这些参数。
 
 ## 续接与新建

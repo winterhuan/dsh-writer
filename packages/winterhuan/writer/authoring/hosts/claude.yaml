@@ -1,0 +1,84 @@
+output: templates/agents
+format: markdown
+referenceRules: reference-rules.md
+variables:
+  METHOD_ROOT: story-setup/references/agent-references/
+  HOST: |
+    Claude
+  REFERENCE_ROOT: |
+    .claude/skills/story-setup/references/agent-references/
+  SETUP_COMMAND: |
+    /story-setup
+  CALL: |
+    `Agent(subagent_type: "{{WRITER_ROLE}}")`
+headers:
+  chapter-extractor: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep, Write, Edit]
+    disallowedTools: [Bash]
+    model: haiku
+    maxTurns: 20
+    # maxTurns: 20 — 覆盖自读原文、读交接、写入、四项 Grep 自查与定点 Edit 修正后再回执。
+    # Write/Edit 只许落到 {拆文目录}/_analysis_cache/输入-{批次ID}.md：守卫在 story_hook_cli.js 的
+    # analysis-input-guard，经本挂载点只作用于本 agent。改 tools 就同步改 matcher。
+    # OpenCode 没有这个挂载点：sync-opencode.py 按守卫名把 edit 权限收窄到同一批路径。
+    hooks:
+      PreToolUse:
+        - matcher: "Write|Edit"
+          hooks:
+            - type: command
+              command: node "$CLAUDE_PROJECT_DIR"/.claude/hooks/story_hook_cli.js analysis-input-guard
+              timeout: 10
+  character-designer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep, Write, Edit]
+    model: sonnet
+    maxTurns: 25
+    # maxTurns: 25 — 覆盖角色设计场景（角色档案、语言风格档案、动机链、对话创作）。
+  consistency-checker: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep]
+    disallowedTools: [Write, Edit, Bash]
+    model: haiku
+    maxTurns: 15
+  narrative-writer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep, Write, Edit, Bash]
+    # Bash 只跑书级自查脚本；字数与句长不自测，落盘后由主会话 chapter check 测定。
+    model: opus
+    maxTurns: 30
+    # 不预加载 story-deslop / story-review（后者会嵌套 spawn）：审查任务按下表读三层方法。
+  story-architect: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep, Write, Edit]
+    model: opus
+    maxTurns: 30
+    # maxTurns: 30 — 覆盖创作型场景（大纲排布、情绪弧线设计、反转工程）。
+    # opus 模型单次推理较慢，30 turns 足以完成复杂创作任务。
+  story-explorer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep]
+    disallowedTools: [Write, Edit, Bash]
+    model: haiku
+    maxTurns: 15
+  story-researcher: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    tools: [Read, Glob, Grep, Bash, Write]
+    disallowedTools: [Edit]
+    model: sonnet
+    maxTurns: 20
+    # maxTurns: 20 — 覆盖 浏览器搜索 + 多源交叉验证场景。

@@ -1,0 +1,69 @@
+output: zcode/agents
+format: markdown
+referenceRules: reference-rules.md
+variables:
+  METHOD_ROOT: story-setup/references/agent-references/
+  HOST: |
+    ZCode
+  REFERENCE_ROOT: |
+    .zcode/skills/story-setup/references/agent-references/
+  SETUP_COMMAND: |
+    $story-setup
+  CALL: |
+    ZCode 子代理 `{{WRITER_ROLE}}`
+roleNotes:
+  chapter-extractor: zcode-extractor-notes.md
+headers:
+  chapter-extractor: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep, Write, Edit]
+    disallowedTools: [Bash]
+    maxTurns: 20
+  character-designer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep, Write, Edit]
+    maxTurns: 25
+  consistency-checker: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep]
+    disallowedTools: [Write, Edit, Bash]
+    maxTurns: 15
+  narrative-writer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep, Write, Edit, Bash]
+    maxTurns: 30
+  story-architect: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep, Write, Edit]
+    maxTurns: 30
+  story-explorer: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep]
+    disallowedTools: [Write, Edit, Bash]
+    maxTurns: 15
+  story-researcher: |
+    name: {{WRITER_ROLE}}
+    description: |
+    {{WRITER_DESCRIPTION}}
+    model: inherit
+    tools: [Read, Glob, Grep, Write, Bash]
+    disallowedTools: [Edit]
+    maxTurns: 20

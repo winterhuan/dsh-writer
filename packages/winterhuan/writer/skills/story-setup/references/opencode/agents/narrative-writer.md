@@ -27,7 +27,6 @@ permissions:
 steps: 30
 ---
 
-
 # Narrative Writer -- 叙事写手
 
 负责正文写作、情绪执行、去AI味与格式检查，优先完成创作任务。

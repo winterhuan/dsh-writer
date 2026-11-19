@@ -1,0 +1,59 @@
+output: codex/agents
+format: toml
+referenceRules: reference-rules.md
+variables:
+  METHOD_ROOT: story-setup/references/agent-references/
+  HOST: |
+    Codex
+  REFERENCE_ROOT: |
+    .codex/skills/story-setup/references/agent-references/
+  SETUP_COMMAND: |
+    $story-setup
+  CALL: |
+    `Agent(agent_type: "{{WRITER_ROLE}}")`
+notes: codex-notes.md
+headers:
+  chapter-extractor: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Chapter Extractor", "Scene Splitter"]
+  character-designer: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Character Designer", "Voice Crafter"]
+  consistency-checker: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Consistency Checker", "Continuity Guard"]
+    sandbox_mode = "read-only"
+  narrative-writer: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Narrative Writer", "Prose Crafter"]
+  story-architect: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Story Architect", "Plot Architect"]
+  story-explorer: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Story Explorer", "Lore Scout"]
+    sandbox_mode = "read-only"
+  story-researcher: |
+    name = "{{WRITER_ROLE}}"
+    description = """
+    {{WRITER_DESCRIPTION}}
+    """
+    nickname_candidates = ["Story Researcher", "Source Scout"]

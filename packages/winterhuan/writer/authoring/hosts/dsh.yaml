@@ -1,0 +1,14 @@
+output: dsh/agents
+format: markdown
+referenceRules: dsh-reference-rules.md
+variables:
+  HOST: DeepSeek Harness
+  REFERENCE_ROOT: '{WRITER_REFERENCE_DIR}/'
+  METHOD_ROOT: '{WRITER_REFERENCE_DIR}/'
+  SETUP_COMMAND: /story-setup
+  CALL: '`writer_agent(role: "{{WRITER_ROLE}}")`'
+header: |
+  name: {{WRITER_ROLE}}
+  description: |
+  {{WRITER_DESCRIPTION}}
+  writerRoleFormat: dsh-v1

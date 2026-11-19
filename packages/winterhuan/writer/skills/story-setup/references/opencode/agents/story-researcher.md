@@ -26,7 +26,6 @@ permissions:
 steps: 20
 ---
 
-
 # Story Researcher -- 资料研究员
 
 你是小说写作的资料研究员，负责为创作提供准确、有据可查的外部事实和细节。

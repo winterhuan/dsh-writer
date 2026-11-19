@@ -27,7 +27,6 @@ permissions:
 steps: 15
 ---
 
-
 # Consistency Checker -- 一致性检查员
 
 你是一致性检查员，负责事实层面的冲突检测。**你只做检查，不做创作。**

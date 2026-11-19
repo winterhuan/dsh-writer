@@ -16,7 +16,7 @@
 ## 部署 Codex Agents
 
 - 读取 `skills/story-setup/references/codex/agents/` 下所有 `.toml` 文件，复制到用户项目 `.codex/agents/`
-- Agent 文件由 story-setup 管理，可覆盖。部署只复制随包的 `references/codex/agents/` TOML，不要求运行仓库外的生成器；维护角色时须同时核对对应 Markdown 角色正文与 TOML 中的 `developer_instructions`
+- Agent 文件由 story-setup 管理，可覆盖。部署只复制随包的 `references/codex/agents/` TOML；这些文件由维护仓库的共享角色源文和宿主配置生成，安装与部署不需要开发生成器
 - 校验每个 TOML 都能解析，且包含 Codex 必需字段：`name`、`description`、`developer_instructions`
 - 只读职责 agent（`consistency-checker`、`story-explorer`）必须保留 `sandbox_mode = "read-only"`；`chapter-extractor` 要写批次输入文件，不设只读沙箱
 - **部署后必须 trust + 新开 Codex 会话**（报告文案与 fallback 规则见下方「安装报告必须提示」）；hooks 未在 `/hooks` 信任前会被 Codex 静默跳过，包括写正文前的大纲守卫；若运行时返回 `unknown agent_type`，调用方必须降级 solo/direct 并报告 fallback。

@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.7&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.8&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -98,7 +98,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 ### DSH 写作角色
 
-`story-setup` 将 DSH 部署与诊断直接路由到对应说明。其他宿主的部署与角色检查只在相应分支加载；DSH 不要求这些宿主的部署标记或助手版本，检查模式诊断实际技能来源。模型通过 `writer_agent` 指定角色、任务和书目录；插件从当前会话生效的 `story-setup` 加载角色并通过原生 `subagent` 派发，项目技能副本仍优先。每次调用创建新实例，返回原生子会话 ID，由主 Agent 为本次任务管理。同一任务的后续工作使用 `send_message`；独立任务和需要独立上下文的审稿创建新实例。发现和中断使用 `list_agents`、`interrupt_agent`。各角色共享 Writer Preset，默认继承原生子会话模型配置，显式模型选择仍受 DSH 策略检查。缺少角色、工具或派发失败时如实报告，由主会话按技能流程处理。角色只读要求是提示词约束，不建立独立沙箱，也不加载其他宿主的模型、工具或 hooks 配置。
+`story-setup` 将 DSH 部署与诊断直接路由到对应说明。其他宿主的部署与角色检查只在相应分支加载；DSH 不要求这些宿主的部署标记或助手版本，检查模式诊断实际技能来源。模型通过 `writer_agent` 指定角色、任务和书目录；插件从当前会话生效的 `story-setup` 加载角色并通过原生 `subagent` 派发，项目技能副本仍优先。包内技能使用生成的 DSH 角色；项目副本保留既有角色模板路径，workspace 挂载模式同样如此。每次调用创建新实例，返回原生子会话 ID，由主 Agent 为本次任务管理。同一任务的后续工作使用 `send_message`；独立任务和需要独立上下文的审稿创建新实例。发现和中断使用 `list_agents`、`interrupt_agent`。各角色共享 Writer Preset，默认继承原生子会话模型配置，显式模型选择仍受 DSH 策略检查。缺少角色、工具或派发失败时如实报告，由主会话按技能流程处理。角色只读要求是提示词约束，不建立独立沙箱，也不加载其他宿主的模型、工具或 hooks 配置。
 
 -----
 
@@ -109,6 +109,26 @@ dsh plugin --profile web add packages/winterhuan/writer
 <summary>实现细节——点击展开</summary>
 
 [cordis.patch.yml](cordis.patch.yml) 插入 Host 和预设。预设包含 persona、说明、时间、shell、文件系统、搜索、jobs、技能、压缩、委派、提问、待办和网页。它不加载 `agent` 入口，也不注册 skill provider。[src/index.ts](src/index.ts) 负责挂载技能、登记 `/writer-sync-skills` 与 `/writer-unsync-skills`，并挂上 `PUT /writer/file`。[src/client/sidebar.tsx](src/client/sidebar.tsx) 登记侧栏类型和正文 slot，只在会话预设为 `writer` 时显示。
+
+<a id="maintain-skill-sources"></a>
+### 维护技能源文件
+
+七个角色的描述和正文在 [authoring/roles/](authoring/roles/) 编辑。宿主元数据、资料根路径、调用语法和条件说明放在 [authoring/hosts/](authoring/hosts/)。生成器只替换保留的 `{{WRITER_*}}` 占位符；`{书名}` 等故事占位符保留原样。Claude、Codex、OpenCode 和 ZCode 定义仍提交在原有 `skills/story-setup/references/` 路径下；生成的 DSH 角色位于 `references/dsh/agents/`。通用资料路径说明在宿主片段中维护，角色正文继续保留各任务的读取条件。Antigravity 保留独立部署生成器，源文件检查也会执行它。实际生效的是包内技能时，DSH 读取其中的 `references/dsh/agents/<role>.md`，检查 `writerRoleFormat: dsh-v1`，只绑定明确的资源目录占位符，不改写其他宿主的正文。项目技能在发现阶段胜出时，DSH 读取该技能原有的 `references/templates/agents/<role>.md` 并适配旧路径。复制来的 DSH 角色不会覆盖这个项目模板中的定制。选定来源中的角色缺失或格式错误时直接失败，不切回包内技能。
+
+[authoring/copies.yaml](authoring/copies.yaml) 明确登记每份共享资料或脚本的源文件及生成副本，路径相对 `skills/`。编辑清单中的源文件再生成；只有文件的维护含义相同时才调整映射，同名不代表共享归属。长短篇工作流和角色专用资料在登记前继续独立维护。生成物是普通文件，复制后的技能各自带有资料、同目录 helper 和 CommonJS 包标记。
+
+在仓库根目录运行：
+
+```sh
+pnpm run skills:generate
+pnpm run skills:check
+mkdir -p .artifacts
+pnpm run pack:writer --pack-destination "$PWD/.artifacts"
+```
+
+生成时先渲染并校验全部登记产物，再更新发生变化的文件。检查模式遇到缺失或过期产物会失败，不写文件；构建、测试和发布打包命令均调用它。引用校验覆盖目标上下文中的 Markdown 目标文件、明确的角色资料指针和同目录 helper 导入。无效源文件、未知保留占位符、目标冲突和越界路径都会中止生成。生成文本使用 LF，复制的脚本在 POSIX 上保留可执行权限。只替换已登记产物，不改未登记文件和项目技能副本。评审并同时提交权威源文件与生成产物。
+
+读取条件继续与指针放在一起：发现阶段只暴露技能元数据，选中技能才加载入口，再按任务条件选择工作流小节和资料。生成只把资源复制到可独立部署的目录，不把方法内联进入口或角色，也不把全部资料预加载到模型上下文。发布包排除 authoring 目录和开发脚本，安装和 prepack 生命周期均不依赖它们。直接用包管理器打包会绕过维护检查，发布请使用 `pack:writer`。静态检查覆盖生成一致性和路径，不认证模型的阅读选择或第三方运行时的权限执行。
 
 </details>
 

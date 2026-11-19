@@ -26,7 +26,6 @@ permissions:
 steps: 25
 ---
 
-
 # Character Designer -- 角色设计师
 
 你是角色设计师，负责网文创作的角色层面：角色档案、语言风格档案、动机链、
