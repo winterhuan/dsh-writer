@@ -1,11 +1,11 @@
 ---
 name: story
-description: "网络小说工具箱主入口。根据用户需求自动路由到对应 skill，并可启动本地 Dashboard。触发方式：/story、$story、/story dashboard、/网文、「我想写小说」「记住我的写作习惯」「打开工作台」「检查更新」。"
+description: "网络小说工具箱主入口。根据写作、分析、审稿、项目与环境需求路由到对应 skill。触发方式：/story、$story、/story dashboard、/网文、「我想写小说」「记住我的写作习惯」「打开工作台」「检查更新」。"
 metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudecode"}}
 ---
 # story：网文工具箱路由
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。 在 DSH 上「工作台」指内置写作侧栏；检查或更新 Writer 使用 DSH 插件页及 `/writer-skills-status`，不启动本页后面的独立 Dashboard，不运行其他宿主的 oh-story 更新命令。
+**需要助手时**：DSH 先读 [原生子会话](../story-setup/references/dsh-agents.md)，使用 `writer_agent`；其他宿主先读 [角色兼容说明](../story-setup/references/agents-other-hosts.md)。只执行当前宿主的检查与派发规则，缺少能力时按本流程处理。 在 DSH 上「工作台」指内置写作侧栏；检查与更新 Writer 使用下方的 DSH 入口。
 
 识别用户的写作需求，并路由到对应 skill。
 
@@ -103,11 +103,9 @@ project_dir：{书目录的绝对路径；没有书目录时用项目根}
 
 ### 能不能用助手
 
-> Spawn 版本提示（不阻断 spawn）：先读取项目根 `.story-deployed` 的 `agents_version`。与本版 `agents_version: 39` 不一致时（标记缺失、字段缺失/非整数、小于或大于 38）**照常按当前宿主角色来源检查并 spawn**；同时用一句白话提示作者「查资料助手是旧版，运行 /story-setup（ZCode 先更新插件）后新开会话」，`Notice: agents bundle 版本不匹配（项目 {N}，本版 39）` 原文写进回答最末一行「技术备注：」；大于 38 时额外提示先更新 oh-story-claudecode，不要用本地旧版 setup 降级覆盖。只有当前宿主角色缺失或不暴露调用能力时才降级 solo/direct，`Fallback: ... -> solo` 同样只进技术备注行。
+按顶部说明使用当前宿主的委派入口。已在子代理中或所需角色、工具不可用时，由当前会话处理：
 
-走助手前只做本端可用性检查：当前不在子代理内、有本端调用工具，且对应角色可用（Claude `.claude/agents/*.md`、OpenCode `.opencode/agents/*.md`、Codex `.codex/agents/*.toml`、Antigravity `.agents/agents/agent-name/agent.md`；ZCode 查插件注册的同名角色，不要求 `.zcode/agents`）→ 可尝试 spawn。Antigravity 用 `invoke_subagent` + 同名 `TypeName`，ZCode 用 `Agent` 按实际 schema 派发，不跨端误判。任一不满足或返回 unknown agent，则降级处理：
-
-- `story-explorer` 不可用 → 主会话直接用 Read/Grep 从书目录检索（角色状态、伏笔、进度、设定），回答前说一句「查资料助手没启用，这次我直接翻项目文件」；项目尚未部署时提示先 `/story-setup`。
+- `story-explorer` 不可用 → 主会话直接用 Read/Grep 从书目录检索（角色状态、伏笔、进度、设定），回答前说一句「查资料助手没启用，这次我直接翻项目文件」；需要诊断时用 `/story-setup check`，不因 DSH 缺部署标记要求重装。
 - `story-researcher` 不可用 → 主会话用当前可用的搜索能力回答，回答前说一句「查资料助手没启用，这次我直接搜」；搜不到就如实说明。
 
 ### 怎么回答作者
@@ -124,49 +122,10 @@ project_dir：{书目录的绝对路径；没有书目录时用项目根}
 
 ## Dashboard 工作台
 
-DSH 中请打开写作模式的右侧栏「写作」，不启动另一个服务。以下启动步骤仅供其他宿主使用。
-
-其他宿主执行 `/story dashboard`，或明确要求打开工作台、查看项目文件时，启动本 skill 的本地 Dashboard：
-
-1. 把**当前工作目录**作为默认工作区；用户明确给出目录时改用该目录。目录必须存在。
-2. 从当前已加载的 `story` skill 目录定位 `scripts/dashboard-server.mjs`，不要硬编码仓库路径、
-   全局 skill 路径或用户主目录。
-3. 检查 `node` 可用后，以长运行进程执行：
-
-   ```bash
-   node "<story-skill-dir>/scripts/dashboard-server.mjs" --root "<workspace>" --open
-   ```
-
-4. 等待输出出现“本机地址”，把完整 URL 回给用户。工具支持后台进程/PTY 时让服务保持运行；
-   无法自动拉起浏览器不算失败，仍返回可点击 URL。
-5. Dashboard 默认只监听 `127.0.0.1`。不要主动增加 `--allow-network`，不要把工作区暴露到
-   局域网或公网。
-
-工作台按自己的规则识别目录，与上方「书目录判定」不同：识别标准 `拆文库/{书名}/`，兼容存量 `拆文库-{书名}/`；写作项目识别同时支持：
-
-- 长篇目录结构：目录内含 `正文/`、`大纲/`、`设定/` 或 `追踪/` 任一普通子目录。
-- 短篇单文件结构：目录内含普通文件 `正文.md`，并同时含 `小节大纲.md` 或 `设定.md`。
-
-符号链接不作为项目标记，只有单个 `正文.md` 的资料目录不识别为写作项目。浏览器可编辑 `.md`、`.txt`、`.json`、`.yaml`、`.yml`、`.toml`；保存或确认删除时核对文件内容版本，避免覆盖外部修改。
-
-停止服务时终止对应的 Node 长运行进程即可。若用户只问用法，不要替他启动；告诉用户用 `/story dashboard`（按上方宿主写法替换）。
+DSH 打开写作模式的右侧栏「写作」。其他宿主明确要求启动 Dashboard 时，读取 [启动与目录规则](references/dashboard-other-hosts.md) 并按当前工作区启动；只问用法时不启动。
 
 ## 版本更新检查
 
 DSH 中先运行 `/writer-skills-status`，区分 Writer 包版本、oh-story 来源版本和项目副本；通过 DSH 插件页检查与更新 `@winterhuan/dsh-writer`。更新包后重启；需要同步项目副本时执行 `/writer-sync-skills`，旧副本会备份。不要用下面的 Claude、ZCode 或 npx 命令更新 DSH 安装。
 
-以下步骤仅供其他宿主使用。用户问“有没有新版本”“检查更新”“升级”时执行。**先报告版本，是否安装由用户决定。**
-
-1. **当前版本**：读本 skill 同目录的 `VERSION` 文件；缺失则视为未知。本 skill 在写作项目里（如项目下的 `skills/`、`.agents/skills/`、`.zcode/skills/`）时，读到的是项目副本的版本。
-2. **最新版本**：优先 `gh release view --json tagName,name,url -R zenstory-ai/oh-story-claudecode` 取 `tagName`；无 gh 用 `curl -fsS --max-time 5 https://api.github.com/repos/zenstory-ai/oh-story-claudecode/releases/latest` 取 `.tag_name`（jq 或 grep）。查不到 → 告知"暂时拉不到最新版本，可手动看 [Releases](https://github.com/zenstory-ai/oh-story-claudecode/releases)"，不报错。
-3. **比较**：当前版本已知时，去掉 `v` 前缀按语义版本比较（major.minor.patch）；未知时只展示最新稳定版，不判定是否已最新。`gh release` 默认取 latest 稳定版，不含 pre-release。
-4. **告知**：
-   - 已最新 → 「已是最新版 vX.Y.Z」。
-   - 有新版或当前版本未知 → 展示已知版本与 [Releases](https://github.com/zenstory-ai/oh-story-claudecode/releases)/[CHANGELOG](https://github.com/zenstory-ai/oh-story-claudecode/blob/main/CHANGELOG.md)，有 release notes 时附更新要点，再用宿主可用的提问方式问「现在更新吗？」。选先不 → 不动，告知随时可再来。
-5. **更新**（用户同意后）：按本 skill 目录的位置判断安装方式。
-   - 在插件目录里（路径含 `plugins/`）：Claude Code 跑 `claude plugin marketplace update oh-story-skills` 再跑 `claude plugin update oh-story@oh-story-skills`，重启后生效；ZCode 在 Plugin Management 里刷新市场后更新 `oh-story`。
-   - 用 `npx skills` 装在全局或当前目录：重跑 `npx skills add zenstory-ai/oh-story-claudecode -y -g`（原来装在当前目录的去掉 `-g`）。
-   - 其他安装方式（如 ClawHub）：按原来的方式重装最新版。
-   - 本 skill 在写作项目里：先用上面对应的方式更新安装包，再用新装的包在项目根运行 `/story-setup`，项目里的副本才会换成新版；OpenClaw、Reasonix 和通用文件模式下项目里跑的就是这份旧副本，要用新包手动覆盖项目 `skills/` 下的 14 个 skill 目录。
-
-   更新完提示：已部署过的项目在项目根重跑 `/story-setup` 同步 hooks、agents 和参考资料，然后**新开一个会话**，写作助手才会重新加载。
+其他宿主检查或更新 oh-story 时，读取 [版本检查与安装方式](references/updates-other-hosts.md)，按实际安装来源处理。

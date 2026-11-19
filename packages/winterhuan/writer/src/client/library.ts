@@ -132,27 +132,6 @@ export function visibleDirectoryEntries(entries: readonly DirEntry[]): DirEntry[
 }
 
 /**
- * One page of a directory listing for lazy tree UI.
- * @param entries - already filtered and sorted children.
- * @param offset - zero-based start index.
- * @param pageSize - page length (default 200).
- * @returns the page slice and the next offset, or null when exhausted.
- */
-export function pageDirectoryEntries(
-  entries: readonly DirEntry[],
-  offset: number,
-  pageSize: number = DIRECTORY_PAGE_SIZE,
-): { readonly entries: readonly DirEntry[], readonly nextOffset: number | null } {
-  const start = Math.max(0, offset)
-  const page = entries.slice(start, start + pageSize)
-  const next = start + page.length
-  return {
-    entries: page,
-    nextOffset: next < entries.length ? next : null,
-  }
-}
-
-/**
  * Map a directory entry into a tree node under its parent path.
  * @param parentPath - workspace-relative parent (empty for workspace root).
  * @param entry - one child.

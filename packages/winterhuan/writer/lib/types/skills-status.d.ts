@@ -24,6 +24,7 @@ export interface WriterSkillsStatus {
 }
 /**
  * Compare the actual winning catalog entries and project copies with the package.
+ * Each directory is read once per inspection; later inspections re-read changed files.
  * @param options - installed source, workspace, mount and DSH catalog for this session.
  * @returns versions, effective paths and content comparisons without copying files.
  */

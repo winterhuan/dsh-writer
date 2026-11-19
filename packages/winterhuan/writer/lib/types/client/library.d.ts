@@ -66,17 +66,6 @@ export declare function shouldIgnoreDirectory(name: string): boolean;
  */
 export declare function visibleDirectoryEntries(entries: readonly DirEntry[]): DirEntry[];
 /**
- * One page of a directory listing for lazy tree UI.
- * @param entries - already filtered and sorted children.
- * @param offset - zero-based start index.
- * @param pageSize - page length (default 200).
- * @returns the page slice and the next offset, or null when exhausted.
- */
-export declare function pageDirectoryEntries(entries: readonly DirEntry[], offset: number, pageSize?: number): {
-    readonly entries: readonly DirEntry[];
-    readonly nextOffset: number | null;
-};
-/**
  * Map a directory entry into a tree node under its parent path.
  * @param parentPath - workspace-relative parent (empty for workspace root).
  * @param entry - one child.

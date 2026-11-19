@@ -11,17 +11,6 @@ export const MAX_SEARCH_DEPTH = 20;
 export const SEARCH_DEBOUNCE_MS = 180;
 /** Align with Dashboard query length cap. */
 export const MAX_SEARCH_QUERY_LENGTH = 100;
-/**
- * Return the final component of a workspace-relative path.
- * @param path - slash-separated path.
- * @returns filename, or the root sentinel unchanged.
- */
-function basename(path) {
-    if (path === '' || path === '.')
-        return path;
-    const parts = path.split('/');
-    return parts[parts.length - 1] ?? path;
-}
 function joinRel(parent, name) {
     return parent === '' || parent === '.' ? name : `${parent}/${name}`;
 }
@@ -173,5 +162,4 @@ export function writerSearchTruncationMessage(truncation, limits, scanErrors, fo
     }
     return messages.join('；');
 }
-export { basename as searchHitBasename };
 //# sourceMappingURL=search.js.map

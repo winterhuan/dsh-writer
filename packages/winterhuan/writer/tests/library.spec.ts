@@ -13,7 +13,6 @@ import {
   entryToTreeNode,
   findProjectRoots,
   listLibraryRoots,
-  pageDirectoryEntries,
   rootToDirectoryNode,
   scanWriterWorkspace,
   shouldIgnoreDirectory,
@@ -140,11 +139,6 @@ it('ignores dashboard-hidden directories and pages listings at 200', () => {
     name: `f${String(index).padStart(3, '0')}.md`,
     type: 'file' as const,
   }))
-  const page = pageDirectoryEntries(many, 0)
-  expect(page.entries).toHaveLength(DIRECTORY_PAGE_SIZE)
-  expect(page.nextOffset).toBe(200)
-  expect(pageDirectoryEntries(many, 200).nextOffset).toBeNull()
-
   const built = buildLoadedChildren('novel', many, DIRECTORY_PAGE_SIZE, true)
   expect(built.children).toHaveLength(200)
   expect(built.shown).toBe(200)

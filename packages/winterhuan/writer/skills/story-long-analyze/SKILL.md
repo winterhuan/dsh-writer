@@ -6,15 +6,11 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-long-analyze：长篇网文拆文
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+**需要助手时**：DSH 先读 [原生子会话](../story-setup/references/dsh-agents.md)，使用 `writer_agent`；其他宿主先读 [角色兼容说明](../story-setup/references/agents-other-hosts.md)。只执行当前宿主的检查与派发规则，缺少能力时按本流程处理。
 
 你是网络小说结构分析师。
 
 **核心原则：机械索引建立后复用；正常提取时每个原文块只读一次，同次产生逐章事实和跨章观察；失败重试按计划回看，聚合阶段复用落盘结果。**
-
-> Agent 兼容性：只检查当前宿主的 agent；ZCode 查插件注册的同名角色，用 `Agent` 按实际 schema 派发，不要求 `.zcode/agents`。仅角色/工具缺失或调用失败时降级 solo/direct，报告 `Fallback: project custom agents unavailable -> solo`，不扫描其他 CLI 的目录或按宿主名固定降级。
->
-> Spawn 版本提示（不阻断 spawn）：先读取项目根 `.story-deployed` 的 `agents_version`。与本版 `agents_version: 39` 不一致时（标记缺失、字段缺失/非整数、小于或大于 38）照常按当前宿主角色来源检查并 spawn，同时报告 `Notice: agents bundle 版本不匹配（项目 {N}，本版 39）` 并提示重新运行 `/story-setup` 后新开会话；大于 38 时额外提示先更新 oh-story-claudecode，不要用本地旧版 setup 降级覆盖。只有当前宿主角色缺失或不暴露调用能力时才降级 solo/direct。
 
 ## 分析边界
 

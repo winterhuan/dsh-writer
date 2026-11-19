@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.5&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.6&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -98,7 +98,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 ### DSH 写作角色
 
-`story-setup` 识别 DSH 并跳过其他宿主的 hooks，检查模式诊断实际技能来源。模型通过 `writer_agent` 指定角色、任务和书目录；插件从当前会话生效的 `story-setup` 加载角色并通过原生 `subagent` 派发，项目技能副本仍优先。每次调用创建新实例，返回原生子会话 ID，由主 Agent 为本次任务管理。同一任务的后续工作使用 `send_message`；独立任务和需要独立上下文的审稿创建新实例。发现和中断使用 `list_agents`、`interrupt_agent`。各角色共享 Writer Preset，默认继承原生子会话模型配置，显式模型选择仍受 DSH 策略检查。缺少角色、工具或派发失败时如实报告，由主会话按技能流程处理。角色只读要求是提示词约束，不建立独立沙箱，也不加载其他宿主的模型、工具或 hooks 配置。
+`story-setup` 将 DSH 部署与诊断直接路由到对应说明。其他宿主的部署与角色检查只在相应分支加载；DSH 不要求这些宿主的部署标记或助手版本，检查模式诊断实际技能来源。模型通过 `writer_agent` 指定角色、任务和书目录；插件从当前会话生效的 `story-setup` 加载角色并通过原生 `subagent` 派发，项目技能副本仍优先。每次调用创建新实例，返回原生子会话 ID，由主 Agent 为本次任务管理。同一任务的后续工作使用 `send_message`；独立任务和需要独立上下文的审稿创建新实例。发现和中断使用 `list_agents`、`interrupt_agent`。各角色共享 Writer Preset，默认继承原生子会话模型配置，显式模型选择仍受 DSH 策略检查。缺少角色、工具或派发失败时如实报告，由主会话按技能流程处理。角色只读要求是提示词约束，不建立独立沙箱，也不加载其他宿主的模型、工具或 hooks 配置。
 
 -----
 
@@ -134,7 +134,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 #### Token 影响
 
-写作会话的每一轮都会带上 persona 前缀和角色工具 schema；角色正文仅在派发时进入子会话。加载某个技能时，那一轮会加上该技能的说明。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
+写作会话的每一轮都会带上 persona 前缀和角色工具 schema；角色正文仅在派发时进入子会话。加载某个技能时加入其入口说明；部署细节、角色兼容检查、独立 Dashboard 和更新步骤只在相应宿主与任务分支加载。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
 
 #### KV Cache 影响
 

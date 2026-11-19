@@ -1,6 +1,6 @@
 # Codex 部署
 
-`target_cli` 含 `codex` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循 SKILL.md 的公共规则。
+`target_cli` 含 `codex` 时，由 [其他宿主部署流程](deploy-other-hosts.md) Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循该流程的公共规则。
 
 ## 部署清单（机械可检查）
 
@@ -34,7 +34,7 @@ Codex 项目 hooks 部署到 `.codex/hooks.json`；运行脚本部署到 `.codex
 
 ## AGENTS.md 与部署标记
 
-- 将 `references/codex/AGENTS.md.tmpl` 按 SKILL.md「项目指令合并」写入根 `AGENTS.md`（`--host codex`）。
+- 将 `references/codex/AGENTS.md.tmpl` 按 [公共项目指令合并规则](deploy-other-hosts.md#项目指令合并claudemd--agentsmd) 写入根 `AGENTS.md`（`--host codex`）。
 - `.story-deployed` 的 `target_cli` 写入 `codex` 或多端组合，`references_dir` 写 `.codex/skills/story-setup/references/agent-references`。
 
 ## 验证

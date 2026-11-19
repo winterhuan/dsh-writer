@@ -38,6 +38,10 @@ it('reports actual project precedence over bundled and detects reference-only ch
   expect((await inspect()).skills[0]).toMatchObject({ effectiveSource: 'bundled', comparison: 'same' })
   await syncWriterSkills({ sourceDir: source, workspaceDir: project, force: false })
   const custom = join(project, '.agents', 'skills', 'story')
+  expect((await inspect()).skills[0]).toMatchObject({
+    effectiveSource: 'project-agents', comparison: 'same',
+    projectCopies: [{ path: custom, comparison: 'same' }],
+  })
   await writeFile(join(custom, 'reference.md'), 'author reference')
   const changed = await inspect()
   expect(changed).toMatchObject({ packageVersion: '0.1.8', upstreamSkillsVersion: '1.3.6', mount: 'bundled' })

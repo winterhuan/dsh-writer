@@ -1,16 +1,16 @@
 # 仅检查写作环境
 
-用于 `story-setup check` 或「检查写作环境」「为什么 agent 不可用」等诊断请求。只检查并报告，不复制文件、修改配置、创建部署标记或运行部署、迁移、提交命令。用户已要求修复时，先列出发现，再按 `story-setup/SKILL.md` 的原有部署流程与对应宿主的 `references/deploy-*.md` 处理。
+用于 `story-setup check` 或「检查写作环境」「为什么 agent 不可用」等诊断请求。只检查并报告，不复制文件、修改配置、创建部署标记或运行部署、迁移、提交命令。用户已要求修复时，先列出发现，再按 [其他宿主部署流程](deploy-other-hosts.md) 与对应宿主部署文件处理。
 
 ## 1. 确定检查对象
 
 优先使用用户指定的项目根；未指定时从当前目录向上找最近的 `.story-deployed`。找不到则报告「未找到部署标记，无法确认部署状态」，检查现有文件和运行环境，不据此自动初始化。不要扫描无关项目。
 
-读取 `.story-deployed` 的目标端、版本和 reference 路径。多个目标端分别检查；字段缺失、内容不可解析、目标端未知时记录具体问题，不猜一个端写回。将 `agents_version` 与当前 `story-setup/SKILL.md` 比较；本地包较旧时先更新，不能降级重铺。
+读取 `.story-deployed` 的目标端、版本和 reference 路径。多个目标端分别检查；字段缺失、内容不可解析、目标端未知时记录具体问题，不猜一个端写回。将 `agents_version` 与 [其他宿主角色兼容](agents-other-hosts.md) 的本包版本比较；本地包较旧时先更新，不能降级重铺。
 
 ## 2. 复用部署验证
 
-以每个目标端对应的 `references/deploy-{target_cli}.md` 里的「部署清单」与「验证」为准（只读目标端那几份），加上 `story-setup/SKILL.md` Phase 3 的部署标记检查，逐项读取目标文件并执行只读校验。skill、agent 与 hooks 清单均沿用部署文件。
+以每个目标端对应的 `references/deploy-{target_cli}.md` 里的「部署清单」与「验证」为准（只读目标端那几份），加上 [其他宿主部署流程](deploy-other-hosts.md) Phase 3 的部署标记检查，逐项读取目标文件并执行只读校验。skill、agent 与 hooks 清单均沿用部署文件。
 
 - 区分安装的 skill 包和项目部署副本：Claude Code、Codex、OpenCode 的项目路径主要保存 agent、hooks 和参考资料，不要求在那里出现整套 `SKILL.md`。其他端按各自部署清单检查；skills-only 端没有原生 agents/hooks 是预期行为。
 - 参考资料按源目录的相对文件列表逐一核对，包含子目录；只看目录非空或文件数量相同不足以证明完整。源包不可用或源与目标是同一份时，说明无法独立验证完整性，不把它判为通过。

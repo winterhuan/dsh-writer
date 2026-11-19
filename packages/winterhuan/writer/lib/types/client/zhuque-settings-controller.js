@@ -14,6 +14,9 @@ export class WriterZhuqueCardController {
     ctx;
     form;
     store;
+    unsubscribe;
+    /** Only this request may publish; undefined means the controller is disposed. */
+    credentialRequest = {};
     makersState = { ref: '', configured: false, writable: true };
     coverState = { ref: '', configured: false, writable: true };
     /**
@@ -30,7 +33,7 @@ export class WriterZhuqueCardController {
             { field: 'gptImageApiKey', write: (text) => this.writeKey('cover', text) },
         ]);
         this.store = this.form.bind(() => this.projection());
-        scope.subscribe(() => { void this.readCredentials(); });
+        this.unsubscribe = scope.subscribe(() => { void this.readCredentials(); });
         void this.readCredentials();
     }
     projection() {
@@ -49,8 +52,11 @@ export class WriterZhuqueCardController {
             gptImageBaseUrl: this.form.field('gptImageBaseUrl'),
         };
     }
-    /** Ask the credentials domain about both references the section names. */
+    /** Return this read's answer for saves; only the latest read updates the card. */
     async readCredentials() {
+        if (this.credentialRequest === undefined)
+            return;
+        const request = this.credentialRequest = {};
         const snapshot = this.scope.getSnapshot();
         const makersRef = makersRefOf(snapshot);
         const coverRef = coverRefOf(snapshot);
@@ -66,11 +72,8 @@ export class WriterZhuqueCardController {
         if (projected)
             this.store.set(this.projection());
         const response = await this.ctx.remote.credentials.describe([makersRef, coverRef]);
-        if (!response.ok)
-            return;
-        const latest = this.scope.getSnapshot();
-        if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest))
-            return;
+        if (!response.ok || this.credentialRequest !== request)
+            return response;
         const makersView = response.value[makersRef];
         const coverView = response.value[coverRef];
         const nextMakers = {
@@ -90,10 +93,11 @@ export class WriterZhuqueCardController {
             && nextCover.writable === this.coverState.writable
             && nextCover.ref === this.coverState.ref;
         if (makersSame && coverSame)
-            return;
+            return response;
         this.makersState = nextMakers;
         this.coverState = nextCover;
         this.store.set(this.projection());
+        return response;
     }
     /**
      * Re-read after the Host reports a change to a watched reference.
@@ -126,11 +130,15 @@ export class WriterZhuqueCardController {
         const response = await this.ctx.remote.credentials.set(ref, value);
         if (!response.ok)
             return false;
-        await this.readCredentials();
-        return which === 'makers' ? this.makersState.configured : this.coverState.configured;
+        const verification = await this.readCredentials();
+        return verification?.ok === true && verification.value[ref]?.configured === true;
     }
-    /** Release configuration subscriptions. */
-    dispose() { this.form.dispose(); }
+    /** Release configuration subscriptions and suppress outstanding credential replies. */
+    dispose() {
+        this.credentialRequest = undefined;
+        this.unsubscribe();
+        this.form.dispose();
+    }
 }
 /**
  * The Zhuque credential reference the section names, or MAKERS_API_KEY.

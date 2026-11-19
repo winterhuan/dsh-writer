@@ -56,13 +56,9 @@ async function treeHash(path: string): Promise<string> {
   return hash.digest('hex')
 }
 
-async function comparison(path: string, packageHash: string): Promise<SkillCopyStatus['comparison']> {
-  try { return await treeHash(path) === packageHash ? 'same' : 'different' }
-  catch { return 'unreadable' }
-}
-
 /**
  * Compare the actual winning catalog entries and project copies with the package.
+ * Each directory is read once per inspection; later inspections re-read changed files.
  * @param options - installed source, workspace, mount and DSH catalog for this session.
  * @returns versions, effective paths and content comparisons without copying files.
  */
@@ -72,13 +68,26 @@ export async function inspectWriterSkills(options: {
   readonly mount: SkillMount
   readonly catalog: readonly SkillSummary[]
 }): Promise<WriterSkillsStatus> {
+  const hashes = new Map<string, Promise<string>>()
+  const hashFor = (path: string): Promise<string> => {
+    const key = resolve(path)
+    const existing = hashes.get(key)
+    if (existing !== undefined) return existing
+    const hash = treeHash(key)
+    hashes.set(key, hash)
+    return hash
+  }
+  const comparison = async (path: string, packageHash: string): Promise<SkillCopyStatus['comparison']> => {
+    try { return await hashFor(path) === packageHash ? 'same' : 'different' }
+    catch (error) { return 'unreadable' } // Unreadable copies remain visible in the diagnostic report.
+  }
   const root = await projectRootFor(options.workspaceDir)
   const manifest: { version: string } = JSON.parse(await readFile(join(options.sourceDir, '..', 'package.json'), 'utf8'))
   const upstreamSkillsVersion = (await readFile(join(options.sourceDir, 'story', 'VERSION'), 'utf8')).trim()
   const skills: WriterSkillStatus[] = []
   for (const name of await packagedSkillNames(options.sourceDir)) {
     const packagedPath = join(options.sourceDir, name, 'SKILL.md')
-    const packageHash = await treeHash(dirname(packagedPath))
+    const packageHash = await hashFor(dirname(packagedPath))
     const effective = options.catalog.find(skill => skill.name === name)
     const projectCopies: SkillCopyStatus[] = []
     for (const parent of ['.dsh', '.agents']) {

@@ -48,6 +48,9 @@ export declare class WriterZhuqueCardController {
     private readonly ctx;
     private readonly form;
     private readonly store;
+    private readonly unsubscribe;
+    /** Only this request may publish; undefined means the controller is disposed. */
+    private credentialRequest;
     private makersState;
     private coverState;
     /**
@@ -56,7 +59,7 @@ export declare class WriterZhuqueCardController {
      */
     constructor(scope: SettingsFormScope<WriterZhuqueSettings>, ctx: ClientContext);
     private projection;
-    /** Ask the credentials domain about both references the section names. */
+    /** Return this read's answer for saves; only the latest read updates the card. */
     private readCredentials;
     /**
      * Re-read after the Host reports a change to a watched reference.
@@ -75,7 +78,7 @@ export declare class WriterZhuqueCardController {
      * @returns whether the Host reports a configured credential afterwards.
      */
     private writeKey;
-    /** Release configuration subscriptions. */
+    /** Release configuration subscriptions and suppress outstanding credential replies. */
     dispose(): void;
 }
 //# sourceMappingURL=zhuque-settings-controller.d.ts.map

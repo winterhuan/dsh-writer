@@ -43,12 +43,6 @@ export type WriterSearchListDir = (path: string) => Promise<{
     readonly truncated: boolean;
 }>;
 /**
- * Return the final component of a workspace-relative path.
- * @param path - slash-separated path.
- * @returns filename, or the root sentinel unchanged.
- */
-declare function basename(path: string): string;
-/**
  * Walk tab roots and collect files whose basename contains the query (zh-CN case fold).
  * @param roots - workspace-relative root paths for the active tab.
  * @param queryValue - raw search box text.
@@ -66,5 +60,4 @@ export declare function searchWriterFilenames(roots: readonly string[], queryVal
  * @returns joined messages, or empty when nothing truncated.
  */
 export declare function writerSearchTruncationMessage(truncation: WriterSearchTruncation, limits: WriterSearchLimits, scanErrors: readonly string[], format?: (value: number) => string): string;
-export { basename as searchHitBasename };
 //# sourceMappingURL=search.d.ts.map

@@ -1,6 +1,6 @@
 # OpenClaw 部署
 
-`target_cli` 含 `openclaw` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循 SKILL.md 的公共规则。
+`target_cli` 含 `openclaw` 时，由 [其他宿主部署流程](deploy-other-hosts.md) Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循该流程的公共规则。
 
 ## 部署清单（机械可检查）
 
@@ -21,7 +21,7 @@
 1. 读取仓库当前 `skills/` 下所有包含 `SKILL.md` 的 story skill 目录（14 个：`browser-cdp` 与 `story*`）。
 2. 写入目标项目 `skills/{skill-name}/`，仅替换这些 story-setup 管理的已知 skill 目录；保留用户在 `skills/` 下的其他目录。项目副本是整份 skill 拷贝，agent references 只使用当前规范前缀 `skills/`。
 3. 每个 `SKILL.md` 必须满足 OpenClaw frontmatter 约束：`name` / `description` 是单行键值，`metadata` 是单行 JSON 对象且含 `metadata.openclaw`。
-4. 用 `skills/story-setup/references/openclaw/AGENTS.md.tmpl` 按 SKILL.md「项目指令合并」写入项目 `AGENTS.md`（`--host openclaw`）。
+4. 用 `skills/story-setup/references/openclaw/AGENTS.md.tmpl` 按 [公共项目指令合并规则](deploy-other-hosts.md#项目指令合并claudemd--agentsmd) 写入项目 `AGENTS.md`（`--host openclaw`）。
 5. `.story-deployed` 的 `target_cli` 写入 `openclaw` 或多端组合；`references_dir` 对 OpenClaw 写 `skills/story-setup/references/agent-references`。
 6. 安装报告提示项见下方「安装报告必须提示」。
 

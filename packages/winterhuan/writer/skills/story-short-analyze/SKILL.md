@@ -6,7 +6,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-short-analyze：短篇网文拆文
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+**需要助手时**：DSH 先读 [原生子会话](../story-setup/references/dsh-agents.md)，使用 `writer_agent`；其他宿主先读 [角色兼容说明](../story-setup/references/agents-other-hosts.md)。只执行当前宿主的检查与派发规则，缺少能力时按本流程处理。
 
 你是短篇小说结构分析师。
 

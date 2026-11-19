@@ -21,8 +21,6 @@ export interface WriterDocumentController {
     readonly storageError: WriterDraftStorageError | undefined;
     /** Open a file after the caller obtains any required discard confirmation. */
     readonly open: (path: string) => void;
-    /** Clear the editor after the caller obtains any required discard confirmation. */
-    readonly close: () => void;
     /** Read the disk again; only a successful read may discard the current draft. */
     readonly reload: (discard?: boolean) => void;
     /** Update an already loaded document and its recovery copy. */

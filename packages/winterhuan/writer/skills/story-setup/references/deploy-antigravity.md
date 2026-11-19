@@ -1,6 +1,6 @@
 # Google Antigravity 部署
 
-`target_cli` 含 `antigravity` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符和报告遵循 SKILL.md 的公共规则。`references/antigravity/` 提供 Always-On Rule、named-group hooks 与 I/O adapter；写后 findings 经 session artifact 交给 PreInvocation/Stop。
+`target_cli` 含 `antigravity` 时，由 [其他宿主部署流程](deploy-other-hosts.md) Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符和报告遵循该流程的公共规则。`references/antigravity/` 提供 Always-On Rule、named-group hooks 与 I/O adapter；写后 findings 经 session artifact 交给 PreInvocation/Stop。
 
 ## 部署清单（机械可检查）
 

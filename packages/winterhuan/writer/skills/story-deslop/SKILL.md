@@ -6,7 +6,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-deslop：网文去AI味
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
+**需要助手时**：DSH 先读 [原生子会话](../story-setup/references/dsh-agents.md)，使用 `writer_agent`；其他宿主先读 [角色兼容说明](../story-setup/references/agents-other-hosts.md)。只执行当前宿主的检查与派发规则，缺少能力时按本流程处理。
 
 **文风裁决**：先读 [references/style-resolution.md](references/style-resolution.md)，加载本书文风，复用调用方的 `style_resolution` 与作者偏好；单独调用时按当前请求与本书文风裁决。同一裁决交给后续执行者。
 
@@ -75,15 +75,11 @@ node scripts/check-ai-patterns.js --check --fail-on=blocking <正文文件...>
 
 ### Phase 3：按授权改稿
 
-> Agent 兼容性：只检查当前宿主：Claude `.claude/agents/{agent}.md`（`subagent_type`）、OpenCode `.opencode/agents/{agent}.md`（`subagent` 的 `agent`）、Codex `.codex/agents/{agent}.toml`（`agent_type`）、Antigravity `.agents/agents/agent-name/agent.md`（`invoke_subagent` + `TypeName`）。ZCode 查插件注册的同名角色，用 `Agent` 按实际 schema 派发，不要求 `.zcode/agents`。仅角色/工具不可用或返回未知 agent 时降级 solo/direct：白话告诉作者「这次由我直接改」，`Fallback: project custom agents unavailable -> solo` 原文只进报告最后一行「技术备注：」。
->
-> Spawn 版本提示（不阻断 spawn）：先读取项目根 `.story-deployed` 的 `agents_version`。与本版 `agents_version: 39` 不一致时（标记缺失、字段缺失/非整数、小于或大于 38）**照常按当前宿主角色来源检查并 spawn**，同时用一句白话提示作者「写作助手是旧版，运行 /story-setup（ZCode 先更新插件）后新开会话」，`Notice: agents bundle 版本不匹配（项目 {N}，本版 39）` 原文写进技术备注行；大于 38 时额外提示先更新 oh-story-claudecode，不要用本地旧版 setup 降级覆盖。只有当前宿主角色缺失或不暴露调用能力时才降级 solo/direct，`Fallback: ... -> solo` 同样只进技术备注行。
-
 改动文件前，先把原文复制到书内 `.story/work/去味原稿/{YYYYMMDD}_{原文件名}`，Phase 4 对照它回读；作者要撤回时用它恢复。
 
 1. 已在 narrative-writer 内，按本次范围直接执行，不嵌套 spawn。
-2. 主会话找到当前运行时的 narrative-writer，按上方兼容说明调用；只在此时读 [references/agent-calls.md](references/agent-calls.md)，传递实际诊断、原文依据、文风和授权范围。
-3. 文件缺失、运行时未暴露 custom agent 或 spawn 失败时，由主会话直接改。
+2. 主会话找到当前运行时的 narrative-writer，按顶部当前宿主说明调用；只在此时读 [references/agent-calls.md](references/agent-calls.md)，传递实际诊断、原文依据、文风和授权范围。
+3. 角色、工具不可用或派发失败时，说明原因，由主会话直接改。
 
 实际执行者按三份方法落改。用笔调整同时处理过详和过略：压缩无功能过程，演出已有的交锋和判断；缺少成立依据就按故事层处理，不凭空补条件。涉及本次要求的视角切换，也核对每项感知/认知的来源，不添加观察经历来保全信息。
 

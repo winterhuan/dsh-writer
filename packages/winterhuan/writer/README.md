@@ -28,7 +28,7 @@ This bundle adds a writing sidebar, Writer preset, and oh-story skills to DSH. T
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.5&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.6&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -98,7 +98,7 @@ Ask the assistant to accept a finding or recheck a revision. The review recorder
 
 ### DSH writing roles
 
-`story-setup` detects DSH and skips other hosts' hooks; check mode diagnoses effective skill sources. The model supplies a role, task, and book directory to `writer_agent`. The plugin loads the role from the session's effective `story-setup` and delegates through native `subagent`; project skill copies retain precedence. Each call creates a new instance and returns its native child session ID. The main agent manages this ID for the task. Follow-ups within the same task use `send_message`; independent tasks and reviews requiring fresh context create new instances. Discovery and interruption use `list_agents` and `interrupt_agent`. Roles share the Writer Preset and inherit native child model defaults; explicit model selection remains subject to DSH policy. Missing roles, tools, or failed starts are reported for the main session to handle under the skill workflow. Read-only role instructions constrain the prompt without creating a separate sandbox or loading another host's model, tool, or hook configuration.
+`story-setup` routes DSH setup and diagnostics directly to the DSH instructions. Other hosts' deployment and role checks load only on their own paths; DSH does not require their deployment marker or agent version. Check mode diagnoses effective skill sources. The model supplies a role, task, and book directory to `writer_agent`. The plugin loads the role from the session's effective `story-setup` and delegates through native `subagent`; project skill copies retain precedence. Each call creates a new instance and returns its native child session ID. The main agent manages this ID for the task. Follow-ups within the same task use `send_message`; independent tasks and reviews requiring fresh context create new instances. Discovery and interruption use `list_agents` and `interrupt_agent`. Roles share the Writer Preset and inherit native child model defaults; explicit model selection remains subject to DSH policy. Missing roles, tools, or failed starts are reported for the main session to handle under the skill workflow. Read-only role instructions constrain the prompt without creating a separate sandbox or loading another host's model, tool, or hook configuration.
 
 -----
 
@@ -134,7 +134,7 @@ A session on preset `writer` receives the preset persona and the oh-story skill 
 
 #### Token effect
 
-The persona prefix and role tool schema are sent on every turn of a writing session; role bodies enter only the delegated child conversation. Loading a skill adds that skill's instructions for that turn. Sessions on another preset do not receive this persona or the forced skill copy.
+The persona prefix and role tool schema are sent on every turn of a writing session; role bodies enter only the delegated child conversation. Loading a skill adds its entry instructions. Setup details, role compatibility checks, and standalone Dashboard or update instructions load only for the relevant host and task. Sessions on another preset do not receive this persona or the forced skill copy.
 
 #### KV Cache effect
 

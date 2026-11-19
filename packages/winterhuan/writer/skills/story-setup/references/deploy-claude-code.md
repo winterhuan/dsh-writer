@@ -1,6 +1,6 @@
 # Claude Code 部署
 
-`target_cli` 含 `claude-code` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符和报告遵循 SKILL.md 的公共规则。
+`target_cli` 含 `claude-code` 时，由 [其他宿主部署流程](deploy-other-hosts.md) Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符和报告遵循该流程的公共规则。
 
 ## 部署清单（机械可检查）
 
@@ -20,7 +20,7 @@
 
 ## 部署 CLAUDE.md
 
-按 SKILL.md「项目指令合并」写入项目根 `CLAUDE.md`：`--host claude-code`，模板 `references/templates/CLAUDE.md.tmpl`。
+按 [公共项目指令合并规则](deploy-other-hosts.md#项目指令合并claudemd--agentsmd) 写入项目根 `CLAUDE.md`：`--host claude-code`，模板 `references/templates/CLAUDE.md.tmpl`。
 
 ## 部署 Hooks
 

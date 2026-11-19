@@ -37,6 +37,8 @@ interface KeyCredentialState {
   writable: boolean
 }
 
+type CredentialRead = Awaited<ReturnType<ClientContext['remote']['credentials']['describe']>>
+
 /** One credential control as the page renders it. */
 export interface WriterZhuqueKeyControlState {
   /** The staged credential, which starts blank on every load. */
@@ -72,6 +74,9 @@ const FALLBACK_COVER_REF = 'GPT_IMAGE_API_KEY'
 export class WriterZhuqueCardController {
   private readonly form: SettingsFormModel<WriterZhuqueSettings>
   private readonly store: SnapshotStore<WriterZhuqueCardState>
+  private readonly unsubscribe: () => void
+  /** Only this request may publish; undefined means the controller is disposed. */
+  private credentialRequest: object | undefined = {}
   private makersState: KeyCredentialState = { ref: '', configured: false, writable: true }
   private coverState: KeyCredentialState = { ref: '', configured: false, writable: true }
 
@@ -90,7 +95,7 @@ export class WriterZhuqueCardController {
       { field: 'gptImageApiKey', write: (text: string) => this.writeKey('cover', text) },
     ])
     this.store = this.form.bind(() => this.projection())
-    scope.subscribe(() => { void this.readCredentials() })
+    this.unsubscribe = scope.subscribe(() => { void this.readCredentials() })
     void this.readCredentials()
   }
 
@@ -111,8 +116,10 @@ export class WriterZhuqueCardController {
     }
   }
 
-  /** Ask the credentials domain about both references the section names. */
-  private async readCredentials(): Promise<void> {
+  /** Return this read's answer for saves; only the latest read updates the card. */
+  private async readCredentials(): Promise<CredentialRead | undefined> {
+    if (this.credentialRequest === undefined) return
+    const request = this.credentialRequest = {}
     const snapshot = this.scope.getSnapshot()
     const makersRef = makersRefOf(snapshot)
     const coverRef = coverRefOf(snapshot)
@@ -127,9 +134,7 @@ export class WriterZhuqueCardController {
     }
     if (projected) this.store.set(this.projection())
     const response = await this.ctx.remote.credentials.describe([makersRef, coverRef])
-    if (!response.ok) return
-    const latest = this.scope.getSnapshot()
-    if (makersRef !== makersRefOf(latest) || coverRef !== coverRefOf(latest)) return
+    if (!response.ok || this.credentialRequest !== request) return response
     const makersView = response.value[makersRef]
     const coverView = response.value[coverRef]
     const nextMakers: KeyCredentialState = {
@@ -148,10 +153,11 @@ export class WriterZhuqueCardController {
     const coverSame = nextCover.configured === this.coverState.configured
       && nextCover.writable === this.coverState.writable
       && nextCover.ref === this.coverState.ref
-    if (makersSame && coverSame) return
+    if (makersSame && coverSame) return response
     this.makersState = nextMakers
     this.coverState = nextCover
     this.store.set(this.projection())
+    return response
   }
 
   /**
@@ -185,12 +191,16 @@ export class WriterZhuqueCardController {
     const ref = which === 'makers' ? makersRefOf(snapshot) : coverRefOf(snapshot)
     const response = await this.ctx.remote.credentials.set(ref, value)
     if (!response.ok) return false
-    await this.readCredentials()
-    return which === 'makers' ? this.makersState.configured : this.coverState.configured
+    const verification = await this.readCredentials()
+    return verification?.ok === true && verification.value[ref]?.configured === true
   }
 
-  /** Release configuration subscriptions. */
-  dispose(): void { this.form.dispose() }
+  /** Release configuration subscriptions and suppress outstanding credential replies. */
+  dispose(): void {
+    this.credentialRequest = undefined
+    this.unsubscribe()
+    this.form.dispose()
+  }
 }
 
 /**

@@ -1,6 +1,6 @@
 # Reasonix 部署
 
-`target_cli` 含 `reasonix` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循 SKILL.md 的公共规则。
+`target_cli` 含 `reasonix` 时，由 [其他宿主部署流程](deploy-other-hosts.md) Phase 2 完整读取并依次执行本文件。路径检查、幂等重跑、残留清理、部署标记、模板占位符、项目指令合并和报告遵循该流程的公共规则。
 
 ## 部署清单（机械可检查）
 
@@ -16,7 +16,7 @@ Reasonix（DeepSeek-Reasonix CLI）当前只部署 skills 与 `AGENTS.md`，不�
 
 1. 复制仓库当前 `skills/` 下所有含 `SKILL.md` 的 story skill 目录（14 个：`browser-cdp` 与 `story*`）到目标项目 `skills/{skill-name}/`；仅替换这些 story-setup 管理的已知 skill 目录，保留用户其他目录。项目副本是整份 skill 拷贝，agent references 只使用当前规范前缀 `skills/`。
 2. 在项目根创建 `.agents/skills → ../skills` 相对 symlink（与 Codex 共用的 skill root），使 Reasonix 原生扫描 `.agents/skills` 时发现这些 skill；若已是指向 `skills/` 的 symlink 则保留，若被占用为普通目录则不覆盖并在安装报告提示。Windows 未启用 symlink 时跳过本步，改用安装源仓库根的 `reasonix-plugin.json` 执行 `reasonix plugin install`。
-3. 用 `skills/story-setup/references/reasonix/AGENTS.md.tmpl` 按 SKILL.md「项目指令合并」写入项目 `AGENTS.md`（`--host reasonix`）。
+3. 用 `skills/story-setup/references/reasonix/AGENTS.md.tmpl` 按 [公共项目指令合并规则](deploy-other-hosts.md#项目指令合并claudemd--agentsmd) 写入项目 `AGENTS.md`（`--host reasonix`）。
 4. `.story-deployed` 的 `target_cli` 写入 `reasonix` 或多端组合；`references_dir` 对 Reasonix 写 `skills/story-setup/references/agent-references`。
 5. 安装报告提示项见下方「安装报告必须提示」。
 

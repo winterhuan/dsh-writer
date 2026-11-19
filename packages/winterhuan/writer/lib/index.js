@@ -362,26 +362,36 @@ async function treeHash(path) {
 	await visit(path, "");
 	return hash.digest("hex");
 }
-async function comparison(path, packageHash) {
-	try {
-		return await treeHash(path) === packageHash ? "same" : "different";
-	} catch {
-		return "unreadable";
-	}
-}
 /**
 * Compare the actual winning catalog entries and project copies with the package.
+* Each directory is read once per inspection; later inspections re-read changed files.
 * @param options - installed source, workspace, mount and DSH catalog for this session.
 * @returns versions, effective paths and content comparisons without copying files.
 */
 async function inspectWriterSkills(options) {
+	const hashes = /* @__PURE__ */ new Map();
+	const hashFor = (path) => {
+		const key = resolve(path);
+		const existing = hashes.get(key);
+		if (existing !== void 0) return existing;
+		const hash = treeHash(key);
+		hashes.set(key, hash);
+		return hash;
+	};
+	const comparison = async (path, packageHash) => {
+		try {
+			return await hashFor(path) === packageHash ? "same" : "different";
+		} catch (error) {
+			return "unreadable";
+		}
+	};
 	const root = await projectRootFor(options.workspaceDir);
 	const manifest = JSON.parse(await readFile(join(options.sourceDir, "..", "package.json"), "utf8"));
 	const upstreamSkillsVersion = (await readFile(join(options.sourceDir, "story", "VERSION"), "utf8")).trim();
 	const skills = [];
 	for (const name of await packagedSkillNames(options.sourceDir)) {
 		const packagedPath = join(options.sourceDir, name, "SKILL.md");
-		const packageHash = await treeHash(dirname(packagedPath));
+		const packageHash = await hashFor(dirname(packagedPath));
 		const effective = options.catalog.find((skill) => skill.name === name);
 		const projectCopies = [];
 		for (const parent of [".dsh", ".agents"]) {

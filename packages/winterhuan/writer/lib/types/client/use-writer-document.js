@@ -179,13 +179,6 @@ export function useWriterDocument(remote, sessionId, cwd, t) {
                 setStorageError('unavailable');
             load(path);
         },
-        close: () => {
-            readController.current?.abort();
-            discard();
-            publish(undefined);
-            if (!writeWriterSelection(cwd, undefined))
-                setStorageError('unavailable');
-        },
         reload: (discardOnSuccess = false) => {
             if (current.current !== undefined && !current.current.busy)
                 load(current.current.path, discardOnSuccess);

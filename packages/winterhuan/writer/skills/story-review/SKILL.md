@@ -6,9 +6,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 ---
 # story-review：多视角对抗式审查
 
-**DSH 宿主**：需要派写作、审稿、查询或研究助手时先读 [DSH 子会话说明](../story-setup/references/dsh-agents.md)，按流程指定的角色调用 `writer_agent`，由插件加载角色正文与资料；本文件其他宿主的角色目录、注册名和 agents_version 检查不用于 DSH。缺少工具或资料时明确降级。
-
-> Spawn 版本提示（不阻断 spawn）：先读取项目根 `.story-deployed` 的 `agents_version`。与本版 `agents_version: 39` 不一致时（标记缺失、字段缺失/非整数、小于或大于 38）**照常按当前宿主角色来源检查并 spawn**；同时在「这次怎么审的」里用一句白话提示作者「审稿助手是旧版，运行 /story-setup（ZCode 先更新插件）后新开会话」，`Notice: agents bundle 版本不匹配（项目 {N}，本版 39）` 原文写进技术备注行；大于 38 时额外提示先更新 oh-story-claudecode，不要用本地旧版 setup 降级覆盖。版本提示本身不触发降级；文件缺失或异常、工具不可用、递归限制或调用失败按 Phase 0 处理，技术备注写 `Fallback: ... -> solo`。
+**需要助手时**：DSH 先读 [原生子会话](../story-setup/references/dsh-agents.md)，使用 `writer_agent`；其他宿主先读 [角色兼容说明](../story-setup/references/agents-other-hosts.md)。只执行当前宿主的检查与派发规则，缺少能力时按本流程处理。
 
 你负责协调审查，找出小说的结构、角色、文字与设定问题，给出有原文依据的修改建议。
 
@@ -34,21 +32,10 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 1. **确定请求模式**：解析用户输入中的 `full`、`lean`、`solo`；未指定时目标模式为 `full`。
 2. **确认是否允许 spawn**：如果当前已经在子代理/Agent 内执行，不再递归 spawn，直接降级为 `solo`。
-3. **识别当前宿主的角色来源**：ZCode 支持插件子代理，检查当前已启用插件注册的同名角色，不要求 `.zcode/agents/`。其他宿主按下一步查本端目录；不因宿主名、部署标记包含 zcode 或其他端目录存在而降级。
-4. **检查核心 Agent 可用状态**（仅查当前宿主来源）：
-   - Claude Code `.claude/agents/`、OpenCode `.opencode/agents/`、Codex `.codex/agents/`、Antigravity `.agents/agents/`；ZCode 查注册角色的定义，不拿项目文件存在性代替运行时注册
-    - full 必需 agent：`story-architect`、`character-designer`、`narrative-writer`、`consistency-checker`
-    - lean 必需 agent：`story-architect`、`consistency-checker`
-    - 对每个必需 Agent：
-      - **Claude Code agent（`.claude/agents/`）**：读取 frontmatter，确认 `name:` 与 subagent_type 完全一致；frontmatter 缺失、不可解析或 name 不匹配时视为 malformed agent。
-      - **OpenCode agent（`.opencode/agents/`）**：文件名即 agent 名（OpenCode 不要求在 frontmatter 中写 `name:`），读取 frontmatter 确认 `mode: subagent` 和 `permissions:` 规则列表存在且可解析即可（2.x 用复数 `permissions:`，旧版单数 `permission:` 视为待重新部署）；frontmatter 缺失或不可解析视为 malformed。
-      - **Codex agent（`.codex/agents/`）**：文件名为 `{agent}.toml`，TOML 必须可解析，且包含 `name`、`description`、`developer_instructions`；`name` 必须与目标 agent 完全一致。
-      - **Antigravity agent（`.agents/agents/`）**：路径为 `.agents/agents/agent-name/agent.md`（`agent-name` 为目标 agent 名），frontmatter 必须可解析，且 `name` 与目标 agent 一致、`mainAgent: false`、`subagent: true`、`tools` 非空；缺失或不匹配视为 malformed。
-      - **ZCode plugin agent**：注册名与目标角色一致；可读定义须有可解析的 `name`、`description` 和正文。定义不可直接读时以运行时注册为准，不扫描其他端文件。
-   - 任一必需角色缺失或 malformed 时不尝试派发，降级 `solo`；白话说明助手缺失或损坏，并建议当前宿主重部署（ZCode 更新/启用 oh-story 插件后新开会话）。`missing agents -> solo` / `malformed agents -> solo` 与问题角色/文件写进技术备注 Fallback、Files 两栏。
-5. **确认 Agent 工具可用**：Claude/OpenCode/Codex 需要当前运行时的子 Agent/Task 工具，Antigravity 需要 `invoke_subagent`，ZCode 用 `Agent` 按当前 schema 派发注册角色；不可用时降级 `solo`，技术备注写 `Fallback: agent tool unavailable -> solo`。
-6. **运行时失败降级**：如果任何 Agent spawn 返回失败、`subagent_type` / `agent` / `agent_type` / `TypeName` 不可用、frontmatter/TOML 运行时解析失败或子 Agent 无法启动，停止继续 spawn，改用 `solo` 重新审查，技术备注写 `Fallback: spawn failed -> solo` 与失败的 agent 名；不要把部分成功的 Agent 结果当成 full/lean 结论。
-7. **确定实际模式**：请求模式与实际模式都写进报告末尾的技术备注行。
+3. **确定必需角色**：full 需要 `story-architect`、`character-designer`、`narrative-writer`、`consistency-checker`；lean 需要 `story-architect`、`consistency-checker`。solo 跳过角色与派发检查。
+4. **按宿主检查**：DSH 按顶部的原生子会话说明检查 `writer_agent`，角色由工具从当前生效的 `story-setup` 加载；不检查其他宿主目录或部署版本。其他宿主按角色兼容说明核对上述必需角色；缺失、定义异常或工具不可用则降级 solo，报告原因与问题角色。
+5. **运行时失败降级**：任一必需角色派发失败或未完成审查时，停止继续派发，改用 solo 重新审查。部分成功结果不能当成 full/lean 结论；技术备注写 `Fallback: spawn failed -> solo` 与失败角色。已在子代理中则记 `subagent recursion guard -> solo`。
+6. **确定实际模式**：请求模式、实际模式与降级原因写进报告末尾的技术备注行。
 
 ---
 
@@ -66,16 +53,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 ### 参考资料解析顺序
 
-可读取参考文件时，按以下顺序尝试，第一个命中即用：
-1. `{项目根}/.claude/skills/{规范路径}`（Claude Code 项目内安装）
-2. `{项目根}/.opencode/skills/{规范路径}`（OpenCode 项目内安装）
-3. `{项目根}/.codex/skills/{规范路径}`（Codex 项目内安装）
-4. `{项目根}/.zcode/skills/{规范路径}`（ZCode 项目内安装）
-5. `{项目根}/skills/{规范路径}`（OpenClaw / Reasonix / generic 部署，也是本仓库开发环境）
-6. `{项目根}/.agents/skills/{规范路径}`（Antigravity 项目内真实 skill root；Codex / Reasonix 也可能扫描此目录或其 symlink）
-7. 当前运行时加载本 skill 的目录，或其可访问的全局 skill 搜索路径中同名 `{skill-name}/...` 目录
-
-> 靠前几层不存在是正常的，不是部署损坏。`/story-setup` 会为 Antigravity 把 14 个 skill 真实复制到 `.agents/skills/`，为 ZCode 复制到 `.zcode/skills/`，并为 OpenClaw / Reasonix / generic 复制到 `skills/`。Codex 项目部署不复制 skill 本体，本 skill 由 Codex 从 skill root 加载，references 通常命中第 6 或第 7 层。不要手工把 `references/` 复制进 `.codex/skills/`——手工副本不受 story-setup 管理，升级后会静默变旧。
+DSH 从当前加载的 `story-review/SKILL.md` 所在目录读取 `references/` 与 `scripts/`，包括项目覆盖后的目录；不向其他宿主目录搜索旧副本。其他宿主按 [资料路径](references/resource-paths.md) 解析。所需资料不可读时使用下方内置基准，并如实标注缺失项。
 
 规范路径如下；禁止只写裸文件名，禁止跨 skill 误读其他 skill 的 references：
 

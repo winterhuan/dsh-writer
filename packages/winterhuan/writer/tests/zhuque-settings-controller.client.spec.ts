@@ -1,6 +1,6 @@
 /** The Writer Zhuque settings controller writes the key through credentials, not the settings section. */
 
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import type { SettingsPathOpView } from '@deepseek-ai/dsh-api-remotes/client'
 import { stubConfigForm, type StubConfigForm } from '@deepseek-ai/dsh-client-test-runtime'
 import { WRITER_SETTINGS_NS, WriterZhuqueCardController, type WriterZhuqueSettings } from '../src/client/zhuque-settings-controller.ts'
@@ -26,6 +26,93 @@ function acceptWrites(host: StubConfigForm<WriterZhuqueSettings>): void {
 }
 
 describe('WriterZhuqueCardController', () => {
+  it('releases its subscriptions and ignores credential replies after disposal', async () => {
+    const host = stubConfigForm<WriterZhuqueSettings>()
+    host.publish({ status: 'ready', writable: true, value: {}, user: {} })
+    const pending = Promise.withResolvers<{ ok: true; value: Record<string, { configured: boolean; writable: boolean }> }>()
+    const describe = vi.fn(() => pending.promise)
+    const controller = new WriterZhuqueCardController(host.scope, { remote: { credentials: { describe, set: vi.fn() } } } as never)
+    onTestFinished(async () => {
+      controller.dispose()
+      pending.resolve({ ok: true, value: {} })
+      await pending.promise
+    })
+    const store = controller.inject().hooks.writerZhuqueCard
+    const before = store.getSnapshot()
+
+    controller.dispose()
+    expect(host.listenerCount()).toBe(0)
+    host.publish({ value: { gptImageBaseUrl: 'https://images.example/v1' } })
+    controller.refreshCredential('MAKERS_API_KEY')
+    expect(describe).toHaveBeenCalledOnce()
+    pending.resolve({ ok: true, value: { MAKERS_API_KEY: { configured: true, writable: true } } })
+    await pending.promise
+    expect(store.getSnapshot()).toBe(before)
+  })
+
+  it('keeps the latest credential status when earlier requests for the same references finish late', async () => {
+    const host = stubConfigForm<WriterZhuqueSettings>()
+    host.publish({ status: 'ready', writable: true, value: {}, user: {} })
+    type Result = { ok: true; value: Record<string, { configured: boolean; writable: boolean }> }
+    const first = Promise.withResolvers<Result>()
+    const second = Promise.withResolvers<Result>()
+    const describe = vi.fn(() => first.promise).mockImplementationOnce(() => first.promise).mockImplementationOnce(() => second.promise)
+    const controller = new WriterZhuqueCardController(host.scope, { remote: { credentials: { describe, set: vi.fn() } } } as never)
+    onTestFinished(async () => {
+      controller.dispose()
+      first.resolve({ ok: true, value: {} })
+      second.resolve({ ok: true, value: {} })
+      await Promise.all([first.promise, second.promise])
+    })
+    const store = controller.inject().hooks.writerZhuqueCard
+
+    controller.refreshCredential('MAKERS_API_KEY')
+    expect(describe).toHaveBeenCalledTimes(2)
+    second.resolve({ ok: true, value: { MAKERS_API_KEY: { configured: true, writable: false } } })
+    await second.promise
+    expect(store.getSnapshot().key).toMatchObject({ configured: true, writable: false })
+    first.resolve({ ok: true, value: { MAKERS_API_KEY: { configured: false, writable: true } } })
+    await first.promise
+    expect(store.getSnapshot().key).toMatchObject({ configured: true, writable: false })
+  })
+
+  it('settles a saved key from its read-back while a later status refresh is still pending', async () => {
+    const host = stubConfigForm<WriterZhuqueSettings>()
+    host.publish({ status: 'ready', writable: true, value: {}, user: {} })
+    type Result = { ok: true; value: Record<string, { configured: boolean; writable: boolean }> }
+    const initial = Promise.resolve<Result>({ ok: true, value: { MAKERS_API_KEY: { configured: false, writable: true } } })
+    const verification = Promise.withResolvers<Result>()
+    const refresh = Promise.withResolvers<Result>()
+    const describe = vi.fn(() => initial)
+      .mockImplementationOnce(() => initial)
+      .mockImplementationOnce(() => verification.promise)
+      .mockImplementationOnce(() => refresh.promise)
+    const controller = new WriterZhuqueCardController(host.scope, {
+      remote: { credentials: { describe, set: vi.fn(async () => ({ ok: true, value: undefined })) } },
+    } as never)
+    onTestFinished(async () => {
+      controller.dispose()
+      verification.resolve({ ok: true, value: {} })
+      refresh.resolve({ ok: true, value: {} })
+      await Promise.all([verification.promise, refresh.promise])
+    })
+    await initial
+    const face = controller.inject()
+    face.edit('makersApiKey', 'replacement')
+    face.save()
+    await vi.waitFor(() => { expect(describe).toHaveBeenCalledTimes(2) })
+    controller.refreshCredential('MAKERS_API_KEY')
+    expect(describe).toHaveBeenCalledTimes(3)
+    verification.resolve({ ok: true, value: { MAKERS_API_KEY: { configured: true, writable: true } } })
+    await verification.promise
+    await vi.waitFor(() => { expect(face.hooks.writerZhuqueCard.getSnapshot().saving).toBe(false) })
+    expect(face.hooks.writerZhuqueCard.getSnapshot()).toMatchObject({ failed: false, dirty: false })
+    expect(face.hooks.writerZhuqueCard.getSnapshot().key.draft.text).toBe('')
+    refresh.resolve({ ok: true, value: { MAKERS_API_KEY: { configured: true, writable: true } } })
+    await refresh.promise
+    expect(face.hooks.writerZhuqueCard.getSnapshot().key.configured).toBe(true)
+  })
+
   it('names the writer namespace', () => {
     expect(WRITER_SETTINGS_NS).toBe('writer')
   })

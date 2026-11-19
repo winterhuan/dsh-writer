@@ -1,6 +1,6 @@
 # DeepSeek Harness 部署
 
-`target_cli` 含 `dsh` 时，由 SKILL.md Phase 2 完整读取并依次执行本文件。其他宿主的部署文件不要读，除非作者当次明确把那个宿主加进 `target_cli`。
+在 DSH 中安装、更新或修复项目配置时，由 [技能入口](../SKILL.md) 转入并完整执行本文件。其他宿主的部署文件不要读，除非作者当次明确把那个宿主加进 `target_cli`。
 
 ## 不部署的内容
 
