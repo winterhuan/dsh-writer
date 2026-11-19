@@ -8,9 +8,9 @@
 - **blocking（必须修）**：检测脚本报 blocking 的命中，和清单里标「必须修」的项，修完才能交付。
 - **advisory（建议看）**：检测脚本的 advisory 命中和清单其余项。回到上下文判断，有功能的写法保留，没功能的改；词句信号对照 `banned-words.md` 的「需确认的语义问题」判断，不是出现就删。拿不准的列进交付说明请作者定；子代理标的 `[需复核]` 只写在交回说明里，`正文.md` 里不做标记。
 
-文件模式依次运行 `node scripts/check-ai-patterns.js --check --fail-on=blocking 正文.md`、`node scripts/check-outline-copy.js --outline 小节大纲.md 正文.md`、`node scripts/normalize-punctuation.js 正文.md`（默认 `--quote-mode keep`，清理无功能的省略号、破折号、双连字符和独立分隔线，保留盐言「」）、`node scripts/check-degeneration.js --check 正文.md`，blocking 先改正文再复扫。照搬检测报出的誓词、关键原话等功能性台词保留，登记进 `小节大纲.md` 末尾「复沓锚句」再复检，其余现场重写。
+文件模式先运行 `node scripts/check-ai-patterns.js --check --fail-on=blocking 正文.md` 与 `node scripts/check-outline-copy.js --outline 小节大纲.md 正文.md`。完整新稿或已获准整篇改稿时，再运行 `node scripts/normalize-punctuation.js 正文.md`（默认 `--quote-mode keep`，按文风白名单整理停顿标点和独立分隔线，保留盐言「」）；局部改稿或续写导入项目时不跑整篇整理，只在授权范围内人工处理，保留已有小节。最后运行 `node scripts/check-degeneration.js --check 正文.md`，blocking 在授权范围内修复后复扫；范围外阻塞只报告，不扩大改稿范围、不声称全部通过。照搬检测报出的誓词、关键原话等功能性台词保留，登记进 `小节大纲.md` 末尾「复沓锚句」再复检，其余在授权范围内重写。
 
-全部落盘后运行 `node scripts/check-delivery-contract.js --json --min-chars {MIN} --max-chars {MAX} --sections {N} {短篇目录}`。exit 0 才可交付；exit 1 只按 `repair_scope` 最小修复并重跑受影响的质量检查与本命令，最多 2 轮；仍失败则停止，按下方交付说明告诉作者哪项没达标、差多少。exit 2、脚本缺失或不可执行时不得声称交付契约通过。它只验字数、节数与排版。
+全部落盘后，从 `设定.md`「作者已定」恢复锁定的交付参数，运行 `node scripts/check-delivery-contract.js --json --min-chars {MIN} --max-chars {MAX} --sections {N} [--min-section-chars {用户逐节下限}] {短篇目录}`；用户指定过逐节下限时必须传入，未指定时省略。exit 0 才可交付；exit 1 只在授权范围内按 `repair_scope` 最小修复，并以同一组参数重跑受影响的质量检查与本命令，最多 2 轮；仍失败或需改动受保护小节时停止，按下方交付说明告诉作者哪项没达标、差多少。exit 2、脚本缺失或不可执行时不得声称交付契约通过。它只验字数、节数、用户指定的逐节下限与排版。
 
 #### Agent 调用：narrative-writer（去AI味）+ consistency-checker
 

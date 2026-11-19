@@ -15,7 +15,7 @@ metadata: {"openclaw":{"requires":{"env":["GPT_IMAGE_API_KEY"],"bins":["curl","j
 ## 生成通路
 
 - **Codex 内置（优先）**：当前 Codex CLI 会话可调用 `$imagegen` / `image_gen` 时，直接调用工具生成并保存，无需 `OPENAI_API_KEY` 或 `GPT_IMAGE_API_KEY`，不运行 `curl`。
-- **API 回退**：仅在会话没有内置工具或用户明确指定 API 时使用，需要 `GPT_IMAGE_API_KEY`；环境变量和命令在 [references/api-fallback.md](references/api-fallback.md)，走这条通路时再读。工具缺失不等于 Codex 订阅不支持生图；内置调用失败时先报告错误，不静默切换到可能收费的 API。
+- **API 回退**：仅在会话没有内置工具或用户明确指定 API 时使用，需要配置封面密钥（默认 `GPT_IMAGE_API_KEY`，DSH 按 `WRITER_COVER_KEY_ENV` 指定的变量读取）；环境变量和命令在 [references/api-fallback.md](references/api-fallback.md)，走这条通路时再读。工具缺失不等于 Codex 订阅不支持生图；内置调用失败时先报告错误，不静默切换到可能收费的 API。
 
 ### DSH 宿主
 

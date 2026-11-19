@@ -108,7 +108,7 @@ steps: 30
 1. **覆盖自检（长篇写作必做，审查与去味任务不做）**：细纲每个情节点至少落地一次，漏即补；逐点记下落在哪一场，随交付返回。
 2. **对话自检**：按 dialogue-mastery「绝对禁止」逐句过，命中即改。
 3. **文风自检**：按书级文风（`设定/文风.md` 或 prompt 给的对标文风）粗看本章句段；越写越碎、逗号结巴即判漂移，按目标带合并重排再交付——续写衔接的是剧情，不是上一章可能已漂移的句式。
-4. **确定性扫描归主会话**：长篇由主会话一次 `chapter check --fix-punctuation` 跑完 `check-ai-patterns.js --check` 等检测，写手不重复跑。未安排主会话扫描时（短篇、独立改写）自跑 `check-ai-patterns.js --check --fail-on=blocking <正文>` 与 `check-outline-copy.js <正文>`：blocking 改到净，advisory 与细纲重合只列进摘要；node 不可用如实报告，不得声称已运行。
+4. **确定性扫描归主会话**：长篇由主会话运行 `chapter check`，新正文或整章重写时可加 `--fix-punctuation`，局部改稿不加并只在授权范围内人工整理标点；范围外阻塞只报告，不为通过检查扩大改稿范围。写手不重复跑主会话的检测。未安排主会话扫描时（短篇、独立改写）自跑 `check-ai-patterns.js --check --fail-on=blocking <正文>` 与 `check-outline-copy.js <正文>`：blocking 只在授权范围内修复，剩余阻塞如实报告且不声称通过；advisory 与细纲重合只列进摘要；node 不可用如实报告，不得声称已运行。
 
 ## 文风优先级
 

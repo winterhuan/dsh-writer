@@ -28,7 +28,7 @@ kind: "package-bundle"
 通过[插件市场](https://winterhuan.github.io/dsh-creative/index.json)安装预构建版本，或在 DSH `0.2.2-rc.1` 中安装以下固定 Git 提交：
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.6&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.7&path:/packages/winterhuan/writer'
 ```
 
 将 `market` 替换为你已有的 DSH profile 名称。
@@ -134,7 +134,7 @@ dsh plugin --profile web add packages/winterhuan/writer
 
 #### Token 影响
 
-写作会话的每一轮都会带上 persona 前缀和角色工具 schema；角色正文仅在派发时进入子会话。加载某个技能时加入其入口说明；部署细节、角色兼容检查、独立 Dashboard 和更新步骤只在相应宿主与任务分支加载。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
+写作会话的每一轮都会带上 persona 前缀和角色工具 schema；角色正文仅在派发时进入子会话。加载某个技能时加入其入口说明。短篇构思只读通用方法中的结构小节与选中的反转类型，正文技法在写稿时加载；当前会话中已读且未变的部分复用。部署细节、角色兼容检查、独立 Dashboard 和更新步骤只在相应宿主与任务分支加载。其他预设的会话不会带上这段 persona，也不会因此强制拷贝技能。
 
 #### KV Cache 影响
 

@@ -46,7 +46,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 ### 导入续写顺序
 
-用户问"导入续写先 setup 还是 import"时，直接回答：**推荐先 `/story-setup`，新开会话后 `/story-import`；导完长篇说 `/story-long-write 写第N章`（N 是导入后的下一章），短篇用 `/story-short-write` 先补完构思**。如果用户已经直接触发 `/story-import`，按 story-import 自带环境检测继续：未 setup 时让用户选择先去 setup 或继续串行导入。
+DSH 中直接运行 `/story-import`，由导入流程检查本次所需能力；无需先部署或重开会话，诊断来源或角色不可用时才用 `/story-setup check`。其他宿主推荐先 `/story-setup`，按宿主要求启用角色后再导入；已经直接触发导入时，按它的环境检测决定是否部署或由主会话处理。导完长篇用 `/story-long-write 写第N章`（N 是导入后的下一章），短篇用 `/story-short-write` 先补完构思。
 
 ## 书目录判定
 
@@ -60,7 +60,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
    找到多本又没有 `.active-book` 时，需要"当前书"就问作者是哪本（做法同「多书切换」）。
 3. 篇幅：有 `正文/` 或 `设定/` 子目录的是长篇，有 `正文.md` 或 `设定.md` 文件的是短篇。
 
-没找到任何书目录：创建写作项目时先运行 `/story-setup`；只讨论结构、选题，或要扫榜、拆文时直接路由。找到了：按目标 skill 自己的环境检查继续，需要初始化或补部署时运行 `/story-setup`。
+DSH 中按目标 skill 创建或继续项目；只有检查发现配置问题或作者要求配置时才进入 `/story-setup`。其他宿主没找到书目录且要创建写作项目时先运行 `/story-setup`，已有项目按目标 skill 的环境检查继续。只讨论结构、选题，或要扫榜、拆文时直接路由。
 
 ## 作者习惯管理
 

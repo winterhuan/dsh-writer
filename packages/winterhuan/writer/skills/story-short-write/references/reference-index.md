@@ -7,7 +7,7 @@
 | [submission-craft.md](submission-craft.md) | 构思：定平台、导语写法、字数区间、付费点 |
 | [genre-styles/](genre-styles/) | 确定题材后读一个风格包 |
 | [genre-writing-formulas.md](genre-writing-formulas.md) | 冷门题材结构骨架（核心 10 题材用 genre-styles/） |
-| [short-reversal.md](short-reversal.md) · [villain-and-reveal.md](villain-and-reveal.md) | 设计反转；设计反派、真相揭露与报应 |
+| [short-reversal.md](short-reversal.md) · [villain-and-reveal.md](villain-and-reveal.md) | 设计反转按 short-reversal 首屏加载范围选读；有反派或真相揭露时读 villain-and-reveal |
 | [emotional-methods.md](emotional-methods.md) · [hooks-chapter.md](hooks-chapter.md) | 设计情感结构（三板斧 / 拉扯节奏）；节尾钩子与段落钩子 |
 | [benchmark-recall.md](benchmark-recall.md) · [cross-book-recall.md](cross-book-recall.md) | 有对标时选定与召回；2 本以上时召回副对标 |
 | [short-format.md](short-format.md) · [short-craft.md](short-craft.md) · [scene-craft.md](scene-craft.md) | 写正文：格式与字数统计；情绪直写与在场叙述；场景写法 |

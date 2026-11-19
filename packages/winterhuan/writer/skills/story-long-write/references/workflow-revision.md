@@ -32,15 +32,15 @@
 
 ## Step 3：改写与提交前检查
 
-1. **备份**：原文复制为 `正文/第{X}章_章名_原稿_{YYYYMMDD}.md`；用 `{PYTHON} {skill 根}/scripts/storyctl.py wordcount measure --file {正文文件}` 记下原字数。
+1. **记下原字数**：用 `{PYTHON} {skill 根}/scripts/storyctl.py wordcount measure --file {正文文件}` 测量。默认直接修改目标正文；只有作者明确要求另存版本时才另存。
 2. **改写**：已部署 narrative-writer 时按 [agent-calls.md](agent-calls.md)「改写一章」交给它；否则主会话自己改，读 `references/writing-craft.md` 与 `references/long-format.md`；改的是情绪对抗、打脸这类戏时，按 SKILL.md「本章技法」只读对应那一节。局部修改只动点到的段落，其余一字不改；不借改稿新增细纲外的剧情。
-3. **检测**：`{PYTHON} {skill 根}/scripts/storyctl.py chapter check --project {项目根} --chapter {X} --fix-punctuation`，按返回的 `status` 走：
+3. **检测**：运行 `{PYTHON} {skill 根}/scripts/storyctl.py chapter check --project {项目根} --chapter {X}`。局部修改只在授权段落内人工整理标点，不加 `--fix-punctuation`；整章重写时才可加该参数整理全章。范围外发现的问题只报告，不为通过检查扩大改稿范围；仍有 blocking 时暂停追踪提交，不声称检查通过。按返回的 `status` 走：
 
 | 状态 | 处理 |
 |---|---|
 | `ready` | 往下走 |
-| `blocked` / `invalid` | 改到净再重跑（工程词泄漏也在报告里） |
-| `needs_decision`（字数出带） | 欠字不补；超字把删除区间交写手按 agent-calls「超字一次净删」删一次（自己改就同样只删不加），复检仍带外用下面的字数问法请作者选 |
+| `blocked` / `invalid` | 修复授权范围内的问题后重跑；剩余阻塞在范围外时报告并暂停提交，由作者决定是否扩大范围 |
+| `needs_decision`（字数出带） | 欠字不补；局部修改不执行整章压缩，直接用下面的字数问法请作者选。整章重写超字时，把删除区间交写手按 agent-calls「超字一次净删」删一次（自己改就同样只删不加），复检仍带外再请作者选 |
 | `tool_unavailable`（退出码 3） | 停下，不提交，按 `quality.tool_errors` 告诉作者具体原因；缺 Node 时提示安装 Node.js 18 或更新版本 |
 | 退出码 2 | 按 `error_code` 修命令重跑 |
 4. **人物与节奏**：改后的角色行为与设定、前后章一致；改动没把这章的节奏打散。
@@ -66,10 +66,9 @@
 你想怎么处理？
 1. 就按现在的长度收下（推荐）
 2. 我再调整这章，往目标靠
-3. 退回原稿
 ```
 
-不到目标一半时选项 1 不标推荐。选 1 → 改用 `chapter accept-current-length`，不到目标一半、或超字还没压缩过一次会被拒，把差多少字告诉作者，作者明确坚持才加 `--force`；选 2 → 回 Step 3；选 3 → 用备份原稿覆盖回去，不提交。失败时保留草稿，修正后重跑同一命令；通过 `check` 前不修下一章、不写新章。
+不到目标一半时选项 1 不标推荐。选 1 → 改用 `chapter accept-current-length`，不到目标一半、或超字还没压缩过一次会被拒，把差多少字告诉作者，作者明确坚持才加 `--force`；选 2 → 回 Step 3。失败时保留草稿，修正后重跑同一命令；通过 `check` 前不修下一章、不写新章。
 7. **收口**：`{PYTHON} {skill 根}/scripts/tracking_commit.py check --project {项目根}` 验证 state 与派生视图一致。改变了角色状态、关系或世界观设定的，扫一遍后续章正文，把受影响的列进汇报。
 
 ---
@@ -80,7 +79,7 @@
 
 <!-- author-report -->
 ```md
-第{X}章《{章名}》改好了，原稿留着，想退回随时说：
+第{X}章《{章名}》改好了：
 - {改了什么，用故事话：原来怎样 → 现在怎样}
 - 篇幅：{差异超过步骤 3 第 5 条的阈值才写：约 X 字，比原来多/少约 Y 字；没超就删掉这行}
 {后面受影响的章：「第{X+1}章《{章名}》里{谁/什么}还按旧说法写，要一起改吗？1. 一起改（推荐）2. 先不动」；没有就写「后面的章不受影响」}

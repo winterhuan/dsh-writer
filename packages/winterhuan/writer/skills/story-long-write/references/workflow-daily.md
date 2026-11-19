@@ -51,7 +51,7 @@ SKILL.md 路由到「日更续写」后按本文件控制批次；每章正文�
 3. **伏笔盘点（仅本轮增量）**：本批新增/推进/回收的每个 ID 在 `追踪/伏笔.md` 恰好一行当前状态，并能在对应逐章记录找到本次变化；不做全量伏笔审计。
 4. **一致性检查（批末一次）**：这里核查本批尚未单独查过的章节（prompt 见 agent-calls.md，申报栏写各章申报汇总；无 agent 时主会话按 workflow-chapter 同节自己核），冲突照「新增物处置」表处理。
 
-只对本步改过的章重跑 `chapter check --fix-punctuation`；改动影响后续事实、状态、伏笔或承诺的，进 Step 4 前按 workflow-revision 为该章提交修订（`draft` 预填 → 改 → `chapter commit`），纯措辞调整不重复提交。
+只对本步改过的章重跑只读的 `chapter check`；按 workflow-revision 的改动范围处理标点，局部修改不加 `--fix-punctuation`，整章重写时才可加。范围外阻塞只报告，不为通过检查扩大改稿范围。改动影响后续事实、状态、伏笔或承诺的，进 Step 4 前按 workflow-revision 为该章提交修订（`draft` 预填 → 改 → `chapter commit`），纯措辞调整不重复提交。
 
 ---
 

@@ -53,11 +53,11 @@ word_count = 全文字数
 
 ```
 存在 _meta.json？
-  ├─ 否 → 直接进入新一轮拆解
+  ├─ 否 → 无旧分析产物时新建；已有产物时先核实进度，不直接覆盖
   └─ 是 → 询问用户（问法见下）：
        (a) 覆盖：归档旧产出到 拆文库/{书名}/_archive_{时间戳}/ 后从 Stage 2 重跑
-       (b) 续跑：读 _meta.json.last_stage_in_progress（非空 → 从该 Stage 整段重跑）
-                 或读 _meta.json.stages_completed[]（从 max+1 续跑）；已拆完时没有此项
+       (b) 续跑：保留 _meta.json，按 output-contract.md「Resume 协议」选择阶段
+                 已拆完时没有此项
        (c) 取消
 ```
 
@@ -80,7 +80,7 @@ word_count = 全文字数
 2. 先不拆了
 ```
 
-完整续跑规则见 [references/output-contract.md](references/output-contract.md)。
+作者已经明确选择续跑、重拆或取消时直接采用，不重复询问。完整的启动与续跑规则见 [references/output-contract.md](references/output-contract.md#启动与续跑)。
 
 ---
 
@@ -88,18 +88,9 @@ word_count = 全文字数
 
 输出到 `拆文库/{书名}/`（项目根目录下；用户指定了其他路径时按用户指定）：`原文/`、`拆文报告.md`、`情节节点.md`、`写作手法.md`、`_meta.json`。三个 markdown 由下游 `story-short-write` 硬编码读取，不可改名；文件树、Stage → 文件映射与 `_meta.json` 字段见 [references/output-contract.md](references/output-contract.md)。
 
-### 原文备份（管道前置步骤）
+### 原文与进度准备
 
-**拆解开始前，必须先备份原文**：
-
-1. 检查 `拆文库/{书名}/原文/` 目录是否已存在
-2. 如果不存在，从用户提供的源路径复制原文文件到 `拆文库/{书名}/原文/`
-3. 如果用户未提供源文件路径（直接在对话中贴文本），将原始文本保存到
-   `拆文库/{书名}/原文/原文.md`
-4. 备份完成后验证 `原文/` 目录下文件非空（>0 bytes）
-
-备份完成后初始化 `_meta.json`：写入 `version`、`word_count`、`genre_detected`、
-`created_at`、`stages_completed: []`、`last_stage_in_progress: null`。
+按 output-contract.md「启动与续跑」执行：新建分析或已归档的重拆保存本轮原文并初始化进度；续跑核对已存原文，保留元数据和已完成产物。元数据缺失但已有分析文件时先确认如何处理，不能直接初始化覆盖。
 
 ---
 
@@ -111,7 +102,7 @@ word_count = 全文字数
 
 | 阶段 | 名称 | 输入 | 输出 | 完成标志 |
 |------|------|------|------|----------|
-| 2 | 结构+情节节点 | 全文 | 题材 + 故事核 + 故事梗概 + 功能分段（含开端/发展/高潮/结局）+ 情节节点清单（以语义变化为边界提取，每个节点带位置）。 | 结构划分与故事核已写 |
+| 2 | 结构+情节节点 | 全文 | 题材 + 故事核 + 故事梗概 + 实际功能分段（标注开端/发展/高潮/结局等功能，可合并或缺失）+ 情节节点清单（以语义变化为边界提取，每个节点带位置）。 | 结构划分与故事核已写 |
 | 3 | 情感线+爆点 | 故事核+结构划分+情节节点数据 | 情感曲线 + 钩子与付费断点 + 爆点分析（6维度）+ 期待感分析。 | 爆点分析 6 维度齐全 |
 | 4 | 反转+写作手法 | 节点+情感数据 | 前置反转检查 + 反转机制（铺垫线索逐条带位置）+ 写作手法（≥5项维度：POV/对话/时间/信息/其他）。 | 写作手法 ≥5 项维度 |
 | 5 | 人物+开头结尾 | 情节节点+全文 | 所有人物（分类+功能标签+功能评估）+ 开头分析（前50/100字）+ 结尾分析（收束检查）。 | 人物功能评估完成 |
@@ -129,7 +120,7 @@ word_count = 全文字数
 | Stage 4–6 反转到综合评估、验收 | output-contract.md、analysis-method.md、[stage4-6-reversal-summary.md](references/stage4-6-reversal-summary.md)、quality-checklist.md、analysis-report-style.md、[analysis-short-patterns.md](references/analysis-short-patterns.md)、[analysis-submission.md](references/analysis-submission.md) | 细拆反差、动机、反派、关系或感情线：[analysis-characters.md](references/analysis-characters.md)；判断源文本身的短板与毒点：[source-story-quality.md](references/source-story-quality.md) | 验收通过，`stages_completed` 含 6 |
 | 拆完后作者要同类对比或逐节节奏 | [optional-modules.md](references/optional-modules.md) | — | — |
 
-**Stage 写盘规则**（中断后可续）：每个 Stage 开始前写入 `_meta.json.last_stage_in_progress`；目标文件写完、确认非空且长度合理后，才清空它并 append 到 `stages_completed[]`。半成品不可信，续跑时该 Stage 整段重跑。完整规则见 output-contract.md「写入顺序」。
+**Stage 写盘规则**（中断后可续）：按 output-contract.md「写入顺序」记录当前阶段，目标产物检查通过后才标记完成。续跑只重做未完成阶段负责的内容；Stage 6 已写完而仅验收未过时，按「Resume 协议」先重跑验收。
 
 ---
 

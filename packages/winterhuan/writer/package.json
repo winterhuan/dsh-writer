@@ -1,6 +1,6 @@
 {
   "name": "@winterhuan/dsh-writer",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Writing sidebar for DSH with native Writer conversations and oh-story skills",
   "type": "module",
   "license": "MIT",

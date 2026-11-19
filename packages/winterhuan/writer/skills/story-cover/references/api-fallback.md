@@ -6,7 +6,8 @@
 
 | 变量 | 必填 | 默认 | 说明 |
 |:-----|:----:|:-----|:-----|
-| `GPT_IMAGE_API_KEY` | 是 | — | OpenAI 或兼容代理的 API Key |
+| `WRITER_COVER_KEY_ENV` | | `GPT_IMAGE_API_KEY` | 密钥所在的环境变量名；DSH Host 按插件配置注入 |
+| 所选密钥变量（默认 `GPT_IMAGE_API_KEY`） | 是 | — | OpenAI 或兼容代理的 API Key；指定的变量为空时停止，不改用其他凭据 |
 | `GPT_IMAGE_BASE_URL` | | `https://api.openai.com/v1` | 用兼容代理时改这个 |
 | `GPT_IMAGE_MODEL` | | `gpt-image-2` | 只在测试新模型时覆盖 |
 | `GPT_IMAGE_SIZE` | | `1024x1536` | 请求尺寸：番茄 3:4 用 `768x1024`，默认 2:3 用 `1024x1536`。实际尺寸以出图结果为准，上传像素由入口的导出步骤保证 |
@@ -18,7 +19,9 @@
 
 ```bash
 set -euo pipefail
-: "${GPT_IMAGE_API_KEY:?请设置 export GPT_IMAGE_API_KEY=你的key}"
+COVER_KEY_ENV="${WRITER_COVER_KEY_ENV:-GPT_IMAGE_API_KEY}"
+COVER_API_KEY="${!COVER_KEY_ENV:-}"
+[ -n "$COVER_API_KEY" ] || { printf '请配置封面凭据 %s\n' "$COVER_KEY_ENV" >&2; exit 1; }
 : "${PROMPT:?请先 export PROMPT=构建提示词步骤拼好的完整提示词}"
 BASE_URL="${GPT_IMAGE_BASE_URL:-https://api.openai.com/v1}"
 MODEL="${GPT_IMAGE_MODEL:-gpt-image-2}"
@@ -43,7 +46,7 @@ BODY=$(jq -n \
 
 curl -fsS --max-time 180 --retry 2 --retry-delay 5 \
   "$BASE_URL/images/generations" \
-  -H "Authorization: Bearer $GPT_IMAGE_API_KEY" \
+  -H "Authorization: Bearer $COVER_API_KEY" \
   -H "Content-Type: application/json" \
   -d "$BODY" > "$RESP"
 
@@ -77,7 +80,9 @@ ls -lt "$BOOK_DIR/封面/"
 
 ```bash
 set -euo pipefail
-: "${GPT_IMAGE_API_KEY:?请设置 export GPT_IMAGE_API_KEY=你的key}"
+COVER_KEY_ENV="${WRITER_COVER_KEY_ENV:-GPT_IMAGE_API_KEY}"
+COVER_API_KEY="${!COVER_KEY_ENV:-}"
+[ -n "$COVER_API_KEY" ] || { printf '请配置封面凭据 %s\n' "$COVER_KEY_ENV" >&2; exit 1; }
 : "${PROMPT:?请先 export PROMPT=构建提示词步骤拼好的完整提示词}"
 BASE_URL="${GPT_IMAGE_BASE_URL:-https://api.openai.com/v1}"
 MODEL="${GPT_IMAGE_MODEL:-gpt-image-2}"
@@ -110,7 +115,7 @@ esac
 
 curl -fsS --max-time 240 --retry 2 --retry-delay 5 \
   "$BASE_URL/images/edits" \
-  -H "Authorization: Bearer $GPT_IMAGE_API_KEY" \
+  -H "Authorization: Bearer $COVER_API_KEY" \
   --form-string "model=$MODEL" \
   --form-string "size=$SIZE" \
   --form-string "prompt=$PROMPT" \

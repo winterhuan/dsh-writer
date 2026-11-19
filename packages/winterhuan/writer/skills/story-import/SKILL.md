@@ -25,7 +25,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 | 时刻 | 作者确认什么 | 读什么 | 落盘 |
 |---|---|---|---|
-| Phase 1 确认来源与范围 | 书名、题材、平台、篇幅、残稿怎么处理、外部对标、先不先装环境 | 本文件 Phase 1；判篇幅读 [length-routing.md](references/length-routing.md) | 导入记录 |
+| Phase 1 确认来源与范围 | 书名、题材、平台、篇幅、残稿怎么处理、外部对标；需要时处理助手不可用 | 本文件 Phase 1；判篇幅读 [length-routing.md](references/length-routing.md) | 导入记录 |
 | Phase 2 深度分析 | 不打扰作者 | [deep-analysis.md](references/deep-analysis.md)，再照它进入拆书流程 | `拆文库/{导入书名}/` |
 | Phase 3 结构迁移 | 原文没分卷时卷怎么分；要不要存本书文风 | 长篇 [structure-mapping-long.md](references/structure-mapping-long.md)（绑了外部对标再读 [benchmark-sync.md](references/benchmark-sync.md)）；短篇 [structure-mapping-short.md](references/structure-mapping-short.md) | 项目 `设定/`、`正文/`、`大纲/`（短篇为三个单文件） |
 | 逐批反推细纲（长篇） | 不打扰作者 | 本批任务包（见 [outline-reverse.md](references/outline-reverse.md)） | `大纲/细纲_第XXX章.md` |
@@ -35,7 +35,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 **书目录**：长篇和短篇均为 `{导入书名}/`，与分析源 `拆文库/{导入书名}/` 同名；写正文守卫据此放行正文迁移，名字不一致时迁正文会被拦。
 **导入记录**：`{书目录}/.story/work/导入记录.md`，Phase 1 建立，格式见下方 Step 5。每个时刻开头先读它，不回翻对话；时刻交付前把作者在对话里新定的事（决定、偏好、红线、否掉的方案）和进度写回它，再往下走。
 **换上下文**：深度分析、每批细纲、追踪初始化读的东西多。每个时刻交付后，汇报末尾加一句「下一步建议新开一个对话，说『继续导入』，会更专注」；作者要在本对话继续也照做。作者说「继续导入」时，在项目根下找进度没勾完的 `*/.story/work/导入记录.md`，从第一个未完成的进度接着做。
-**导入续写入口顺序**：用户只问流程时先答结论再收原文——推荐先 `/story-setup`，新开对话 `/story-import`，导完长篇 `/story-long-write 写第N章`（N 是导入后的下一章）；也可直接导入，缺环境时 Step 4 给选择。导入过的书、追踪是旧结构的书按 [import-special-cases.md](references/import-special-cases.md) 处理。
+**导入续写入口顺序**：用户只问流程时先答结论再收原文。DSH 直接运行 `/story-import`，无需先部署或重开会话；其他宿主推荐先 `/story-setup`，按宿主要求启用角色后导入。导完长篇用 `/story-long-write 写第N章`（N 是导入后的下一章），短篇用 `/story-short-write` 补完构思。导入过的书、追踪是旧结构的书按 [import-special-cases.md](references/import-special-cases.md) 处理。
 
 ---
 
@@ -58,9 +58,9 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 
 ### Step 4：写作环境检测
 
-按顶部说明检查当前宿主的委派能力，本次需要 `chapter-extractor`，逐批细纲还需 `story-architect`。DSH 用 `writer_agent` 加载角色，部署标记不作为可用性门槛；不可用时说明原因，由主会话串行导入。其他宿主按角色兼容说明检查；ZCode 缺角色时提示启用或更新插件并新开会话，不重复部署 workspace。
+按顶部说明只检查本次需要的委派能力：长篇逐批拆解用 `chapter-extractor`，逐批细纲用 `story-architect`；短篇拆解默认由主会话完成。DSH 用 `writer_agent` 加载所需角色，部署标记不作为可用性门槛；不可用时说明原因，由主会话串行导入，需要诊断时用 `/story-setup check`。其他宿主按角色兼容说明检查；ZCode 缺角色时提示启用或更新插件并新开会话，不重复部署 workspace。
 
-其他宿主 agent 不可用时这样问：
+以下部署选择仅用于其他宿主 agent 不可用且作者尚未选定处理方式时：
 
 > 「这个项目还没装好写作环境。装好后由专门的分析助手逐段拆书，主对话不会被整本书塞满；不装也能导，只是全部在主对话里做，慢一些，结果一样完整。你想：1. 先装环境（推荐）：运行 `/story-setup`，装完再说"导入" 2. 直接导入，慢一点也行」
 
@@ -78,7 +78,7 @@ metadata: {"openclaw":{"source":"https://github.com/zenstory-ai/oh-story-claudec
 - 最后一章：{完整 | 残稿：第 {N+1} 章写了一半，作者决定{接着残章写 | 先补完再导入}}
 - 题材：{题材类型}；目标平台：{平台}
 - 外部对标：{对标书名 | 未绑定}
-- 写作环境：{已装，分析助手可用{，story-architect 可用} | 待装（继续时重新检测） | 助手不可用，作者选主会话串行}
+- 写作环境：{所需角色可用 | 主会话串行：{原因} | 其他宿主待装（继续时重新检测）}
 - 卷划分：{待 Phase 3 | 按原文卷界 | 作者已确认：1–40 / 41–95 / …}
 - 作者交代：{偏好、红线、否掉的方案，逐条；没有写「无」}
 

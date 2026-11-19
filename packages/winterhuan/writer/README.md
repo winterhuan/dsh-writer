@@ -28,7 +28,7 @@ This bundle adds a writing sidebar, Writer preset, and oh-story skills to DSH. T
 Install the prebuilt release through the [plugin market](https://winterhuan.github.io/dsh-creative/index.json), or use this pinned Git source with DSH `0.2.2-rc.1`:
 
 ```sh
-dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.6&path:/packages/winterhuan/writer'
+dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.git#v0.2.7&path:/packages/winterhuan/writer'
 ```
 
 Replace `market` with the name of your existing DSH profile.
@@ -134,7 +134,7 @@ A session on preset `writer` receives the preset persona and the oh-story skill 
 
 #### Token effect
 
-The persona prefix and role tool schema are sent on every turn of a writing session; role bodies enter only the delegated child conversation. Loading a skill adds its entry instructions. Setup details, role compatibility checks, and standalone Dashboard or update instructions load only for the relevant host and task. Sessions on another preset do not receive this persona or the forced skill copy.
+The persona prefix and role tool schema are sent on every turn of a writing session; role bodies enter only the delegated child conversation. Loading a skill adds its entry instructions. Short-story design loads the structural sections of the craft reference and the selected reversal type; prose methods load when drafting. Unchanged sections already read in the current conversation are reused. Setup details, role compatibility checks, and standalone Dashboard or update instructions load only for the relevant host and task. Sessions on another preset do not receive this persona or the forced skill copy.
 
 #### KV Cache effect
 
