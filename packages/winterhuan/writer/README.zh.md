@@ -33,6 +33,8 @@ dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.gi
 
 将 `market` 替换为你已有的 DSH profile 名称。
 
+在写作模式里说「写一篇完整短篇」，可以给一句题意，也可以指定视角和字数。新的独立短篇默认在对话里交付。要存进作品，指明书稿位置即可。点名盐言等平台写法或续写已有的平台项目时，Writer 按平台流程写作。
+
 ### 安装到 profile
 
 先构建本仓库，再把本地 bundle 装进 DSH `0.2.2-rc.1` 的 profile。把 `web` 换成你的 profile 名。

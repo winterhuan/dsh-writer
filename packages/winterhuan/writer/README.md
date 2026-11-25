@@ -33,6 +33,8 @@ dsh plugin --profile market add 'git+https://github.com/winterhuan/dsh-writer.gi
 
 Replace `market` with the name of your existing DSH profile.
 
+In a Writer conversation, ask for a complete short story and give any premise, point of view, or length you have in mind. Writer delivers a new standalone story in chat. To save it in a book, specify that project. Requests for a platform format such as 盐言 use the platform workflow, as do continuations of existing platform projects.
+
 ### Install into a profile
 
 Build this repository, then add the local bundle to a DSH `0.2.2-rc.1` profile. Replace `web` with the profile name.

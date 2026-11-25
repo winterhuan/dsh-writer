@@ -1,13 +1,13 @@
 # Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
 # section, a hash of its English and Chinese blocks outside code blocks and generated regions.
 # After editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write packages/winterhuan/writer/README.md
+#   pnpm run verify-translation-pairing --write archive/dsh-writer/packages/winterhuan/writer/README.md
 /:
   en: 1c249239c0898a9c
   zh: c4ce06b4d5361a50
 /winterhuan-dsh-writer:
-  en: e11eafc303f9cd37
-  zh: b7beed1748b08ea2
+  en: 270c0b56e3a48497
+  zh: 913b16dc4f03bcf7
 /winterhuan-dsh-writer/summary:
   en: 012b99405c1bd3ba
   zh: cede673902a7e0b7
@@ -15,8 +15,8 @@
   en: d152484eb41ac6b4
   zh: 82bbd1ae631975a1
 /winterhuan-dsh-writer/use-this-package:
-  en: 3f5df148084ad54d
-  zh: 3d039174c128672c
+  en: fbdf9f374232228e
+  zh: 4789911b0de725a1
 /winterhuan-dsh-writer/use-this-package/install-into-a-profile:
   en: e80e840371651112
   zh: b340a119e492cb17
